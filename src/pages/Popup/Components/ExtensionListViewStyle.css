@@ -1,0 +1,8 @@
+.list-view li {
+  /* border: 1px solid #cccccc55; */
+  margin-bottom: 1px;
+}
+
+.list-view li:last-child {
+  border-bottom: none;
+}
