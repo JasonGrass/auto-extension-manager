@@ -1,8 +1,7 @@
-import React from "react"
-
 import { message } from "antd"
 import classNames from "classnames"
 import _ from "lodash"
+import React from "react"
 
 import { getIcon } from "../../../utils/extensionHelper"
 import { AppListStyle } from "./AppListStyle.js"
@@ -23,7 +22,6 @@ function AppList({ items }) {
 
   return (
     <AppListStyle>
-      <h2>APP</h2>
       <ul>
         {apps.map((item) => {
           return (

@@ -69,7 +69,7 @@ function ExtensionListItem({ item }) {
         { "is-enable": itemEnable, "not-enable": !itemEnable }
       ])}>
       <img src={getIcon(item, 24)} alt="" />
-      <span className="ext-name">{item.shortName}</span>
+      <span className="ext-name">{item.name}</span>
       {buildOperationButton(isHover)}
     </div>
   )

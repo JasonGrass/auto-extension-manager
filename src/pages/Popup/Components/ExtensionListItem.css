@@ -35,11 +35,11 @@
   bottom: 1px;
 }
 
-.list-item-container .not-enable {
+.list-item-container.not-enable {
   color: #888888;
   background-color: #cccccc33;
 }
 
-.list-item-container .is-enable {
+.list-item-container.is-enable {
   border-bottom: 1px solid #cccccc33;
 }
