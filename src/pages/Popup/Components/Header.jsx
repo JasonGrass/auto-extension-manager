@@ -8,7 +8,7 @@ import {
 import { Button, Dropdown, Space, Tooltip, message } from "antd"
 import React, { useEffect, useState } from "react"
 
-import "./Header.css"
+import "./Header.less"
 
 const handleProfileMenuClick = (e) => {
   message.info("Click on menu item.")

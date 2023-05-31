@@ -73,6 +73,10 @@ var options = {
         ]
       },
       {
+        test: /\.less$/i,
+        use: ["style-loader", "css-loader", "less-loader"]
+      },
+      {
         test: new RegExp(".(" + fileExtensions.join("|") + ")$"),
         type: "asset/resource",
         exclude: /node_modules/
