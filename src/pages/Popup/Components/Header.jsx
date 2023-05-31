@@ -8,6 +8,7 @@ import {
 import { Button, Dropdown, Space, Tooltip, message } from "antd"
 import React, { useEffect, useState } from "react"
 
+import MainIcon from "../../../assets/img/icon-64.png"
 import "./Header.less"
 
 const handleProfileMenuClick = (e) => {
@@ -67,8 +68,9 @@ function Header({ activeCount, totalCount, options }) {
   return (
     <div className="header">
       <div className="left">
+        <img src={MainIcon} alt="" />
         <h2>
-          🍀 {activeCount}/{totalCount}
+          {activeCount}/{totalCount}
         </h2>
       </div>
 
@@ -84,7 +86,7 @@ function Header({ activeCount, totalCount, options }) {
         <div className="right">
           <Dropdown
             menu={profileMenu}
-            trigger={["click"]}
+            trigger={["click", "hover"]}
             placement="bottomRight">
             <Space>
               <span>情景模式</span>
@@ -92,7 +94,10 @@ function Header({ activeCount, totalCount, options }) {
             </Space>
           </Dropdown>
 
-          <Dropdown menu={groupMenu} trigger={["click"]} placement="bottomLeft">
+          <Dropdown
+            menu={groupMenu}
+            trigger={["click", "hover"]}
+            placement="bottomLeft">
             <Space>
               <span>插件分组</span>
               <CaretDownOutlined className="caret" />

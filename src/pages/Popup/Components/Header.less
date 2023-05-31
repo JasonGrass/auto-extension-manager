@@ -15,6 +15,21 @@
 
 .header .left {
   flex-grow: 1;
+
+  img {
+    position: relative;
+    bottom: 6px;
+    right: 22px;
+    width: 64px;
+    height: 64px;
+    margin-right: -18px;
+  }
+}
+
+.header .right .ant-space {
+  &:hover {
+    color: #555;
+  }
 }
 
 .header .right .ant-space:nth-child(2n) {
@@ -24,7 +39,7 @@
 .header .right .caret {
   position: relative;
   font-size: 10px;
-  left: -6px;
+  left: -7px;
   top: -1px;
 }
 
@@ -32,7 +47,7 @@
   font-size: 18px;
   margin-right: 5px;
 
-  &:hover{
-    color: #333;
+  &:hover {
+    color: #555;
   }
 }
