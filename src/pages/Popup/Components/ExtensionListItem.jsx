@@ -30,18 +30,13 @@ const handleHomeButtonClick = (e, item) => {
   chrome.tabs.create({ url: item.homepageUrl })
 }
 
-const confirmDeleteExtension = (e, item) => {
-  chrome.management.uninstall(item.id)
-}
-
-const cancelDeleteExtension = (e, item) => {}
-
 function ExtensionListItem({ item }) {
   const getI18N = chrome.i18n.getMessage
   const langEnable = getI18N("extEnable")
   const langDisable = getI18N("extDisable")
 
   const [isHover, setIsHover] = useState(false)
+  const [isInteractive, setIsInteractive] = useState(false)
 
   const [itemEnable, setItemEnable] = useState(item.enabled)
   const [existOptionPage] = useState(!isStringEmpty(item.optionsUrl))
@@ -55,9 +50,20 @@ function ExtensionListItem({ item }) {
   const onItemMouseOver = (e) => {
     if (e.type === "mouseenter") {
       setIsHover(true)
-    } else if (e.type === "mouseleave") {
+    } else if (e.type === "mouseleave" && !isInteractive) {
       setIsHover(false)
     }
+  }
+
+  const confirmDeleteExtension = (e, item) => {
+    chrome.management.uninstall(item.id)
+    setIsInteractive(false)
+    setIsHover(false)
+  }
+
+  const cancelDeleteExtension = (e, item) => {
+    setIsInteractive(false)
+    setIsHover(false)
   }
 
   return (
@@ -98,6 +104,7 @@ function ExtensionListItem({ item }) {
             description={`确认要从浏览器中移除 ${item.shortName}`}
             onConfirm={(e) => confirmDeleteExtension(e, item)}
             onCancel={(e) => cancelDeleteExtension(e, item)}
+            onClick={(e) => setIsInteractive(true)}
             okText="Yes"
             cancelText="Cancel">
             <Button type="text" icon={<DeleteOutlined />} />
