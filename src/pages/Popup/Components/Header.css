@@ -16,3 +16,19 @@
 .header .left {
   flex-grow: 1;
 }
+
+.header .right .ant-space:nth-child(2n) {
+  margin: 0 8px;
+}
+
+.header .right .caret {
+  position: relative;
+  font-size: 10px;
+  left: -6px;
+  top: -1px;
+}
+
+.header .right .setting {
+  font-size: 18px;
+  margin-right: 5px;
+}

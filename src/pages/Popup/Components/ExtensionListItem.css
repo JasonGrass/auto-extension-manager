@@ -1,8 +1,9 @@
 .list-item-container {
   display: flex;
   align-items: center;
-  font-size: 14px;
   height: 32px;
+  padding-left: 5px;
+  font-size: 14px;
 }
 
 .list-item-container > img {

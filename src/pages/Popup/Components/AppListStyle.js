@@ -1,6 +1,8 @@
 import styled from "styled-components"
 
 export const AppListStyle = styled.div`
+  padding: 0 5px;
+
   ul {
     display: flex;
     flex-wrap: wrap;

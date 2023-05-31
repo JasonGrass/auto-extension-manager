@@ -1,5 +1,6 @@
 import {
   BlockOutlined,
+  CaretDownOutlined,
   DownOutlined,
   FolderOpenOutlined,
   SettingOutlined
@@ -81,29 +82,28 @@ function Header({ activeCount, totalCount, options }) {
     } else {
       return (
         <div className="right">
-          <Dropdown menu={profileMenu}>
-            <Button>
-              <Space>
-                情景模式
-                <DownOutlined />
-              </Space>
-            </Button>
+          <Dropdown
+            menu={profileMenu}
+            trigger={["click"]}
+            placement="bottomRight">
+            <Space>
+              <span>情景模式</span>
+              <CaretDownOutlined className="caret" />
+            </Space>
           </Dropdown>
 
-          <Dropdown menu={groupMenu}>
-            <Button>
-              <Space>
-                插件分组
-                <DownOutlined />
-              </Space>
-            </Button>
+          <Dropdown menu={groupMenu} trigger={["click"]} placement="bottomLeft">
+            <Space>
+              <span>插件分组</span>
+              <CaretDownOutlined className="caret" />
+            </Space>
           </Dropdown>
-          <Tooltip title="设置">
-            <Button
-              icon={<SettingOutlined />}
-              onClick={(e) => handleSettingButtonClick(e)}
-            />
-          </Tooltip>
+
+          <Space
+            className="setting"
+            onClick={(e) => handleSettingButtonClick(e)}>
+            <SettingOutlined />
+          </Space>
         </div>
       )
     }
