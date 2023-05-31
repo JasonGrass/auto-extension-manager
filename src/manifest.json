@@ -1,8 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Chrome Extension with React & Webpack",
-  "description": "A chrome extension boilerplate built with React 17, Webpack 5, and Webpack Dev Server 4",
+  "name": "Extension Manager",
+  "description": "a chrome extension manager where you can add rules",
+  "homepage_url": "https://github.com/JasonGrass/auto-extension-manager",
   "icons": {
+    "32": "icon-32.png",
+    "48": "icon-48.png",
+    "64": "icon-64.png",
     "128": "icon-128.png"
   },
   "background": {
@@ -14,7 +18,12 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "icon-34.png"
+    "default_icon": {
+      "32": "icon-32.png",
+      "48": "icon-48.png",
+      "64": "icon-64.png",
+      "128": "icon-128.png"
+    }
   },
   "permissions": [
     "management",
