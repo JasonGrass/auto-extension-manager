@@ -3,7 +3,7 @@ import _ from "lodash"
 import React, { useEffect, useState } from "react"
 
 import ExtensionListItem from "./ExtensionListItem"
-import "./ExtensionListViewStyle.css"
+import "./ExtensionListView.css"
 
 function ExtensionList({ extensions }) {
   const items = _.orderBy(

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react"
 import AppList from "./AppList"
 import ExtensionList from "./ExtensionListView"
 import Header from "./Header"
+import "./Popup.css"
 
 function IndexPopup({ extensions, options, params }) {
   // const getI18N = chrome.i18n.getMessage

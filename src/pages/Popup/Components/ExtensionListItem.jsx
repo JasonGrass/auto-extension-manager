@@ -20,7 +20,7 @@ import React, { useEffect, useState } from "react"
 
 import { getIcon } from "../../../utils/extensionHelper.js"
 import { isStringEmpty } from "../../../utils/utils.js"
-import "./ExtensionListItemStyle.css"
+import "./ExtensionListItem.css"
 
 const handleSettingButtonClick = (e, item) => {
   chrome.tabs.create({ url: item.optionsUrl })
