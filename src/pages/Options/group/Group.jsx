@@ -107,7 +107,7 @@ function GroupManagement() {
                     <Popconfirm
                       className="tab-operation-item"
                       title="删除分组"
-                      description={`确认删除分组 ${group.name}`}
+                      description={`确认删除分组"${group.name}"`}
                       onConfirm={(e) => onDeleteGroupClick(e, group)}
                       onCancel={(e) => e.stopPropagation()}
                       okText="Yes"

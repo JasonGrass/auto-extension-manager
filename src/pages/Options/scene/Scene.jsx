@@ -1,5 +1,5 @@
-import { EditFilled, PlusCircleOutlined } from "@ant-design/icons"
-import { Switch, message } from "antd"
+import { DeleteFilled, EditFilled, PlusCircleOutlined } from "@ant-design/icons"
+import { Popconfirm, Switch, message } from "antd"
 import React, { useEffect, useState } from "react"
 
 import optionsStorage from ".../storage/options-storage"
@@ -81,6 +81,8 @@ function Scene({ currentScene }) {
       setItemEditType("edit")
     }
 
+    const onDeleteClick = (e, i) => {}
+
     return (
       <div className="scene-item" key={item.id}>
         <div className="scene-item-header">
@@ -91,10 +93,23 @@ function Scene({ currentScene }) {
           />
         </div>
         <p>{item.desc}</p>
-        <EditFilled
-          className="scene-item-edit-icon"
-          onClick={(e) => onEditClick(e, item)}
-        />
+
+        <div className="scene-item-edit-icon">
+          <EditFilled
+            style={{ marginRight: 8 }}
+            onClick={(e) => onEditClick(e, item)}
+          />
+          <Popconfirm
+            title="删除"
+            description={`确认删除"${item.name}"`}
+            onConfirm={(e) => onDeleteClick(e, item)}
+            onCancel={(e) => e.stopPropagation()}
+            okText="Yes"
+            cancelText="Cancel"
+            onClick={(e) => e.stopPropagation()}>
+            <DeleteFilled />
+          </Popconfirm>
+        </div>
       </div>
     )
   }
