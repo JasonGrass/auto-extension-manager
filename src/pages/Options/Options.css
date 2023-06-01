@@ -1,8 +1,19 @@
-.OptionsContainer {
-  width: 100%;
-  height: 50vh;
-  font-size: 2rem;
+.option-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
+}
+
+.option-nav {
+  margin-right: 20px;
+}
+
+.option-content {
+  flex: 1;
+}
+
+.option-content-visible {
+  display: block;
+}
+
+.option-content-hidden {
+  display: none;
 }

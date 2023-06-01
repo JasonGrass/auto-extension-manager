@@ -1,9 +1,11 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+import "antd/dist/reset.css"
+import React from "react"
+import { createRoot } from "react-dom/client"
 
-import Options from './Options';
-import './index.css';
+import ".../utils/reset.css"
+import Options from "./Options"
+import "./index.css"
 
-const container = document.getElementById('app-container');
-const root = createRoot(container); // createRoot(container!) if you use TypeScript
-root.render(<Options title={'Settings'} />);
+const container = document.getElementById("app-container")
+const root = createRoot(container)
+root.render(<Options />)
