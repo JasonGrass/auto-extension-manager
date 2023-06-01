@@ -3,7 +3,7 @@ import React from "react"
 import { createRoot } from "react-dom/client"
 import chromeP from "webext-polyfill-kinda"
 
-import optionsStorage from "../../storage/options-storage"
+import optionsStorage from "../../storage/index"
 import Popup from "./Components/Popup"
 import "./index.css"
 

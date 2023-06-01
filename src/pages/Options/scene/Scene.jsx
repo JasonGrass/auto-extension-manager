@@ -2,7 +2,7 @@ import { DeleteFilled, EditFilled, PlusCircleOutlined } from "@ant-design/icons"
 import { Popconfirm, Switch, message } from "antd"
 import React, { useEffect, useState } from "react"
 
-import optionsStorage from ".../storage/options-storage"
+import optionsStorage from ".../storage/index"
 import Title from "../Title.jsx"
 import SceneEditor from "./SceneEditor.jsx"
 import { SceneStyle } from "./SceneStyle"
