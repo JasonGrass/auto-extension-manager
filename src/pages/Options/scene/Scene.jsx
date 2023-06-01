@@ -2,46 +2,81 @@ import { DeleteFilled, EditFilled, PlusCircleOutlined } from "@ant-design/icons"
 import { Popconfirm, Switch, message } from "antd"
 import React, { useEffect, useState } from "react"
 
-import optionsStorage from ".../storage/index"
+import { SceneOptions } from ".../storage/index"
+import { isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
 import SceneEditor from "./SceneEditor.jsx"
 import { SceneStyle } from "./SceneStyle"
 
-function Scene({ currentScene }) {
-  const sceneList = [
+/*
     {
       id: "1",
       name: "工作模式",
-      desc: "工作模式下打开调试相关的插件XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+      desc: "描述",
       isActive: true
-    },
-    { id: "2", name: "娱乐模式", desc: "", isActive: false }
-  ]
+    }
+*/
 
+function Scene() {
+  const [sceneList, setSceneList] = useState([])
   const [itemEditInfo, setItemEditInfo] = useState({})
   const [itemEditType, setItemEditType] = useState("")
+  const [activeScene, setActiveScene] = useState(null)
+  const [messageApi, contextHolder] = message.useMessage()
+  useEffect(() => {
+    fetchScene()
+  })
+
+  async function fetchScene() {
+    const all = await SceneOptions.getAll()
+    all.forEach((i) => (i.isActive = false))
+    const activeId = await SceneOptions.getActive()
+    const activeItem = all.find((i) => i.id === activeId)
+    if (activeItem) {
+      activeItem.isActive = true
+    }
+    setActiveScene(activeItem)
+    setSceneList(all)
+  }
 
   const onNewSceneClick = (e) => {
     setItemEditInfo({})
     setItemEditType("new")
   }
 
-  const editCallback = (editType, info) => {
-    setItemEditType("")
+  const editCallback = async (editType, info) => {
     if (editType === "cancel") {
+      setItemEditType("")
       return
     }
-    if (editType === "new") {
-    } else if (editType === "edit") {
+
+    try {
+      if (isStringEmpty(info.name)) {
+        throw Error("name cannot be empty")
+      }
+
+      if (editType === "new") {
+        await SceneOptions.addOne(info)
+        await fetchScene()
+      } else if (editType === "edit") {
+        await SceneOptions.update(info)
+        await fetchScene()
+      }
+      setItemEditType("")
+    } catch (error) {
+      messageApi.open({
+        type: "error",
+        content: error.message
+      })
     }
   }
 
   return (
     <SceneStyle>
       <Title title="情景模式"></Title>
-
-      {currentScene ? (
-        <h2>当前情景模式：{currentScene}</h2>
+      {contextHolder}
+      {activeScene ? (
+        <h2>当前情景模式：{activeScene.name}</h2>
       ) : (
         <h2>当前没有设置任何情景模式</h2>
       )}
@@ -74,14 +109,25 @@ function Scene({ currentScene }) {
   )
 
   function buildSceneItem(item) {
-    const onActiveChange = (e, i) => {}
+    const onActiveChange = async (e, i) => {
+      if (e) {
+        await SceneOptions.setActive(i.id)
+        setActiveScene(i)
+      } else {
+        await SceneOptions.setActive("")
+        setActiveScene(null)
+      }
+    }
 
     const onEditClick = (e, i) => {
       setItemEditInfo(i)
       setItemEditType("edit")
     }
 
-    const onDeleteClick = (e, i) => {}
+    const onDeleteClick = async (e, i) => {
+      await SceneOptions.deleteOne(i.id)
+      await fetchScene()
+    }
 
     return (
       <div className="scene-item" key={item.id}>

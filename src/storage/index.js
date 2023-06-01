@@ -1,5 +1,6 @@
 import { GroupOptions } from "./GroupOptions"
-import optionsStorage from "./options-storage"
+import { SceneOptions } from "./SceneOptions"
+import OptionsStorage from "./options-storage"
 
-export default optionsStorage
-export { GroupOptions }
+export default OptionsStorage
+export { GroupOptions, SceneOptions }

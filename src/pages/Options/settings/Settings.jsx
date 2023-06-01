@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 
-import optionsStorage from ".../storage/index"
+import OptionsStorage from ".../storage/index"
 import Title from "../Title.jsx"
 import { SettingStyle } from "./SettingStyle"
 
@@ -9,7 +9,7 @@ function Settings() {
 
   useEffect(() => {
     async function initOptions() {
-      const options = await optionsStorage.getAll()
+      const options = await OptionsStorage.getAll()
       setPopupWidth(options.popupWidth)
     }
     // 仅在首次加载时初始化
@@ -26,7 +26,7 @@ function Settings() {
     setPopupWidth(width)
 
     if (width >= 200 && width <= 1000) {
-      optionsStorage.set({ popupWidth: width })
+      OptionsStorage.set({ popupWidth: width })
     }
   }
 

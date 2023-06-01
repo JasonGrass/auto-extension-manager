@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 
-import optionsStorage from ".../storage/index"
+import OptionsStorage from ".../storage/index"
 import Title from "../Title.jsx"
 import { RuleSettingStyle } from "./RuleSettingStyle.js"
 

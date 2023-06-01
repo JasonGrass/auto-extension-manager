@@ -3,7 +3,7 @@ import { Button, Form, Input, message } from "antd"
 import classNames from "classnames"
 import React, { useEffect, useState } from "react"
 
-import optionsStorage, { GroupOptions } from ".../storage/index"
+import OptionsStorage, { GroupOptions } from ".../storage/index"
 import { isStringEmpty } from ".../utils/utils"
 import { SceneEditorStyle } from "./SceneEditorStyle"
 

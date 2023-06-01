@@ -1,7 +1,7 @@
-import { nanoid } from "nanoid"
 import OptionsSync from "webext-options-sync"
 
-const optionsStorage = new OptionsSync({
+const OptionsStorage = new OptionsSync({
+  storageType: "sync",
   defaults: {
     popupWidth: 400,
     groups: []
@@ -16,8 +16,20 @@ const optionsStorage = new OptionsSync({
       options.popupWidth = popupWidth
 
       // log
-      console.log("options:", options)
+      console.log("sync options:", options)
     }
   ]
 })
-export default optionsStorage
+
+export const LocalOptionsStorage = new OptionsSync({
+  storageType: "local",
+  defaults: {},
+  migrations: [
+    (options) => {
+      // log
+      console.log("local options:", options)
+    }
+  ]
+})
+
+export default OptionsStorage

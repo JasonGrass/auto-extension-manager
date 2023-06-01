@@ -3,7 +3,7 @@ import React from "react"
 import { createRoot } from "react-dom/client"
 import chromeP from "webext-polyfill-kinda"
 
-import optionsStorage from "../../storage/index"
+import OptionsStorage from "../../storage/index"
 import Popup from "./Components/Popup"
 import "./index.css"
 
@@ -14,7 +14,7 @@ document.body.style.width = "400px"
 
 const prepare = async function () {
   const allExtensions = await chromeP.management.getAll()
-  const allOptions = await optionsStorage.getAll()
+  const allOptions = await OptionsStorage.getAll()
   const minHeight = Math.min(600, Math.max(200, allExtensions.length * 40))
 
   return {

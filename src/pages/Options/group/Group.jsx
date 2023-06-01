@@ -4,7 +4,7 @@ import classNames from "classnames"
 import React, { useEffect, useState } from "react"
 import chromeP from "webext-polyfill-kinda"
 
-import optionsStorage, { GroupOptions } from ".../storage/index"
+import OptionsStorage, { GroupOptions } from ".../storage/index"
 import { getIcon } from ".../utils/extensionHelper"
 import Title from "../Title.jsx"
 import AddNewGroup from "./AddNewGroup"

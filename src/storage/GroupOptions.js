@@ -1,16 +1,16 @@
 import { nanoid } from "nanoid"
 
-import optionsStorage from "./options-storage"
+import OptionsStorage from "./options-storage"
 
 export const GroupOptions = {
   async getGroups() {
-    const all = await optionsStorage.getAll()
+    const all = await OptionsStorage.getAll()
     let groups = all.groups ? [...all.groups] : []
     return groups
   },
 
   async addGroup(group) {
-    const all = await optionsStorage.getAll()
+    const all = await OptionsStorage.getAll()
     let groups = all.groups ? [...all.groups] : []
 
     const exist = groups.find((g) => g.name === group.name)
@@ -24,16 +24,16 @@ export const GroupOptions = {
 
     groups.push(group)
 
-    await optionsStorage.set({ groups })
+    await OptionsStorage.set({ groups })
   },
 
   async deleteGroup(id) {
-    const all = await optionsStorage.getAll()
+    const all = await OptionsStorage.getAll()
     if (!all.groups) {
       return
     }
-    const newGroups = all.groups.filter((g) => g.id != id)
-    await optionsStorage.set({ groups: newGroups })
+    const newGroups = all.groups.filter((g) => g.id !== id)
+    await OptionsStorage.set({ groups: newGroups })
   }
 }
 
