@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 
 import optionsStorage from ".../storage/options-storage"
 import Title from "../Title.jsx"
+import SceneEditor from "./SceneEditor.jsx"
 import { SceneStyle } from "./SceneStyle"
 
 function Scene({ currentScene }) {
@@ -16,6 +17,24 @@ function Scene({ currentScene }) {
     },
     { id: "2", name: "娱乐模式", desc: "", isActive: false }
   ]
+
+  const [itemEditInfo, setItemEditInfo] = useState({})
+  const [itemEditType, setItemEditType] = useState("")
+
+  const onNewSceneClick = (e) => {
+    setItemEditInfo({})
+    setItemEditType("new")
+  }
+
+  const editCallback = (editType, info) => {
+    setItemEditType("")
+    if (editType === "cancel") {
+      return
+    }
+    if (editType === "new") {
+    } else if (editType === "edit") {
+    }
+  }
 
   return (
     <SceneStyle>
@@ -37,23 +56,39 @@ function Scene({ currentScene }) {
         className="scene-item"
         style={{ display: "flex", alignItems: "center" }}>
         <h3 style={{ flexGrow: 1, fontWeight: 700 }}>新增情景模式</h3>
-        <PlusCircleOutlined className="scene-item-add-icon" />
+        <PlusCircleOutlined
+          onClick={(e) => onNewSceneClick(e)}
+          className="scene-item-add-icon"
+        />
+      </div>
+
+      <div
+        className="scene-edit-panel"
+        style={{ display: itemEditType !== "" ? "block" : "none" }}>
+        <SceneEditor
+          editType={itemEditType}
+          sceneInfo={itemEditInfo}
+          editCallback={editCallback}></SceneEditor>
       </div>
     </SceneStyle>
   )
 
   function buildSceneItem(item) {
-    const onChange = (e, i) => {}
+    const onActiveChange = (e, i) => {}
 
     const onEditClick = (e, i) => {
-      message.info(`edit ${i.name}`)
+      setItemEditInfo(i)
+      setItemEditType("edit")
     }
 
     return (
       <div className="scene-item" key={item.id}>
         <div className="scene-item-header">
           <h3>{item.name}</h3>
-          <Switch checked={item.isActive} onChange={(e) => onChange(e, item)} />
+          <Switch
+            checked={item.isActive}
+            onChange={(e) => onActiveChange(e, item)}
+          />
         </div>
         <p>{item.desc}</p>
         <EditFilled

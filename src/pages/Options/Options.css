@@ -1,5 +1,6 @@
 .option-container {
   display: flex;
+  height: 100%;
 }
 
 .option-nav {
@@ -8,10 +9,12 @@
 
 .option-content {
   flex: 1;
+  height: 100%;
 }
 
 .option-content-visible {
   display: block;
+  height: 100%;
 }
 
 .option-content-hidden {

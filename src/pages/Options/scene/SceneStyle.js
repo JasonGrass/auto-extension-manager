@@ -1,6 +1,9 @@
 import styled from "styled-components"
 
 export const SceneStyle = styled.div`
+  position: relative;
+  height: 100%;
+
   .scene-item-container {
     display: flex;
     margin-top: 30px;
@@ -13,7 +16,7 @@ export const SceneStyle = styled.div`
     height: 70px;
 
     padding: 5px;
-    margin: 5px 10px 10px 0px;
+    margin: 5px 10px 10px 2px;
 
     border: 1px solid #337ab7;
     border-radius: 5px;
@@ -57,5 +60,14 @@ export const SceneStyle = styled.div`
     font-size: 30px;
     margin-right: 6px;
     color: #337ab7;
+  }
+
+  .scene-edit-panel {
+    position: absolute;
+    margin-top: 60px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: calc(100% - 60px);
   }
 `

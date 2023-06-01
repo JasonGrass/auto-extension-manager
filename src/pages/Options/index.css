@@ -2,3 +2,7 @@ body {
   width: 100%;
   color: #333;
 }
+
+#app-container {
+  height: 100%;
+}
