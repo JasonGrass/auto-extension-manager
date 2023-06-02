@@ -3,12 +3,11 @@ import classNames from "classnames"
 import _ from "lodash"
 import React from "react"
 
-import { getIcon } from "../../../utils/extensionHelper"
+import { getIcon, isAppExtension } from "../../../utils/extensionHelper"
 import { AppListStyle } from "./AppListStyle.js"
 
 function AppList({ items }) {
-  const appTypes = ["hosted_app", "packaged_app", "legacy_packaged_app"]
-  const apps = items.filter((i) => appTypes.indexOf(i.type) >= 0)
+  const apps = items.filter((i) => isAppExtension(i))
 
   const onIconClick = (e, item) => {
     // console.log(item)

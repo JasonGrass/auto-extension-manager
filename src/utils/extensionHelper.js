@@ -18,3 +18,8 @@ export const getIcon = function (extension, size = 16) {
   // Fallback icon
   return defaultPuzzleIcon
 }
+
+export const isAppExtension = function (ext) {
+  const appTypes = ["hosted_app", "packaged_app", "legacy_packaged_app"]
+  return appTypes.includes(ext.type)
+}

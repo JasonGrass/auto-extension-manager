@@ -5,9 +5,10 @@ import React, { useEffect, useState } from "react"
 import chromeP from "webext-polyfill-kinda"
 
 import { GroupOptions } from ".../storage/index"
-import { getIcon } from ".../utils/extensionHelper"
+import { getIcon, isAppExtension } from ".../utils/extensionHelper"
 import { isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
+import GroupContent from "./GroupContent.jsx"
 import GroupEditor from "./GroupEditor.jsx"
 import GroupNav from "./GroupNav.jsx"
 import { GroupStyle } from "./IndexGroupStyle.js"
@@ -17,15 +18,15 @@ const { TextArea } = Input
 
 function GroupManagement() {
   const [extensions, setExtensions] = useState([])
-  const [groupInfo, setGroupInfo] = useState([])
+  const [groupListInfo, setGroupListInfo] = useState([])
   const [selectedGroup, setSelectedGroup] = useState()
   const [itemEditInfo, setItemEditInfo] = useState()
   const [itemEditType, setItemEditType] = useState("")
   const [messageApi, contextHolder] = message.useMessage()
 
   async function updateByGroupConfigs() {
-    const info = await GroupOptions.getGroups()
-    setGroupInfo(info)
+    const groupList = await GroupOptions.getGroups()
+    setGroupListInfo(groupList)
   }
 
   useEffect(() => {
@@ -35,12 +36,12 @@ function GroupManagement() {
     }
 
     async function initGroupConfigs() {
+      await getExts()
       await updateByGroupConfigs()
     }
 
-    getExts()
     initGroupConfigs()
-  }, [])
+  }, [selectedGroup])
 
   const onSelectedChanged = (item) => {
     setSelectedGroup(item)
@@ -96,7 +97,7 @@ function GroupManagement() {
       <div className="group-edit-box">
         <div className="left-box">
           <GroupNav
-            groupInfo={groupInfo}
+            groupInfo={groupListInfo}
             current={selectedGroup}
             onSelectedChanged={onSelectedChanged}
             onGroupItemDeleted={onGroupDeleted}
@@ -110,11 +111,11 @@ function GroupManagement() {
                 isStringEmpty(selectedGroup?.id) ||
                 selectedGroup.id === AddNewNavItem.id
             })}>
-            <p className="desc">{selectedGroup?.desc}</p>
-            <h3>「{selectedGroup?.name}」中的插件</h3>
-            {buildExtContainer(extensions, "active-items")}
-            <h3>剩余未分组</h3>
-            {buildExtContainer(extensions, "no-group-items")}
+            <GroupContent
+              group={selectedGroup}
+              groupList={groupListInfo}
+              extensions={extensions}
+            />
           </div>
 
           <div
@@ -130,34 +131,6 @@ function GroupManagement() {
       </div>
     </GroupStyle>
   )
-
-  function buildExtContainer(extItems, containerClassName) {
-    const onIconClick = (e, item) => {
-      console.log(item)
-    }
-
-    return (
-      <ul className={classNames([containerClassName, "ext-container"])}>
-        {extItems.map((item) => {
-          return (
-            <li
-              key={item.id}
-              className={classNames({
-                "ext-item": true,
-                "not-enable": !item.enabled
-              })}>
-              <img
-                src={getIcon(item, 32)}
-                alt=""
-                onClick={(e) => onIconClick(e, item)}
-              />
-              <span>{item.shortName}</span>
-            </li>
-          )
-        })}
-      </ul>
-    )
-  }
 }
 
 export default GroupManagement
