@@ -1,6 +1,21 @@
+import React from "react"
 import styled from "styled-components"
 
-export const SceneEditorStyle = styled.div`
+function ModalEditorWrapper(props) {
+  return (
+    <Style>
+      <div className="modal-editor-wrapper-container">
+        <h3>{props.title}</h3>
+        <hr />
+        {props.children}
+      </div>
+    </Style>
+  )
+}
+
+export default ModalEditorWrapper
+
+const Style = styled.div`
   &::after {
     content: "";
     position: absolute;
@@ -12,7 +27,7 @@ export const SceneEditorStyle = styled.div`
     filter: blur(1px);
   }
 
-  .scene-editor-container {
+  .modal-editor-wrapper-container {
     width: 600px;
     margin: 50px auto;
     padding: 20px;

@@ -3,9 +3,8 @@ import { Button, Form, Input, message } from "antd"
 import classNames from "classnames"
 import React, { useEffect, useState } from "react"
 
-import OptionsStorage, { GroupOptions } from ".../storage/index"
 import { isStringEmpty } from ".../utils/utils"
-import { SceneEditorStyle } from "./SceneEditorStyle"
+import ModalEditorWrapper from "../utils/ModalEditorWrapper"
 
 const { TextArea } = Input
 
@@ -45,43 +44,39 @@ function SceneEditor({ editType, sceneInfo, editCallback }) {
   }
 
   return (
-    <SceneEditorStyle>
-      <div className="scene-editor-container">
-        <h3>编辑情景模式</h3>
-        <hr />
-        <Form labelCol={{ span: 2 }}>
-          <Form.Item label="名称">
-            <Input
-              maxLength={50}
-              value={name}
-              onChange={(e) => onNameChanged(e)}
-            />
-          </Form.Item>
-          <Form.Item label="描述">
-            <TextArea
-              rows={2}
-              showCount
-              maxLength={200}
-              value={desc}
-              onChange={(e) => onDescChanged(e)}
-            />
-          </Form.Item>
-          <Form.Item wrapperCol={{ offset: 2, span: 6 }}>
-            <div style={{ display: "flex" }}>
-              <Button type="primary" onClick={(e) => onSummitClick(e)}>
-                {editType === "new" ? "添加" : "更新"}
-              </Button>
+    <ModalEditorWrapper title="编辑情景模式">
+      <Form labelCol={{ span: 2 }}>
+        <Form.Item label="名称">
+          <Input
+            maxLength={50}
+            value={name}
+            onChange={(e) => onNameChanged(e)}
+          />
+        </Form.Item>
+        <Form.Item label="描述">
+          <TextArea
+            rows={2}
+            showCount
+            maxLength={200}
+            value={desc}
+            onChange={(e) => onDescChanged(e)}
+          />
+        </Form.Item>
+        <Form.Item wrapperCol={{ offset: 2, span: 6 }}>
+          <div style={{ display: "flex" }}>
+            <Button type="primary" onClick={(e) => onSummitClick(e)}>
+              {editType === "new" ? "添加" : "更新"}
+            </Button>
 
-              <Button
-                style={{ marginLeft: 10 }}
-                onClick={(e) => onCancelClick(e)}>
-                取消
-              </Button>
-            </div>
-          </Form.Item>
-        </Form>
-      </div>
-    </SceneEditorStyle>
+            <Button
+              style={{ marginLeft: 10 }}
+              onClick={(e) => onCancelClick(e)}>
+              取消
+            </Button>
+          </div>
+        </Form.Item>
+      </Form>
+    </ModalEditorWrapper>
   )
 }
 
