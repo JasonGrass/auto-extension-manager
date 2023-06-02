@@ -1,6 +1,9 @@
 import styled from "styled-components"
 
 export const GroupStyle = styled.div`
+  position: relative;
+  height: 100%;
+
   .group-edit-box {
     display: flex;
   }
@@ -64,5 +67,14 @@ export const GroupStyle = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: center;
+  }
+
+  .scene-edit-panel {
+    position: absolute;
+    margin-top: 60px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: calc(100% - 60px);
   }
 `

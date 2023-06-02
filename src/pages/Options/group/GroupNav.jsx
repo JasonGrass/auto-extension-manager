@@ -12,7 +12,8 @@ function GroupNav({
   groupInfo,
   current,
   onSelectedChanged,
-  onGroupItemDeleted
+  onGroupItemDeleted,
+  onGroupItemEdit
 }) {
   // const [selectedGroup, setSelectedGroup] = useState()
 
@@ -34,17 +35,30 @@ function GroupNav({
 
   const onEditGroupClick = (e, group) => {
     e.stopPropagation()
-    message.info(`edit ${group.name}`)
+    onGroupItemEdit?.(group)
   }
 
-  function selectFirstGroupTab() {
-    if (groupInfo && groupInfo[0]) {
-      // setSelectedGroup(groupInfo[0])
-      onSelectedChanged?.(groupInfo[0])
-    } else {
-      // setSelectedGroup(AddNewNavItem)
-      onSelectedChanged?.(AddNewNavItem)
+  function selectFirstGroupTab(except) {
+    if (!groupInfo) {
+      onSelectedChanged?.()
+      return
     }
+
+    // 没有排除项，则指定为第一个
+    if (!except && groupInfo[0]) {
+      onSelectedChanged?.(groupInfo[0])
+      return
+    }
+
+    // 有排除项，则选择排除项之外的第一个
+    if (except) {
+      const one = groupInfo.filter((g) => g.id !== except.id)[0]
+      if (one) {
+        onSelectedChanged?.(one)
+        return
+      }
+    }
+    onSelectedChanged?.()
   }
 
   const onDeleteGroupClick = async (e, group) => {
@@ -52,7 +66,7 @@ function GroupNav({
 
     await GroupOptions.deleteGroup(group.id)
     if (group.id === current?.id) {
-      selectFirstGroupTab()
+      selectFirstGroupTab(group)
     }
 
     onGroupItemDeleted?.(group)

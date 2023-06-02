@@ -34,9 +34,7 @@ function SceneEditor({ editType, sceneInfo, editCallback }) {
   }
 
   const onCancelClick = (e) => {
-    if (editCallback) {
-      editCallback("cancel")
-    }
+    editCallback?.("cancel")
   }
 
   if (isStringEmpty(editType)) {

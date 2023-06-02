@@ -27,6 +27,26 @@ export const GroupOptions = {
     await OptionsStorage.set({ groups })
   },
 
+  async update(info) {
+    const all = await OptionsStorage.getAll()
+    let groups = all.groups ? [...all.groups] : []
+
+    const exist = groups.find((item) => item.id === info.id)
+    if (!exist) {
+      throw Error(`cannot find group id is ${info.id}(${info.name})`)
+    }
+
+    const existSameName = groups
+      .filter((i) => i.id !== info.id)
+      .find((item) => item.name === info.name)
+    if (existSameName) {
+      throw Error(`already exist same group named ${info.name}`)
+    }
+
+    Object.assign(exist, info)
+    await OptionsStorage.set({ groups })
+  },
+
   async deleteGroup(id) {
     const all = await OptionsStorage.getAll()
     if (!all.groups) {
