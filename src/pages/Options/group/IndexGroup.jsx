@@ -11,7 +11,7 @@ import Title from "../Title.jsx"
 import GroupEditor from "./GroupEditor.jsx"
 import GroupNav from "./GroupNav.jsx"
 import { GroupStyle } from "./IndexGroupStyle.js"
-import { AddNewNavItem, checkSelectedGroup } from "./helpers.js"
+import { AddNewNavItem } from "./helpers.js"
 
 const { TextArea } = Input
 
@@ -106,7 +106,9 @@ function GroupManagement() {
         <div className="right-box">
           <div
             className={classNames({
-              "view-hidden": !checkSelectedGroup(selectedGroup)
+              "view-hidden":
+                isStringEmpty(selectedGroup?.id) ||
+                selectedGroup.id === AddNewNavItem.id
             })}>
             <p className="desc">{selectedGroup?.desc}</p>
             <h3>「{selectedGroup?.name}」中的插件</h3>

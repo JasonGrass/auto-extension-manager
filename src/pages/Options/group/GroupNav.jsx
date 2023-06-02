@@ -114,7 +114,7 @@ function GroupNav({
               "tab-container",
               "add-new-group",
               {
-                "selected-group-item": checkSelectedGroup(current, "__add__")
+                "selected-group-item": current?.id === AddNewNavItem.id
               }
             ])}
             onClick={(e) => onAddNewGroupClick(e)}>
