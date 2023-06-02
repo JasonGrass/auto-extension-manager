@@ -3,7 +3,7 @@ import { Button, Form, Input, message } from "antd"
 import classNames from "classnames"
 import React, { useEffect, useState } from "react"
 
-import OptionsStorage, { GroupOptions } from ".../storage/index"
+import { GroupOptions } from ".../storage/index"
 import { isStringEmpty } from ".../utils/utils"
 
 const { TextArea } = Input

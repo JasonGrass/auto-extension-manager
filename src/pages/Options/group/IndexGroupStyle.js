@@ -17,51 +17,6 @@ export const GroupStyle = styled.div`
     margin-left: 10px;
   }
 
-  .tab-container {
-    display: flex;
-    align-items: center;
-
-    height: 48px;
-
-    /* margin-bottom: 10px; */
-    padding: 0 5px 0 10px;
-
-    background: linear-gradient(to right, #fff, #337ab788);
-    border-radius: 5px 0 0 5px;
-
-    &:hover {
-      background-color: #337ab7;
-    }
-
-    &:hover .tab-operation {
-      display: block;
-    }
-  }
-
-  .tab-container .tab-operation {
-    display: none;
-    color: #23527c;
-    font-size: 18px;
-  }
-
-  .tab-operation-item {
-    margin: 0 5px;
-  }
-
-  .selected-group-item {
-    background: linear-gradient(to left, #fff, #337ab788);
-  }
-
-  .add-new-group {
-    color: #23527c;
-    font-size: 18px;
-    justify-content: center;
-  }
-
-  .tab-container h3 {
-    flex-grow: 1;
-  }
-
   .right-box .desc {
     font-size: 14px;
     word-break: break-all;

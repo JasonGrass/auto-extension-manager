@@ -6,7 +6,7 @@ import { SceneOptions } from ".../storage/index"
 import { isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
 import SceneEditor from "./SceneEditor.jsx"
-import { SceneStyle } from "./SceneStyle"
+import { SceneStyle } from "./IndexSceneStyle.js"
 
 /*
     {

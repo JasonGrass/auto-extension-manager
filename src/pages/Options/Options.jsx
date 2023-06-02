@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react"
 
 import "./Options.css"
 import About from "./about/About.jsx"
-import GroupManagement from "./group/Group.jsx"
+import GroupManagement from "./group/IndexGroup.jsx"
 import "./index.css"
 import Navigation from "./navigation/Navigation.jsx"
 import RuleSetting from "./rule/RuleSetting.jsx"
-import Scene from "./scene/Scene.jsx"
+import Scene from "./scene/IndexScene.jsx"
 import Settings from "./settings/Settings.jsx"
 
 function Options() {
