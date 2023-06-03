@@ -32,7 +32,7 @@ function GroupManagement() {
   useEffect(() => {
     async function getExts() {
       const exts = await chromeP.management.getAll()
-      setExtensions(exts)
+      setExtensions(exts.filter((ext) => ext.type === "extension"))
     }
 
     async function initGroupConfigs() {

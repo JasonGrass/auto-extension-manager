@@ -8,4 +8,15 @@ export const GroupContentStyle = styled.div`
   .not-enable {
     color: #cccccc;
   }
+
+  .text {
+    margin-bottom: 20px;
+    padding-left: 5px;
+
+    color: #888;
+    font-size: 14px;
+    line-height: 20px;
+
+    border-left: 3px solid #cccccc;
+  }
 `

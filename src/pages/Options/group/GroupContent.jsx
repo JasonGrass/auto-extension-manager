@@ -41,9 +41,11 @@ const GroupContent = memo(({ group, groupList, extensions }) => {
     return null
   }
 
+  const desc = isStringEmpty(group.desc) ? "(未添加描述)" : group.desc
+
   return (
     <GroupContentStyle>
-      <p className="desc">{group.desc}</p>
+      <p className="text desc">{desc}</p>
       <h3>「{group.name}」中的插件</h3>
       {buildExtContainer(containExts, "active-items", true)}
       <h3>剩余未分组</h3>
@@ -69,7 +71,7 @@ const GroupContent = memo(({ group, groupList, extensions }) => {
     }
 
     if (!extItems || extItems.length === 0) {
-      return <p>该分组中没有插件</p>
+      return <p className="text">该分组中没有插件</p>
     }
 
     return (
@@ -99,6 +101,7 @@ function sortExtension(extensions) {
   }
 
   const list = []
+  // distinct
   extensions.forEach((ext) => {
     if (list.find((i) => i.id === ext.id)) {
       return

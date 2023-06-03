@@ -15,7 +15,10 @@ export const getIcon = function (extension, size = 16) {
     }
   }
 
-  // Fallback icon
+  if (icons) {
+    return icons.reverse()[0]?.url ?? defaultPuzzleIcon
+  }
+
   return defaultPuzzleIcon
 }
 
