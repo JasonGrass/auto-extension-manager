@@ -5,6 +5,11 @@ export const NavigationStyle = styled.div`
   margin-left: 20px;
   width: 280px;
 
+  a {
+    text-decoration: none;
+    color: #337ab7;
+  }
+
   h1 {
     color: #337ab7;
     margin-bottom: 30px;
@@ -17,18 +22,18 @@ export const NavigationStyle = styled.div`
     }
   }
 
-  ul {
-    font-size: 14px;
-    color: #337ab7;
-  }
-
-  li {
+  .nav-item {
+    display: block;
     height: 36px;
-    line-height: 36px;
-    margin-bottom: 6px;
-    border-radius: 4px;
 
+    margin-bottom: 6px;
     padding-left: 10px;
+
+    font-size: 14px;
+    line-height: 36px;
+    color: #337ab7;
+
+    border-radius: 4px;
 
     &:hover {
       background-color: #eee;

@@ -1,10 +1,13 @@
-import { ConfigProvider } from "antd"
 import React, { useEffect, useState } from "react"
+import { Route, Routes } from "react-router-dom"
+
+import { ConfigProvider } from "antd"
 
 import "./Options.css"
+import "./index.css"
+
 import About from "./about/About.jsx"
 import GroupManagement from "./group/IndexGroup.jsx"
-import "./index.css"
 import Navigation from "./navigation/Navigation.jsx"
 import RuleSetting from "./rule/RuleSetting.jsx"
 import Scene from "./scene/IndexScene.jsx"
@@ -21,14 +24,6 @@ function Options() {
     console.log("setCurrentNav", key)
   }
 
-  const optionContentVisible = (key) => {
-    if (key === currentNav) {
-      return "option-content-visible"
-    } else {
-      return "option-content-hidden"
-    }
-  }
-
   return (
     <div className="option-container">
       <div className="option-nav">
@@ -42,21 +37,13 @@ function Options() {
               colorPrimary: "#337ab7"
             }
           }}>
-          <div className={optionContentVisible("about")}>
-            <About></About>
-          </div>
-          <div className={optionContentVisible("setting")}>
-            <Settings></Settings>
-          </div>
-          <div className={optionContentVisible("scene")}>
-            <Scene></Scene>
-          </div>
-          <div className={optionContentVisible("group")}>
-            <GroupManagement></GroupManagement>
-          </div>
-          <div className={optionContentVisible("rule")}>
-            <RuleSetting></RuleSetting>
-          </div>
+          <Routes>
+            <Route path="/about" element={<About />} />
+            <Route path="/setting" element={<Settings />} />
+            <Route path="/scene" element={<Scene />} />
+            <Route path="/group" element={<GroupManagement />} />
+            <Route path="/rule" element={<RuleSetting />} />
+          </Routes>
         </ConfigProvider>
       </div>
     </div>
