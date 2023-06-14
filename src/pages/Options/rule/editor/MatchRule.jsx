@@ -57,18 +57,18 @@ config
 
 */
 
-const MatchRule = memo(({ sceneList, config }) => {
-  // useImperativeHandle(ref, () => ({
-  //   // 获取配置
-  //   getMatchRuleConfig: () => {
-  //     return {
-  //       matchMode: matchMode.key,
-  //       matchMethod: matchMethod.key,
-  //       matchScene: matchSceneId,
-  //       matchHost: matchHostList
-  //     }
-  //   }
-  // }))
+const MatchRule = ({ sceneList, config }, ref) => {
+  useImperativeHandle(ref, () => ({
+    // 获取配置
+    getMatchRuleConfig: () => {
+      return {
+        matchMode: matchMode.key,
+        matchMethod: matchMethod.key,
+        matchScene: matchScene.id,
+        matchHost: matchHostList
+      }
+    }
+  }))
 
   // 匹配模式，host / scene
   const [matchMode, setMatchMode] = useState(matchModes[0])
@@ -225,6 +225,6 @@ const MatchRule = memo(({ sceneList, config }) => {
       </div>
     )
   }
-})
+}
 
-export default MatchRule
+export default memo(forwardRef(MatchRule))

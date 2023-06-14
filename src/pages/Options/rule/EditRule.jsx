@@ -19,7 +19,7 @@ const EditRule = memo(() => {
 
   return (
     <div>
-      <MatchRule sceneList={allSceneOptions}></MatchRule>
+      <MatchRule sceneList={allSceneOptions} ref={matchRuleRef}></MatchRule>
       <ExtensionSelector></ExtensionSelector>
       <RuleAction></RuleAction>
     </div>
