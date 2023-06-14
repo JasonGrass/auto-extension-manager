@@ -43,21 +43,19 @@ const GroupContent = memo(({ group, groupList, extensions }) => {
     return null
   }
 
-  const desc = isStringEmpty(group.desc) ? "(未添加描述)" : group.desc
-
   return (
     <GroupContentStyle>
-      <p className="text desc">{desc}</p>
       <h3>「{group.name}」中的插件</h3>
       {buildExtContainer(containExts, true)}
       <h3>剩余未分组</h3>
       {buildExtContainer(noneGroupExts, false)}
+      <p className="desc">{group.desc}</p>
     </GroupContentStyle>
   )
 
-  function buildExtContainer(extItems, contain) {
+  function buildExtContainer(extItems, isGrouped) {
     const onIconClick = (e, item) => {
-      if (contain) {
+      if (isGrouped) {
         const contain = containExts.filter((ext) => ext.id !== item.id)
         const none = [...noneGroupExts, item]
         setContains(sortExtension(contain))
@@ -72,11 +70,13 @@ const GroupContent = memo(({ group, groupList, extensions }) => {
       }
     }
 
-    if (!extItems || extItems.length === 0) {
-      return <p className="text">该分组中没有插件</p>
-    }
-
-    return <ExtensionItems items={extItems} onClick={onIconClick} />
+    return (
+      <ExtensionItems
+        items={extItems}
+        onClick={onIconClick}
+        placeholder="该分组中没有插件"
+      />
+    )
   }
 })
 
