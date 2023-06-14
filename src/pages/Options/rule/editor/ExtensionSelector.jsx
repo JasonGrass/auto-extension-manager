@@ -3,6 +3,7 @@ import React, { memo, useEffect, useState } from "react"
 import { DownOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Dropdown, Input, Space, Switch, message } from "antd"
 
+import ExtensionItems from "../../components/ExtensionItems"
 import EditorCommonStyle from "./CommonStyle"
 import Style from "./ExtensionSelectorStyle"
 
@@ -17,7 +18,7 @@ const matchModes = [
   }
 ]
 
-const ExtensionSelector = memo(() => {
+const ExtensionSelector = memo(({ groupList, extensions }) => {
   const [matchMode, setMatchMode] = useState(matchModes[0])
 
   const handleMatchModeClick = (e) => {
@@ -58,6 +59,10 @@ const ExtensionSelector = memo(() => {
               </Space>
             </Button>
           </Dropdown>
+        </div>
+
+        <div>
+          <ExtensionItems items={extensions}></ExtensionItems>
         </div>
       </Style>
     </EditorCommonStyle>

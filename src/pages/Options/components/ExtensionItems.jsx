@@ -37,8 +37,35 @@ const ExtensionItems = memo(({ items, placeholder, onClick }) => {
 export default ExtensionItems
 
 const Style = styled.div`
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .ext-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100px;
     margin: 12px 15px;
+    margin-bottom: 20px;
+  }
+
+  .ext-item img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ext-item span {
+    width: 100%;
+
+    margin-top: 5px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
   }
 
   .not-enable {

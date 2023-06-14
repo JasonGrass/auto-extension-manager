@@ -2,14 +2,16 @@ import React, { memo, useEffect, useRef, useState } from "react"
 
 import { Button, message } from "antd"
 
-import { RuleConfigOptions, SceneOptions } from ".../storage"
+import { GroupOptions, RuleConfigOptions, SceneOptions } from ".../storage"
 import Style from "./EditRuleStyle"
 import ExtensionSelector from "./editor/ExtensionSelector"
 import MatchRule from "./editor/MatchRule"
 import RuleAction from "./editor/RuleAction"
 
-const EditRule = memo(() => {
+const EditRule = memo(({ extensions }) => {
   const [allSceneOptions, setAllSceneOptions] = useState([])
+  const [allGroupOptions, setAllGroupOptions] = useState([])
+
   const [ruleConfig, setRuleConfig] = useState({})
 
   const matchRuleRef = useRef(null)
@@ -19,6 +21,10 @@ const EditRule = memo(() => {
     SceneOptions.getAll().then((list) => {
       setAllSceneOptions(list)
     })
+    GroupOptions.getGroups().then((list) => {
+      setAllGroupOptions(list)
+    })
+
     RuleConfigOptions.get().then((list) => {
       // 测试数据，取最后一项。这个数据应该是 props 传进来的
       setRuleConfig(list.pop())
@@ -44,7 +50,9 @@ const EditRule = memo(() => {
         sceneList={allSceneOptions}
         config={ruleConfig.match}
         ref={matchRuleRef}></MatchRule>
-      <ExtensionSelector></ExtensionSelector>
+      <ExtensionSelector
+        groupList={allGroupOptions}
+        extensions={extensions}></ExtensionSelector>
       <RuleAction></RuleAction>
 
       <div className="operation-box">

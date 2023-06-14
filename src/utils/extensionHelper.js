@@ -27,6 +27,18 @@ export const isAppExtension = function (ext) {
   return appTypes.includes(ext.type)
 }
 
+export const isExtExtension = function (ext) {
+  const extTypes = ["extension"]
+  return extTypes.includes(ext.type)
+}
+
+export const filterExtensions = (extensions, filter) => {
+  if (!extensions) {
+    return []
+  }
+  return extensions.filter(filter)
+}
+
 export const sortExtension = (extensions) => {
   if (!extensions) {
     return []

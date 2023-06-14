@@ -35,38 +35,8 @@ export const GroupStyle = styled.div`
     border-bottom: 1px solid #eee;
   }
 
-  .right-box ul {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
   .view-hidden {
     display: none;
-  }
-
-  .ext-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    width: 100px;
-    margin-bottom: 20px;
-  }
-
-  .ext-item img {
-    width: 32px;
-    height: 32px;
-  }
-
-  .ext-item span {
-    width: 100%;
-
-    margin-top: 5px;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: center;
   }
 
   .scene-edit-panel {
