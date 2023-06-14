@@ -26,3 +26,25 @@ export const isAppExtension = function (ext) {
   const appTypes = ["hosted_app", "packaged_app", "legacy_packaged_app"]
   return appTypes.includes(ext.type)
 }
+
+export const sortExtension = (extensions) => {
+  if (!extensions) {
+    return []
+  }
+
+  const list = []
+  // distinct
+  extensions.forEach((ext) => {
+    if (list.find((i) => i.id === ext.id)) {
+      return
+    }
+    list.push(ext)
+  })
+
+  return list.sort((a, b) => {
+    if (a.enabled === b.enabled) {
+      return a.name.localeCompare(b.name) // Sort by name
+    }
+    return a.enabled < b.enabled ? 1 : -1 // Sort by state
+  })
+}

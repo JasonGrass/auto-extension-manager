@@ -1,11 +1,13 @@
+import React, { memo, useEffect, useState } from "react"
+
 import { DeleteFilled, EditFilled, PlusOutlined } from "@ant-design/icons"
 import { Button, Form, Input, Popconfirm, message } from "antd"
 import classNames from "classnames"
-import React, { memo, useEffect, useState } from "react"
 
 import { GroupOptions } from ".../storage/GroupOptions"
-import { getIcon, isAppExtension } from ".../utils/extensionHelper"
+import { isAppExtension, sortExtension } from ".../utils/extensionHelper"
 import { isStringEmpty } from ".../utils/utils.js"
+import ExtensionItems from "../components/ExtensionItems"
 import { GroupContentStyle } from "./GroupContentStyle"
 
 const GroupContent = memo(({ group, groupList, extensions }) => {
@@ -47,13 +49,13 @@ const GroupContent = memo(({ group, groupList, extensions }) => {
     <GroupContentStyle>
       <p className="text desc">{desc}</p>
       <h3>「{group.name}」中的插件</h3>
-      {buildExtContainer(containExts, "active-items", true)}
+      {buildExtContainer(containExts, true)}
       <h3>剩余未分组</h3>
-      {buildExtContainer(noneGroupExts, "no-group-items", false)}
+      {buildExtContainer(noneGroupExts, false)}
     </GroupContentStyle>
   )
 
-  function buildExtContainer(extItems, containerClassName, contain) {
+  function buildExtContainer(extItems, contain) {
     const onIconClick = (e, item) => {
       if (contain) {
         const contain = containExts.filter((ext) => ext.id !== item.id)
@@ -74,47 +76,8 @@ const GroupContent = memo(({ group, groupList, extensions }) => {
       return <p className="text">该分组中没有插件</p>
     }
 
-    return (
-      <ul className={classNames([containerClassName, "ext-container"])}>
-        {extItems.map((item) => {
-          return (
-            <li
-              key={item.id}
-              className={classNames({
-                "ext-item": true,
-                "not-enable": !item.enabled
-              })}
-              onClick={(e) => onIconClick(e, item)}>
-              <img src={getIcon(item, 128)} alt="" />
-              <span>{item.shortName}</span>
-            </li>
-          )
-        })}
-      </ul>
-    )
+    return <ExtensionItems items={extItems} onClick={onIconClick} />
   }
 })
-
-function sortExtension(extensions) {
-  if (!extensions) {
-    return []
-  }
-
-  const list = []
-  // distinct
-  extensions.forEach((ext) => {
-    if (list.find((i) => i.id === ext.id)) {
-      return
-    }
-    list.push(ext)
-  })
-
-  return list.sort((a, b) => {
-    if (a.enabled === b.enabled) {
-      return a.name.localeCompare(b.name) // Sort by name
-    }
-    return a.enabled < b.enabled ? 1 : -1 // Sort by state
-  })
-}
 
 export default GroupContent
