@@ -1,0 +1,21 @@
+{
+  "id": "xxx",
+  "match": {
+    "matchMode": "host/scene",
+    "matchScene": "scene id",
+    "matchHost": [
+      "*baidu.com*"
+    ],
+    "matchMethod": "regex/wildcard"
+  },
+  "target": {
+    "targetType": "group/extensions",
+    "targetGroup": "groupId",
+    "targetExtensions": [
+      "extension id"
+    ]
+  },
+  "action": {
+    "actionType": "closeWhenMatched/openWhenMatched/closeOnlyWhenMatched/openOnlyWhenMatched"
+  }
+}

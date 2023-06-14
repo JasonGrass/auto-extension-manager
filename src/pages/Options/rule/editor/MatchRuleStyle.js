@@ -25,6 +25,10 @@ const Style = styled.div`
     margin: 10px 0;
     max-width: 800px;
 
+    & > button {
+      margin-right: 10px;
+    }
+
     & > * {
       margin-bottom: 3px;
     }
