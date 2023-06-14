@@ -61,11 +61,20 @@ const MatchRule = ({ sceneList, config }, ref) => {
   useImperativeHandle(ref, () => ({
     // 获取配置
     getMatchRuleConfig: () => {
+      const hosts = matchHostList.filter((host) => host && host.trim() !== "")
+
+      if (matchMode.key === "host" && hosts.length === 0) {
+        throw Error("没有添加任何域名规则")
+      }
+      if (matchMode.key === "scene" && !matchScene?.id) {
+        throw Error("没有选择任何情景模式")
+      }
+
       return {
         matchMode: matchMode.key,
         matchMethod: matchMethod.key,
-        matchScene: matchScene.id,
-        matchHost: matchHostList
+        matchScene: matchScene?.id,
+        matchHost: hosts
       }
     }
   }))

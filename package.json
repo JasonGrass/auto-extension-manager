@@ -16,6 +16,7 @@
     "@ant-design/icons": "^5.1.0",
     "antd": "^5.5.0",
     "classnames": "^2.3.2",
+    "immutable": "^4.3.0",
     "lodash": "^4.17.21",
     "nanoid": "^4.0.2",
     "react": "^18.2.0",
