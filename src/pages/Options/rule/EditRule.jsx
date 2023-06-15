@@ -8,11 +8,9 @@ import ExtensionSelector from "./editor/ExtensionSelector"
 import MatchRule from "./editor/MatchRule"
 import RuleAction from "./editor/RuleAction"
 
-const EditRule = memo(({ extensions }) => {
+const EditRule = memo(({ extensions, config }) => {
   const [allSceneOptions, setAllSceneOptions] = useState([])
   const [allGroupOptions, setAllGroupOptions] = useState([])
-
-  const [ruleConfig, setRuleConfig] = useState({})
 
   const matchRuleRef = useRef(null)
   const selectorRef = useRef(null)
@@ -24,11 +22,6 @@ const EditRule = memo(({ extensions }) => {
     })
     GroupOptions.getGroups().then((list) => {
       setAllGroupOptions(list)
-    })
-
-    RuleConfigOptions.get().then((list) => {
-      // 测试数据，取最后一项。这个数据应该是 props 传进来的
-      setRuleConfig(list.pop())
     })
   }, [])
 
@@ -56,18 +49,18 @@ const EditRule = memo(({ extensions }) => {
     <Style>
       <MatchRule
         sceneList={allSceneOptions}
-        config={ruleConfig.match}
+        config={config?.match}
         ref={matchRuleRef}
       />
 
       <ExtensionSelector
         groupList={allGroupOptions}
         extensions={extensions}
-        config={ruleConfig.target}
+        config={config?.target}
         ref={selectorRef}
       />
 
-      <RuleAction config={ruleConfig.action} ref={actionRef}></RuleAction>
+      <RuleAction config={config?.action} ref={actionRef}></RuleAction>
 
       <div className="operation-box">
         <Button type="primary" onClick={onSaveClick}>
