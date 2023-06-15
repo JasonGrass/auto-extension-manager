@@ -93,3 +93,5 @@ const RuleAction = ({ config }, ref) => {
 }
 
 export default memo(forwardRef(RuleAction))
+
+export { actionSelections }

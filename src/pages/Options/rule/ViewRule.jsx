@@ -3,6 +3,7 @@ import React, { memo } from "react"
 import { Space, Table, Tag } from "antd"
 
 import Style from "./ViewRuleStyle"
+import ActionView from "./view/ActionView"
 import MatchView from "./view/MatchView"
 import TargetView from "./view/TargetView"
 
@@ -35,6 +36,14 @@ const ViewRule = memo(({ config, sceneOption, groupOption, extensions }) => {
                 extensions={extensions}
               />
             )
+          }}
+        />
+
+        <Column
+          title="动作"
+          dataIndex="action"
+          render={(action, record, index) => {
+            return <ActionView config={action} />
           }}
         />
       </Table>
