@@ -14,9 +14,15 @@ const TargetView = memo(({ config, record, groupOption, extensions }) => {
       return <p>ERROR</p>
     }
 
-    const list = extensions.filter((ext) =>
+    let list = extensions.filter((ext) =>
       config.targetExtensions.includes(ext.id)
     )
+
+    let tooMany = false
+    if (list.length > 12) {
+      list = list.slice(0, 12)
+      tooMany = true
+    }
 
     return (
       <ListStyle>
@@ -27,6 +33,7 @@ const TargetView = memo(({ config, record, groupOption, extensions }) => {
             </li>
           )
         })}
+        {tooMany && <span className="too-many">...</span>}
       </ListStyle>
     )
   }
@@ -55,5 +62,10 @@ const ListStyle = styled.ul`
     width: 36px;
     height: 36px;
     margin-right: 4px;
+  }
+
+  .too-many {
+    font-size: 16px;
+    font-weight: 900;
   }
 `
