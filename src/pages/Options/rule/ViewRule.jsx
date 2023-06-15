@@ -4,16 +4,17 @@ import { Space, Table, Tag } from "antd"
 
 import Style from "./ViewRuleStyle"
 import MatchView from "./view/MatchView"
+import TargetView from "./view/TargetView"
 
 const { Column } = Table
 
-const ViewRule = memo(({ config, sceneOption, groupOption }) => {
+const ViewRule = memo(({ config, sceneOption, groupOption, extensions }) => {
   console.log(config)
 
   return (
     <Style>
       <Table dataSource={config} rowKey="id">
-        <Column title="ID" dataIndex="id"></Column>
+        <Column title="ID" dataIndex="id" />
         <Column
           title="匹配"
           dataIndex="match"
@@ -21,7 +22,21 @@ const ViewRule = memo(({ config, sceneOption, groupOption }) => {
             return (
               <MatchView config={match} sceneOption={sceneOption}></MatchView>
             )
-          }}></Column>
+          }}
+        />
+        <Column
+          title="扩展(组)"
+          dataIndex="target"
+          render={(target, record, index) => {
+            return (
+              <TargetView
+                config={target}
+                groupOption={groupOption}
+                extensions={extensions}
+              />
+            )
+          }}
+        />
       </Table>
     </Style>
   )
