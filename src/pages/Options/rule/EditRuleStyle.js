@@ -4,6 +4,7 @@ const Style = styled.div`
   .operation-box {
     display: inline-block;
     margin-top: 10px;
+    margin-bottom: 20px;
     border-top: 1px solid #ccc;
 
     & > button {

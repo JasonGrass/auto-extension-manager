@@ -27,8 +27,6 @@ const matchModes = [
 ]
 
 const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
-  console.log(groupList)
-
   useImperativeHandle(ref, () => ({
     // 获取配置
     getExtensionSelectConfig: () => {
