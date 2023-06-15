@@ -58,6 +58,7 @@ const EditRule = memo(({ extensions }) => {
       <ExtensionSelector
         groupList={allGroupOptions}
         extensions={extensions}
+        config={ruleConfig.target}
         ref={selectorRef}
       />
 
