@@ -20,6 +20,10 @@ const matchModes = [
 
 const ExtensionSelector = memo(({ groupList, extensions }) => {
   const [matchMode, setMatchMode] = useState(matchModes[0])
+  const [selectGroup, setSelectGroup] = useState(null)
+  const [showingExtensions, setShowingExtensions] = useState([])
+
+  console.log(groupList)
 
   const handleMatchModeClick = (e) => {
     const mode = matchModes.filter((m) => m.key === e.key)[0]
@@ -35,7 +39,25 @@ const ExtensionSelector = memo(({ groupList, extensions }) => {
   }
 
   const extGroupSelectMenuProps = {
-    items: []
+    items: groupList.map((g) => ({
+      label: g.name,
+      key: g.id
+    })),
+    onClick: (e) => {
+      const selectGroup = groupList.filter((g) => g.id === e.key)[0]
+      setSelectGroup(selectGroup)
+      console.log(selectGroup)
+      if (selectGroup) {
+        if (selectGroup.extensions && selectGroup.extensions.length > 0) {
+          const ext = extensions.filter((e) =>
+            selectGroup.extensions.includes(e.id)
+          )
+          setShowingExtensions(ext)
+        } else {
+          setShowingExtensions([])
+        }
+      }
+    }
   }
 
   return (
@@ -50,19 +72,23 @@ const ExtensionSelector = memo(({ groupList, extensions }) => {
           </div>
         </div>
 
-        <div className="group-match-mode-container">
-          <Dropdown menu={extGroupSelectMenuProps}>
-            <Button>
-              <Space>
-                选择扩展组
-                <DownOutlined />
-              </Space>
-            </Button>
-          </Dropdown>
-        </div>
+        {matchMode?.key === "group" && (
+          <div className="group-match-mode-container">
+            <Dropdown menu={extGroupSelectMenuProps}>
+              <Button>
+                <Space>
+                  {selectGroup?.name ?? "选择扩展组"}
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+          </div>
+        )}
 
         <div>
-          <ExtensionItems items={extensions}></ExtensionItems>
+          <ExtensionItems
+            items={showingExtensions}
+            placeholder="无任何扩展"></ExtensionItems>
         </div>
       </Style>
     </EditorCommonStyle>
