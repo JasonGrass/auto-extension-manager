@@ -73,6 +73,7 @@ const Style = styled.div`
   }
 
   .placeholder {
+    margin-top: 20px;
     margin-bottom: 20px;
     padding-left: 5px;
 

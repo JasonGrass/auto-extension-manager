@@ -3,6 +3,7 @@ import React, { memo, useEffect, useState } from "react"
 import { DownOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Dropdown, Input, Space, Switch, message } from "antd"
 
+import { sortExtension } from ".../utils/extensionHelper"
 import ExtensionItems from "../../components/ExtensionItems"
 import EditorCommonStyle from "./CommonStyle"
 import Style from "./ExtensionSelectorStyle"
@@ -21,16 +22,29 @@ const matchModes = [
 const ExtensionSelector = memo(({ groupList, extensions }) => {
   const [matchMode, setMatchMode] = useState(matchModes[0])
   const [selectGroup, setSelectGroup] = useState(null)
-  const [showingExtensions, setShowingExtensions] = useState([])
+  const [selectedExtensions, setSelectedExtensions] = useState([])
+  const [unselectedExtensions, setUnselectedExtensions] = useState([])
 
-  console.log(groupList)
+  useEffect(() => {
+    setUnselectedExtensions(extensions)
+  }, [extensions])
 
   const handleMatchModeClick = (e) => {
     const mode = matchModes.filter((m) => m.key === e.key)[0]
     if (!mode) {
       return
     }
+    if (mode.key === matchMode.key) {
+      return
+    }
+
     setMatchMode(mode)
+    if (mode.key === "single") {
+      setSelectedExtensions([])
+      setUnselectedExtensions(extensions)
+    } else if (mode.key === "group") {
+      setSelectedExtensionsByGroup(selectGroup)
+    }
   }
 
   const matchModeMenuProps = {
@@ -46,16 +60,39 @@ const ExtensionSelector = memo(({ groupList, extensions }) => {
     onClick: (e) => {
       const selectGroup = groupList.filter((g) => g.id === e.key)[0]
       setSelectGroup(selectGroup)
-      console.log(selectGroup)
-      if (selectGroup) {
-        if (selectGroup.extensions && selectGroup.extensions.length > 0) {
-          const ext = extensions.filter((e) =>
-            selectGroup.extensions.includes(e.id)
-          )
-          setShowingExtensions(ext)
-        } else {
-          setShowingExtensions([])
-        }
+      setSelectedExtensionsByGroup(selectGroup)
+    }
+  }
+
+  const onSelectedExtensionClick = (e, item) => {
+    if (matchMode.key === "single") {
+      const selected = selectedExtensions.filter((e) => e.id !== item.id)
+      setSelectedExtensions(selected)
+
+      const unselected = [...unselectedExtensions, item]
+      setUnselectedExtensions(sortExtension(unselected))
+    }
+  }
+
+  const onUnselectedExtensionClick = (e, item) => {
+    if (matchMode.key === "single") {
+      const unselected = unselectedExtensions.filter((e) => e.id !== item.id)
+      setUnselectedExtensions(unselected)
+
+      const selected = [...selectedExtensions, item]
+      setSelectedExtensions(sortExtension(selected))
+    }
+  }
+
+  function setSelectedExtensionsByGroup(selectGroup) {
+    if (selectGroup) {
+      if (selectGroup.extensions && selectGroup.extensions.length > 0) {
+        const ext = extensions.filter((e) =>
+          selectGroup.extensions.includes(e.id)
+        )
+        setSelectedExtensions(ext)
+      } else {
+        setSelectedExtensions([])
       }
     }
   }
@@ -85,10 +122,22 @@ const ExtensionSelector = memo(({ groupList, extensions }) => {
           </div>
         )}
 
-        <div>
+        <div className="extension-container">
+          <h3>包含的扩展</h3>
           <ExtensionItems
-            items={showingExtensions}
-            placeholder="无任何扩展"></ExtensionItems>
+            items={selectedExtensions}
+            placeholder="无任何扩展"
+            onClick={onSelectedExtensionClick}></ExtensionItems>
+
+          {matchMode?.key === "single" && (
+            <div className="unselected-extensions-container">
+              <h3>未包含的扩展</h3>
+              <ExtensionItems
+                items={unselectedExtensions}
+                placeholder="无任何扩展"
+                onClick={onUnselectedExtensionClick}></ExtensionItems>
+            </div>
+          )}
         </div>
       </Style>
     </EditorCommonStyle>
