@@ -8,22 +8,10 @@ import ExtensionSelector from "./editor/ExtensionSelector"
 import MatchRule from "./editor/MatchRule"
 import RuleAction from "./editor/RuleAction"
 
-const EditRule = memo(({ extensions, config }) => {
-  const [allSceneOptions, setAllSceneOptions] = useState([])
-  const [allGroupOptions, setAllGroupOptions] = useState([])
-
+const EditRule = memo(({ extensions, config, sceneOption, groupOption }) => {
   const matchRuleRef = useRef(null)
   const selectorRef = useRef(null)
   const actionRef = useRef(null)
-
-  useEffect(() => {
-    SceneOptions.getAll().then((list) => {
-      setAllSceneOptions(list)
-    })
-    GroupOptions.getGroups().then((list) => {
-      setAllGroupOptions(list)
-    })
-  }, [])
 
   const onSaveClick = (e) => {
     try {
@@ -48,13 +36,13 @@ const EditRule = memo(({ extensions, config }) => {
   return (
     <Style>
       <MatchRule
-        sceneList={allSceneOptions}
+        sceneList={sceneOption}
         config={config?.match}
         ref={matchRuleRef}
       />
 
       <ExtensionSelector
-        groupList={allGroupOptions}
+        groupList={groupOption}
         extensions={extensions}
         config={config?.target}
         ref={selectorRef}

@@ -11,12 +11,22 @@ import { RuleSettingStyle } from "./RuleSettingStyle.js"
 import ViewRule from "./ViewRule.jsx"
 
 function RuleSetting() {
+  const [allSceneOptions, setAllSceneOptions] = useState([])
+  const [allGroupOptions, setAllGroupOptions] = useState([])
+
   const [extensions, setExtensions] = useState([])
 
   const [ruleConfigs, setRuleConfigs] = useState(null)
   const [editingConfig, setEditingConfig] = useState(null)
 
   useEffect(() => {
+    SceneOptions.getAll().then((list) => {
+      setAllSceneOptions(list)
+    })
+    GroupOptions.getGroups().then((list) => {
+      setAllGroupOptions(list)
+    })
+
     chromeP.management.getAll().then((res) => {
       const list = filterExtensions(res, isExtExtension)
       setExtensions(list)
@@ -34,9 +44,17 @@ function RuleSetting() {
     <RuleSettingStyle>
       <Title title="规则设置"></Title>
 
-      <ViewRule config={ruleConfigs} extensions={extensions}></ViewRule>
+      <ViewRule
+        config={ruleConfigs}
+        extensions={extensions}
+        sceneOption={allSceneOptions}
+        groupOption={allGroupOptions}></ViewRule>
 
-      <EditRule extensions={extensions} config={editingConfig}></EditRule>
+      <EditRule
+        extensions={extensions}
+        config={editingConfig}
+        sceneOption={allSceneOptions}
+        groupOption={allGroupOptions}></EditRule>
     </RuleSettingStyle>
   )
 }
