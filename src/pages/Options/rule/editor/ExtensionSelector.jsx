@@ -1,4 +1,10 @@
-import React, { memo, useEffect, useState } from "react"
+import React, {
+  forwardRef,
+  memo,
+  useEffect,
+  useImperativeHandle,
+  useState
+} from "react"
 
 import { DownOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Dropdown, Input, Space, Switch, message } from "antd"
@@ -19,7 +25,34 @@ const matchModes = [
   }
 ]
 
-const ExtensionSelector = memo(({ groupList, extensions }) => {
+const ExtensionSelector = ({ groupList, extensions }, ref) => {
+  console.log(groupList)
+
+  useImperativeHandle(ref, () => ({
+    // 获取配置
+    getExtensionSelectConfig: () => {
+      if (matchMode.key === "group" && !selectGroup) {
+        throw Error("选择选择任何扩展组")
+      }
+
+      let extensionList = []
+      if (matchMode.key === "single") {
+        extensionList = selectedExtensions
+          .filter((ext) => ext)
+          .map((ext) => ext.id)
+        if (extensionList.length < 1) {
+          throw Error("选择选择任何扩展")
+        }
+      }
+
+      return {
+        targetType: matchMode.key,
+        targetGroup: selectGroup?.id,
+        targetExtensions: extensionList
+      }
+    }
+  }))
+
   const [matchMode, setMatchMode] = useState(matchModes[0])
   const [selectGroup, setSelectGroup] = useState(null)
   const [selectedExtensions, setSelectedExtensions] = useState([])
@@ -94,6 +127,8 @@ const ExtensionSelector = memo(({ groupList, extensions }) => {
       } else {
         setSelectedExtensions([])
       }
+    } else {
+      setSelectedExtensions([])
     }
   }
 
@@ -142,6 +177,6 @@ const ExtensionSelector = memo(({ groupList, extensions }) => {
       </Style>
     </EditorCommonStyle>
   )
-})
+}
 
-export default ExtensionSelector
+export default memo(forwardRef(ExtensionSelector))
