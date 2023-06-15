@@ -16,6 +16,7 @@ const EditRule = memo(({ extensions }) => {
 
   const matchRuleRef = useRef(null)
   const selectorRef = useRef(null)
+  const actionRef = useRef(null)
 
   useEffect(() => {
     SceneOptions.getAll().then((list) => {
@@ -35,12 +36,16 @@ const EditRule = memo(({ extensions }) => {
     try {
       const matchRuleConfig = matchRuleRef.current.getMatchRuleConfig()
       const selectConfig = selectorRef.current.getExtensionSelectConfig()
+      const actionConfig = actionRef.current.getActionConfig()
+
       console.log(matchRuleConfig)
       console.log(selectConfig)
+      console.log(actionConfig)
 
       RuleConfigOptions.addOne({
         match: matchRuleConfig,
-        target: selectConfig
+        target: selectConfig,
+        action: actionConfig
       })
     } catch (error) {
       message.error(error.message)
@@ -62,7 +67,7 @@ const EditRule = memo(({ extensions }) => {
         ref={selectorRef}
       />
 
-      <RuleAction></RuleAction>
+      <RuleAction config={ruleConfig.action} ref={actionRef}></RuleAction>
 
       <div className="operation-box">
         <Button type="primary" onClick={onSaveClick}>

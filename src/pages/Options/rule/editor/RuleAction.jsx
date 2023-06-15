@@ -1,4 +1,10 @@
-import React, { memo, useEffect, useState } from "react"
+import React, {
+  forwardRef,
+  memo,
+  useEffect,
+  useImperativeHandle,
+  useState
+} from "react"
 
 import { DownOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Dropdown, Input, Space, Switch, message } from "antd"
@@ -25,8 +31,31 @@ const actionSelections = [
   }
 ]
 
-const RuleAction = memo(() => {
+const RuleAction = ({ config }, ref) => {
+  useImperativeHandle(ref, () => ({
+    // 获取配置
+    getActionConfig: () => {
+      if (!actionType) {
+        throw Error("没有设置任何动作类型")
+      }
+
+      return {
+        actionType: actionType.key
+      }
+    }
+  }))
+
   const [actionType, setActionType] = useState(actionSelections[0])
+
+  // 根据配置初始化
+  useEffect(() => {
+    const action = config?.actionType
+    if (action) {
+      setActionType(actionSelections.filter((m) => m.key === action)[0])
+    } else {
+      setActionType(actionSelections[0])
+    }
+  }, [config])
 
   const handleActionTypeClick = (e) => {
     const mode = actionSelections.filter((m) => m.key === e.key)[0]
@@ -61,6 +90,6 @@ const RuleAction = memo(() => {
       </Style>
     </EditorCommonStyle>
   )
-})
+}
 
-export default RuleAction
+export default memo(forwardRef(RuleAction))
