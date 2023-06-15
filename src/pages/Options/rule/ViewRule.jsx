@@ -12,7 +12,8 @@ const { Map } = require("immutable")
 
 const { Column } = Table
 
-const ViewRule = memo(({ config, sceneOption, groupOption, extensions }) => {
+const ViewRule = memo((props) => {
+  const { config, sceneOption, groupOption, extensions, operation } = props
   console.log(config)
 
   const [data, setData] = useState()
@@ -69,7 +70,9 @@ const ViewRule = memo(({ config, sceneOption, groupOption, extensions }) => {
           dataIndex="id"
           width={400}
           render={(id, record) => {
-            return <OperationView id={id} record={record} />
+            return (
+              <OperationView id={id} record={record} operation={operation} />
+            )
           }}
         />
       </Table>

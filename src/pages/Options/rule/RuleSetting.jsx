@@ -40,6 +40,22 @@ function RuleSetting() {
     })
   }, [])
 
+  const updateRuleConfig = () => {
+    RuleConfigOptions.get().then((list) => {
+      setRuleConfigs(list)
+
+      // 测试数据，取最后一个
+      setEditingConfig(list.pop())
+    })
+  }
+
+  const operation = {
+    delete: async (id) => {
+      await RuleConfigOptions.deleteOne(id)
+      updateRuleConfig()
+    }
+  }
+
   return (
     <RuleSettingStyle>
       <Title title="规则设置"></Title>
@@ -48,7 +64,8 @@ function RuleSetting() {
         config={ruleConfigs}
         extensions={extensions}
         sceneOption={allSceneOptions}
-        groupOption={allGroupOptions}></ViewRule>
+        groupOption={allGroupOptions}
+        operation={operation}></ViewRule>
 
       <EditRule
         extensions={extensions}
