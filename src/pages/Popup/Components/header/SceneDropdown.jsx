@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons"
 import { Button, Dropdown, Space, Tooltip, message } from "antd"
 
-const SceneDropdown = memo(({ options }) => {
+const SceneDropdown = memo(({ options, className }) => {
   const [scene, setScene] = useState(null)
 
   const fixMenu = [
@@ -39,7 +39,7 @@ const SceneDropdown = memo(({ options }) => {
   }
 
   return (
-    <div>
+    <div className={className}>
       <Dropdown
         menu={sceneMenu}
         trigger={["click", "hover"]}

@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons"
 import { Button, Dropdown, Space, Tooltip, message } from "antd"
 
-const GroupDropdown = memo(({ options, onGroupChanged }) => {
+const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
   const [group, setGroup] = useState(null)
 
   const fixMenu = [
@@ -42,7 +42,7 @@ const GroupDropdown = memo(({ options, onGroupChanged }) => {
   }
 
   return (
-    <div>
+    <div className={className}>
       <Dropdown
         menu={groupMenu}
         trigger={["click", "hover"]}

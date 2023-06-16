@@ -5,16 +5,17 @@ import {
   CaretDownOutlined,
   DownOutlined,
   FolderOpenOutlined,
+  SearchOutlined,
   SettingOutlined
 } from "@ant-design/icons"
 import { Button, Dropdown, Space, Tooltip, message } from "antd"
 
 import MainIcon from "../../../assets/img/icon-64.png"
-import "./Header.less"
+import Style from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
 import SceneDropdown from "./header/SceneDropdown"
 
-const handleSettingButtonClick = (e) => {
+const onSettingClick = (e) => {
   chrome.management.getSelf((self) => {
     chrome.tabs.create({ url: self.optionsUrl })
   })
@@ -28,7 +29,7 @@ function Header({ activeCount, totalCount, options, onGroupChanged }) {
   }, [])
 
   return (
-    <div className="header">
+    <Style>
       <div className="left">
         <img src={MainIcon} alt="" />
         <h2>
@@ -38,20 +39,23 @@ function Header({ activeCount, totalCount, options, onGroupChanged }) {
 
       {isShowOperations && (
         <div className="right">
-          <SceneDropdown options={options}></SceneDropdown>
+          <SceneDropdown className="dropdown" options={options}></SceneDropdown>
 
           <GroupDropdown
+            className="dropdown"
             options={options}
             onGroupChanged={onGroupChanged}></GroupDropdown>
 
-          <Space
-            className="setting"
-            onClick={(e) => handleSettingButtonClick(e)}>
+          <Space className="search">
+            <SearchOutlined />
+          </Space>
+
+          <Space className="setting" onClick={(e) => onSettingClick(e)}>
             <SettingOutlined />
           </Space>
         </div>
       )}
-    </div>
+    </Style>
   )
 }
 
