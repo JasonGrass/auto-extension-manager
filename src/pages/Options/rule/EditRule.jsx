@@ -8,7 +8,9 @@ import ExtensionSelector from "./editor/ExtensionSelector"
 import MatchRule from "./editor/MatchRule"
 import RuleAction from "./editor/RuleAction"
 
-const EditRule = memo(({ extensions, config, sceneOption, groupOption }) => {
+const EditRule = memo((props) => {
+  const { extensions, config, sceneOption, groupOption, onSave, onCancel } =
+    props
   const matchRuleRef = useRef(null)
   const selectorRef = useRef(null)
   const actionRef = useRef(null)
@@ -27,11 +29,13 @@ const EditRule = memo(({ extensions, config, sceneOption, groupOption }) => {
       console.log(selectConfig)
       console.log(actionConfig)
 
-      RuleConfigOptions.addOne({
+      const newConfig = {
         match: matchRuleConfig,
         target: selectConfig,
         action: actionConfig
-      })
+      }
+
+      onSave(newConfig)
     } catch (error) {
       message.error(error.message)
     }
@@ -58,7 +62,7 @@ const EditRule = memo(({ extensions, config, sceneOption, groupOption }) => {
         <Button type="primary" onClick={onSaveClick}>
           保存
         </Button>
-        <Button>取消</Button>
+        <Button onClick={onCancel}>取消</Button>
       </div>
     </Style>
   )

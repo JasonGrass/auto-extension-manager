@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Space, Table, Tag } from "antd"
+import { Button, Space, Table, Tag } from "antd"
 
 import EditRule from "./EditRule"
 import Style from "./ViewRuleStyle"
@@ -26,10 +26,30 @@ const ViewRule = memo((props) => {
     }
   }, [config])
 
+  const onAdd = () => {
+    setEditingConfig({})
+  }
+
   const onEdit = (record) => {
     setEditingConfig(record)
   }
+
   const onDuplicate = (record) => {}
+
+  const onSave = (record) => {
+    if (!record) {
+      return
+    }
+    // 如果 record 没有 id，表示是新增的数据
+    if (!record.id || record.id === "") {
+      operation.add(record)
+      setEditingConfig(null)
+    }
+  }
+
+  const onCancel = () => {
+    setEditingConfig(null)
+  }
 
   return (
     <Style>
@@ -91,11 +111,23 @@ const ViewRule = memo((props) => {
         />
       </Table>
 
+      <div className="button-group">
+        {!editingConfig && (
+          <Button type="primary" onClick={() => onAdd(null)}>
+            新增
+          </Button>
+        )}
+
+        <Button>帮助</Button>
+      </div>
+
       <EditRule
         extensions={extensions}
         config={editingConfig}
         sceneOption={sceneOption}
-        groupOption={groupOption}></EditRule>
+        groupOption={groupOption}
+        onSave={onSave}
+        onCancel={onCancel}></EditRule>
     </Style>
   )
 })

@@ -46,6 +46,10 @@ function RuleSetting() {
     delete: async (id) => {
       await RuleConfigOptions.deleteOne(id)
       updateRuleConfig()
+    },
+    add: async (record) => {
+      await RuleConfigOptions.addOne(record)
+      updateRuleConfig()
     }
   }
 
