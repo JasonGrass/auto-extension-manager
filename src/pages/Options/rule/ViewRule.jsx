@@ -2,6 +2,7 @@ import React, { memo, useEffect, useState } from "react"
 
 import { Space, Table, Tag } from "antd"
 
+import EditRule from "./EditRule"
 import Style from "./ViewRuleStyle"
 import ActionView from "./view/ActionView"
 import MatchView from "./view/MatchView"
@@ -16,12 +17,19 @@ const ViewRule = memo((props) => {
   const { config, sceneOption, groupOption, extensions, operation } = props
   console.log(config)
 
+  const [editingConfig, setEditingConfig] = useState(null)
+
   const [data, setData] = useState()
   useEffect(() => {
     if (config) {
       setData(config.map((c, index) => Map(c).set("index", index).toJS()))
     }
   }, [config])
+
+  const onEdit = (record) => {
+    setEditingConfig(record)
+  }
+  const onDuplicate = (record) => {}
 
   return (
     <Style>
@@ -71,11 +79,23 @@ const ViewRule = memo((props) => {
           width={400}
           render={(id, record) => {
             return (
-              <OperationView id={id} record={record} operation={operation} />
+              <OperationView
+                id={id}
+                record={record}
+                operation={operation}
+                onEdit={onEdit}
+                onDuplicate={onDuplicate}
+              />
             )
           }}
         />
       </Table>
+
+      <EditRule
+        extensions={extensions}
+        config={editingConfig}
+        sceneOption={sceneOption}
+        groupOption={groupOption}></EditRule>
     </Style>
   )
 })

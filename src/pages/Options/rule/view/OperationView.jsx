@@ -4,7 +4,7 @@ import { CopyOutlined, DeleteOutlined, FormOutlined } from "@ant-design/icons"
 import { Switch } from "antd"
 import { styled } from "styled-components"
 
-const OperationView = memo(({ id, record, operation }) => {
+const OperationView = memo(({ id, record, operation, onEdit, onDuplicate }) => {
   const onDelete = () => {
     operation.delete(id)
   }
@@ -12,8 +12,8 @@ const OperationView = memo(({ id, record, operation }) => {
   return (
     <Style>
       <div className="operation">
-        <FormOutlined />
-        <CopyOutlined />
+        <FormOutlined onClick={() => onEdit?.(record)} />
+        <CopyOutlined onClick={() => onDuplicate?.(record)} />
         <DeleteOutlined onClick={onDelete} />
         <Switch></Switch>
       </div>

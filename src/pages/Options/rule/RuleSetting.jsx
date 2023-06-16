@@ -17,7 +17,6 @@ function RuleSetting() {
   const [extensions, setExtensions] = useState([])
 
   const [ruleConfigs, setRuleConfigs] = useState(null)
-  const [editingConfig, setEditingConfig] = useState(null)
 
   useEffect(() => {
     SceneOptions.getAll().then((list) => {
@@ -34,18 +33,12 @@ function RuleSetting() {
 
     RuleConfigOptions.get().then((list) => {
       setRuleConfigs(list)
-
-      // 测试数据，取最后一个
-      setEditingConfig(list.pop())
     })
   }, [])
 
   const updateRuleConfig = () => {
     RuleConfigOptions.get().then((list) => {
       setRuleConfigs(list)
-
-      // 测试数据，取最后一个
-      setEditingConfig(list.pop())
     })
   }
 
@@ -66,12 +59,6 @@ function RuleSetting() {
         sceneOption={allSceneOptions}
         groupOption={allGroupOptions}
         operation={operation}></ViewRule>
-
-      <EditRule
-        extensions={extensions}
-        config={editingConfig}
-        sceneOption={allSceneOptions}
-        groupOption={allGroupOptions}></EditRule>
     </RuleSettingStyle>
   )
 }

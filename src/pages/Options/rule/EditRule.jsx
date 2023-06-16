@@ -13,6 +13,10 @@ const EditRule = memo(({ extensions, config, sceneOption, groupOption }) => {
   const selectorRef = useRef(null)
   const actionRef = useRef(null)
 
+  if (!config) {
+    return null
+  }
+
   const onSaveClick = (e) => {
     try {
       const matchRuleConfig = matchRuleRef.current.getMatchRuleConfig()
