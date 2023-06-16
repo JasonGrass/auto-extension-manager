@@ -7,6 +7,11 @@ const Style = styled.div`
     font-size: 14px;
   }
 
+  .error-text {
+    font-weight: 700;
+    color: #f5222d;
+  }
+
   .button-group {
     margin-top: 10px;
     margin-bottom: 20px;

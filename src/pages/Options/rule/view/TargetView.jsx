@@ -6,12 +6,12 @@ import { getIcon } from ".../utils/extensionHelper"
 
 const TargetView = memo(({ config, record, groupOption, extensions }) => {
   if (!config || !config.targetType) {
-    return <p>ERROR</p>
+    return <span className="error-text">ERROR</span>
   }
 
   if (config.targetType === "single") {
     if (!config.targetExtensions || config.targetExtensions.length < 1) {
-      return <p>ERROR</p>
+      return <span className="error-text">ERROR</span>
     }
 
     let list = extensions.filter((ext) =>
@@ -40,17 +40,17 @@ const TargetView = memo(({ config, record, groupOption, extensions }) => {
 
   if (config.targetType === "group") {
     if (!config.targetGroup) {
-      return <p>ERROR</p>
+      return <span className="error-text">ERROR</span>
     }
     const group = groupOption.filter((g) => g.id === config.targetGroup)[0]
     if (!group) {
-      return <p>ERROR</p>
+      return <span className="error-text">ERROR</span>
     }
 
-    return <h3>{group.name}</h3>
+    return <span>{group.name}</span>
   }
 
-  return <div>TargetView</div>
+  return <span className="error-text">ERROR</span>
 })
 
 export default TargetView

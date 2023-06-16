@@ -4,14 +4,14 @@ import { actionSelections } from "../editor/RuleAction"
 
 const ActionView = memo(({ config }) => {
   if (!config) {
-    return <p>ERROR</p>
+    return <span className="error-text">ERROR</span>
   }
 
   const action = actionSelections.filter((a) => a.key === config.actionType)[0]
   if (action) {
-    return <h3>{action.label}</h3>
+    return <span>{action.label}</span>
   } else {
-    return <p>UNKNOWN</p>
+    return <span className="error-text">UNKNOWN</span>
   }
 })
 
