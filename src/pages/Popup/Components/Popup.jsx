@@ -52,6 +52,7 @@ function IndexPopup({ extensions, options, params }) {
 
   const onGroupChanged = (group) => {
     setGroup(group)
+    setIsShowAppExtension(!group) // 切换到特定分组时，不显示 APP
     const list = filterCurrentExtensions(group, currentSearch)
     setPluginExtensions(list)
   }

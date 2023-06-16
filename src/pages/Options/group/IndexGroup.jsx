@@ -1,11 +1,17 @@
+import React, { useEffect, useState } from "react"
+
 import { DeleteFilled, EditFilled, PlusOutlined } from "@ant-design/icons"
 import { Button, Form, Input, Popconfirm, message } from "antd"
 import classNames from "classnames"
-import React, { useEffect, useState } from "react"
 import chromeP from "webext-polyfill-kinda"
 
 import { GroupOptions } from ".../storage/index"
-import { getIcon, isAppExtension } from ".../utils/extensionHelper"
+import {
+  filterExtensions,
+  getIcon,
+  isAppExtension,
+  isExtExtension
+} from ".../utils/extensionHelper"
 import { isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
 import GroupContent from "./GroupContent.jsx"
@@ -32,7 +38,7 @@ function GroupManagement() {
   useEffect(() => {
     async function getExts() {
       const exts = await chromeP.management.getAll()
-      setExtensions(exts.filter((ext) => ext.type === "extension"))
+      setExtensions(filterExtensions(exts, isExtExtension))
     }
 
     async function initGroupConfigs() {

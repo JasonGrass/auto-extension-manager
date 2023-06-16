@@ -43,10 +43,7 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
 
   return (
     <div className={className}>
-      <Dropdown
-        menu={groupMenu}
-        trigger={["click", "hover"]}
-        placement="bottomLeft">
+      <Dropdown menu={groupMenu} trigger={["click"]} placement="bottomLeft">
         <Space>
           <span>{group?.name ?? "插件分组"}</span>
           <CaretDownOutlined className="caret" />
