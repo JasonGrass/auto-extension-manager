@@ -28,6 +28,15 @@ function Settings() {
     <SettingStyle>
       <Title title="通用设置"></Title>
 
+      {/*
+      popup 界面设置
+      1 显示 APP?
+      2 显示情景模式切换?
+      3 显示分组切换?
+      4 显示搜索按钮?
+      5 显示整个 header?
+      */}
+
       {/* <form>
         <label>
           弹窗宽度([200,1000])：
