@@ -1,20 +1,26 @@
 import React, { memo } from "react"
 
 import { CopyOutlined, DeleteOutlined, FormOutlined } from "@ant-design/icons"
-import { Switch } from "antd"
+import { Popconfirm, Switch } from "antd"
 import { styled } from "styled-components"
 
-const OperationView = memo(({ id, record, operation, onEdit, onDuplicate }) => {
-  const onDelete = () => {
-    operation.delete(id)
-  }
-
+const OperationView = memo((props) => {
+  const { record, onEdit, onDuplicate, onDelete } = props
   return (
     <Style>
       <div className="operation">
         <FormOutlined onClick={() => onEdit?.(record)} />
         <CopyOutlined onClick={() => onDuplicate?.(record)} />
-        <DeleteOutlined onClick={onDelete} />
+
+        <Popconfirm
+          title="删除规则"
+          description="Are you sure to delete this rule?"
+          onConfirm={() => onDelete?.(record)}
+          okText="Yes"
+          cancelText="Cancel">
+          <DeleteOutlined />
+        </Popconfirm>
+
         <Switch></Switch>
       </div>
     </Style>

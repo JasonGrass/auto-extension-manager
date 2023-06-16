@@ -4,6 +4,7 @@ const Style = styled.div`
   margin-right: 20px;
 
   .button-group {
+    margin-top: 10px;
     margin-bottom: 20px;
 
     & > * {

@@ -50,6 +50,10 @@ const ViewRule = memo((props) => {
     }
   }
 
+  const onDelete = (record) => {
+    operation.delete(record.id)
+  }
+
   const onCancel = () => {
     setEditingConfig(null)
   }
@@ -103,11 +107,10 @@ const ViewRule = memo((props) => {
           render={(id, record) => {
             return (
               <OperationView
-                id={id}
                 record={record}
-                operation={operation}
                 onEdit={onEdit}
                 onDuplicate={onDuplicate}
+                onDelete={onDelete}
               />
             )
           }}
