@@ -18,9 +18,9 @@ export const SceneStyle = styled.div`
     padding: 5px;
     margin: 5px 10px 10px 2px;
 
-    // border: 1px solid #337ab7;
+    border: 1px solid #ccca;
     border-radius: 5px;
-    box-shadow: 1px 1px 4px 0px #337ab788;
+    // box-shadow: 1px 1px 4px 0px #337ab788;
   }
 
   .scene-item-header {
