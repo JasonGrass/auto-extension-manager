@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 import {
   BlockOutlined,
@@ -15,22 +15,42 @@ import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
 import SceneDropdown from "./header/SceneDropdown"
 
-function Header({ activeCount, totalCount, options, onGroupChanged }) {
+function Header({
+  activeCount,
+  totalCount,
+  options,
+  onGroupChanged,
+  onSearch
+}) {
   const [isShowOperations, setIsShowOperations] = useState(false)
   const [isShowSearch, setIsShowSearch] = useState(false)
+  const [searchText, setSearchText] = useState("")
+  const searchInputRef = useRef(null)
 
   useEffect(() => {
     setIsShowOperations(true)
   }, [])
 
   const onSearchClick = () => {
-    setIsShowSearch(!isShowSearch)
+    const show = !isShowSearch
+    setIsShowSearch(show)
+    if (show) {
+      searchInputRef.current.focus()
+    } else {
+      setSearchText("")
+    }
   }
 
   const onSettingClick = (e) => {
     chrome.management.getSelf((self) => {
       chrome.tabs.create({ url: self.optionsUrl })
     })
+  }
+
+  const onSearchTextChange = (e) => {
+    const text = e.target.value
+    setSearchText(text)
+    onSearch?.(text)
   }
 
   return (
@@ -67,7 +87,12 @@ function Header({ activeCount, totalCount, options, onGroupChanged }) {
 
       {isShowSearch && (
         <SearchStyle>
-          <input type="text" placeholder="Search"></input>
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchText}
+            onChange={(e) => onSearchTextChange(e)}
+            ref={searchInputRef}></input>
         </SearchStyle>
       )}
     </>

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 
 import classNames from "classnames"
+import { set } from "immutable"
 import _ from "lodash"
 import { styled } from "styled-components"
 
@@ -18,6 +19,8 @@ function IndexPopup({ extensions, options, params }) {
 
   const [pluginExtensions, setPluginExtensions] = useState([])
   const [appExtensions, setAppExtensions] = useState([])
+  const [currentGroup, setGroup] = useState(null)
+  const [currentSearch, setSearch] = useState("")
 
   const [isShowAppExtension, setIsShowAppExtension] = useState(false)
   useEffect(() => {
@@ -29,15 +32,34 @@ function IndexPopup({ extensions, options, params }) {
     setAppExtensions(filterExtensions(extensions, isAppExtension))
   }, [extensions])
 
-  const onGroupChanged = (group) => {
+  const filterCurrentExtensions = (group, search) => {
+    let groupExtensions = []
     if (group) {
-      const groupExtension = extensions.filter((ext) =>
+      groupExtensions = extensions.filter((ext) =>
         group.extensions.includes(ext.id)
       )
-      setPluginExtensions(groupExtension)
     } else {
-      setPluginExtensions(filterExtensions(extensions, isExtExtension))
+      groupExtensions = filterExtensions(extensions, isExtExtension)
     }
+
+    if (!search || search.trim() === "") {
+      return groupExtensions
+    } else {
+      const result = groupExtensions.filter((ext) => ext.name.includes(search))
+      return result
+    }
+  }
+
+  const onGroupChanged = (group) => {
+    setGroup(group)
+    const list = filterCurrentExtensions(group, currentSearch)
+    setPluginExtensions(list)
+  }
+
+  const onSearch = (text) => {
+    setSearch(text)
+    const list = filterCurrentExtensions(currentGroup, text)
+    setPluginExtensions(list)
   }
 
   return (
@@ -47,7 +69,8 @@ function IndexPopup({ extensions, options, params }) {
           activeCount={pluginExtensions.filter((ext) => ext.enabled).length}
           totalCount={pluginExtensions.length}
           options={options}
-          onGroupChanged={onGroupChanged}></Header>
+          onGroupChanged={onGroupChanged}
+          onSearch={onSearch}></Header>
       </div>
 
       <div className="extension-container">
