@@ -21,7 +21,7 @@ const OperationView = memo((props) => {
           <DeleteOutlined />
         </Popconfirm>
 
-        <Switch></Switch>
+        <Switch size="small"></Switch>
       </div>
     </Style>
   )
@@ -30,7 +30,7 @@ const OperationView = memo((props) => {
 export default OperationView
 
 const Style = styled.div`
-  font-size: 24px;
+  font-size: 20px;
 
   .operation {
     display: flex;
