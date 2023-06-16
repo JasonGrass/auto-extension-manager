@@ -42,11 +42,13 @@ function IndexPopup({ extensions, options, params }) {
 
   return (
     <Style minHeight={params.minHeight}>
-      <Header
-        activeCount={pluginExtensions.filter((ext) => ext.enabled).length}
-        totalCount={pluginExtensions.length}
-        options={options}
-        onGroupChanged={onGroupChanged}></Header>
+      <div className="header-container">
+        <Header
+          activeCount={pluginExtensions.filter((ext) => ext.enabled).length}
+          totalCount={pluginExtensions.length}
+          options={options}
+          onGroupChanged={onGroupChanged}></Header>
+      </div>
 
       <div className="extension-container">
         <ExtensionList extensions={pluginExtensions}></ExtensionList>
@@ -62,9 +64,16 @@ const Style = styled.div`
   height: 100%;
   min-height: ${(props) => props.minHeight};
 
+  display: flex;
+  flex-direction: column;
+
+  .header-container {
+    flex: 1 1 auto;
+  }
+
   .extension-container {
+    flex: 1 1 530px;
     overflow: auto;
-    height: 560px;
     margin-left: 0px;
   }
 

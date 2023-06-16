@@ -65,4 +65,25 @@ const Style = styled.div`
   }
 `
 
+const SearchStyle = styled.div`
+  input {
+    width: 100%;
+    height: 24px;
+
+    margin: -1px -1px 0px 0px;
+
+    outline-style: none;
+    border: 1px solid #ccc;
+    border-radius: 1px;
+
+    &:focus {
+      border-color: #66afe9;
+      outline: 0;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+        0 0 4px rgba(102, 175, 233, 0.6);
+    }
+  }
+`
+
 export default Style
+export { SearchStyle }
