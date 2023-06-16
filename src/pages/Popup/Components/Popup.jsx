@@ -64,6 +64,19 @@ function IndexPopup({ extensions, options, params }) {
     setSearch(text)
     const list = filterCurrentExtensions(currentGroup, text)
     setPluginExtensions(list)
+    searchApp(text)
+  }
+
+  const searchApp = (text) => {
+    const allApp = filterExtensions(extensions, isAppExtension)
+    if (!text || text.trim() === "") {
+      setAppExtensions(allApp)
+      return
+    }
+    const searchResult = allApp.filter((ext) => {
+      return isMatch([ext.name, ext.shortName], text)
+    })
+    setAppExtensions(searchResult)
   }
 
   return (
