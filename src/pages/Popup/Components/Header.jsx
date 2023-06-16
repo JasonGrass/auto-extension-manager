@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 
 import {
   BlockOutlined,
@@ -15,13 +15,9 @@ import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
 import SceneDropdown from "./header/SceneDropdown"
 
-function Header({
-  activeCount,
-  totalCount,
-  options,
-  onGroupChanged,
-  onSearch
-}) {
+const Header = memo((props) => {
+  const { activeCount, totalCount, options, onGroupChanged, onSearch } = props
+
   const [isShowOperations, setIsShowOperations] = useState(false)
   const [isShowSearch, setIsShowSearch] = useState(false)
   const [searchText, setSearchText] = useState("")
@@ -97,6 +93,6 @@ function Header({
       )}
     </>
   )
-}
+})
 
 export default Header

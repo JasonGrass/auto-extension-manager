@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 
 import {
   BlockOutlined,
@@ -41,7 +41,7 @@ const handleHomeButtonClick = (e, item) => {
 /**
  * 扩展列表项
  */
-function ExtensionListItem({ item }) {
+const ExtensionListItem = memo(({ item }) => {
   const getI18N = chrome.i18n.getMessage
   const langEnable = getI18N("extEnable")
   const langDisable = getI18N("extDisable")
@@ -131,6 +131,6 @@ function ExtensionListItem({ item }) {
       )
     }
   }
-}
+})
 
 export default ExtensionListItem

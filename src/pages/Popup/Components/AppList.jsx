@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 
 import { message } from "antd"
 import classNames from "classnames"
@@ -9,7 +9,7 @@ import { AppListStyle } from "./AppListStyle.js"
 /**
  * APP 应用类型的扩展
  */
-function AppList({ items }) {
+const AppList = memo(({ items }) => {
   if (!items || items.length === 0) return null
 
   const onIconClick = (e, item) => {
@@ -43,6 +43,6 @@ function AppList({ items }) {
       </ul>
     </AppListStyle>
   )
-}
+})
 
 export default AppList

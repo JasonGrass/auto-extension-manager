@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 
 import classNames from "classnames"
 import _ from "lodash"
@@ -15,7 +15,7 @@ import ExtensionListItem from "./ExtensionListItem"
 /**
  * 普通扩展的列表展示
  */
-function ExtensionList({ extensions }) {
+const ExtensionList = memo(({ extensions }) => {
   const items = sortExtension(extensions)
 
   return (
@@ -34,6 +34,6 @@ function ExtensionList({ extensions }) {
       })}
     </ul>
   )
-}
+})
 
 export default ExtensionList
