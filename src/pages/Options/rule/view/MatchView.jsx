@@ -1,5 +1,7 @@
 import React, { memo } from "react"
 
+import { styled } from "styled-components"
+
 const MatchView = memo(({ config, sceneOption }) => {
   console.log("sceneOption", sceneOption)
 
@@ -16,7 +18,13 @@ const MatchView = memo(({ config, sceneOption }) => {
     if (hosts.length === 1) {
       return hosts[0]
     } else {
-      return `${hosts[0]} 等 ${hosts.length} 条`
+      return (
+        <Style>
+          <span>
+            {hosts[0]} 等 {hosts.length} 条
+          </span>
+        </Style>
+      )
     }
   }
 
@@ -29,11 +37,17 @@ const MatchView = memo(({ config, sceneOption }) => {
     if (!scene) {
       return <p>ERROR</p>
     } else {
-      return <h3>{scene.name}</h3>
+      return (
+        <Style>
+          <span>{scene.name}</span>
+        </Style>
+      )
     }
   }
 
-  return <div>MatchView</div>
+  return <div>ERROR</div>
 })
 
 export default MatchView
+
+const Style = styled.div``

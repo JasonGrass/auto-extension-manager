@@ -65,13 +65,17 @@ const ViewRule = memo((props) => {
 
   return (
     <Style>
-      <Table dataSource={data} rowKey="id">
+      <Table
+        dataSource={data}
+        rowKey="id"
+        size="small"
+        pagination={{ position: ["bottomCenter"], hideOnSinglePage: true }}>
         <Column
           title="序号"
           dataIndex="index"
           width={60}
           align="center"
-          render={(index, record) => <p>{index + 1}</p>}
+          render={(index, record) => <span>{index + 1}</span>}
         />
         <Column
           title="匹配"

@@ -57,10 +57,14 @@ export default TargetView
 
 const ListStyle = styled.ul`
   display: flex;
+  align-items: center;
+
+  margin: 0;
 
   img {
-    width: 36px;
-    height: 36px;
+    display: block;
+    width: 24px;
+    height: 24px;
     margin-right: 4px;
   }
 
