@@ -1,4 +1,4 @@
-import { List } from "immutable"
+import { List, Map } from "immutable"
 import { nanoid } from "nanoid"
 
 import OptionsStorage from "./options-storage"
@@ -31,6 +31,19 @@ export const RuleConfigOptions = {
     }
 
     Object.assign(exist, config)
+
+    await OptionsStorage.set({ ruleConfig: configs })
+  },
+
+  async duplicate(config) {
+    let configs = await this.get()
+    const exist = configs.find((item) => item.id === config.id)
+    if (!exist) {
+      throw Error(`cannot find config id is ${config.id})`)
+    }
+
+    const newConfig = Map(exist).set("id", nanoid()).toJS()
+    configs.splice(configs.indexOf(exist), 0, newConfig)
 
     await OptionsStorage.set({ ruleConfig: configs })
   },

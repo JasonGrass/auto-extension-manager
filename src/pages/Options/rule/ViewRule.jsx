@@ -34,24 +34,29 @@ const ViewRule = memo((props) => {
     setEditingConfig(record)
   }
 
-  const onDuplicate = (record) => {}
+  const onDuplicate = async (record) => {
+    if (!record) {
+      return
+    }
+    await operation.duplicate(record)
+  }
 
-  const onSave = (record) => {
+  const onSave = async (record) => {
     if (!record) {
       return
     }
     // 如果 record 没有 id，表示是新增的数据
     if (!record.id || record.id === "") {
-      operation.add(record)
+      await operation.add(record)
       setEditingConfig(null)
     } else {
-      operation.update(record)
+      await operation.update(record)
       setEditingConfig(null)
     }
   }
 
-  const onDelete = (record) => {
-    operation.delete(record.id)
+  const onDelete = async (record) => {
+    await operation.delete(record.id)
   }
 
   const onCancel = () => {

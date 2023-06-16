@@ -54,6 +54,10 @@ function RuleSetting() {
     update: async (record) => {
       await RuleConfigOptions.update(record)
       updateRuleConfig()
+    },
+    duplicate: async (record) => {
+      await RuleConfigOptions.duplicate(record)
+      updateRuleConfig()
     }
   }
 
