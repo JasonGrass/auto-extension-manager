@@ -32,7 +32,7 @@ export const RuleConfigOptions = {
 
     Object.assign(exist, config)
 
-    await OptionsStorage.set({ ruleConfig: configs.toJS() })
+    await OptionsStorage.set({ ruleConfig: configs })
   },
 
   async deleteOne(id) {

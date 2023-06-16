@@ -44,6 +44,9 @@ const ViewRule = memo((props) => {
     if (!record.id || record.id === "") {
       operation.add(record)
       setEditingConfig(null)
+    } else {
+      operation.update(record)
+      setEditingConfig(null)
     }
   }
 

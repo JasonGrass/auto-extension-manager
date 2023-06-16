@@ -50,6 +50,10 @@ function RuleSetting() {
     add: async (record) => {
       await RuleConfigOptions.addOne(record)
       updateRuleConfig()
+    },
+    update: async (record) => {
+      await RuleConfigOptions.update(record)
+      updateRuleConfig()
     }
   }
 

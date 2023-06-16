@@ -32,7 +32,8 @@ const EditRule = memo((props) => {
       const newConfig = {
         match: matchRuleConfig,
         target: selectConfig,
-        action: actionConfig
+        action: actionConfig,
+        id: config.id
       }
 
       onSave(newConfig)
