@@ -10,6 +10,7 @@ import {
   isAppExtension,
   isExtExtension
 } from ".../utils/extensionHelper"
+import isMatch from "../../../utils/searchHelper"
 import AppList from "./AppList"
 import ExtensionList from "./ExtensionListView"
 import Header from "./Header"
@@ -45,7 +46,9 @@ function IndexPopup({ extensions, options, params }) {
     if (!search || search.trim() === "") {
       return groupExtensions
     } else {
-      const result = groupExtensions.filter((ext) => ext.name.includes(search))
+      const result = groupExtensions.filter((ext) => {
+        return isMatch([ext.name, ext.shortName], search)
+      })
       return result
     }
   }

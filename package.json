@@ -19,6 +19,7 @@
     "immutable": "^4.3.0",
     "lodash": "^4.17.21",
     "nanoid": "^4.0.2",
+    "pinyin-match": "^1.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.12.1",
