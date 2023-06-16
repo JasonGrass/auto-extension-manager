@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react"
+
 import {
   BlockOutlined,
   DeleteOutlined,
@@ -16,20 +18,29 @@ import {
   message
 } from "antd"
 import classNames from "classnames"
-import React, { useEffect, useState } from "react"
+
+import "./ExtensionListItem.css"
 
 import { getIcon } from "../../../utils/extensionHelper.js"
 import { isStringEmpty } from "../../../utils/utils.js"
-import "./ExtensionListItem.css"
 
+/**
+ * 打开扩展设置页面
+ */
 const handleSettingButtonClick = (e, item) => {
   chrome.tabs.create({ url: item.optionsUrl })
 }
 
+/**
+ * 打开扩展主页
+ */
 const handleHomeButtonClick = (e, item) => {
   chrome.tabs.create({ url: item.homepageUrl })
 }
 
+/**
+ * 扩展列表项
+ */
 function ExtensionListItem({ item }) {
   const getI18N = chrome.i18n.getMessage
   const langEnable = getI18N("extEnable")

@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react"
+
 import {
   BlockOutlined,
   CaretDownOutlined,
@@ -6,52 +8,11 @@ import {
   SettingOutlined
 } from "@ant-design/icons"
 import { Button, Dropdown, Space, Tooltip, message } from "antd"
-import React, { useEffect, useState } from "react"
 
 import MainIcon from "../../../assets/img/icon-64.png"
 import "./Header.less"
-
-const handleProfileMenuClick = (e) => {
-  message.info("Click on menu item.")
-  console.log("click", e)
-}
-
-const profileMenu = {
-  items: [
-    {
-      label: "1st menu item",
-      key: "1",
-      icon: <BlockOutlined />
-    },
-    {
-      label: "2nd menu item",
-      key: "2",
-      icon: <BlockOutlined />
-    }
-  ],
-  onClick: handleProfileMenuClick
-}
-
-const handleGroupMenuClick = (e) => {
-  message.info("Click on menu item.")
-  console.log("click", e)
-}
-
-const groupMenu = {
-  items: [
-    {
-      label: "全部",
-      key: "1",
-      icon: <FolderOpenOutlined />
-    },
-    {
-      label: "未分组",
-      key: "2",
-      icon: <FolderOpenOutlined />
-    }
-  ],
-  onClick: handleGroupMenuClick
-}
+import GroupDropdown from "./header/GroupDropdown"
+import SceneDropdown from "./header/SceneDropdown"
 
 const handleSettingButtonClick = (e) => {
   chrome.management.getSelf((self) => {
@@ -59,10 +20,11 @@ const handleSettingButtonClick = (e) => {
   })
 }
 
-function Header({ activeCount, totalCount, options }) {
-  const [initialize, setInitialize] = useState(true)
+function Header({ activeCount, totalCount, options, onGroupChanged }) {
+  const [isShowOperations, setIsShowOperations] = useState(false)
+
   useEffect(() => {
-    setInitialize(false)
+    setIsShowOperations(true)
   }, [])
 
   return (
@@ -74,35 +36,13 @@ function Header({ activeCount, totalCount, options }) {
         </h2>
       </div>
 
-      {buildOperationButton()}
-    </div>
-  )
-
-  function buildOperationButton() {
-    if (initialize) {
-      return null
-    } else {
-      return (
+      {isShowOperations && (
         <div className="right">
-          <Dropdown
-            menu={profileMenu}
-            trigger={["click", "hover"]}
-            placement="bottomRight">
-            <Space>
-              <span>情景模式</span>
-              <CaretDownOutlined className="caret" />
-            </Space>
-          </Dropdown>
+          <SceneDropdown options={options}></SceneDropdown>
 
-          <Dropdown
-            menu={groupMenu}
-            trigger={["click", "hover"]}
-            placement="bottomLeft">
-            <Space>
-              <span>插件分组</span>
-              <CaretDownOutlined className="caret" />
-            </Space>
-          </Dropdown>
+          <GroupDropdown
+            options={options}
+            onGroupChanged={onGroupChanged}></GroupDropdown>
 
           <Space
             className="setting"
@@ -110,9 +50,9 @@ function Header({ activeCount, totalCount, options }) {
             <SettingOutlined />
           </Space>
         </div>
-      )
-    }
-  }
+      )}
+    </div>
+  )
 }
 
 export default Header

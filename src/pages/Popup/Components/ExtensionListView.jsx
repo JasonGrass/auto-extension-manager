@@ -1,19 +1,22 @@
-import classNames from "classnames"
-import _ from "lodash"
 import React, { useEffect, useState } from "react"
 
-import ExtensionListItem from "./ExtensionListItem"
+import classNames from "classnames"
+import _ from "lodash"
+
 import "./ExtensionListView.css"
 
+import {
+  filterExtensions,
+  isExtExtension,
+  sortExtension
+} from ".../utils/extensionHelper"
+import ExtensionListItem from "./ExtensionListItem"
+
+/**
+ * 普通扩展的列表展示
+ */
 function ExtensionList({ extensions }) {
-  const items = extensions
-    .filter((i) => i.type === "extension")
-    .sort((a, b) => {
-      if (a.enabled === b.enabled) {
-        return a.name.localeCompare(b.name) // Sort by name
-      }
-      return a.enabled < b.enabled ? 1 : -1 // Sort by state
-    })
+  const items = sortExtension(extensions)
 
   return (
     <ul className="list-view">

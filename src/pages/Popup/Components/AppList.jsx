@@ -1,17 +1,18 @@
+import React from "react"
+
 import { message } from "antd"
 import classNames from "classnames"
-import _ from "lodash"
-import React from "react"
 
 import { getIcon, isAppExtension } from "../../../utils/extensionHelper"
 import { AppListStyle } from "./AppListStyle.js"
 
+/**
+ * APP 应用类型的扩展
+ */
 function AppList({ items }) {
-  const apps = items.filter((i) => isAppExtension(i))
+  if (!items || items.length === 0) return null
 
   const onIconClick = (e, item) => {
-    // console.log(item)
-
     if (item.enabled) {
       chrome.management.launchApp(item.id)
     } else {
@@ -22,7 +23,7 @@ function AppList({ items }) {
   return (
     <AppListStyle>
       <ul>
-        {apps.map((item) => {
+        {items.map((item) => {
           return (
             <li
               key={item.id}

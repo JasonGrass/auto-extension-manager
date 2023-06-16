@@ -1,51 +1,87 @@
-import classNames from "classnames"
-import _ from "lodash"
 import React, { useEffect, useState } from "react"
 
+import classNames from "classnames"
+import _ from "lodash"
+import { styled } from "styled-components"
+
+import {
+  filterExtensions,
+  isAppExtension,
+  isExtExtension
+} from ".../utils/extensionHelper"
 import AppList from "./AppList"
 import ExtensionList from "./ExtensionListView"
 import Header from "./Header"
-import "./Popup.css"
 
 function IndexPopup({ extensions, options, params }) {
   // const getI18N = chrome.i18n.getMessage
 
-  const [initialize, setInitialize] = useState(true)
+  const [pluginExtensions, setPluginExtensions] = useState([])
+  const [appExtensions, setAppExtensions] = useState([])
+
+  const [isShowAppExtension, setIsShowAppExtension] = useState(false)
   useEffect(() => {
-    setInitialize(false)
+    setIsShowAppExtension(true)
   }, [])
 
-  return (
-    <div
-      style={{
-        height: "100%",
-        minHeight: params.minHeight
-      }}>
-      <Header
-        activeCount={extensions.filter((ext) => ext.enabled).length}
-        totalCount={extensions.length}></Header>
+  useEffect(() => {
+    setPluginExtensions(filterExtensions(extensions, isExtExtension))
+    setAppExtensions(filterExtensions(extensions, isAppExtension))
+  }, [extensions])
 
-      <div
-        className="extension-container"
-        style={{ overflow: "auto", height: 560 }}>
-        <div>
-          <ExtensionList extensions={extensions}></ExtensionList>
-        </div>
-        {buildAppList()}
-      </div>
-    </div>
-  )
-
-  /**
-   * 延迟构建 AppList UI，加快首次加载速度
-   */
-  function buildAppList() {
-    if (initialize) {
-      return null
+  const onGroupChanged = (group) => {
+    if (group) {
+      const groupExtension = extensions.filter((ext) =>
+        group.extensions.includes(ext.id)
+      )
+      setPluginExtensions(groupExtension)
     } else {
-      return <AppList items={extensions}></AppList>
+      setPluginExtensions(filterExtensions(extensions, isExtExtension))
     }
   }
+
+  return (
+    <Style minHeight={params.minHeight}>
+      <Header
+        activeCount={pluginExtensions.filter((ext) => ext.enabled).length}
+        totalCount={pluginExtensions.length}
+        options={options}
+        onGroupChanged={onGroupChanged}></Header>
+
+      <div className="extension-container">
+        <ExtensionList extensions={pluginExtensions}></ExtensionList>
+        {isShowAppExtension && <AppList items={appExtensions}></AppList>}
+      </div>
+    </Style>
+  )
 }
 
 export default IndexPopup
+
+const Style = styled.div`
+  height: 100%;
+  min-height: ${(props) => props.minHeight};
+
+  .extension-container {
+    overflow: auto;
+    height: 560px;
+    margin-left: 0px;
+  }
+
+  .extension-container::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .extension-container::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    background: #cccccc;
+  }
+
+  .extension-container::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: #cccccc33;
+  }
+`
