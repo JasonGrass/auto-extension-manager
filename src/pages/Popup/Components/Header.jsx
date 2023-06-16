@@ -27,12 +27,16 @@ const Header = memo((props) => {
     setIsShowOperations(true)
   }, [])
 
+  useEffect(() => {
+    if (isShowSearch) {
+      searchInputRef.current.focus()
+    }
+  }, [isShowSearch])
+
   const onSearchClick = () => {
     const show = !isShowSearch
     setIsShowSearch(show)
-    if (show) {
-      searchInputRef.current.focus()
-    } else {
+    if (!show) {
       setSearchText("")
     }
   }
