@@ -84,7 +84,7 @@ function IndexPopup({ extensions, options, params }) {
   }
 
   return (
-    <Style minHeight={params.minHeight}>
+    <Style mh={params.minHeight}>
       <div className="header-container">
         <Header
           activeCount={pluginExtensions.filter((ext) => ext.enabled).length}
@@ -106,7 +106,7 @@ export default IndexPopup
 
 const Style = styled.div`
   height: 100%;
-  min-height: ${(props) => props.minHeight};
+  min-height: ${(props) => props.mh};
 
   display: flex;
   flex-direction: column;
