@@ -48,6 +48,7 @@ groups
 ]
 */
 import isMatch from "./handlers/matchHandler"
+import getTarget from "./handlers/targetHandler"
 
 /**
  * 根据当前情景模式，标签页信息，规则信息，处理扩展的打开或关闭
@@ -69,7 +70,13 @@ function precess(rule, scene, tabInfo, groups) {
   if (!isMatch(scene, tabInfo, rule)) {
     return
   }
-  console.log("isMatch true", rule)
+
+  const targetIdArray = getTarget(groups, rule)
+  if (!targetIdArray || targetIdArray.length === 0) {
+    return
+  }
+
+  console.log("targetIdArray", targetIdArray)
 }
 
 export default precessRule

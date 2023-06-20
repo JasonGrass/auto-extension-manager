@@ -1,3 +1,9 @@
+/**
+ * 判断当前状态（情景模式，当前 URL）是否与指定规则匹配
+ * @param scene 当前的情景模式
+ * @param tabInfo 当前标签页的信息
+ * @param rule 规则数据
+ */
 function isMatch(scene, tabInfo, rule) {
   const matchMode = rule.match?.matchMode
   const matchMethod = rule.match?.matchMethod
