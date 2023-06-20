@@ -1,12 +1,14 @@
-import { DeleteFilled, EditFilled, PlusCircleOutlined } from "@ant-design/icons"
-import { Popconfirm, Switch, message } from "antd"
 import React, { useEffect, useState } from "react"
 
+import { DeleteFilled, EditFilled, PlusCircleOutlined } from "@ant-design/icons"
+import { Popconfirm, Switch, message } from "antd"
+
 import { SceneOptions } from ".../storage/index"
+import { sendMessage } from ".../utils/messageHelper.js"
 import { isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
-import SceneEditor from "./SceneEditor.jsx"
 import { SceneStyle } from "./IndexSceneStyle.js"
+import SceneEditor from "./SceneEditor.jsx"
 
 /*
     {
@@ -110,12 +112,21 @@ function Scene() {
 
   function buildSceneItem(item) {
     const onActiveChange = async (e, i) => {
+      let scene = null
+
       if (e) {
         await SceneOptions.setActive(i.id)
         setActiveScene(i)
+        scene = i
       } else {
         await SceneOptions.setActive("")
         setActiveScene(null)
+      }
+
+      try {
+        await sendMessage("current-scene-changed", scene)
+      } catch (error) {
+        console.error("change current scene failed", error)
       }
     }
 

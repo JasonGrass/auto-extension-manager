@@ -16,13 +16,13 @@ class RuleHandler {
   }
 
   onCurrentSceneChanged(scene) {
-    console.log(scene)
+    console.log("RuleHandler", scene)
   }
 
   onCurrentUrlChanged(tabInfo) {
     this.#currentTabInfo = tabInfo
 
-    console.log(tabInfo)
+    console.log("RuleHandler", tabInfo)
   }
 }
 
