@@ -9,6 +9,8 @@ import {
 } from "@ant-design/icons"
 import { Button, Dropdown, Space, Tooltip, message } from "antd"
 
+import { sendMessage } from ".../utils/messageHelper"
+
 const SceneDropdown = memo(({ options, className }) => {
   const [scene, setScene] = useState(null)
 
@@ -25,12 +27,15 @@ const SceneDropdown = memo(({ options, className }) => {
       key: scene.id
     })) ?? []
 
-  const handleSceneMenuClick = (e) => {
-    console.log("click", e)
-    console.log(e.item)
-
+  const handleSceneMenuClick = async (e) => {
     const scene = options.scenes?.filter((s) => s.id === e.key)[0]
     setScene(scene)
+
+    try {
+      await sendMessage("current-scene-changed", scene)
+    } catch (error) {
+      console.error("change current scene failed", error)
+    }
   }
 
   const sceneMenu = {
