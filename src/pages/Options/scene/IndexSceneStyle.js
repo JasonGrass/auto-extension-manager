@@ -33,12 +33,25 @@ export const SceneStyle = styled.div`
 
     font-size: 14px;
     font-weight: 700;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .scene-item p {
-    margin-top: 8px;
+    padding: 0;
+    margin: 4px 0 0 0;
+
+    font-size: 12px;
+    line-height: 18px;
+
     overflow: hidden;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
   }
 
   .scene-item:hover .scene-item-edit-icon {

@@ -63,6 +63,14 @@ const Style = styled.div`
       color: #555;
     }
   }
+
+  .menu-item-text {
+    display: inline-block;
+    max-width: 80px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 `
 
 const SearchStyle = styled.div`

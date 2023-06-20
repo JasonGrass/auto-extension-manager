@@ -42,7 +42,7 @@ const SceneDropdown = memo(({ options, className }) => {
     <div className={className}>
       <Dropdown menu={sceneMenu} trigger={["click"]} placement="bottomRight">
         <Space>
-          <span>{scene?.name ?? "情景模式"}</span>
+          <span className="menu-item-text">{scene?.name ?? "情景模式"}</span>
           <CaretDownOutlined className="caret" />
         </Space>
       </Dropdown>

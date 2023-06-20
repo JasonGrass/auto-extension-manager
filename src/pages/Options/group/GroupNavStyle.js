@@ -21,9 +21,16 @@ export const GroupNavStyle = styled.div`
     &:hover .tab-operation {
       display: block;
     }
+
+    h3 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   .tab-container .tab-operation {
+    flex: 0 0 auto;
     display: none;
     color: #23527c;
     font-size: 18px;
