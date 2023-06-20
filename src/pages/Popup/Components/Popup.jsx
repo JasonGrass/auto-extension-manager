@@ -36,6 +36,10 @@ function IndexPopup({ extensions, options, params }) {
   const filterCurrentExtensions = (group, search) => {
     let groupExtensions = []
     if (group) {
+      if (!group.extensions || group.extensions.length === 0) {
+        return groupExtensions
+      }
+
       groupExtensions = extensions.filter((ext) =>
         group.extensions.includes(ext.id)
       )
