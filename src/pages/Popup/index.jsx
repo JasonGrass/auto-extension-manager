@@ -1,11 +1,14 @@
-import "antd/dist/reset.css"
 import React from "react"
 import { createRoot } from "react-dom/client"
+
+import "antd/dist/reset.css"
+
 import chromeP from "webext-polyfill-kinda"
 
-import OptionsStorage from "../../storage/index"
-import Popup from "./Components/Popup"
 import "./index.css"
+
+import OptionsStorage, { LocalOptionsStorage } from "../../storage/index"
+import Popup from "./Components/Popup"
 
 const container = document.getElementById("app-container")
 const root = createRoot(container)
@@ -15,13 +18,14 @@ document.body.style.width = "400px"
 const prepare = async function () {
   const allExtensions = await chromeP.management.getAll()
   const allOptions = await OptionsStorage.getAll()
+  const localOptions = await LocalOptionsStorage.getAll()
   const minHeight = Math.min(600, Math.max(200, allExtensions.length * 40))
 
   return {
     // 插件信息
     extensions: allExtensions,
     // 用户配置信息
-    options: allOptions,
+    options: { ...allOptions, local: localOptions },
     // 运行时临时参数
     params: {
       minHeight: minHeight

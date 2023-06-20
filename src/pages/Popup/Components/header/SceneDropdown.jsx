@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 
 import {
   BlockOutlined,
@@ -13,6 +13,12 @@ import { sendMessage } from ".../utils/messageHelper"
 
 const SceneDropdown = memo(({ options, className }) => {
   const [scene, setScene] = useState(null)
+  useEffect(() => {
+    const activeId = options.local.scene?.activeId
+    if (activeId) {
+      setScene(options.scenes?.filter((s) => s.id === activeId)[0])
+    }
+  }, [options])
 
   const fixMenu = [
     {
