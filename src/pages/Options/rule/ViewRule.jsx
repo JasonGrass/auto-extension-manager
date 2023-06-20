@@ -2,6 +2,7 @@ import React, { memo, useEffect, useState } from "react"
 
 import { Button, Space, Table, Tag } from "antd"
 
+import { sendMessage } from "../../../utils/messageHelper"
 import EditRule from "./EditRule"
 import Style from "./ViewRuleStyle"
 import ActionView from "./view/ActionView"
@@ -53,10 +54,13 @@ const ViewRule = memo((props) => {
       await operation.update(record)
       setEditingConfig(null)
     }
+
+    sendMessage("rule-config-changed")
   }
 
   const onDelete = async (record) => {
     await operation.delete(record.id)
+    sendMessage("rule-config-changed")
   }
 
   const onCancel = () => {

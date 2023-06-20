@@ -1,4 +1,5 @@
 import { listen } from ".../utils/messageHelper"
+import { onRuleConfigChanged } from "./RuleConfigHandler"
 import { onCurrentSceneChanged } from "./SceneHandler"
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -30,4 +31,5 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   */
 
   listen("current-scene-changed", ctx, onCurrentSceneChanged)
+  listen("rule-config-changed", ctx, onRuleConfigChanged)
 })
