@@ -6,23 +6,63 @@ tabInfo
     "windowId": 976470013,
     "id": 976470225
 }
+scene{
+  id:"xxx"
+}
 */
+import precessRule from "./processor"
 
 class RuleHandler {
+  /**
+   * 当前标签信息
+   */
   #currentTabInfo
 
-  constructor() {
-    this.#currentTabInfo = null
-  }
+  /**
+   * 本地打开的情景模式
+   */
+  #currentScene
+
+  /**
+   * 所有的规则数据，缓存起来，是避免每次执行规则时，都需要从 storage 中获取一遍
+   */
+  #rules
+
+  /**
+   * 分组配置信息
+   */
+  #groups
 
   onCurrentSceneChanged(scene) {
-    console.log("RuleHandler", scene)
+    this.#currentScene = scene
+    this.#do()
   }
 
   onCurrentUrlChanged(tabInfo) {
     this.#currentTabInfo = tabInfo
+    this.#do()
+  }
 
-    console.log("RuleHandler", tabInfo)
+  setRules(rules) {
+    this.#rules = rules
+    this.#do()
+  }
+
+  init(scene, tabInfo, rules, groups) {
+    this.#currentScene = scene
+    this.#currentTabInfo = tabInfo
+    this.#rules = rules
+    this.#groups = groups
+    this.#do()
+  }
+
+  #do() {
+    precessRule({
+      scene: this.#currentScene,
+      tabInfo: this.#currentTabInfo,
+      rules: this.#rules,
+      groups: this.#groups
+    })
   }
 }
 

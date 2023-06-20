@@ -4,4 +4,10 @@ import { SceneOptions } from "./SceneOptions"
 import OptionsStorage, { LocalOptionsStorage } from "./options-storage"
 
 export default OptionsStorage
-export { GroupOptions, SceneOptions, RuleConfigOptions, LocalOptionsStorage }
+export {
+  OptionsStorage,
+  GroupOptions,
+  SceneOptions,
+  RuleConfigOptions,
+  LocalOptionsStorage
+}
