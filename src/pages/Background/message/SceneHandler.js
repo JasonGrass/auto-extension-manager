@@ -1,4 +1,5 @@
 import { SceneOptions } from ".../storage"
+import createRuleHandler from "../rule/RuleHandler"
 
 export const onCurrentSceneChanged = (ctx) => {
   // console.log("onCurrentSceneChanged", ctx)
@@ -13,6 +14,8 @@ export const onCurrentSceneChanged = (ctx) => {
   }
 
   // 2. run rules for current scene
+  const handler = createRuleHandler()
+  handler.onCurrentSceneChanged(params)
 
   ctx.sendResponse()
 }
