@@ -47,16 +47,29 @@ groups
     }
 ]
 */
+import isMatch from "./handlers/matchHandler"
 
 /**
  * 根据当前情景模式，标签页信息，规则信息，处理扩展的打开或关闭
  */
 function precessRule({ scene, tabInfo, rules, groups }) {
   console.log("precessRule")
+
   console.log(scene)
   console.log(tabInfo)
   console.log(rules)
   console.log(groups)
+
+  for (let i = 0; i < rules.length; i++) {
+    precess(rules[i], scene, tabInfo, groups)
+  }
+}
+
+function precess(rule, scene, tabInfo, groups) {
+  if (!isMatch(scene, tabInfo, rule)) {
+    return
+  }
+  console.log("isMatch true", rule)
 }
 
 export default precessRule
