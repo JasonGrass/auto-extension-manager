@@ -25,8 +25,9 @@ function IndexPopup({ extensions, options, params }) {
 
   const [isShowAppExtension, setIsShowAppExtension] = useState(false)
   useEffect(() => {
-    setIsShowAppExtension(true)
-  }, [])
+    const showApp = options.setting?.isShowApp ?? true
+    setIsShowAppExtension(showApp)
+  }, [options])
 
   useEffect(() => {
     setPluginExtensions(filterExtensions(extensions, isExtExtension))
