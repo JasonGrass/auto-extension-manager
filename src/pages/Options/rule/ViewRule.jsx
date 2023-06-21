@@ -48,6 +48,7 @@ const ViewRule = memo((props) => {
     }
     // 如果 record 没有 id，表示是新增的数据
     if (!record.id || record.id === "") {
+      record.enable = true // 默认开启
       await operation.add(record)
       setEditingConfig(null)
     } else {
@@ -55,6 +56,15 @@ const ViewRule = memo((props) => {
       setEditingConfig(null)
     }
 
+    sendMessage("rule-config-changed")
+  }
+
+  const onEnabled = async (record, enable) => {
+    if (!record) {
+      return
+    }
+    record.enable = enable
+    await operation.update(record)
     sendMessage("rule-config-changed")
   }
 
@@ -124,6 +134,7 @@ const ViewRule = memo((props) => {
                 onEdit={onEdit}
                 onDuplicate={onDuplicate}
                 onDelete={onDelete}
+                onEnabled={onEnabled}
               />
             )
           }}

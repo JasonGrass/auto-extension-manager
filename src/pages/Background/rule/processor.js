@@ -74,6 +74,10 @@ function precessRule({ scene, tabInfo, rules, groups }) {
 }
 
 function precess(rule, scene, tabInfo, groups) {
+  if (!rule.enable) {
+    return
+  }
+
   const match = isMatch(scene, tabInfo, rule)
 
   const targetIdArray = getTarget(groups, rule)

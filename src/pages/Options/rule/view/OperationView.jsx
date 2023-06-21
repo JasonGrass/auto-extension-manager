@@ -5,7 +5,7 @@ import { Popconfirm, Switch } from "antd"
 import { styled } from "styled-components"
 
 const OperationView = memo((props) => {
-  const { record, onEdit, onDuplicate, onDelete } = props
+  const { record, onEdit, onDuplicate, onDelete, onEnabled } = props
   return (
     <Style>
       <div className="operation">
@@ -21,7 +21,10 @@ const OperationView = memo((props) => {
           <DeleteOutlined />
         </Popconfirm>
 
-        <Switch size="small"></Switch>
+        <Switch
+          size="small"
+          checked={record.enable}
+          onChange={(e) => onEnabled?.(record, e)}></Switch>
       </div>
     </Style>
   )
