@@ -53,6 +53,33 @@ const Header = memo((props) => {
     onSearch?.(text)
   }
 
+  useEffect(() => {
+    const onKeydown = (e) => {
+      switch (e.key) {
+        case "f":
+          if (!isShowSearch) {
+            setIsShowSearch(true)
+            e.preventDefault()
+          }
+          return
+        case "s":
+          if (isShowSearch) {
+            return
+          }
+          onSettingClick(e)
+          e.preventDefault()
+          return
+        default:
+          return
+      }
+    }
+
+    document.addEventListener("keydown", onKeydown)
+    return () => {
+      document.removeEventListener("keydown", onKeydown)
+    }
+  }, [isShowSearch])
+
   return (
     <>
       <Style>
