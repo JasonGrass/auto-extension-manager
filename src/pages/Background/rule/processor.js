@@ -60,6 +60,10 @@ function precessRule({ scene, tabInfo, rules, groups }) {
   // console.log(rules)
   // console.log(groups)
 
+  if (!rules) {
+    return
+  }
+
   for (let i = 0; i < rules.length; i++) {
     try {
       precess(rules[i], scene, tabInfo, groups)
