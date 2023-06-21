@@ -30,6 +30,12 @@ ${navigator.userAgent}`
     chrome.tabs.create({ url })
   }
 
+  const openHelp = () => {
+    chrome.tabs.create({
+      url: "https://github.com/JasonGrass/auto-extension-manager/wiki"
+    })
+  }
+
   return (
     <AboutStyle>
       <Title title="关于"></Title>
@@ -44,7 +50,7 @@ ${navigator.userAgent}`
 
       <div className="content-button">
         <Button onClick={openIssue}>反馈问题</Button>
-        <Button>查看帮助</Button>
+        <Button onClick={openHelp}>查看帮助</Button>
       </div>
 
       <div className="footer">

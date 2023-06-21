@@ -137,7 +137,14 @@ const ViewRule = memo((props) => {
           </Button>
         )}
 
-        <Button>帮助</Button>
+        <Button
+          onClick={() => {
+            chrome.tabs.create({
+              url: "https://github.com/JasonGrass/auto-extension-manager/wiki"
+            })
+          }}>
+          帮助
+        </Button>
       </div>
 
       <EditRule
