@@ -54,29 +54,73 @@ import getTarget from "./handlers/targetHandler"
  * 根据当前情景模式，标签页信息，规则信息，处理扩展的打开或关闭
  */
 function precessRule({ scene, tabInfo, rules, groups }) {
-  console.log("precessRule")
-
-  console.log(scene)
-  console.log(tabInfo)
-  console.log(rules)
-  console.log(groups)
+  // console.log("precessRule")
+  // console.log(scene)
+  // console.log(tabInfo)
+  // console.log(rules)
+  // console.log(groups)
 
   for (let i = 0; i < rules.length; i++) {
-    precess(rules[i], scene, tabInfo, groups)
+    try {
+      precess(rules[i], scene, tabInfo, groups)
+    } catch (error) {
+      console.error("process rule error", rules[i], error)
+    }
   }
 }
 
 function precess(rule, scene, tabInfo, groups) {
-  if (!isMatch(scene, tabInfo, rule)) {
-    return
-  }
+  const match = isMatch(scene, tabInfo, rule)
 
   const targetIdArray = getTarget(groups, rule)
   if (!targetIdArray || targetIdArray.length === 0) {
     return
   }
 
-  console.log("targetIdArray", targetIdArray)
+  const { actionType } = rule.action
+  if (!actionType) {
+    return
+  }
+
+  handle(match, targetIdArray, actionType)
+}
+
+function handle(isMatch, targetExtensions, actionType) {
+  // console.log(isMatch, targetExtensions, actionType)
+
+  if (isMatch && actionType === "closeWhenMatched") {
+    closeExtensions(targetExtensions)
+  }
+
+  if (isMatch && actionType === "openWhenMatched") {
+    openExtensions(targetExtensions)
+  }
+
+  if (isMatch && actionType === "closeOnlyWhenMatched") {
+    closeExtensions(targetExtensions)
+  }
+  if (!isMatch && actionType === "closeOnlyWhenMatched") {
+    openExtensions(targetExtensions)
+  }
+
+  if (isMatch && actionType === "openOnlyWhenMatched") {
+    openExtensions(targetExtensions)
+  }
+  if (!isMatch && actionType === "openOnlyWhenMatched") {
+    closeExtensions(targetExtensions)
+  }
+}
+
+function closeExtensions(targetExtensions) {
+  for (let i = 0; i < targetExtensions.length; i++) {
+    chrome.management.setEnabled(targetExtensions[i], false)
+  }
+}
+
+function openExtensions(targetExtensions) {
+  for (let i = 0; i < targetExtensions.length; i++) {
+    chrome.management.setEnabled(targetExtensions[i], true)
+  }
 }
 
 export default precessRule
