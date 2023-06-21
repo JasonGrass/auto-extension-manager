@@ -6,8 +6,8 @@ import React, {
   useState
 } from "react"
 
-import { DownOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Dropdown, Input, Space, Switch, message } from "antd"
+import { DownOutlined } from "@ant-design/icons"
+import { Button, Dropdown, Space } from "antd"
 
 import EditorCommonStyle from "./CommonStyle"
 import Style from "./RuleActionStyle"

@@ -9,14 +9,8 @@ const OptionsStorage = new OptionsSync({
   migrations: [
     (options) => {
       let { popupWidth } = options
-
-      console.log("OptionsSync migrations", popupWidth)
-
       popupWidth = Math.min(Math.max(200, popupWidth), 1000)
       options.popupWidth = popupWidth
-
-      // log
-      console.log("sync options:", options)
     }
   ]
 })
@@ -24,12 +18,7 @@ const OptionsStorage = new OptionsSync({
 export const LocalOptionsStorage = new OptionsSync({
   storageType: "local",
   defaults: {},
-  migrations: [
-    (options) => {
-      // log
-      console.log("local options:", options)
-    }
-  ]
+  migrations: [(options) => {}]
 })
 
 export default OptionsStorage

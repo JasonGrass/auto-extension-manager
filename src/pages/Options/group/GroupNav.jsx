@@ -1,12 +1,12 @@
+import React, { useEffect } from "react"
+
 import { DeleteFilled, EditFilled, PlusOutlined } from "@ant-design/icons"
-import { Button, Form, Input, Popconfirm, message } from "antd"
+import { Popconfirm, message } from "antd"
 import classNames from "classnames"
-import React, { useEffect, useState } from "react"
-import chromeP from "webext-polyfill-kinda"
 
 import { GroupOptions } from ".../storage/index"
 import { GroupNavStyle } from "./GroupNavStyle"
-import { AddNewNavItem, checkSelectedGroup } from "./helpers"
+import { AddNewNavItem } from "./helpers"
 
 function GroupNav({
   groupInfo,
@@ -15,8 +15,6 @@ function GroupNav({
   onGroupItemDeleted,
   onGroupItemEdit
 }) {
-  // const [selectedGroup, setSelectedGroup] = useState()
-
   useEffect(() => {
     if (!current || !current.id) {
       selectFirstGroupTab()
@@ -24,12 +22,10 @@ function GroupNav({
   })
 
   const onGroupTabClick = (e, item) => {
-    // setSelectedGroup(item)
     onSelectedChanged?.(item)
   }
 
   const onAddNewGroupClick = (e) => {
-    // setSelectedGroup(AddNewNavItem)
     onSelectedChanged?.(AddNewNavItem)
   }
 

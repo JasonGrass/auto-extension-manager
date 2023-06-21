@@ -1,15 +1,10 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo } from "react"
 
 import classNames from "classnames"
-import _ from "lodash"
 
 import "./ExtensionListView.css"
 
-import {
-  filterExtensions,
-  isExtExtension,
-  sortExtension
-} from ".../utils/extensionHelper"
+import { sortExtension } from ".../utils/extensionHelper"
 import ExtensionListItem from "./ExtensionListItem"
 
 /**

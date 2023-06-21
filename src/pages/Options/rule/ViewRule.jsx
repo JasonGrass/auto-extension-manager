@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Button, Space, Table, Tag } from "antd"
+import { Button, Table } from "antd"
 
 import { sendMessage } from "../../../utils/messageHelper"
 import EditRule from "./EditRule"

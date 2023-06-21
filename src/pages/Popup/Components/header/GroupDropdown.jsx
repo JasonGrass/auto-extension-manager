@@ -1,13 +1,7 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, useState } from "react"
 
-import {
-  BlockOutlined,
-  CaretDownOutlined,
-  DownOutlined,
-  FolderOpenOutlined,
-  SettingOutlined
-} from "@ant-design/icons"
-import { Button, Dropdown, Space, Tooltip, message } from "antd"
+import { CaretDownOutlined } from "@ant-design/icons"
+import { Dropdown, Space } from "antd"
 
 const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
   const [group, setGroup] = useState(null)

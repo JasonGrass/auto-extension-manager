@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Navigate, Route, Routes } from "react-router-dom"
 
 import { ConfigProvider } from "antd"
@@ -14,20 +14,10 @@ import Scene from "./scene/IndexScene.jsx"
 import Settings from "./settings/Settings.jsx"
 
 function Options() {
-  const [currentNav, setCurrentNav] = useState("about")
-
-  const onNavItemChanged = (key) => {
-    if (key === currentNav) {
-      return
-    }
-    setCurrentNav(key)
-    console.log("setCurrentNav", key)
-  }
-
   return (
     <div className="option-container">
       <div className="option-nav">
-        <Navigation onNavItemChanged={onNavItemChanged}></Navigation>
+        <Navigation></Navigation>
       </div>
 
       <div className="option-content">

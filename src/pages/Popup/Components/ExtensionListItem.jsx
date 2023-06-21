@@ -1,22 +1,11 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, useState } from "react"
 
 import {
-  BlockOutlined,
   DeleteOutlined,
-  DownOutlined,
-  FolderOpenOutlined,
   HomeOutlined,
   SettingOutlined
 } from "@ant-design/icons"
-import {
-  Button,
-  Dropdown,
-  Popconfirm,
-  Space,
-  Switch,
-  Tooltip,
-  message
-} from "antd"
+import { Button, Popconfirm, Switch } from "antd"
 import classNames from "classnames"
 
 import "./ExtensionListItem.css"
@@ -42,10 +31,6 @@ const handleHomeButtonClick = (e, item) => {
  * 扩展列表项
  */
 const ExtensionListItem = memo(({ item }) => {
-  const getI18N = chrome.i18n.getMessage
-  const langEnable = getI18N("extEnable")
-  const langDisable = getI18N("extDisable")
-
   const [isHover, setIsHover] = useState(false)
   const [isInteractive, setIsInteractive] = useState(false)
 

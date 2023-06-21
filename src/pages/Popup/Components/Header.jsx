@@ -1,14 +1,7 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 
-import {
-  BlockOutlined,
-  CaretDownOutlined,
-  DownOutlined,
-  FolderOpenOutlined,
-  SearchOutlined,
-  SettingOutlined
-} from "@ant-design/icons"
-import { Button, Dropdown, Space, Tooltip, message } from "antd"
+import { SearchOutlined, SettingOutlined } from "@ant-design/icons"
+import { Space } from "antd"
 
 import MainIcon from "../../../assets/img/icon-64.png"
 import Style, { SearchStyle } from "./HeaderStyle"

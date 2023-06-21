@@ -7,7 +7,7 @@ import React, {
 } from "react"
 
 import { ClearOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Dropdown, Input, Space, Switch, message } from "antd"
+import { Button, Dropdown, Input, Space, Switch } from "antd"
 
 import EditorCommonStyle from "./CommonStyle"
 import Style from "./MatchRuleStyle"
@@ -87,8 +87,6 @@ const MatchRule = ({ sceneList, config }, ref) => {
   const [matchScene, setMatchScene] = useState({})
   // 域名列表
   const [matchHostList, setMatchHostList] = useState([])
-
-  // const [editingConfig, setEditingConfig] = useState(config ?? {})
 
   useEffect(() => {
     if (config?.matchMode === "scene") {

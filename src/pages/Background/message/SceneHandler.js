@@ -1,6 +1,9 @@
 import { SceneOptions } from ".../storage"
 import createRuleHandler from "../rule/RuleHandler"
 
+/**
+ * 当前情景模式变化时触发
+ */
 export const onCurrentSceneChanged = (ctx) => {
   // console.log("onCurrentSceneChanged", ctx)
 

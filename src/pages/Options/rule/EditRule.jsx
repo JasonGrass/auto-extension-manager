@@ -1,8 +1,7 @@
-import React, { memo, useEffect, useRef, useState } from "react"
+import React, { memo, useRef } from "react"
 
 import { Button, message } from "antd"
 
-import { GroupOptions, RuleConfigOptions, SceneOptions } from ".../storage"
 import Style from "./EditRuleStyle"
 import ExtensionSelector from "./editor/ExtensionSelector"
 import MatchRule from "./editor/MatchRule"

@@ -1,8 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 
-import classNames from "classnames"
-import { set } from "immutable"
-import _ from "lodash"
 import { styled } from "styled-components"
 
 import {
@@ -16,8 +13,6 @@ import ExtensionList from "./ExtensionListView"
 import Header from "./Header"
 
 function IndexPopup({ extensions, options, params }) {
-  // const getI18N = chrome.i18n.getMessage
-
   const [pluginExtensions, setPluginExtensions] = useState([])
   const [appExtensions, setAppExtensions] = useState([])
   const [currentGroup, setGroup] = useState(null)

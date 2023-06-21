@@ -1,6 +1,10 @@
 import React from "react"
+
 import styled from "styled-components"
 
+/**
+ * 模态编辑高阶组件
+ */
 function ModalEditorWrapper(props) {
   return (
     <Style>

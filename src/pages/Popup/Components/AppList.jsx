@@ -3,7 +3,7 @@ import React, { memo } from "react"
 import { message } from "antd"
 import classNames from "classnames"
 
-import { getIcon, isAppExtension } from "../../../utils/extensionHelper"
+import { getIcon } from "../../../utils/extensionHelper"
 import { AppListStyle } from "./AppListStyle.js"
 
 /**

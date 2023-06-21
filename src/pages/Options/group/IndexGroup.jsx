@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react"
 
-import { DeleteFilled, EditFilled, PlusOutlined } from "@ant-design/icons"
-import { Button, Form, Input, Popconfirm, message } from "antd"
+import { message } from "antd"
 import classNames from "classnames"
 import chromeP from "webext-polyfill-kinda"
 
 import { GroupOptions } from ".../storage/index"
-import {
-  filterExtensions,
-  getIcon,
-  isAppExtension,
-  isExtExtension
-} from ".../utils/extensionHelper"
+import { filterExtensions, isExtExtension } from ".../utils/extensionHelper"
 import { isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
 import GroupContent from "./GroupContent.jsx"
@@ -19,8 +13,6 @@ import GroupEditor from "./GroupEditor.jsx"
 import GroupNav from "./GroupNav.jsx"
 import { GroupStyle } from "./IndexGroupStyle.js"
 import { AddNewNavItem } from "./helpers.js"
-
-const { TextArea } = Input
 
 function GroupManagement() {
   const [extensions, setExtensions] = useState([])

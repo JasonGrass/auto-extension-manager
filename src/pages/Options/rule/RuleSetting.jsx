@@ -3,10 +3,8 @@ import React, { useEffect, useState } from "react"
 import chromeP from "webext-polyfill-kinda"
 
 import { GroupOptions, RuleConfigOptions, SceneOptions } from ".../storage"
-import OptionsStorage from ".../storage/index"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import Title from "../Title.jsx"
-import EditRule from "./EditRule.jsx"
 import { RuleSettingStyle } from "./RuleSettingStyle.js"
 import ViewRule from "./ViewRule.jsx"
 
