@@ -49,6 +49,11 @@ const SceneDropdown = memo(({ options, className }) => {
     onClick: handleSceneMenuClick
   }
 
+  if (configMenu.length === 0) {
+    // 没有情景模式数据，隐藏切换菜单
+    return null
+  }
+
   return (
     <div className={className}>
       <Dropdown menu={sceneMenu} trigger={["click"]} placement="bottomRight">

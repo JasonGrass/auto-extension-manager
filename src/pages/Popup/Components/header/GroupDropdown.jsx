@@ -41,6 +41,11 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
     onClick: handleGroupMenuClick
   }
 
+  if (configGroupMenu.length === 0) {
+    // 没有分组数据，隐藏切换菜单
+    return null
+  }
+
   return (
     <div className={className}>
       <Dropdown menu={groupMenu} trigger={["click"]} placement="bottomLeft">
