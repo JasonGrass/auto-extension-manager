@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 
 import { ConfigProvider } from "antd"
 
@@ -38,6 +38,7 @@ function Options() {
             }
           }}>
           <Routes>
+            <Route path="/" element={<Navigate to="/about" replace />}></Route>
             <Route path="/about" element={<About />} />
             <Route path="/setting" element={<Settings />} />
             <Route path="/scene" element={<Scene />} />
