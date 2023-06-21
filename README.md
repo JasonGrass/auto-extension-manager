@@ -8,3 +8,7 @@
 
 - a simple way to manage your Chrome extensions.
 - auto open or close extension by rule setting.
+
+## Similar
+
+[hankxdev/one-click-extensions-manager: a simple chrome extension to manage chrome extension](https://github.com/hankxdev/one-click-extensions-manager )
