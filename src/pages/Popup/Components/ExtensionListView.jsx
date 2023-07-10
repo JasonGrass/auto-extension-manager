@@ -10,7 +10,7 @@ import ExtensionListItem from "./ExtensionListItem"
 /**
  * 普通扩展的列表展示
  */
-const ExtensionList = memo(({ extensions }) => {
+const ExtensionList = memo(({ extensions, options }) => {
   const items = sortExtension(extensions)
 
   return (
@@ -23,7 +23,9 @@ const ExtensionList = memo(({ extensions }) => {
               "is-enable": item.enabled,
               "not-enable": !item.enabled
             })}>
-            <ExtensionListItem item={item}></ExtensionListItem>
+            <ExtensionListItem
+              item={item}
+              options={options}></ExtensionListItem>
           </li>
         )
       })}

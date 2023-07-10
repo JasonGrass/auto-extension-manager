@@ -91,7 +91,9 @@ function IndexPopup({ extensions, options, params }) {
       </div>
 
       <div className="extension-container">
-        <ExtensionList extensions={pluginExtensions}></ExtensionList>
+        <ExtensionList
+          extensions={pluginExtensions}
+          options={options}></ExtensionList>
         {isShowAppExtension && <AppList items={appExtensions}></AppList>}
       </div>
     </Style>

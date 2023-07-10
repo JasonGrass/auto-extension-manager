@@ -17,10 +17,7 @@ export const SettingStyle = styled.div`
     padding: 5px 0 8px 0;
 
     border-bottom: 1px solid #ccc;
-  }
 
-  .setting-app,
-  .setting-width {
     span {
       flex: 1 1 auto;
       font-size: 12px;

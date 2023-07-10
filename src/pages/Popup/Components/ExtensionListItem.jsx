@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 
 import {
   DeleteOutlined,
@@ -30,13 +30,19 @@ const handleHomeButtonClick = (e, item) => {
 /**
  * 扩展列表项
  */
-const ExtensionListItem = memo(({ item }) => {
+const ExtensionListItem = memo(({ item, options }) => {
   const [isHover, setIsHover] = useState(false)
   const [isInteractive, setIsInteractive] = useState(false)
+  const [isShowOperationButton, setIsShowOperationButton] = useState(false)
 
   const [itemEnable, setItemEnable] = useState(item.enabled)
   const [existOptionPage] = useState(!isStringEmpty(item.optionsUrl))
   const [existHomePage] = useState(!isStringEmpty(item.homepageUrl))
+
+  useEffect(() => {
+    const showButtonAlways = options.setting?.isShowItemOperationAlways ?? false
+    setIsShowOperationButton(showButtonAlways)
+  }, [options])
 
   const onSwitchChange = (checked, item) => {
     chrome.management.setEnabled(item.id, checked)
@@ -72,7 +78,7 @@ const ExtensionListItem = memo(({ item }) => {
       ])}>
       <img src={getIcon(item, 24)} alt="" />
       <span className="ext-name">{item.name}</span>
-      {buildOperationButton(isHover)}
+      {buildOperationButton(isHover || isShowOperationButton)}
     </div>
   )
 

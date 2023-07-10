@@ -8,6 +8,8 @@ import { SettingStyle } from "./SettingStyle"
 
 function Settings() {
   const [isShowApp, setIsShowApp] = useState(true)
+  const [isShowItemOperationAlways, setIsShowItemOperationAlways] =
+    useState(false)
 
   useEffect(() => {
     OptionsStorage.getAll().then((options) => {
@@ -21,17 +23,31 @@ function Settings() {
     OptionsStorage.set({ setting: { isShowApp: checked } })
   }
 
+  const onIsShowItemOperationAlwaysChange = (checked) => {
+    setIsShowItemOperationAlways(checked)
+    OptionsStorage.set({ setting: { isShowItemOperationAlways: checked } })
+  }
+
   return (
     <SettingStyle>
       <Title title="通用设置"></Title>
 
       <div className="container">
-        <div className="setting-app setting-item">
+        <div className="setting-item">
           <span>在 Popup 底部中显示 APP 类型的扩展</span>
           <Switch
             size="small"
             checked={isShowApp}
             onChange={onIsShowAppChange}></Switch>
+        </div>
+        <div className="setting-item">
+          <span>
+            在 Popup 中扩展列表中始终显示快捷操作按钮（默认 hover 显示）
+          </span>
+          <Switch
+            size="small"
+            checked={isShowItemOperationAlways}
+            onChange={onIsShowItemOperationAlwaysChange}></Switch>
         </div>
         <div className="setting-width setting-item">
           <span>Popup 弹窗宽度</span>
