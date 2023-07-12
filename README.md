@@ -4,6 +4,9 @@
 
 ![release](https://img.shields.io/github/v/release/JasonGrass/auto-extension-manager)
 
+Chrome WebStore:  
+<https://chrome.google.com/webstore/detail/extension-manager/efajbgpnlnobnkgdcgcnclngeolnmggp>
+
 ## Features
 
 - a simple way to manage your Chrome extensions.
@@ -12,6 +15,11 @@
 ## Help
 
 <https://github.com/JasonGrass/auto-extension-manager/wiki>
+
+## TODO
+
+[ ] i18n support (当前仅支持简体中文)
+[ ] config export and import
 
 ## Similar
 
