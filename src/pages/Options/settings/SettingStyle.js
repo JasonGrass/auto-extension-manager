@@ -2,9 +2,9 @@ import styled from "styled-components"
 
 export const SettingStyle = styled.div`
   .container {
-    width: 500px;
+    width: 600px;
 
-    background-color: #eee;
+    background: linear-gradient(to right, #337ab7aa, #fff);
 
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -16,12 +16,11 @@ export const SettingStyle = styled.div`
     margin: 5px 10px;
     padding: 5px 0 8px 0;
 
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #eee6;
 
     span {
       flex: 1 1 auto;
-      font-size: 12px;
-      font-weight: bold;
+      font-size: 14px;
     }
   }
 
