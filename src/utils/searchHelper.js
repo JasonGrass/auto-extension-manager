@@ -6,13 +6,13 @@ import PinyinMatch from "pinyin-match"
  * @param {string} search 搜索词
  * @returns {boolean}
  */
-export default function isMatch(target, search) {
+export default function isMatch(target, search, matchWhenSearchEmpty) {
   if ((!target || target.length < 1) && !search) {
     return true
   }
 
   if (!search) {
-    return false
+    return !!matchWhenSearchEmpty
   }
 
   if (!target || target.length < 1) {

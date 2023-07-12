@@ -11,9 +11,10 @@ import { DownOutlined } from "@ant-design/icons"
 import { Button, Dropdown, Space } from "antd"
 
 import { sortExtension } from ".../utils/extensionHelper"
+import isMatch from ".../utils/searchHelper"
 import ExtensionItems from "../../components/ExtensionItems"
 import EditorCommonStyle from "./CommonStyle"
-import Style from "./ExtensionSelectorStyle"
+import Style, { SearchStyle } from "./ExtensionSelectorStyle"
 
 const matchModes = [
   {
@@ -54,8 +55,17 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
 
   const [matchMode, setMatchMode] = useState(matchModes[0])
   const [selectGroup, setSelectGroup] = useState(null)
+
+  // 选择的扩展（规则执行的目标）
   const [selectedExtensions, setSelectedExtensions] = useState([])
+  // 剩余没有被选择的所有扩展
   const [unselectedExtensions, setUnselectedExtensions] = useState([])
+  // 显示到界面上的剩余扩展（搜索之后的结果）
+  const [displayUnselectedExtensions, setDisplayUnselectedExtensions] =
+    useState([])
+
+  // 搜索关键字
+  const [searchText, setSearchText] = useState("")
 
   /**
    * 在 single(扩展) 模式时，根据初始配置，设置扩展的显示
@@ -64,15 +74,18 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
     if (!config) {
       setSelectedExtensions([])
       setUnselectedExtensions(extensions)
+      setDisplayUnselectedExtensions(extensions)
     }
 
     const selected = extensions.filter((ext) =>
       config.targetExtensions.includes(ext.id)
     )
     setSelectedExtensions(sortExtension(selected))
-    setUnselectedExtensions(
-      sortExtension(extensions.filter((ext) => !selected.includes(ext)))
+    const unselected = sortExtension(
+      extensions.filter((ext) => !selected.includes(ext))
     )
+    setUnselectedExtensions(unselected)
+    setDisplayUnselectedExtensions(unselected)
   }, [config, extensions])
 
   /**
@@ -98,6 +111,7 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
   useEffect(() => {
     if (!config) {
       setUnselectedExtensions(extensions)
+      setDisplayUnselectedExtensions(extensions)
       return
     }
     const mode = matchModes.filter((m) => m.key === config.targetType)[0]
@@ -117,6 +131,14 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
     setSelectedOfGroup,
     setSelectedOfSingleByConfig
   ])
+
+  // 当搜索关键字变化，或者未选择列表更新时，界面界面显示
+  useEffect(() => {
+    const displayUnselected = unselectedExtensions.filter((ext) =>
+      isMatch([ext.name, ext.shortName], searchText, true)
+    )
+    setDisplayUnselectedExtensions(sortExtension(displayUnselected))
+  }, [unselectedExtensions, searchText])
 
   /**
    * 匹配方式变更：扩展 / 扩展组
@@ -181,6 +203,11 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
     }
   }
 
+  const onSearchTextChange = (e) => {
+    const text = e.target.value
+    setSearchText(text)
+  }
+
   return (
     <EditorCommonStyle>
       <Style>
@@ -191,6 +218,16 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
               <span style={{ width: 60 }}>{matchMode.label}</span>
             </Dropdown.Button>
           </div>
+          {/* 当匹配模式为单独选择扩展（而不是扩展组）时，支持搜索，以便快速找到想要的扩展 */}
+          {matchMode?.key === "single" && (
+            <SearchStyle>
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchText}
+                onChange={(e) => onSearchTextChange(e)}></input>
+            </SearchStyle>
+          )}
         </div>
 
         {matchMode?.key === "group" && (
@@ -217,7 +254,7 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
             <div className="unselected-extensions-container">
               <h3>未包含的扩展</h3>
               <ExtensionItems
-                items={unselectedExtensions}
+                items={displayUnselectedExtensions}
                 placeholder="无任何扩展"
                 onClick={onUnselectedExtensionClick}></ExtensionItems>
             </div>
