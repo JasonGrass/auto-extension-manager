@@ -61,7 +61,9 @@ const MatchRule = ({ sceneList, config }, ref) => {
   useImperativeHandle(ref, () => ({
     // 获取配置
     getMatchRuleConfig: () => {
-      const hosts = matchHostList.filter((host) => host && host.trim() !== "")
+      const hosts = matchHostList
+        .filter((host) => host && host.trim() !== "")
+        .map((host) => host.trim())
 
       if (matchMode.key === "host" && hosts.length === 0) {
         throw Error("没有添加任何域名规则")
