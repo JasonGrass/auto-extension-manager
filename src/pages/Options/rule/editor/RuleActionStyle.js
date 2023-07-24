@@ -12,6 +12,26 @@ const Style = styled.div`
       margin: 0 0 10px 0;
     }
   }
+
+  .action-label {
+    font-size: 14px;
+  }
+
+  .advance-options {
+    display: flex;
+    & > span {
+      margin-right: 5px;
+    }
+  }
+
+  .action-refresh-options {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hidden-action-mode {
+    display: none;
+  }
 `
 
 export default Style
