@@ -7,9 +7,20 @@ const ActionView = memo(({ config }) => {
     return <span className="error-text">ERROR</span>
   }
 
-  const action = actionSelections.filter((a) => a.key === config.actionType)[0]
-  if (action) {
-    return <span>{action.label}</span>
+  let label = undefined
+  if (config.isAdvanceMode) {
+    label = "Advance"
+  } else {
+    const action = actionSelections.filter(
+      (a) => a.key === config.actionType
+    )[0]
+    if (action) {
+      label = action.label
+    }
+  }
+
+  if (label) {
+    return <span>{label}</span>
   } else {
     return <span className="error-text">UNKNOWN</span>
   }
