@@ -32,6 +32,10 @@ class RuleHandler {
     this.#do()
   }
 
+  onTabClosed(tabId: number, removeInfo: any) {
+    this.#do()
+  }
+
   setRules(rules: rule.IRuleConfig[]) {
     this.#rules = rules
     this.#do()

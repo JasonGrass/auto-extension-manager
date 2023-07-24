@@ -160,11 +160,11 @@ async function closeExtensions(
       continue
     }
 
-    console.log(`[Extension Manager] disable extension ${info.name}`)
+    console.log(`[Extension Manager] disable extension [${info.name}]`)
     await chrome.management.setEnabled(targetExtensions[i], false)
     if (action.isAdvanceMode && action.refreshAfterClose && tabInfo && tabInfo.id) {
       chrome.tabs.reload(tabInfo.id)
-      console.log(`[Extension Manager] reload tab ${tabInfo.title} ${tabInfo.url}`)
+      console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
     }
   }
 }
@@ -182,11 +182,11 @@ async function openExtensions(
     }
 
     await chromeP.management.setEnabled(targetExtensions[i], true)
-    console.log(`[Extension Manager] enable extension ${info.name}`)
+    console.log(`[Extension Manager] enable extension [${info.name}]`)
 
     if (action.isAdvanceMode && action.refreshAfterOpen && tabInfo && tabInfo.id) {
       chrome.tabs.reload(tabInfo.id)
-      console.log(`[Extension Manager] reload tab ${tabInfo.title} ${tabInfo.url}`)
+      console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
     }
 
   }
