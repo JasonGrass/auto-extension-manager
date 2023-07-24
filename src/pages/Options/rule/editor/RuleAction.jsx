@@ -7,7 +7,7 @@ import React, {
 } from "react"
 
 import { DownOutlined } from "@ant-design/icons"
-import { Button, Dropdown, Space } from "antd"
+import { Button, Checkbox, Dropdown, Space } from "antd"
 
 import EditorCommonStyle from "./CommonStyle"
 import Style from "./RuleActionStyle"
@@ -40,12 +40,16 @@ const RuleAction = ({ config }, ref) => {
       }
 
       return {
-        actionType: actionType.key
+        actionType: actionType.key,
+        refreshAfterOpen: refreshAfterOpen,
+        refreshAfterClose: refreshAfterClose
       }
     }
   }))
 
   const [actionType, setActionType] = useState(actionSelections[0])
+  const [refreshAfterOpen, setRefreshAfterOpen] = useState(false)
+  const [refreshAfterClose, setRefreshAfterClose] = useState(false)
 
   // 根据配置初始化
   useEffect(() => {
@@ -55,6 +59,8 @@ const RuleAction = ({ config }, ref) => {
     } else {
       setActionType(actionSelections[0])
     }
+    setRefreshAfterOpen(config?.refreshAfterOpen ?? false)
+    setRefreshAfterClose(config?.refreshAfterClose ?? false)
   }, [config])
 
   const handleActionTypeClick = (e) => {
@@ -70,6 +76,14 @@ const RuleAction = ({ config }, ref) => {
     onClick: handleActionTypeClick
   }
 
+  const onFreshAfterOpenChange = (e) => {
+    setRefreshAfterOpen(e.target.checked)
+  }
+
+  const onFreshAfterCloseChange = (e) => {
+    setRefreshAfterClose(e.target.checked)
+  }
+
   return (
     <EditorCommonStyle>
       <Style>
@@ -78,7 +92,7 @@ const RuleAction = ({ config }, ref) => {
         </div>
 
         <div className="action-container">
-          <Dropdown menu={actionSelectMenuProps}>
+          <Dropdown menu={actionSelectMenuProps} trigger={["click"]}>
             <Button>
               <Space>
                 {actionType.label}
@@ -86,6 +100,17 @@ const RuleAction = ({ config }, ref) => {
               </Space>
             </Button>
           </Dropdown>
+
+          <Checkbox
+            checked={refreshAfterOpen}
+            onChange={onFreshAfterOpenChange}>
+            打开插件之后，刷新页面
+          </Checkbox>
+          <Checkbox
+            checked={refreshAfterClose}
+            onChange={onFreshAfterCloseChange}>
+            关闭插件之后，刷新页面
+          </Checkbox>
         </div>
       </Style>
     </EditorCommonStyle>
