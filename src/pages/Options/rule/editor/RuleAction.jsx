@@ -120,6 +120,15 @@ const RuleAction = ({ config }, ref) => {
               size="small"
             />
           </label>
+          <span
+            className={classNames([
+              "advance-option-tips",
+              {
+                "hidden-action-mode": !isShowAdvanceOptions
+              }
+            ])}>
+            ヾ(•ω•`)o 高级选项仅在匹配模式为「域名」时有效，为「情景模式」时无效
+          </span>
         </div>
 
         <div className="action-container">

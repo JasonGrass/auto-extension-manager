@@ -32,6 +32,12 @@ const Style = styled.div`
   .hidden-action-mode {
     display: none;
   }
+
+  .advance-option-tips {
+    margin-left: 10px;
+    font-size: 8px;
+    color: #777;
+  }
 `
 
 export default Style
