@@ -1,4 +1,4 @@
-import precessRule from "./processor"
+import processRule from "./processor"
 
 
 class RuleHandler {
@@ -46,7 +46,7 @@ class RuleHandler {
   }
 
   #do() {
-    precessRule({
+    processRule({
       scene: this.#currentScene,
       tabInfo: this.#currentTabInfo,
       rules: this.#rules,

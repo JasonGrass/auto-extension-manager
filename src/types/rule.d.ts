@@ -1,5 +1,7 @@
 declare namespace rule {
 
+  export type MatchMethod = "wildcard" | "regex"
+
   /**
    * 规则匹配的对象和方式
   */
@@ -7,7 +9,7 @@ declare namespace rule {
     /** 匹配的方式，域名匹配或者情景模式匹配 */
     matchMode: "host" | "scene",
     /** 通配符 or 正则 */
-    matchMethod: "wildcard" | "regex",
+    matchMethod: MatchMethod,
     /** 匹配的域名 */
     matchHost?: string[],
     /** 匹配的情景模式ID */
@@ -26,9 +28,13 @@ declare namespace rule {
     targetGroup?: string
   }
 
+  export type ActionType = "openWhenMatched" | "closeWhenMatched" | "openOnlyWhenMatched" | "closeOnlyWhenMatched"
+
   /** 规则执行动作 */
   export interface IAction {
-    actionType: "openWhenMatched" | "closeWhenMatched" | "openOnlyWhenMatched" | "closeOnlyWhenMatched"
+    actionType: ActionType,
+    refreshAfterOpen?: boolean,
+    refreshAfterClose?: boolean,
   }
 
   export interface IRuleConfig {
@@ -36,7 +42,10 @@ declare namespace rule {
     match: IMatch,
     target: ITarget,
     action: IAction,
+    enable: boolean,
   }
+
+
 
 
 }

@@ -4,7 +4,7 @@
  * @param tabInfo 当前标签页的信息
  * @param rule 规则数据
  */
-function isMatch(scene, tabInfo, rule) {
+function isMatch(scene: config.IScene | undefined, tabInfo: chrome.tabs.Tab | undefined, rule: rule.IRuleConfig): boolean {
   const matchMode = rule.match?.matchMode
   const matchMethod = rule.match?.matchMethod
   if (!matchMode) {
@@ -12,7 +12,7 @@ function isMatch(scene, tabInfo, rule) {
   }
 
   if (matchMode === "host") {
-    return isMatchUrl(tabInfo.url, rule.match.matchHost, matchMethod)
+    return isMatchUrl(tabInfo?.url, rule.match.matchHost, matchMethod)
   } else if (matchMode === "scene") {
     return isMatchScene(scene, rule.match.matchScene)
   }
@@ -20,7 +20,7 @@ function isMatch(scene, tabInfo, rule) {
   return false
 }
 
-function isMatchUrl(url, hosts, matchMethod) {
+function isMatchUrl(url: string | undefined, hosts: string[] | undefined, matchMethod: rule.MatchMethod): boolean {
   if (!url || url === "") return false
   if (!hosts || hosts.length === 0) return false
 
@@ -28,14 +28,16 @@ function isMatchUrl(url, hosts, matchMethod) {
 
   if (matchMethod === "wildcard") {
     const exist = hosts.find((h) => isMatchByWildcard(host, h))
-    return !!exist
+    return Boolean(exist)
   } else if (matchMethod === "regex") {
     const exist = hosts.find((h) => isMatchByRegex(host, h))
-    return !!exist
+    return Boolean(exist)
   }
+
+  return false
 }
 
-function isMatchByWildcard(text, pattern) {
+function isMatchByWildcard(text: string, pattern: string) {
   // [LeetCode44.通配符匹配 JavaScript - 个人文章 - SegmentFault 思否](https://segmentfault.com/a/1190000019486910 )
   let dp = []
   for (let i = 0; i <= text.length; i++) {
@@ -65,12 +67,12 @@ function isMatchByWildcard(text, pattern) {
   return dp[0][0]
 }
 
-function isMatchByRegex(text, pattern) {
+function isMatchByRegex(text: string, pattern: string) {
   const regex = new RegExp(pattern, "i")
   return regex.test(text)
 }
 
-function isMatchScene(scene, sceneId) {
+function isMatchScene(scene: config.IScene | undefined, sceneId: string | undefined) {
   if (!scene?.id) {
     return false
   }

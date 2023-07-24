@@ -4,7 +4,7 @@
  * @param rule 规则对象
  * @returns 规则适用的目标，插件ID列表
  */
-function getTarget(groups, rule) {
+function getTarget(groups: config.IGroup[] | undefined, rule: rule.IRuleConfig): string[] | null | undefined {
   const targetType = rule.target?.targetType
   if (!targetType) {
     return null
@@ -20,7 +20,7 @@ function getTarget(groups, rule) {
       return null
     }
 
-    return groups.find((g) => g.id === groupId)?.extensions
+    return groups?.find((g) => g.id === groupId)?.extensions
   }
 }
 
