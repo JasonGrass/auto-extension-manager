@@ -54,44 +54,57 @@ function process(
     return
   }
 
-  handle(match, targetIdArray, actionType)
+  handle(match, targetIdArray, rule.action, tabInfo)
 }
 
-function handle(isMatch: boolean, targetExtensions: string[], actionType: rule.ActionType) {
+function handle(
+  isMatch: boolean,
+  targetExtensions: string[], action: rule.IAction,
+  tabInfo: chrome.tabs.Tab | undefined,) {
   // console.log(isMatch, targetExtensions, actionType)
 
+  const actionType = action.actionType
+
   if (isMatch && actionType === "closeWhenMatched") {
-    closeExtensions(targetExtensions)
+    closeExtensions(targetExtensions, action, tabInfo)
   }
 
   if (isMatch && actionType === "openWhenMatched") {
-    openExtensions(targetExtensions)
+    openExtensions(targetExtensions, action, tabInfo)
   }
 
   if (isMatch && actionType === "closeOnlyWhenMatched") {
-    closeExtensions(targetExtensions)
+    closeExtensions(targetExtensions, action, tabInfo)
   }
   if (!isMatch && actionType === "closeOnlyWhenMatched") {
-    openExtensions(targetExtensions)
+    openExtensions(targetExtensions, action, tabInfo)
   }
 
   if (isMatch && actionType === "openOnlyWhenMatched") {
-    openExtensions(targetExtensions)
+    openExtensions(targetExtensions, action, tabInfo)
   }
   if (!isMatch && actionType === "openOnlyWhenMatched") {
-    closeExtensions(targetExtensions)
+    closeExtensions(targetExtensions, action, tabInfo)
   }
 }
 
-function closeExtensions(targetExtensions: string[]) {
+function closeExtensions(targetExtensions: string[], action: rule.IAction, tabInfo: chrome.tabs.Tab | undefined,) {
   for (let i = 0; i < targetExtensions.length; i++) {
-    chrome.management.setEnabled(targetExtensions[i], false)
+    chrome.management.setEnabled(targetExtensions[i], false).then(() => {
+      if (action.refreshAfterClose && tabInfo && tabInfo.id) {
+        chrome.tabs.reload(tabInfo.id)
+      }
+    })
   }
 }
 
-function openExtensions(targetExtensions: string[]) {
+function openExtensions(targetExtensions: string[], action: rule.IAction, tabInfo: chrome.tabs.Tab | undefined,) {
   for (let i = 0; i < targetExtensions.length; i++) {
-    chrome.management.setEnabled(targetExtensions[i], true)
+    chrome.management.setEnabled(targetExtensions[i], true).then(() => {
+      if (action.refreshAfterOpen && tabInfo && tabInfo.id) {
+        chrome.tabs.reload(tabInfo.id)
+      }
+    })
   }
 }
 
