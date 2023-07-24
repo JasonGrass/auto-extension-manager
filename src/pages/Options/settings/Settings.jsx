@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { Button, InputNumber, Switch, message } from "antd"
+import { fromJS } from "immutable"
 
 import OptionsStorage from ".../storage/index"
 import Title from "../Title.jsx"
@@ -18,17 +19,29 @@ function Settings() {
     OptionsStorage.getAll().then((options) => {
       const showApp = options.setting?.isShowApp ?? true
       setIsShowApp(showApp)
+      const isShowItemOperationAlways =
+        options.setting?.isShowItemOperationAlways ?? false
+      setIsShowItemOperationAlways(isShowItemOperationAlways)
     })
   }, [])
 
   const onIsShowAppChange = (checked) => {
     setIsShowApp(checked)
-    OptionsStorage.set({ setting: { isShowApp: checked } })
+    OptionsStorage.getAll().then((options) => {
+      const setting = fromJS(options.setting).set("isShowApp", checked).toJS()
+      OptionsStorage.set({ setting: setting })
+    })
   }
 
   const onIsShowItemOperationAlwaysChange = (checked) => {
     setIsShowItemOperationAlways(checked)
-    OptionsStorage.set({ setting: { isShowItemOperationAlways: checked } })
+
+    OptionsStorage.getAll().then((options) => {
+      const setting = fromJS(options.setting)
+        .set("isShowItemOperationAlways", checked)
+        .toJS()
+      OptionsStorage.set({ setting: setting })
+    })
   }
 
   const onImportConfig = async () => {
