@@ -1,15 +1,18 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { InputNumber, Switch } from "antd"
+import { Button, InputNumber, Switch, message } from "antd"
 
 import OptionsStorage from ".../storage/index"
 import Title from "../Title.jsx"
-import { SettingStyle } from "./SettingStyle"
+import { exportConfig, importConfig } from "./ConfigFileBackup.ts"
+import { SettingStyle } from "./SettingStyle.js"
 
 function Settings() {
   const [isShowApp, setIsShowApp] = useState(true)
   const [isShowItemOperationAlways, setIsShowItemOperationAlways] =
     useState(false)
+
+  const [messageApi, contextHolder] = message.useMessage()
 
   useEffect(() => {
     OptionsStorage.getAll().then((options) => {
@@ -28,8 +31,26 @@ function Settings() {
     OptionsStorage.set({ setting: { isShowItemOperationAlways: checked } })
   }
 
+  const onImportConfig = async () => {
+    if (await importConfig()) {
+      messageApi.open({
+        type: "success",
+        content: "导入完成"
+      })
+    } else {
+      messageApi.open({
+        type: "error",
+        content: "导入失败"
+      })
+    }
+  }
+  const onExportConfig = () => {
+    exportConfig()
+  }
+
   return (
     <SettingStyle>
+      {contextHolder}
       <Title title="通用设置"></Title>
 
       <div className="container">
@@ -51,6 +72,11 @@ function Settings() {
           <span>Popup 弹窗宽度</span>
           <InputNumber size="small" min={300} max={800} defaultValue={400} />
         </div>
+      </div>
+
+      <div className="import-export-container">
+        <Button onClick={onImportConfig}>导入配置</Button>
+        <Button onClick={onExportConfig}>导出配置</Button>
       </div>
     </SettingStyle>
   )
