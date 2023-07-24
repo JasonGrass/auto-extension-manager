@@ -41,9 +41,7 @@ function Settings() {
             onChange={onIsShowAppChange}></Switch>
         </div>
         <div className="setting-item">
-          <span>
-            在 Popup 中扩展列表中始终显示快捷操作按钮（默认 hover 显示）
-          </span>
+          <span>在 Popup 列表中始终显示快捷操作按钮（默认 hover 显示）</span>
           <Switch
             size="small"
             checked={isShowItemOperationAlways}
