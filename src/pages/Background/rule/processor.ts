@@ -1,4 +1,5 @@
-import isMatch from "./handlers/matchHandler"
+import chromeP from "webext-polyfill-kinda"
+import isMatch, { getAdvanceMatchType } from "./handlers/matchHandler"
 import getTarget from "./handlers/targetHandler"
 
 /**
@@ -54,15 +55,33 @@ function process(
     return
   }
 
-  handle(match, targetIdArray, rule.action, tabInfo)
+  handle(match, targetIdArray, rule, tabInfo)
 }
 
 function handle(
   isMatch: boolean,
-  targetExtensions: string[], action: rule.IAction,
-  tabInfo: chrome.tabs.Tab | undefined,) {
+  targetExtensions: string[],
+  config: rule.IRuleConfig,
+  tabInfo: chrome.tabs.Tab | undefined) {
   // console.log(isMatch, targetExtensions, actionType)
 
+  const action = config.action
+  if (!action.isAdvanceMode || config.match.matchMode === "scene") {
+    handleSimpleMode(isMatch, targetExtensions, action, tabInfo)
+  }
+  else {
+    handleAdvanceMode(targetExtensions, config, tabInfo)
+  }
+}
+
+/**
+ * 简单模式下的动作执行
+*/
+function handleSimpleMode(
+  isMatch: boolean,
+  targetExtensions: string[],
+  action: rule.IAction,
+  tabInfo: chrome.tabs.Tab | undefined) {
   const actionType = action.actionType
 
   if (isMatch && actionType === "closeWhenMatched") {
@@ -88,23 +107,88 @@ function handle(
   }
 }
 
-function closeExtensions(targetExtensions: string[], action: rule.IAction, tabInfo: chrome.tabs.Tab | undefined,) {
+/**
+ * 高级模式下的动作执行
+*/
+async function handleAdvanceMode(
+  targetExtensions: string[],
+  rule: rule.IRuleConfig,
+  tabInfo: chrome.tabs.Tab | undefined) {
+  const matchType = await getAdvanceMatchType(tabInfo?.url, rule)
+
+  // 启用插件
+  if (matchType.currentTabMatch && rule.action.timeWhenEnable === "current") {
+    openExtensions(targetExtensions, rule.action, tabInfo)
+  }
+  else if (!matchType.currentTabMatch && rule.action.timeWhenEnable === "notCurrent") {
+    openExtensions(targetExtensions, rule.action, tabInfo)
+  }
+  else if (matchType.anyTabMatch && rule.action.timeWhenEnable === "any") {
+    openExtensions(targetExtensions, rule.action, tabInfo)
+  }
+  else if (!matchType.anyTabMatch && rule.action.timeWhenEnable === "noAny") {
+    openExtensions(targetExtensions, rule.action, tabInfo)
+  }
+
+  // 禁用插件
+  if (matchType.currentTabMatch && rule.action.timeWhenDisable === "current") {
+    closeExtensions(targetExtensions, rule.action, tabInfo)
+  }
+  else if (!matchType.currentTabMatch && rule.action.timeWhenDisable === "notCurrent") {
+    closeExtensions(targetExtensions, rule.action, tabInfo)
+  }
+  else if (matchType.anyTabMatch && rule.action.timeWhenDisable === "any") {
+    closeExtensions(targetExtensions, rule.action, tabInfo)
+  }
+  else if (!matchType.anyTabMatch && rule.action.timeWhenDisable === "noAny") {
+    closeExtensions(targetExtensions, rule.action, tabInfo)
+  }
+
+}
+
+
+
+async function closeExtensions(
+  targetExtensions: string[],
+  action: rule.IAction,
+  tabInfo: chrome.tabs.Tab | undefined,) {
   for (let i = 0; i < targetExtensions.length; i++) {
-    chrome.management.setEnabled(targetExtensions[i], false).then(() => {
-      if (action.refreshAfterClose && tabInfo && tabInfo.id) {
-        chrome.tabs.reload(tabInfo.id)
-      }
-    })
+
+    const extId = targetExtensions[i]
+    const info = await chromeP.management.get(extId)
+    if (!info || !info.enabled) {
+      continue
+    }
+
+    console.log(`[Extension Manager] disable extension ${info.name}`)
+    await chrome.management.setEnabled(targetExtensions[i], false)
+    if (action.isAdvanceMode && action.refreshAfterClose && tabInfo && tabInfo.id) {
+      chrome.tabs.reload(tabInfo.id)
+      console.log(`[Extension Manager] reload tab ${tabInfo.title} ${tabInfo.url}`)
+    }
   }
 }
 
-function openExtensions(targetExtensions: string[], action: rule.IAction, tabInfo: chrome.tabs.Tab | undefined,) {
+async function openExtensions(
+  targetExtensions: string[],
+  action: rule.IAction,
+  tabInfo: chrome.tabs.Tab | undefined,) {
   for (let i = 0; i < targetExtensions.length; i++) {
-    chrome.management.setEnabled(targetExtensions[i], true).then(() => {
-      if (action.refreshAfterOpen && tabInfo && tabInfo.id) {
-        chrome.tabs.reload(tabInfo.id)
-      }
-    })
+
+    const extId = targetExtensions[i]
+    const info = await chromeP.management.get(extId)
+    if (!info || info.enabled) {
+      continue
+    }
+
+    await chromeP.management.setEnabled(targetExtensions[i], true)
+    console.log(`[Extension Manager] enable extension ${info.name}`)
+
+    if (action.isAdvanceMode && action.refreshAfterOpen && tabInfo && tabInfo.id) {
+      chrome.tabs.reload(tabInfo.id)
+      console.log(`[Extension Manager] reload tab ${tabInfo.title} ${tabInfo.url}`)
+    }
+
   }
 }
 

@@ -1,3 +1,5 @@
+import chromeP from "webext-polyfill-kinda"
+
 /**
  * 判断当前状态（情景模式，当前 URL）是否与指定规则匹配
  * @param scene 当前的情景模式
@@ -79,4 +81,39 @@ function isMatchScene(scene: config.IScene | undefined, sceneId: string | undefi
   return scene.id === sceneId
 }
 
+type AdvanceMatchType = {
+  /**
+   * 当前 TAB 的 URL 是否匹配
+  */
+  currentTabMatch: boolean,
+
+  /**
+   * 所有打开的 TAB 中，是否有任一一个匹配
+  */
+  anyTabMatch: boolean
+}
+
+/**
+ * 获取当前 TAB 的高级匹配结果
+*/
+export async function getAdvanceMatchType(currentUrl: string | undefined, rule: rule.IRuleConfig): Promise<AdvanceMatchType> {
+  const matchMethod = rule.match?.matchMethod
+  const currentUrlMatch = isMatchUrl(currentUrl, rule.match.matchHost, matchMethod)
+  if (currentUrlMatch) {
+    return {
+      currentTabMatch: true,
+      anyTabMatch: true
+    }
+  }
+
+  const tabs = await chromeP.tabs.query({})
+  const anyUrlMatch = tabs.findIndex(tab => isMatchUrl(tab.url, rule.match.matchHost, matchMethod)) > -1
+
+  return {
+    currentTabMatch: currentUrlMatch,
+    anyTabMatch: anyUrlMatch
+  }
+}
+
 export default isMatch
+

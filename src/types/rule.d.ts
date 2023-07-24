@@ -30,11 +30,16 @@ declare namespace rule {
 
   export type ActionType = "openWhenMatched" | "closeWhenMatched" | "openOnlyWhenMatched" | "closeOnlyWhenMatched"
 
+  export type ActionTime = "none" | "current" | "notCurrent" | "any" | "noAny"
+
   /** 规则执行动作 */
   export interface IAction {
     actionType: ActionType,
     refreshAfterOpen?: boolean,
     refreshAfterClose?: boolean,
+    isAdvanceMode?: boolean,
+    timeWhenEnable?: ActionTime,
+    timeWhenDisable?: ActionTime,
   }
 
   export interface IRuleConfig {
