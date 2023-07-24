@@ -5,7 +5,6 @@ const EditorCommonStyle = styled.div`
     display: flex;
     align-items: center;
 
-    max-width: 1000px;
     height: 40px;
     padding-left: 5px;
 
