@@ -189,12 +189,12 @@ const RuleAction = ({ config }, ref) => {
             <Checkbox
               checked={refreshAfterOpen}
               onChange={onFreshAfterOpenChange}>
-              打开插件之后，刷新当前页面
+              启用插件之后，刷新当前页面
             </Checkbox>
             <Checkbox
               checked={refreshAfterClose}
               onChange={onFreshAfterCloseChange}>
-              关闭插件之后，刷新当前页面
+              禁用插件之后，刷新当前页面
             </Checkbox>
           </div>
         </div>
