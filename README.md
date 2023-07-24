@@ -19,7 +19,6 @@ Chrome WebStore:
 ## TODO
 
 [ ] i18n support (当前仅支持简体中文)
-[ ] config export and import
 
 ## Similar
 
