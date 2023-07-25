@@ -9,7 +9,7 @@ const ActionView = memo(({ config }) => {
 
   let label = undefined
   if (config.isAdvanceMode) {
-    label = "Advance"
+    label = "Advanced settings"
   } else {
     const action = actionSelections.filter(
       (a) => a.key === config.actionType
