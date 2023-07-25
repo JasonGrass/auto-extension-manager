@@ -152,20 +152,22 @@ async function closeExtensions(
   targetExtensions: string[],
   action: rule.IAction,
   tabInfo: chrome.tabs.Tab | undefined,) {
-  for (let i = 0; i < targetExtensions.length; i++) {
+  let worked = false;
 
+  for (let i = 0; i < targetExtensions.length; i++) {
     const extId = targetExtensions[i]
     const info = await chromeP.management.get(extId)
     if (!info || !info.enabled) {
       continue
     }
-
     console.log(`[Extension Manager] disable extension [${info.name}]`)
     await chrome.management.setEnabled(targetExtensions[i], false)
-    if (action.isAdvanceMode && action.refreshAfterClose && tabInfo && tabInfo.id) {
-      chrome.tabs.reload(tabInfo.id)
-      console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
-    }
+    worked = true;
+  }
+
+  if (worked && action.isAdvanceMode && action.refreshAfterClose && tabInfo && tabInfo.id) {
+    chrome.tabs.reload(tabInfo.id)
+    console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
   }
 }
 
@@ -173,22 +175,22 @@ async function openExtensions(
   targetExtensions: string[],
   action: rule.IAction,
   tabInfo: chrome.tabs.Tab | undefined,) {
-  for (let i = 0; i < targetExtensions.length; i++) {
+  let worked = false;
 
+  for (let i = 0; i < targetExtensions.length; i++) {
     const extId = targetExtensions[i]
     const info = await chromeP.management.get(extId)
     if (!info || info.enabled) {
       continue
     }
-
     await chromeP.management.setEnabled(targetExtensions[i], true)
     console.log(`[Extension Manager] enable extension [${info.name}]`)
+    worked = true;
+  }
 
-    if (action.isAdvanceMode && action.refreshAfterOpen && tabInfo && tabInfo.id) {
-      chrome.tabs.reload(tabInfo.id)
-      console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
-    }
-
+  if (worked && action.isAdvanceMode && action.refreshAfterOpen && tabInfo && tabInfo.id) {
+    chrome.tabs.reload(tabInfo.id)
+    console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
   }
 }
 
