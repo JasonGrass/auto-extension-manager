@@ -10,8 +10,7 @@ import { SettingStyle } from "./SettingStyle.js"
 
 function Settings() {
   const [isShowApp, setIsShowApp] = useState(true)
-  const [isShowItemOperationAlways, setIsShowItemOperationAlways] =
-    useState(false)
+  const [isShowItemOperationAlways, setIsShowItemOperationAlways] = useState(false)
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -19,8 +18,7 @@ function Settings() {
     OptionsStorage.getAll().then((options) => {
       const showApp = options.setting?.isShowApp ?? true
       setIsShowApp(showApp)
-      const isShowItemOperationAlways =
-        options.setting?.isShowItemOperationAlways ?? false
+      const isShowItemOperationAlways = options.setting?.isShowItemOperationAlways ?? false
       setIsShowItemOperationAlways(isShowItemOperationAlways)
     })
   }, [])
@@ -37,9 +35,7 @@ function Settings() {
     setIsShowItemOperationAlways(checked)
 
     SyncOptionsStorage.getAll().then((options) => {
-      const setting = fromJS(options.setting)
-        .set("isShowItemOperationAlways", checked)
-        .toJS()
+      const setting = fromJS(options.setting).set("isShowItemOperationAlways", checked).toJS()
       OptionsStorage.set({ setting: setting })
     })
   }
@@ -69,10 +65,7 @@ function Settings() {
       <div className="container">
         <div className="setting-item">
           <span>在 Popup 底部中显示 APP 类型的扩展</span>
-          <Switch
-            size="small"
-            checked={isShowApp}
-            onChange={onIsShowAppChange}></Switch>
+          <Switch size="small" checked={isShowApp} onChange={onIsShowAppChange}></Switch>
         </div>
         <div className="setting-item">
           <span>在 Popup 列表中始终显示快捷操作按钮（默认 hover 显示）</span>
