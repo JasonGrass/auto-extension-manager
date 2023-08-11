@@ -1,5 +1,6 @@
-import processRule from "./processor"
+import chromeP from "webext-polyfill-kinda"
 
+import processRule from "./processor"
 
 class RuleHandler {
   /**
@@ -24,37 +25,49 @@ class RuleHandler {
 
   onCurrentSceneChanged(scene: config.IScene) {
     this.#currentScene = scene
-    this.#do()
+    this.do()
   }
 
   onCurrentUrlChanged(tabInfo: chrome.tabs.Tab) {
     this.#currentTabInfo = tabInfo
-    this.#do()
+    this.do()
   }
 
   onTabClosed(tabId: number, removeInfo: any) {
-    this.#do()
+    this.do()
   }
 
   setRules(rules: rule.IRuleConfig[]) {
     this.#rules = rules
-    this.#do()
+    this.do()
   }
 
-  init(scene: config.IScene, tabInfo: chrome.tabs.Tab, rules: rule.IRuleConfig[], groups: config.IGroup[]) {
+  init(
+    scene: config.IScene,
+    tabInfo: chrome.tabs.Tab,
+    rules: rule.IRuleConfig[],
+    groups: config.IGroup[]
+  ) {
     this.#currentScene = scene
     this.#currentTabInfo = tabInfo
     this.#rules = rules
     this.#groups = groups
-    this.#do()
+    this.do()
   }
 
-  #do() {
-    processRule({
+  private async do() {
+    const self = await chromeP.management.getSelf()
+
+    const ctx = {
+      self
+    }
+
+    await processRule({
       scene: this.#currentScene,
       tabInfo: this.#currentTabInfo,
       rules: this.#rules,
-      groups: this.#groups
+      groups: this.#groups,
+      ctx: ctx
     })
   }
 }
