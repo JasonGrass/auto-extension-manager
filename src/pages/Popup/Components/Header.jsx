@@ -11,7 +11,9 @@ import SceneDropdown from "./header/SceneDropdown"
 const Header = memo((props) => {
   const { activeCount, totalCount, options, onGroupChanged, onSearch } = props
 
+  // 是否显示操作菜单，用于控制延迟渲染
   const [isShowOperations, setIsShowOperations] = useState(false)
+  // 是否显示搜索框
   const [isShowSearch, setIsShowSearch] = useState(false)
   const [searchText, setSearchText] = useState("")
   const searchInputRef = useRef(null)
@@ -25,6 +27,12 @@ const Header = memo((props) => {
       searchInputRef.current.focus()
     }
   }, [isShowSearch])
+
+  useEffect(() => {
+    if (options.setting.isShowSearchBarDefault) {
+      setIsShowSearch(true)
+    }
+  }, [options])
 
   const onSearchClick = () => {
     const show = !isShowSearch
@@ -85,9 +93,7 @@ const Header = memo((props) => {
 
         {isShowOperations && (
           <div className="right">
-            <SceneDropdown
-              className="dropdown"
-              options={options}></SceneDropdown>
+            <SceneDropdown className="dropdown" options={options}></SceneDropdown>
 
             <GroupDropdown
               className="dropdown"
