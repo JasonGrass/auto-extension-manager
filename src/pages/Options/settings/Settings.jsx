@@ -3,7 +3,7 @@ import React, { memo, useEffect, useState } from "react"
 import { Button, InputNumber, Switch, message } from "antd"
 import { fromJS } from "immutable"
 
-import OptionsStorage from ".../storage/index"
+import OptionsStorage, { SyncOptionsStorage } from ".../storage/index"
 import Title from "../Title.jsx"
 import { exportConfig, importConfig } from "./ConfigFileBackup.ts"
 import { SettingStyle } from "./SettingStyle.js"
@@ -27,7 +27,7 @@ function Settings() {
 
   const onIsShowAppChange = (checked) => {
     setIsShowApp(checked)
-    OptionsStorage.getAll().then((options) => {
+    SyncOptionsStorage.getAll().then((options) => {
       const setting = fromJS(options.setting).set("isShowApp", checked).toJS()
       OptionsStorage.set({ setting: setting })
     })
@@ -36,7 +36,7 @@ function Settings() {
   const onIsShowItemOperationAlwaysChange = (checked) => {
     setIsShowItemOperationAlways(checked)
 
-    OptionsStorage.getAll().then((options) => {
+    SyncOptionsStorage.getAll().then((options) => {
       const setting = fromJS(options.setting)
         .set("isShowItemOperationAlways", checked)
         .toJS()

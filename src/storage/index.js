@@ -1,7 +1,10 @@
 import { GroupOptions } from "./GroupOptions"
 import { RuleConfigOptions } from "./RuleConfigOptions"
 import { SceneOptions } from "./SceneOptions"
-import OptionsStorage, { LocalOptionsStorage } from "./options-storage"
+import OptionsStorage, {
+  LocalOptionsStorage,
+  SyncOptionsStorage
+} from "./options-storage"
 
 export default OptionsStorage
 export {
@@ -9,5 +12,6 @@ export {
   GroupOptions,
   SceneOptions,
   RuleConfigOptions,
-  LocalOptionsStorage
+  LocalOptionsStorage,
+  SyncOptionsStorage
 }

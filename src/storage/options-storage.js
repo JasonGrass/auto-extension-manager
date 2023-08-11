@@ -1,10 +1,11 @@
 import OptionsSync from "webext-options-sync"
 
-const OptionsStorage = new OptionsSync({
+export const OptionsStorage = new OptionsSync({
   storageType: "sync",
   defaults: {
     popupWidth: 400,
-    groups: []
+    groups: [],
+    setting: {}
   },
   migrations: [
     (options) => {
@@ -20,5 +21,15 @@ export const LocalOptionsStorage = new OptionsSync({
   defaults: {},
   migrations: [(options) => {}]
 })
+
+export const SyncOptionsStorage = {
+  async getAll() {
+    const options = await OptionsStorage.getAll()
+    if (!options.setting) {
+      options.setting = {}
+    }
+    return options
+  }
+}
 
 export default OptionsStorage
