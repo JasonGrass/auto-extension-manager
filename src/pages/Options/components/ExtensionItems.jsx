@@ -5,6 +5,11 @@ import { styled } from "styled-components"
 
 import { getIcon } from ".../utils/extensionHelper"
 
+/**
+ * @param items 需要显示的扩展
+ * @param placeholder 列表中没有内容时，显示的提示文字
+ * @param onClick 点击单个扩展项时的回调
+ */
 const ExtensionItems = memo(({ items, placeholder, onClick }) => {
   const isEmpty = items && items.length === 0
 

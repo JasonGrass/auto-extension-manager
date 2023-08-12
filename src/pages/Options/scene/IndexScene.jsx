@@ -78,9 +78,9 @@ function Scene() {
       <Title title="情景模式"></Title>
       {contextHolder}
       {activeScene ? (
-        <h2>当前情景模式：{activeScene.name}</h2>
+        <h2>当前激活的情景模式：{activeScene.name}</h2>
       ) : (
-        <h2>当前没有设置任何情景模式</h2>
+        <h2>当前未激活任何情景模式：</h2>
       )}
 
       <div className="scene-item-container">
@@ -89,19 +89,12 @@ function Scene() {
         })}
       </div>
 
-      <div
-        className="scene-item"
-        style={{ display: "flex", alignItems: "center" }}>
+      <div className="scene-item" style={{ display: "flex", alignItems: "center" }}>
         <h3 style={{ flexGrow: 1, fontWeight: 700 }}>新增情景模式</h3>
-        <PlusCircleOutlined
-          onClick={(e) => onNewSceneClick(e)}
-          className="scene-item-add-icon"
-        />
+        <PlusCircleOutlined onClick={(e) => onNewSceneClick(e)} className="scene-item-add-icon" />
       </div>
 
-      <div
-        className="scene-edit-panel"
-        style={{ display: itemEditType !== "" ? "block" : "none" }}>
+      <div className="scene-edit-panel" style={{ display: itemEditType !== "" ? "block" : "none" }}>
         <SceneEditor
           editType={itemEditType}
           sceneInfo={itemEditInfo}
@@ -144,18 +137,12 @@ function Scene() {
       <div className="scene-item" key={item.id}>
         <div className="scene-item-header">
           <h3>{item.name}</h3>
-          <Switch
-            checked={item.isActive}
-            onChange={(e) => onActiveChange(e, item)}
-          />
+          <Switch checked={item.isActive} onChange={(e) => onActiveChange(e, item)} />
         </div>
         <p>{item.desc}</p>
 
         <div className="scene-item-edit-icon">
-          <EditFilled
-            style={{ marginRight: 8 }}
-            onClick={(e) => onEditClick(e, item)}
-          />
+          <EditFilled style={{ marginRight: 8 }} onClick={(e) => onEditClick(e, item)} />
           <Popconfirm
             title="删除"
             description={`确认删除"${item.name}"`}
