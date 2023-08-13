@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import { styled } from "styled-components"
 
-import {
-  filterExtensions,
-  isAppExtension,
-  isExtExtension
-} from ".../utils/extensionHelper"
+import { filterExtensions, isAppExtension, isExtExtension } from ".../utils/extensionHelper"
 import isMatch from "../../../utils/searchHelper"
 import AppList from "./AppList"
 import ExtensionList from "./ExtensionListView"
@@ -36,9 +32,7 @@ function IndexPopup({ extensions, options, params }) {
         return groupExtensions
       }
 
-      groupExtensions = extensions.filter((ext) =>
-        group.extensions.includes(ext.id)
-      )
+      groupExtensions = extensions.filter((ext) => group.extensions.includes(ext.id))
     } else {
       groupExtensions = filterExtensions(extensions, isExtExtension)
     }
@@ -47,7 +41,10 @@ function IndexPopup({ extensions, options, params }) {
       return groupExtensions
     } else {
       const result = groupExtensions.filter((ext) => {
-        return isMatch([ext.name, ext.shortName], search)
+        return isMatch(
+          [ext.name, ext.shortName, ext.__attach__?.alias, ext.__attach__?.remark],
+          search
+        )
       })
       return result
     }
@@ -91,9 +88,7 @@ function IndexPopup({ extensions, options, params }) {
       </div>
 
       <div className="extension-container">
-        <ExtensionList
-          extensions={pluginExtensions}
-          options={options}></ExtensionList>
+        <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
         {isShowAppExtension && <AppList items={appExtensions}></AppList>}
       </div>
     </Style>
