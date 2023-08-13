@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Button, InputNumber, Switch, message } from "antd"
+import { QuestionCircleOutlined } from "@ant-design/icons"
+import { Button, InputNumber, Switch, Tooltip, message } from "antd"
 import { fromJS } from "immutable"
 
 import OptionsStorage, { SyncOptionsStorage } from ".../storage/index"
@@ -15,6 +16,10 @@ function Settings() {
   const [isShowItemOperationAlways, setIsShowItemOperationAlways] = useState(false)
   // 是否总是显示搜索栏
   const [isShowSearchBar, setIsShowSearchBar] = useState(false)
+  // 切换分组时，是否执行扩展启用与禁用
+  const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
+  // 是否在 Popup 中，展示固定分组中的扩展
+  const [isShowFixedExtension, setIsShowFixedExtension] = useState(true)
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -23,10 +28,14 @@ function Settings() {
     OptionsStorage.getAll().then((options) => {
       const showApp = options.setting?.isShowApp ?? true
       setIsShowApp(showApp)
-      const isShowItemOperationAlways = options.setting?.isShowItemOperationAlways ?? false
-      setIsShowItemOperationAlways(isShowItemOperationAlways)
-      const isShowSearchBar = options.setting?.isShowSearchBarDefault ?? false
-      setIsShowSearchBar(isShowSearchBar)
+      const showItemOperationAlways = options.setting?.isShowItemOperationAlways ?? false
+      setIsShowItemOperationAlways(showItemOperationAlways)
+      const showSearchBar = options.setting?.isShowSearchBarDefault ?? false
+      setIsShowSearchBar(showSearchBar)
+      const raiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
+      setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
+      const showFixedExtension = options.setting?.isShowFixedExtension ?? true
+      setIsShowFixedExtension(showFixedExtension)
     })
   }, [])
 
@@ -84,6 +93,42 @@ function Settings() {
             checked={isShowSearchBar}
             onChange={(value) =>
               onSettingChange(value, setIsShowSearchBar, "isShowSearchBarDefault")
+            }></Switch>
+        </div>
+        <div className="setting-item">
+          <span>
+            在 Popup 中切换分组时，仅开启固定分组和当前分组中的扩展{" "}
+            <Tooltip
+              placement="top"
+              title="启用之后，在 Popup 中执行切换分组的动作，会禁用掉所有非固定分组和当前分组中的扩展">
+              <QuestionCircleOutlined />
+            </Tooltip>{" "}
+          </span>
+          <Switch
+            size="small"
+            checked={isRaiseEnableWhenSwitchGroup}
+            onChange={(value) =>
+              onSettingChange(
+                value,
+                setIsRaiseEnableWhenSwitchGroup,
+                "isRaiseEnableWhenSwitchGroup"
+              )
+            }></Switch>
+        </div>
+        <div className="setting-item">
+          <span>
+            在 Popup 中展示固定分组中的扩展{" "}
+            <Tooltip
+              placement="top"
+              title="固定分组中的扩展，通常为常驻扩展，如果不想在 Popup 列表中展示，可以关闭此选项">
+              <QuestionCircleOutlined />
+            </Tooltip>{" "}
+          </span>
+          <Switch
+            size="small"
+            checked={isShowFixedExtension}
+            onChange={(value) =>
+              onSettingChange(value, setIsShowFixedExtension, "isShowFixedExtension")
             }></Switch>
         </div>
         <div className="setting-width setting-item">
