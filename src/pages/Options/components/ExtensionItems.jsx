@@ -1,5 +1,6 @@
 import React, { memo } from "react"
 
+import { Tooltip } from "antd"
 import classNames from "classnames"
 import { styled } from "styled-components"
 
@@ -10,7 +11,7 @@ import { getIcon } from ".../utils/extensionHelper"
  * @param placeholder 列表中没有内容时，显示的提示文字
  * @param onClick 点击单个扩展项时的回调
  */
-const ExtensionItems = memo(({ items, placeholder, onClick }) => {
+const ExtensionItems = memo(({ items, placeholder, onClick, managementOptions }) => {
   const isEmpty = items && items.length === 0
 
   return (
@@ -20,16 +21,25 @@ const ExtensionItems = memo(({ items, placeholder, onClick }) => {
       ) : (
         <ul>
           {items.map((item) => {
+            // 如果存在别名，则显示别名
+            const addition = managementOptions?.extensions?.filter(
+              (ext) => ext.extId === item.id
+            )[0]
+            const showName = addition?.alias ? addition.alias : item.name
+
             return (
               <li
                 key={item.id}
                 className={classNames({
-                  "ext-item": true,
                   "not-enable": !item.enabled
                 })}
                 onClick={(e) => onClick(e, item)}>
-                <img src={getIcon(item, 128)} alt="" />
-                <span>{item.name}</span>
+                <Tooltip placement="top" title={item.name}>
+                  <div className="ext-item">
+                    <img src={getIcon(item, 128)} alt="" />
+                    <span>{showName}</span>
+                  </div>
+                </Tooltip>
               </li>
             )
           })}

@@ -4,7 +4,7 @@ import { message } from "antd"
 import classNames from "classnames"
 import chromeP from "webext-polyfill-kinda"
 
-import { GroupOptions } from ".../storage/index"
+import { GroupOptions, ManageOptions } from ".../storage/index"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper"
 import { isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
@@ -20,6 +20,7 @@ function GroupManagement() {
   const [selectedGroup, setSelectedGroup] = useState()
   const [itemEditInfo, setItemEditInfo] = useState()
   const [itemEditType, setItemEditType] = useState("")
+  const [managementOptions, setManagementOptions] = useState({})
   const [messageApi, contextHolder] = message.useMessage()
 
   async function updateByGroupConfigs() {
@@ -28,12 +29,18 @@ function GroupManagement() {
   }
 
   useEffect(() => {
+    async function getManageOptions() {
+      const option = await ManageOptions.get()
+      setManagementOptions(option)
+    }
+
     async function getExts() {
       const exts = await chromeP.management.getAll()
       setExtensions(filterExtensions(exts, isExtExtension))
     }
 
     async function initGroupConfigs() {
+      await getManageOptions()
       await getExts()
       await updateByGroupConfigs()
     }
@@ -106,13 +113,13 @@ function GroupManagement() {
           <div
             className={classNames({
               "view-hidden":
-                isStringEmpty(selectedGroup?.id) ||
-                selectedGroup.id === AddNewNavItem.id
+                isStringEmpty(selectedGroup?.id) || selectedGroup.id === AddNewNavItem.id
             })}>
             <GroupContent
               group={selectedGroup}
               groupList={groupListInfo}
               extensions={extensions}
+              managementOptions={managementOptions}
             />
           </div>
 

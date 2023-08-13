@@ -6,7 +6,7 @@ import { isStringEmpty } from ".../utils/utils.js"
 import ExtensionItems from "../components/ExtensionItems"
 import { GroupContentStyle } from "./GroupContentStyle"
 
-const GroupContent = memo(({ group, groupList, extensions }) => {
+const GroupContent = memo(({ group, groupList, extensions, managementOptions }) => {
   const [containExts, setContains] = useState()
   const [noneGroupExts, setNoneGroupExts] = useState()
 
@@ -70,7 +70,8 @@ const GroupContent = memo(({ group, groupList, extensions }) => {
       <ExtensionItems
         items={extItems}
         onClick={onIconClick}
-        placeholder="该分组中没有插件"
+        placeholder="none"
+        managementOptions={managementOptions}
       />
     )
   }
