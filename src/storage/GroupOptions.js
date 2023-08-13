@@ -10,8 +10,7 @@ export const GroupOptions = {
     if (groups.filter((g) => g.id === "fixed").length < 1) {
       const group = {
         id: "fixed",
-        name: "固定分组",
-        desc: "内置分组，与其它分组相互独立。位于此分组中的插件，在 Popup 中手动切换分组时，不会被禁用。",
+        name: "fixed group",
         extensions: []
       }
       groups.unshift(group)
