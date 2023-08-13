@@ -1,17 +1,25 @@
-import React, { memo } from "react"
+import React, { memo, useEffect, useState } from "react"
 
 import classNames from "classnames"
 
 import "./ExtensionListView.css"
 
-import { sortExtension } from ".../utils/extensionHelper"
+import { ManageOptions } from ".../storage"
+import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
 import ExtensionListItem from "./ExtensionListItem"
 
 /**
  * 普通扩展的列表展示
  */
 const ExtensionList = memo(({ extensions, options }) => {
-  const items = sortExtension(extensions)
+  const [items, setItems] = useState([])
+
+  useEffect(() => {
+    ManageOptions.get().then((options) => {
+      const list = appendAdditionInfo(extensions, options)
+      setItems(sortExtension(list))
+    })
+  })
 
   return (
     <ul className="list-view">
@@ -23,9 +31,7 @@ const ExtensionList = memo(({ extensions, options }) => {
               "is-enable": item.enabled,
               "not-enable": !item.enabled
             })}>
-            <ExtensionListItem
-              item={item}
-              options={options}></ExtensionListItem>
+            <ExtensionListItem item={item} options={options}></ExtensionListItem>
           </li>
         )
       })}

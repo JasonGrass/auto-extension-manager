@@ -1,10 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
-import {
-  DeleteOutlined,
-  HomeOutlined,
-  SettingOutlined
-} from "@ant-design/icons"
+import { DeleteOutlined, HomeOutlined, SettingOutlined } from "@ant-design/icons"
 import { Button, Popconfirm, Switch } from "antd"
 import classNames from "classnames"
 
@@ -68,6 +64,9 @@ const ExtensionListItem = memo(({ item, options }) => {
     setIsHover(false)
   }
 
+  // 如果存在别名，则显示别名
+  const showName = item.__attach__?.alias ? item.__attach__?.alias : item.name
+
   return (
     <div
       onMouseEnter={(e) => onItemMouseOver(e)}
@@ -77,7 +76,7 @@ const ExtensionListItem = memo(({ item, options }) => {
         { "is-enable": itemEnable, "not-enable": !itemEnable }
       ])}>
       <img src={getIcon(item, 24)} alt="" />
-      <span className="ext-name">{item.name}</span>
+      <span className="ext-name">{showName}</span>
       {buildOperationButton(isHover || isShowOperationButton)}
     </div>
   )
