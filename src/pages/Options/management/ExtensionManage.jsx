@@ -17,7 +17,7 @@ const columns = [
     key: "index",
     width: 60,
     render: (text, record, index) => {
-      return (index + 1).toString().padStart(2, "0")
+      return <span className="column-index">{(index + 1).toString().padStart(2, "0")}</span>
     }
   },
   {
@@ -31,7 +31,7 @@ const columns = [
     render: (name, record, index) => {
       return (
         <Tooltip placement="topLeft" title={name}>
-          <span>
+          <span className="column-name">
             <img src={record.icon} alt="" width={16} height={16} />
             <span>{name}</span>
           </span>
@@ -57,17 +57,20 @@ const ExtensionManage = memo(({ extensions, config }) => {
   const [shownData, setShownData] = useState([])
   const [searchValue, setSearchValue] = useState("")
 
+  // 初始化
   useEffect(() => {
     const initData = buildRecords(extensions, config)
     setData(initData)
     setShownData(initData)
   }, [extensions, config])
 
+  // 执行搜索
   const onSearch = (value) => {
     setSearchValue(value)
     setShownData(search(data, value))
   }
 
+  // 重新加载配置
   const reload = () => {
     ManageOptions.get().then((res) => {
       var reloadData = buildRecords(extensions, res)
@@ -79,12 +82,10 @@ const ExtensionManage = memo(({ extensions, config }) => {
   return (
     <ExtensionManageStyle>
       <Search
+        className="search"
         placeholder="search"
         onSearch={onSearch}
         onChange={(e) => onSearch(e.target.value)}
-        style={{
-          width: 200
-        }}
       />
       <Table
         pagination={{ pageSize: 100 }}
