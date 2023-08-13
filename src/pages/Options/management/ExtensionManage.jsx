@@ -3,7 +3,7 @@ import React, { memo, useEffect, useState } from "react"
 import { Button, Form, Input, Table, Tooltip, message } from "antd"
 
 import { ManageOptions } from ".../storage"
-import { getIcon } from ".../utils/extensionHelper"
+import { getIcon, sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
 import { ExtensionManageStyle } from "./ExtensionManageStyle"
 
@@ -108,7 +108,9 @@ const ExtensionManage = memo(({ extensions, config }) => {
 const ExpandEditor = ({ record, reload }) => {
   const initValue = record
   const onFinish = async (values) => {
-    await ManageOptions.updateExtension(record.id, values)
+    const alias = values.alias?.trim() ?? ""
+    const remark = values.remark?.trim() ?? ""
+    await ManageOptions.updateExtension(record.id, { alias, remark })
     message.success("update success")
     reload()
   }
@@ -165,7 +167,13 @@ const ExpandEditor = ({ record, reload }) => {
 }
 
 function buildRecords(extensions, configs) {
-  console.log("buildRecords", configs)
+  if (!extensions) {
+    return []
+  }
+
+  if (!configs) {
+    throw new Error("configs is required")
+  }
 
   let records = []
 
@@ -174,18 +182,16 @@ function buildRecords(extensions, configs) {
 
     let record = {
       key: extension.id,
-      id: extension.id,
-      name: extension.name,
-      shortName: extension.shortName,
-      version: extension.version,
-      alias: config?.alias,
+      ...extension,
       remark: config?.remark,
-      icon: getIcon(extension)
+      icon: getIcon(extension),
+      __attach__: config
     }
-
+    record.enabled = true // 这里不考虑扩展的开启与禁用，都设置成 true，是为了让下面的排序不受影响
     records.push(record)
   }
-  return records
+
+  return sortExtension(records)
 }
 
 function search(records, searchText) {
