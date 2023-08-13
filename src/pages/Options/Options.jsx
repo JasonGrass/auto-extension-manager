@@ -8,6 +8,7 @@ import "./index.css"
 
 import About from "./about/About.jsx"
 import GroupManagement from "./group/IndexGroup.jsx"
+import ExtensionManageIndex from "./management/ExtensionManageIndex.jsx"
 import Navigation from "./navigation/Navigation.jsx"
 import RuleSetting from "./rule/RuleSetting.jsx"
 import Scene from "./scene/IndexScene.jsx"
@@ -33,6 +34,7 @@ function Options() {
             <Route path="/setting" element={<Settings />} />
             <Route path="/scene" element={<Scene />} />
             <Route path="/group" element={<GroupManagement />} />
+            <Route path="/management" element={<ExtensionManageIndex />} />
             <Route path="/rule" element={<RuleSetting />} />
           </Routes>
         </ConfigProvider>

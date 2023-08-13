@@ -1,12 +1,7 @@
 import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
 
-import {
-  FilterFilled,
-  FolderOpenFilled,
-  ThunderboltFilled,
-  ToolFilled
-} from "@ant-design/icons"
+import { FilterFilled, FolderOpenFilled, ThunderboltFilled, ToolFilled } from "@ant-design/icons"
 
 import { NavigationStyle } from "./NavigationStyle"
 
@@ -30,6 +25,11 @@ function Navigation() {
       <NavLink to="/group" className="nav-item">
         <FolderOpenFilled />
         <span className="text">分组管理</span>
+      </NavLink>
+
+      <NavLink to="/management" className="nav-item">
+        <FolderOpenFilled />
+        <span className="text">插件管理</span>
       </NavLink>
 
       <NavLink to="/rule" className="nav-item">
