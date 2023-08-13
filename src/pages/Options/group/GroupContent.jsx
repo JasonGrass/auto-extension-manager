@@ -24,8 +24,8 @@ const GroupContent = memo(({ group, groupList, extensions, managementOptions }) 
       .filter((ext) => !groupedIds.includes(ext.id))
       .filter((ext) => !isAppExtension(ext))
 
-    setContains(sortExtension(containsExts))
-    setNoneGroupExts(sortExtension(noneGroupedExtensions))
+    setContains(containsExts)
+    setNoneGroupExts(noneGroupedExtensions)
   }, [group, groupList, extensions])
 
   const save = async (contains) => {
@@ -54,14 +54,14 @@ const GroupContent = memo(({ group, groupList, extensions, managementOptions }) 
       if (isGrouped) {
         const contain = containExts.filter((ext) => ext.id !== item.id)
         const none = [...noneGroupExts, item]
-        setContains(sortExtension(contain))
-        setNoneGroupExts(sortExtension(none))
+        setContains(contain)
+        setNoneGroupExts(none)
         save(contain)
       } else {
         const none = noneGroupExts.filter((ext) => ext.id !== item.id)
         const contain = [...containExts, item]
-        setContains(sortExtension(contain))
-        setNoneGroupExts(sortExtension(none))
+        setContains(contain)
+        setNoneGroupExts(none)
         save(contain)
       }
     }

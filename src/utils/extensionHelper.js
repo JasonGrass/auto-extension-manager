@@ -55,8 +55,32 @@ export const sortExtension = (extensions) => {
 
   return list.sort((a, b) => {
     if (a.enabled === b.enabled) {
-      return a.name.localeCompare(b.name) // Sort by name
+      const aName = a.__attach__?.alias ? a.__attach__?.alias : a.name
+      const bName = b.__attach__?.alias ? b.__attach__?.alias : b.name
+      return aName.localeCompare(bName) // Sort by name
     }
     return a.enabled < b.enabled ? 1 : -1 // Sort by state
   })
+}
+
+/**
+ * 根据额外的配置数据，给插件添加附加的一些数据，如别名，备注等
+ */
+export const appendAdditionInfo = (extensions, managementOptions) => {
+  if (!extensions) {
+    return []
+  }
+  if (!managementOptions || !managementOptions.extensions) {
+    return extensions
+  }
+
+  for (const extension of extensions) {
+    const addition = managementOptions.extensions.filter((ext) => ext.extId === extension.id)[0]
+    if (!addition) {
+      continue
+    }
+    extension.__attach__ = addition
+  }
+
+  return extensions
 }

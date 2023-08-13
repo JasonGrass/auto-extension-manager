@@ -5,6 +5,7 @@ import classNames from "classnames"
 import { styled } from "styled-components"
 
 import { getIcon } from ".../utils/extensionHelper"
+import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
 
 /**
  * @param items 需要显示的扩展
@@ -12,7 +13,11 @@ import { getIcon } from ".../utils/extensionHelper"
  * @param onClick 点击单个扩展项时的回调
  */
 const ExtensionItems = memo(({ items, placeholder, onClick, managementOptions }) => {
-  const isEmpty = items && items.length === 0
+  const isEmpty = !items || items.length === 0
+
+  // 附加了额外信息的扩展列表
+  const extensions = appendAdditionInfo(items, managementOptions)
+  const sortedItems = sortExtension(extensions)
 
   return (
     <Style>
@@ -20,12 +25,9 @@ const ExtensionItems = memo(({ items, placeholder, onClick, managementOptions })
         <p className="placeholder">{placeholder}</p>
       ) : (
         <ul>
-          {items.map((item) => {
+          {sortedItems.map((item) => {
             // 如果存在别名，则显示别名
-            const addition = managementOptions?.extensions?.filter(
-              (ext) => ext.extId === item.id
-            )[0]
-            const showName = addition?.alias ? addition.alias : item.name
+            const showName = item.__attach__?.alias ? item.__attach__?.alias : item.name
 
             return (
               <li
