@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { GroupOptions } from ".../storage/GroupOptions"
-import { isAppExtension, sortExtension } from ".../utils/extensionHelper"
+import { isAppExtension } from ".../utils/extensionHelper"
 import { isStringEmpty } from ".../utils/utils.js"
 import ExtensionItems from "../components/ExtensionItems"
 import { GroupContentStyle } from "./GroupContentStyle"
@@ -15,7 +15,9 @@ const GroupContent = memo(({ group, groupList, extensions, managementOptions }) 
       ?.map((id) => extensions.find((e) => e.id === id))
       .filter((ext) => ext)
 
+    // 所有已经分组的的插件ID（不考虑固定分组）
     const groupedIds = groupList
+      .filter((g) => g.id !== "fixed")
       .map((g) => g.extensions)
       .flat()
       .filter((id) => !isStringEmpty(id))
