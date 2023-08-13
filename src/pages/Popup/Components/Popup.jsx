@@ -14,9 +14,12 @@ function IndexPopup({ extensions, options, params }) {
   const [currentGroup, setGroup] = useState(null)
   const [currentSearch, setSearch] = useState("")
 
+  // 是否显示 APP 类型的扩展
+  const [isSettingShowAppExtension, setIsSettingShowAppExtension] = useState(false)
   const [isShowAppExtension, setIsShowAppExtension] = useState(false)
   useEffect(() => {
     const showApp = options.setting?.isShowApp ?? true
+    setIsSettingShowAppExtension(showApp)
     setIsShowAppExtension(showApp)
   }, [options])
 
@@ -52,7 +55,7 @@ function IndexPopup({ extensions, options, params }) {
 
   const onGroupChanged = (group) => {
     setGroup(group)
-    setIsShowAppExtension(!group) // 切换到特定分组时，不显示 APP
+    setIsShowAppExtension(isSettingShowAppExtension && !group) // 切换到特定分组时，不显示 APP
     const list = filterCurrentExtensions(group, currentSearch)
     setPluginExtensions(list)
   }
