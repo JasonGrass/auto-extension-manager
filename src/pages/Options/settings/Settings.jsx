@@ -25,16 +25,16 @@ function Settings() {
 
   useEffect(() => {
     // 根据保存的配置，初始化设置的显示
-    OptionsStorage.getAll().then((options) => {
-      const showApp = options.setting?.isShowApp ?? true
+    SyncOptionsStorage.getAll().then((options) => {
+      const showApp = options.setting.isShowApp ?? true
       setIsShowApp(showApp)
-      const showItemOperationAlways = options.setting?.isShowItemOperationAlways ?? false
+      const showItemOperationAlways = options.setting.isShowItemOperationAlways ?? false
       setIsShowItemOperationAlways(showItemOperationAlways)
-      const showSearchBar = options.setting?.isShowSearchBarDefault ?? false
+      const showSearchBar = options.setting.isShowSearchBarDefault ?? false
       setIsShowSearchBar(showSearchBar)
-      const raiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
+      const raiseEnableWhenSwitchGroup = options.setting.isRaiseEnableWhenSwitchGroup ?? false
       setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
-      const showFixedExtension = options.setting?.isShowFixedExtension ?? true
+      const showFixedExtension = options.setting.isShowFixedExtension ?? true
       setIsShowFixedExtension(showFixedExtension)
     })
   }, [])

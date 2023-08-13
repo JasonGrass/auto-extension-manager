@@ -8,7 +8,7 @@ import chromeP from "webext-polyfill-kinda"
 import "./index.css"
 
 import { appendAdditionInfo } from ".../utils/extensionHelper"
-import OptionsStorage, { LocalOptionsStorage, ManageOptions } from "../../storage/index"
+import { LocalOptionsStorage, ManageOptions, SyncOptionsStorage } from "../../storage/index"
 import Popup from "./Components/Popup"
 
 const container = document.getElementById("app-container")
@@ -17,11 +17,18 @@ const root = createRoot(container)
 document.body.style.width = "400px"
 
 const prepare = async function () {
-  const allExtensions = await chromeP.management.getAll()
+  let allExtensions = await chromeP.management.getAll()
+  const allOptions = await SyncOptionsStorage.getAll()
+
+  // 如果关闭了在 Popup 中显示固定分组中的扩展，则隐藏这些扩展
+  if (!(allOptions.setting.isShowFixedExtension ?? true)) {
+    const fixedGroup = allOptions.groups.find((g) => g.id === "fixed")
+    allExtensions = allExtensions.filter((ext) => !fixedGroup.extensions.includes(ext.id))
+  }
+
   const managementOptions = await ManageOptions.get()
   const extensions = appendAdditionInfo(allExtensions, managementOptions)
 
-  const allOptions = await OptionsStorage.getAll()
   const localOptions = await LocalOptionsStorage.getAll()
   const minHeight = Math.min(600, Math.max(200, allExtensions.length * 40))
 
