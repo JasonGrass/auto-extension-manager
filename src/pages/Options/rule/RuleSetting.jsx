@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import chromeP from "webext-polyfill-kinda"
 
-import { GroupOptions, RuleConfigOptions, SceneOptions } from ".../storage"
+import { GroupOptions, ManageOptions, RuleConfigOptions, SceneOptions } from ".../storage"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import Title from "../Title.jsx"
 import { RuleSettingStyle } from "./RuleSettingStyle.js"
@@ -11,6 +11,7 @@ import ViewRule from "./ViewRule.jsx"
 function RuleSetting() {
   const [allSceneOptions, setAllSceneOptions] = useState([])
   const [allGroupOptions, setAllGroupOptions] = useState([])
+  const [managementOptions, setManagementOptions] = useState([])
 
   const [extensions, setExtensions] = useState([])
 
@@ -31,6 +32,10 @@ function RuleSetting() {
 
     RuleConfigOptions.get().then((list) => {
       setRuleConfigs(list)
+    })
+
+    ManageOptions.get().then((options) => {
+      setManagementOptions(options)
     })
   }, [])
 
@@ -68,6 +73,7 @@ function RuleSetting() {
         extensions={extensions}
         sceneOption={allSceneOptions}
         groupOption={allGroupOptions}
+        managementOptions={managementOptions}
         operation={operation}></ViewRule>
     </RuleSettingStyle>
   )

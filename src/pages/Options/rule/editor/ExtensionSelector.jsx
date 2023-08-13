@@ -10,7 +10,6 @@ import React, {
 import { DownOutlined } from "@ant-design/icons"
 import { Button, Dropdown, Space } from "antd"
 
-import { sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
 import ExtensionItems from "../../components/ExtensionItems"
 import EditorCommonStyle from "./CommonStyle"
@@ -27,7 +26,7 @@ const matchModes = [
   }
 ]
 
-const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
+const ExtensionSelector = ({ groupList, config, extensions, managementOptions }, ref) => {
   useImperativeHandle(ref, () => ({
     // 获取配置
     getExtensionSelectConfig: () => {
@@ -37,9 +36,7 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
 
       let extensionList = []
       if (matchMode.key === "single") {
-        extensionList = selectedExtensions
-          .filter((ext) => ext)
-          .map((ext) => ext.id)
+        extensionList = selectedExtensions.filter((ext) => ext).map((ext) => ext.id)
         if (extensionList.length < 1) {
           throw Error("选择选择任何扩展")
         }
@@ -61,8 +58,7 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
   // 剩余没有被选择的所有扩展
   const [unselectedExtensions, setUnselectedExtensions] = useState([])
   // 显示到界面上的剩余扩展（搜索之后的结果）
-  const [displayUnselectedExtensions, setDisplayUnselectedExtensions] =
-    useState([])
+  const [displayUnselectedExtensions, setDisplayUnselectedExtensions] = useState([])
 
   // 搜索关键字
   const [searchText, setSearchText] = useState("")
@@ -77,13 +73,9 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
       setDisplayUnselectedExtensions(extensions)
     }
 
-    const selected = extensions.filter((ext) =>
-      config.targetExtensions.includes(ext.id)
-    )
-    setSelectedExtensions(sortExtension(selected))
-    const unselected = sortExtension(
-      extensions.filter((ext) => !selected.includes(ext))
-    )
+    const selected = extensions.filter((ext) => config.targetExtensions.includes(ext.id))
+    setSelectedExtensions(selected)
+    const unselected = extensions.filter((ext) => !selected.includes(ext))
     setUnselectedExtensions(unselected)
     setDisplayUnselectedExtensions(unselected)
   }, [config, extensions])
@@ -96,7 +88,7 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
       if (group) {
         if (group.extensions && group.extensions.length > 0) {
           const ext = extensions.filter((e) => group.extensions.includes(e.id))
-          setSelectedExtensions(sortExtension(ext))
+          setSelectedExtensions(ext)
         } else {
           setSelectedExtensions([])
         }
@@ -124,20 +116,14 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
     } else if (mode.key === "single") {
       setSelectedOfSingleByConfig()
     }
-  }, [
-    config,
-    groupList,
-    extensions,
-    setSelectedOfGroup,
-    setSelectedOfSingleByConfig
-  ])
+  }, [config, groupList, extensions, setSelectedOfGroup, setSelectedOfSingleByConfig])
 
   // 当搜索关键字变化，或者未选择列表更新时，界面界面显示
   useEffect(() => {
     const displayUnselected = unselectedExtensions.filter((ext) =>
       isMatch([ext.name, ext.shortName], searchText, true)
     )
-    setDisplayUnselectedExtensions(sortExtension(displayUnselected))
+    setDisplayUnselectedExtensions(displayUnselected)
   }, [unselectedExtensions, searchText])
 
   /**
@@ -186,7 +172,7 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
       setSelectedExtensions(selected)
 
       const unselected = [...unselectedExtensions, item]
-      setUnselectedExtensions(sortExtension(unselected))
+      setUnselectedExtensions(unselected)
     }
   }
 
@@ -199,7 +185,7 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
       setUnselectedExtensions(unselected)
 
       const selected = [...selectedExtensions, item]
-      setSelectedExtensions(sortExtension(selected))
+      setSelectedExtensions(selected)
     }
   }
 
@@ -247,6 +233,7 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
           <h3>包含的扩展</h3>
           <ExtensionItems
             items={selectedExtensions}
+            managementOptions={managementOptions}
             placeholder="无任何扩展"
             onClick={onSelectedExtensionClick}></ExtensionItems>
 
@@ -255,6 +242,7 @@ const ExtensionSelector = ({ groupList, config, extensions }, ref) => {
               <h3>未包含的扩展</h3>
               <ExtensionItems
                 items={displayUnselectedExtensions}
+                managementOptions={managementOptions}
                 placeholder="无任何扩展"
                 onClick={onUnselectedExtensionClick}></ExtensionItems>
             </div>

@@ -15,7 +15,7 @@ const { Map } = require("immutable")
 const { Column } = Table
 
 const ViewRule = memo((props) => {
-  const { config, sceneOption, groupOption, extensions, operation } = props
+  const { config, sceneOption, groupOption, extensions, operation, managementOptions } = props
   console.log(config)
 
   const [editingConfig, setEditingConfig] = useState(null)
@@ -95,22 +95,14 @@ const ViewRule = memo((props) => {
           title="匹配"
           dataIndex="match"
           render={(match, record) => {
-            return (
-              <MatchView config={match} sceneOption={sceneOption}></MatchView>
-            )
+            return <MatchView config={match} sceneOption={sceneOption}></MatchView>
           }}
         />
         <Column
           title="扩展(组)"
           dataIndex="target"
           render={(target, record) => {
-            return (
-              <TargetView
-                config={target}
-                groupOption={groupOption}
-                extensions={extensions}
-              />
-            )
+            return <TargetView config={target} groupOption={groupOption} extensions={extensions} />
           }}
         />
 
@@ -163,6 +155,7 @@ const ViewRule = memo((props) => {
         config={editingConfig}
         sceneOption={sceneOption}
         groupOption={groupOption}
+        managementOptions={managementOptions}
         onSave={onSave}
         onCancel={onCancel}></EditRule>
     </Style>
