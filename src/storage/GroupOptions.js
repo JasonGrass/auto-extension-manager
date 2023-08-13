@@ -6,6 +6,18 @@ export const GroupOptions = {
   async getGroups() {
     const all = await OptionsStorage.getAll()
     let groups = all.groups ? [...all.groups] : []
+
+    if (groups.filter((g) => g.id === "fixed").length < 1) {
+      const group = {
+        id: "fixed",
+        name: "固定分组",
+        desc: "内置分组，与其它分组相互独立。位于此分组中的插件，在 Popup 中手动切换分组时，不会被禁用。",
+        extensions: []
+      }
+      groups.unshift(group)
+      this.addGroup(group)
+    }
+
     return groups
   },
 
@@ -13,16 +25,23 @@ export const GroupOptions = {
     const all = await OptionsStorage.getAll()
     let groups = all.groups ? [...all.groups] : []
 
-    const exist = groups.find((g) => g.name === group.name)
-    if (exist) {
-      throw Error(`already exist same group named ${group.name}`)
+    if (group.id === "fixed") {
+      // 内部操作，不检查 name
+      const exist = groups.find((g) => g.name === group.name)
+      if (exist) {
+        throw Error(`already exist same group named ${group.name}`)
+      }
     }
 
     if (!group.id) {
       group.id = nanoid()
     }
 
-    groups.push(group)
+    if (group.id === "fixed") {
+      groups.unshift(group)
+    } else {
+      groups.push(group)
+    }
 
     await OptionsStorage.set({ groups })
   },

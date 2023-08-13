@@ -8,13 +8,13 @@ import { GroupOptions } from ".../storage/index"
 import { GroupNavStyle } from "./GroupNavStyle"
 import { AddNewNavItem } from "./helpers"
 
-function GroupNav({
-  groupInfo,
-  current,
-  onSelectedChanged,
-  onGroupItemDeleted,
-  onGroupItemEdit
-}) {
+function GroupNav({ groupInfo, current, onSelectedChanged, onGroupItemDeleted, onGroupItemEdit }) {
+  let showGroupItems = []
+  const fixedGroup = groupInfo.find((g) => g.id === "fixed")
+  if (fixedGroup) {
+    showGroupItems = [fixedGroup, ...groupInfo.filter((g) => g.id !== "fixed")]
+  }
+
   useEffect(() => {
     if (!current || !current.id) {
       selectFirstGroupTab()
@@ -31,6 +31,10 @@ function GroupNav({
 
   const onEditGroupClick = (e, group) => {
     e.stopPropagation()
+    if (group.id === "fixed") {
+      message.warning("固定分组的名称不能被编辑")
+      return
+    }
     onGroupItemEdit?.(group)
   }
 
@@ -60,6 +64,11 @@ function GroupNav({
   const onDeleteGroupClick = async (e, group) => {
     e.stopPropagation()
 
+    if (group.id === "fixed") {
+      message.warning("固定分组不能被删除")
+      return
+    }
+
     await GroupOptions.deleteGroup(group.id)
     if (group.id === current?.id) {
       selectFirstGroupTab(group)
@@ -73,7 +82,7 @@ function GroupNav({
   return (
     <GroupNavStyle>
       <ul>
-        {groupInfo.map((group) => {
+        {showGroupItems.map((group) => {
           return (
             <li key={group.id} onClick={(e) => onGroupTabClick(e, group)}>
               <div
