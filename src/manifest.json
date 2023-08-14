@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Extension Manager",
-  "description": "a chrome extension manager where you can add rules",
+  "name": "扩展管理器(Extension Manager)",
+  "description": "一个可以自由配置规则的扩展管理工具",
   "homepage_url": "https://github.com/JasonGrass/auto-extension-manager",
   "icons": {
     "32": "icon-32.png",
