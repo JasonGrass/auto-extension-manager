@@ -1,11 +1,11 @@
 import { List, Map } from "immutable"
 import { nanoid } from "nanoid"
 
-import OptionsStorage from "./options-storage"
+import OptionsStorage, { SyncOptionsStorage } from "./options-storage"
 
 export const RuleConfigOptions = {
   async get() {
-    const all = await OptionsStorage.getAll()
+    const all = await SyncOptionsStorage.getAll()
     const configs = List(all.ruleConfig ?? [])
     return configs.toJS()
   },
@@ -49,7 +49,7 @@ export const RuleConfigOptions = {
   },
 
   async deleteOne(id) {
-    const all = await OptionsStorage.getAll()
+    const all = await SyncOptionsStorage.getAll()
     if (!all.scenes) {
       return
     }

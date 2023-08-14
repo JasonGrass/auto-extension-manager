@@ -1,11 +1,11 @@
-import OptionsStorage from "./options-storage"
+import OptionsStorage, { SyncOptionsStorage } from "./options-storage"
 
 export const ManageOptions = {
   /**
    * 获取所有管理相关的配置
    */
   async get() {
-    const all = await OptionsStorage.getAll()
+    const all = await SyncOptionsStorage.getAll()
     const configs = all.management ?? {}
     return configs
   },

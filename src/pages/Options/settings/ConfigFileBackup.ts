@@ -4,7 +4,7 @@ import { OptionsStorage, SyncOptionsStorage } from ".../storage"
  * 导出配置
  */
 export async function exportConfig() {
-  const config = await OptionsStorage.getAll()
+  const config = await SyncOptionsStorage.getAll()
   const data = {
     groups: config.groups,
     scenes: config.scenes,

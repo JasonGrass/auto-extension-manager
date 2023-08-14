@@ -1,6 +1,6 @@
 import chromeP from "webext-polyfill-kinda"
 
-import { LocalOptionsStorage, OptionsStorage } from ".../storage"
+import { LocalOptionsStorage, SyncOptionsStorage } from ".../storage"
 import { onTabClosed, onTabUrlChange } from "./event/tabChangeEvent"
 import "./message/MessageHandler"
 import createRuleHandler from "./rule/RuleHandler"
@@ -12,7 +12,7 @@ onTabClosed(handler.onTabClosed.bind(handler))
 // initial running
 ;(async () => {
   const local = await LocalOptionsStorage.getAll()
-  const options = await OptionsStorage.getAll()
+  const options = await SyncOptionsStorage.getAll()
 
   const tabs = await chromeP.tabs.query({
     active: true,
