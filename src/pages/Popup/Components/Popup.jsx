@@ -2,96 +2,52 @@ import React, { useEffect, useState } from "react"
 
 import { styled } from "styled-components"
 
-import { filterExtensions, isAppExtension, isExtExtension } from ".../utils/extensionHelper"
-import isMatch from "../../../utils/searchHelper"
+import { handleExtensionOnOff } from "../ExtensionOnOffHandler.js"
+import { useSearchController } from "../hooks/useSearchController"
+import { useShowAppController } from "../hooks/useShowAppController"
 import AppList from "./AppList"
 import ExtensionList from "./ExtensionListView"
 import Header from "./Header"
 
-function IndexPopup({ extensions, options, params }) {
-  const [pluginExtensions, setPluginExtensions] = useState([])
-  const [appExtensions, setAppExtensions] = useState([])
-  const [currentGroup, setGroup] = useState(null)
-  const [currentSearch, setSearch] = useState("")
+function IndexPopup({ originExtensions, options, params }) {
+  const [extensions, setExtensions] = useState(originExtensions)
 
-  // 是否显示 APP 类型的扩展
-  const [isSettingShowAppExtension, setIsSettingShowAppExtension] = useState(false)
-  const [isShowAppExtension, setIsShowAppExtension] = useState(false)
-  useEffect(() => {
-    const showApp = options.setting?.isShowApp ?? true
-    setIsSettingShowAppExtension(showApp)
-    setIsShowAppExtension(showApp)
-  }, [options])
+  // 是否显示 APP 类型扩展
+  const [isShowAppExtension, setIsShowAppExtension] = useShowAppController(options)
 
-  useEffect(() => {
-    setPluginExtensions(filterExtensions(extensions, isExtExtension))
-    setAppExtensions(filterExtensions(extensions, isAppExtension))
-  }, [extensions])
+  // 搜索控制
+  const [pluginExtensions, appExtensions, onSearchByTextChange, onSearchByGroupChange] =
+    useSearchController(extensions)
 
-  const filterCurrentExtensions = (group, search) => {
-    let groupExtensions = []
-    if (group) {
-      if (!group.extensions || group.extensions.length === 0) {
-        return groupExtensions
-      }
+  // 是否在切换分组时，执行扩展的禁用与启用
+  const isRaiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
 
-      groupExtensions = extensions.filter((ext) => group.extensions.includes(ext.id))
-    } else {
-      groupExtensions = filterExtensions(extensions, isExtExtension)
+  const onGroupChanged = async (group) => {
+    // 执行扩展的启用与禁用
+    if (isRaiseEnableWhenSwitchGroup && group) {
+      const newExtensions = await handleExtensionOnOff(extensions, options, group)
+      setExtensions(newExtensions)
     }
 
-    if (!search || search.trim() === "") {
-      return groupExtensions
-    } else {
-      const result = groupExtensions.filter((ext) => {
-        return isMatch(
-          [ext.name, ext.shortName, ext.__attach__?.alias, ext.__attach__?.remark],
-          search
-        )
-      })
-      return result
-    }
-  }
-
-  const onGroupChanged = (group) => {
-    setGroup(group)
-    setIsShowAppExtension(isSettingShowAppExtension && !group) // 切换到特定分组时，不显示 APP
-    const list = filterCurrentExtensions(group, currentSearch)
-    setPluginExtensions(list)
-  }
-
-  const onSearch = (text) => {
-    setSearch(text)
-    const list = filterCurrentExtensions(currentGroup, text)
-    setPluginExtensions(list)
-    searchApp(text)
-  }
-
-  const searchApp = (text) => {
-    const allApp = filterExtensions(extensions, isAppExtension)
-    if (!text || text.trim() === "") {
-      setAppExtensions(allApp)
-      return
-    }
-    const searchResult = allApp.filter((ext) => {
-      return isMatch([ext.name, ext.shortName], text)
-    })
-    setAppExtensions(searchResult)
+    setIsShowAppExtension(!group) // 切换到特定分组时，不显示 APP
+    onSearchByGroupChange(group)
   }
 
   return (
     <Style mh={params.minHeight}>
       <div className="header-container">
         <Header
-          activeCount={pluginExtensions.filter((ext) => ext.enabled).length}
-          totalCount={pluginExtensions.length}
+          activeCount={extensions.filter((ext) => ext.enabled).length}
+          totalCount={extensions.length}
           options={options}
           onGroupChanged={onGroupChanged}
-          onSearch={onSearch}></Header>
+          onSearch={onSearchByTextChange}></Header>
       </div>
 
       <div className="extension-container">
-        <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
+        <ExtensionList
+          extensions={isRaiseEnableWhenSwitchGroup ? extensions : pluginExtensions}
+          options={options}></ExtensionList>
         {isShowAppExtension && <AppList items={appExtensions}></AppList>}
       </div>
     </Style>

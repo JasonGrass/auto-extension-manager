@@ -8,16 +8,20 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
 
   const fixMenu = [
     {
-      label: "全部",
+      label: "默认",
       key: "all"
     }
   ]
 
-  const configGroupMenu =
+  let configGroupMenu =
     options.groups?.map((group) => ({
       label: group.name,
       key: group.id
     })) ?? []
+
+  if (!(options.setting.isShowFixedExtension ?? true)) {
+    configGroupMenu = configGroupMenu.filter((g) => g.key !== "fixed")
+  }
 
   const handleGroupMenuClick = (e) => {
     const group = options.groups?.filter((g) => g.id === e.key)[0]
@@ -44,7 +48,7 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
     <div className={className}>
       <Dropdown menu={groupMenu} trigger={["click"]} placement="bottomLeft">
         <Space>
-          <span className="menu-item-text">{group?.name ?? "插件分组"}</span>
+          <span className="menu-item-text">{group?.name ?? "默认"}</span>
           <CaretDownOutlined className="caret" />
         </Space>
       </Dropdown>

@@ -35,6 +35,11 @@ const ExtensionListItem = memo(({ item, options }) => {
   const [existOptionPage] = useState(!isStringEmpty(item.optionsUrl))
   const [existHomePage] = useState(!isStringEmpty(item.homepageUrl))
 
+  // 在切换分组可以控制扩展的开启或关闭时，这里需要主动更新 enabled，否则 UI 显示会有问题
+  useEffect(() => {
+    setItemEnable(item.enabled)
+  }, [item])
+
   useEffect(() => {
     const showButtonAlways = options.setting?.isShowItemOperationAlways ?? false
     setIsShowOperationButton(showButtonAlways)

@@ -25,6 +25,8 @@ const prepare = async function () {
     const fixedGroup = allOptions.groups.find((g) => g.id === "fixed")
     allExtensions = allExtensions.filter((ext) => !fixedGroup.extensions.includes(ext.id))
   }
+  // 不展示主题类的扩展
+  allExtensions = allExtensions.filter((ext) => ext.type !== "theme")
 
   const managementOptions = await ManageOptions.get()
   const extensions = appendAdditionInfo(allExtensions, managementOptions)
@@ -49,5 +51,7 @@ const prepare = async function () {
 // })
 
 prepare().then((props) => {
-  root.render(<Popup extensions={props.extensions} options={props.options} params={props.params} />)
+  root.render(
+    <Popup originExtensions={props.extensions} options={props.options} params={props.params} />
+  )
 })

@@ -19,7 +19,7 @@ const ExtensionList = memo(({ extensions, options }) => {
       const list = appendAdditionInfo(extensions, options)
       setItems(sortExtension(list))
     })
-  })
+  }, [extensions, options])
 
   return (
     <ul className="list-view">
