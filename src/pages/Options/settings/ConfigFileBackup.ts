@@ -1,22 +1,26 @@
-import { OptionsStorage } from ".../storage"
+import { OptionsStorage, SyncOptionsStorage } from ".../storage"
 
+/**
+ * 导出配置
+ */
 export async function exportConfig() {
   const config = await OptionsStorage.getAll()
   const data = {
     groups: config.groups,
     scenes: config.scenes,
-    ruleConfig: config.ruleConfig
+    ruleConfig: config.ruleConfig,
+    management: config.management
   }
-  exportToJsonFile(
-    data,
-    `ext_manager_config_${new Date().toLocaleString()}.json`
-  )
+  exportToJsonFile(data, `ext_manager_config_${new Date().toLocaleString()}.json`)
 }
 
+/**
+ * 导入配置
+ */
 export async function importConfig(): Promise<boolean> {
   try {
     const data = await importFromJsonFile()
-    const config = await OptionsStorage.getAll()
+    const config = await SyncOptionsStorage.getAll()
 
     if (mergeConfig(data as ImportData, config as any as ImportData)) {
       await OptionsStorage.setAll(config)
@@ -30,13 +34,13 @@ export async function importConfig(): Promise<boolean> {
 }
 
 type ImportData = {
-  groups: config.IGroup[],
-  scenes: config.IScene[],
+  groups: config.IGroup[]
+  scenes: config.IScene[]
   ruleConfig: rule.IRuleConfig[]
+  management: config.IManagement
 }
 
 function mergeConfig(importData: ImportData, config: ImportData): boolean {
-
   if (!importData || !config) {
     return false
   }
@@ -60,6 +64,17 @@ function mergeConfig(importData: ImportData, config: ImportData): boolean {
       (r) => config.ruleConfig.findIndex((r2) => r2.id === r.id) < 0
     )
     config.ruleConfig.push(...newConfigs)
+  }
+
+  if (importData.management) {
+    let extensionAttachInfos: config.IExtensionAttachInfo[] = []
+    if (importData.management.extensions) {
+      const newExtensionAttach = importData.management.extensions.filter(
+        (e) => config.management.extensions.findIndex((e2) => e2.extId === e.extId) < 0
+      )
+      extensionAttachInfos = [...config.management.extensions, ...newExtensionAttach]
+    }
+    config.management.extensions = extensionAttachInfos
   }
 
   return true

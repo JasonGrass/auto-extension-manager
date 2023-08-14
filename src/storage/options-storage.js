@@ -28,6 +28,12 @@ export const SyncOptionsStorage = {
     if (!options.setting) {
       options.setting = {}
     }
+    if (!options.management) {
+      options.management = {}
+    }
+    if (!options.management.extensions) {
+      options.management.extensions = []
+    }
     return options
   }
 }
