@@ -1,7 +1,8 @@
 import React, { memo, useState } from "react"
 
 import { CaretDownOutlined } from "@ant-design/icons"
-import { Dropdown, Space } from "antd"
+import { Dropdown } from "antd"
+import { styled } from "styled-components"
 
 const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
   const [group, setGroup] = useState(null)
@@ -46,14 +47,45 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
 
   return (
     <div className={className}>
-      <Dropdown menu={groupMenu} trigger={["click"]} placement="bottomLeft">
-        <Space>
-          <span className="menu-item-text">{group?.name ?? "默认"}</span>
-          <CaretDownOutlined className="caret" />
-        </Space>
+      <Dropdown menu={groupMenu} trigger={["hover"]} placement="bottom">
+        <MenuStyle>
+          <span className="content">
+            <span className="menu-item-text">{group?.name ?? "默认"}</span>
+            <CaretDownOutlined className="caret" />
+          </span>
+        </MenuStyle>
       </Dropdown>
     </div>
   )
 })
 
 export default GroupDropdown
+
+export const MenuStyle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100px;
+  height: 30px;
+
+  font-size: 14px;
+  text-align: center;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #23bfc588;
+  }
+
+  .content {
+    margin-bottom: -3px;
+  }
+
+  .caret {
+    position: relative;
+    font-size: 10px;
+    left: 3px;
+    top: -4px;
+  }
+`

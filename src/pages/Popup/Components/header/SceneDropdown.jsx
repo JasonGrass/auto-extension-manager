@@ -4,6 +4,7 @@ import { CaretDownOutlined } from "@ant-design/icons"
 import { Dropdown, Space } from "antd"
 
 import { sendMessage } from ".../utils/messageHelper"
+import { MenuStyle } from "./GroupDropdown"
 
 const SceneDropdown = memo(({ options, className }) => {
   const [scene, setScene] = useState(null)
@@ -50,11 +51,13 @@ const SceneDropdown = memo(({ options, className }) => {
 
   return (
     <div className={className}>
-      <Dropdown menu={sceneMenu} trigger={["click"]} placement="bottomRight">
-        <Space>
-          <span className="menu-item-text">{scene?.name ?? "情景模式"}</span>
-          <CaretDownOutlined className="caret" />
-        </Space>
+      <Dropdown menu={sceneMenu} trigger={["hover"]} placement="bottom">
+        <MenuStyle>
+          <span className="content">
+            <span className="menu-item-text">{scene?.name ?? "情景模式"}</span>
+            <CaretDownOutlined className="caret" />
+          </span>
+        </MenuStyle>
       </Dropdown>
     </div>
   )
