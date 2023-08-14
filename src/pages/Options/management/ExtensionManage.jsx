@@ -178,11 +178,12 @@ function buildRecords(extensions, configs) {
   let records = []
 
   for (const extension of extensions) {
-    const config = configs.extensions?.filter((item) => item.extId === extension.id)[0]
+    const config = configs.extensions?.find((item) => item.extId === extension.id)
 
     let record = {
       key: extension.id,
       ...extension,
+      alias: config?.alias,
       remark: config?.remark,
       icon: getIcon(extension),
       __attach__: config
