@@ -6,7 +6,11 @@ import chromeP from "webext-polyfill-kinda"
  * @param tabInfo 当前标签页的信息
  * @param rule 规则数据
  */
-function isMatch(scene: config.IScene | undefined, tabInfo: chrome.tabs.Tab | undefined, rule: rule.IRuleConfig): boolean {
+function isMatch(
+  scene: config.IScene | undefined,
+  tabInfo: chrome.tabs.Tab | undefined,
+  rule: rule.IRuleConfig
+): boolean {
   const matchMode = rule.match?.matchMode
   const matchMethod = rule.match?.matchMethod
   if (!matchMode) {
@@ -22,17 +26,21 @@ function isMatch(scene: config.IScene | undefined, tabInfo: chrome.tabs.Tab | un
   return false
 }
 
-function isMatchUrl(url: string | undefined, hosts: string[] | undefined, matchMethod: rule.MatchMethod): boolean {
+function isMatchUrl(
+  url: string | undefined,
+  hosts: string[] | undefined,
+  matchMethod: rule.MatchMethod
+): boolean {
   if (!url || url === "") return false
   if (!hosts || hosts.length === 0) return false
 
   const host = new URL(url).hostname
 
   if (matchMethod === "wildcard") {
-    const exist = hosts.find((h) => isMatchByWildcard(host, h))
+    const exist = hosts.find((pattern) => isMatchByWildcard(host, pattern))
     return Boolean(exist)
   } else if (matchMethod === "regex") {
-    const exist = hosts.find((h) => isMatchByRegex(host, h))
+    const exist = hosts.find((pattern) => isMatchByRegex(host, pattern))
     return Boolean(exist)
   }
 
@@ -40,6 +48,13 @@ function isMatchUrl(url: string | undefined, hosts: string[] | undefined, matchM
 }
 
 function isMatchByWildcard(text: string, pattern: string) {
+  if (!pattern.startsWith("*")) {
+    pattern = `*${pattern}`
+  }
+  if (!pattern.endsWith("*")) {
+    pattern = `${pattern}*`
+  }
+
   // [LeetCode44.通配符匹配 JavaScript - 个人文章 - SegmentFault 思否](https://segmentfault.com/a/1190000019486910 )
   let dp = []
   for (let i = 0; i <= text.length; i++) {
@@ -84,19 +99,22 @@ function isMatchScene(scene: config.IScene | undefined, sceneId: string | undefi
 type AdvanceMatchType = {
   /**
    * 当前 TAB 的 URL 是否匹配
-  */
-  currentTabMatch: boolean,
+   */
+  currentTabMatch: boolean
 
   /**
    * 所有打开的 TAB 中，是否有任一一个匹配
-  */
+   */
   anyTabMatch: boolean
 }
 
 /**
  * 获取当前 TAB 的高级匹配结果
-*/
-export async function getAdvanceMatchType(currentUrl: string | undefined, rule: rule.IRuleConfig): Promise<AdvanceMatchType> {
+ */
+export async function getAdvanceMatchType(
+  currentUrl: string | undefined,
+  rule: rule.IRuleConfig
+): Promise<AdvanceMatchType> {
   const matchMethod = rule.match?.matchMethod
   const currentUrlMatch = isMatchUrl(currentUrl, rule.match.matchHost, matchMethod)
   if (currentUrlMatch) {
@@ -107,7 +125,8 @@ export async function getAdvanceMatchType(currentUrl: string | undefined, rule: 
   }
 
   const tabs = await chromeP.tabs.query({})
-  const anyUrlMatch = tabs.findIndex(tab => isMatchUrl(tab.url, rule.match.matchHost, matchMethod)) > -1
+  const anyUrlMatch =
+    tabs.findIndex((tab) => isMatchUrl(tab.url, rule.match.matchHost, matchMethod)) > -1
 
   return {
     currentTabMatch: currentUrlMatch,
@@ -116,4 +135,3 @@ export async function getAdvanceMatchType(currentUrl: string | undefined, rule: 
 }
 
 export default isMatch
-
