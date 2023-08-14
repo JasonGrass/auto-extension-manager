@@ -69,10 +69,10 @@ function mergeConfig(importData: ImportData, config: ImportData): boolean {
   if (importData.management) {
     let extensionAttachInfos: config.IExtensionAttachInfo[] = []
     if (importData.management.extensions) {
-      const newExtensionAttach = importData.management.extensions.filter(
-        (e) => config.management.extensions.findIndex((e2) => e2.extId === e.extId) < 0
+      const remain = config.management.extensions.filter(
+        (e) => importData.management.extensions.findIndex((e2) => e2.extId === e.extId) < 0
       )
-      extensionAttachInfos = [...config.management.extensions, ...newExtensionAttach]
+      extensionAttachInfos = [...remain, ...importData.management.extensions]
     }
     config.management.extensions = extensionAttachInfos
   }
