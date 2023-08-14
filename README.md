@@ -33,8 +33,11 @@ Chrome 商店链接
 
 ## 🍉 一些相似的插件
 
+- [hankxdev/one-click-extensions-manager: a simple chrome extension to manage chrome extension](https://github.com/hankxdev/one-click-extensions-manager )  
 在 Popup 弹窗中，实现了扩展的打开和关闭，这里参考了此扩展的 UI 布局。  
-[hankxdev/one-click-extensions-manager: a simple chrome extension to manage chrome extension](https://github.com/hankxdev/one-click-extensions-manager )
 
+- [二管家 - Chrome 应用商店](https://chrome.google.com/webstore/detail/nooboss/aajodjghehmlpahhboidcpfjcncmcklf )  
 除了插件管理之外，还有许多其它的功能。  
-[二管家 - Chrome 应用商店](https://chrome.google.com/webstore/detail/nooboss/aajodjghehmlpahhboidcpfjcncmcklf )
+
+- [扩展管理器（Extension Manager） - Chrome 应用商店](https://chrome.google.com/webstore/detail/extension-manager/gjldcdngmdknpinoemndlidpcabkggco )  
+一个界面和功能都很出色的扩展管理器，但作者近期没有维护了，有一些小功能问题。
