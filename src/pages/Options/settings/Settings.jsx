@@ -87,7 +87,12 @@ function Settings() {
             }></Switch>
         </div>
         <div className="setting-item">
-          <span>在 Popup 顶部始终显示搜索框（默认点击 🔍 显示）</span>
+          <span>
+            在 Popup 顶部默认显示搜索框（未设置时点击 🔍 显示）
+            <Tooltip placement="top" title="也可以使用快捷键 'F' 打开搜索框">
+              <QuestionCircleOutlined />
+            </Tooltip>{" "}
+          </span>
           <Switch
             size="small"
             checked={isShowSearchBar}
@@ -97,10 +102,10 @@ function Settings() {
         </div>
         <div className="setting-item">
           <span>
-            在 Popup 中切换分组时，仅开启固定分组和当前分组中的扩展{" "}
+            在 Popup 中切换分组时，启用当前分组扩展，禁用其它的扩展{" "}
             <Tooltip
               placement="top"
-              title="启用之后，在 Popup 中执行切换分组的动作，会禁用掉所有非固定分组和当前分组中的扩展">
+              title="打开此配置之后，在 Popup 中切换分组时，会禁用掉所有不是固定分组也不是当前分组中的扩展">
               <QuestionCircleOutlined />
             </Tooltip>{" "}
           </span>
