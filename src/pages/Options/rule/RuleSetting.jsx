@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import chromeP from "webext-polyfill-kinda"
 
 import { GroupOptions, ManageOptions, RuleConfigOptions, SceneOptions } from ".../storage"
-import { filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
+import { appendAdditionInfo, filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import Title from "../Title.jsx"
 import { RuleSettingStyle } from "./RuleSettingStyle.js"
 import ViewRule from "./ViewRule.jsx"
@@ -17,6 +17,7 @@ function RuleSetting() {
 
   const [ruleConfigs, setRuleConfigs] = useState(null)
 
+  // 初始化
   useEffect(() => {
     SceneOptions.getAll().then((list) => {
       setAllSceneOptions(list)
@@ -27,7 +28,10 @@ function RuleSetting() {
 
     chromeP.management.getAll().then((res) => {
       const list = filterExtensions(res, isExtExtension)
-      setExtensions(list)
+      ManageOptions.get().then((options) => {
+        appendAdditionInfo(list, options)
+        setExtensions(list)
+      })
     })
 
     RuleConfigOptions.get().then((list) => {

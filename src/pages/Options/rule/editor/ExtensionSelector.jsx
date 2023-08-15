@@ -120,9 +120,13 @@ const ExtensionSelector = ({ groupList, config, extensions, managementOptions },
 
   // 当搜索关键字变化，或者未选择列表更新时，界面界面显示
   useEffect(() => {
-    const displayUnselected = unselectedExtensions.filter((ext) =>
-      isMatch([ext.name, ext.shortName], searchText, true)
-    )
+    const displayUnselected = unselectedExtensions.filter((ext) => {
+      return isMatch(
+        [ext.name, ext.shortName, ext.__attach__?.alias, ext.__attach__?.remark],
+        searchText,
+        true
+      )
+    })
     setDisplayUnselectedExtensions(displayUnselected)
   }, [unselectedExtensions, searchText])
 
