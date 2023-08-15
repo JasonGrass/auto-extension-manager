@@ -7,17 +7,17 @@ import ExtensionItems from "../components/ExtensionItems"
 import { GroupContentStyle } from "./GroupContentStyle"
 
 const GroupContent = memo(({ group, groupList, extensions, managementOptions }) => {
-  const [containExts, setContains] = useState()
-  const [noneGroupExts, setNoneGroupExts] = useState()
+  const [containExts, setContains] = useState([])
+  const [noneGroupExts, setNoneGroupExts] = useState([])
 
   useEffect(() => {
-    const containsExts = group?.extensions
-      ?.map((id) => extensions.find((e) => e.id === id))
-      .filter((ext) => ext)
+    const containsExts =
+      group?.extensions?.map((id) => extensions.find((e) => e.id === id)).filter((ext) => ext) ?? []
 
-    // 所有已经分组的的插件ID（不考虑固定分组）
-    const groupedIds = groupList
-      .filter((g) => g.id !== "fixed")
+    const allGroupList =
+      group?.id === "fixed" ? groupList : groupList.filter((g) => g.id !== "fixed")
+    // 所有已经分组的的插件ID（普通分组时，不考虑固定分组存在的扩展）
+    const groupedIds = allGroupList
       .map((g) => g.extensions)
       .flat()
       .filter((id) => !isStringEmpty(id))
