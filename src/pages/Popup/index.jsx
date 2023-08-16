@@ -27,6 +27,9 @@ const prepare = async function () {
   }
   // 不展示主题类的扩展
   allExtensions = allExtensions.filter((ext) => ext.type !== "theme")
+  // 不展示自己
+  const self = await chromeP.management.getSelf()
+  allExtensions = allExtensions.filter((ext) => ext.id !== self.id)
 
   const managementOptions = await ManageOptions.get()
   const extensions = appendAdditionInfo(allExtensions, managementOptions)

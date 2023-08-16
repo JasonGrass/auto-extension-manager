@@ -23,14 +23,18 @@ function IndexPopup({ originExtensions, options, params }) {
   const isRaiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
 
   const onGroupChanged = async (group) => {
-    // 执行扩展的启用与禁用
+    // 如果开启了配置，切换分组意味着：执行扩展的启用与禁用，没有切换显示的功能
+    // 如果开启了配置，并且当前组不为空，则执行扩展的启用与禁用
     if (isRaiseEnableWhenSwitchGroup && group) {
       const newExtensions = await handleExtensionOnOff(extensions, options, group)
       setExtensions(newExtensions)
     }
 
-    setIsShowAppExtension(!group) // 切换到特定分组时，不显示 APP
-    onSearchByGroupChange(group)
+    // 如果没有开启配置，切换分组意味着：切换分组显示，没有扩展启用与禁用功能
+    if (!isRaiseEnableWhenSwitchGroup) {
+      setIsShowAppExtension(!group) // 切换到特定分组时，不显示 APP
+      onSearchByGroupChange(group)
+    }
   }
 
   return (
@@ -45,9 +49,7 @@ function IndexPopup({ originExtensions, options, params }) {
       </div>
 
       <div className="extension-container">
-        <ExtensionList
-          extensions={isRaiseEnableWhenSwitchGroup ? extensions : pluginExtensions}
-          options={options}></ExtensionList>
+        <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
         {isShowAppExtension && <AppList items={appExtensions}></AppList>}
       </div>
     </Style>

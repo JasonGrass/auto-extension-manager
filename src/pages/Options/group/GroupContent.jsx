@@ -11,19 +11,14 @@ const GroupContent = memo(({ group, groupList, extensions, managementOptions }) 
   const [noneGroupExts, setNoneGroupExts] = useState([])
 
   useEffect(() => {
+    // 包含在当前分组中的扩展
     const containsExts =
       group?.extensions?.map((id) => extensions.find((e) => e.id === id)).filter((ext) => ext) ?? []
+    const containsExtIds = containsExts.map((ext) => ext.id)
 
-    const allGroupList =
-      group?.id === "fixed" ? groupList : groupList.filter((g) => g.id !== "fixed")
-    // 所有已经分组的的插件ID（普通分组时，不考虑固定分组存在的扩展）
-    const groupedIds = allGroupList
-      .map((g) => g.extensions)
-      .flat()
-      .filter((id) => !isStringEmpty(id))
-
+    // 剩余未分组：展示不在当前分组中的扩展（至于这些分组是不是在其他分组中，不考虑。一个扩展可以放在多个分组中）
     const noneGroupedExtensions = extensions
-      .filter((ext) => !groupedIds.includes(ext.id))
+      .filter((ext) => !containsExtIds.includes(ext.id))
       .filter((ext) => !isAppExtension(ext))
 
     setContains(containsExts)
