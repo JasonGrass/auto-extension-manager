@@ -1,6 +1,9 @@
 import React, { memo } from "react"
 
-import { Select } from "antd"
+import { Alert, Tag } from "antd"
+import { styled } from "styled-components"
+
+const { CheckableTag } = Tag
 
 // https://developer.chrome.com/docs/extensions/reference/runtime/#type-PlatformOs
 const PlatformOs = [
@@ -35,27 +38,42 @@ const PlatformOs = [
 ]
 
 const OperationSystemTrigger = memo(() => {
-  const [selectOsKeys, setSelectOsKeys] = React.useState(["mac"])
+  const [selectOsKeys, setSelectOsKeys] = React.useState([])
 
-  const handleOsSelectChange = (value) => {
-    setSelectOsKeys(value)
+  const handleOsSelectChange = (key, checked) => {
+    const nextSelectedKeys = checked
+      ? [...selectOsKeys, key]
+      : selectOsKeys.filter((t) => t !== key)
+    setSelectOsKeys(nextSelectedKeys)
   }
 
   return (
-    <div>
-      <Select
-        mode="multiple"
-        allowClear
-        style={{
-          width: "100%"
-        }}
-        placeholder="当使用选择的操作系统类型时，将触发规则"
-        onChange={handleOsSelectChange}
-        options={PlatformOs}
-        value={selectOsKeys}
-      />
-    </div>
+    <Style>
+      <Alert message="当在选中的操作系统中首次打开浏览器时，将触发规则" type="info" showIcon />
+      <div className="os-tags">
+        {PlatformOs.map((os) => {
+          return (
+            <CheckableTag
+              key={os.value}
+              checked={selectOsKeys.includes(os.value)}
+              onChange={(checked) => handleOsSelectChange(os.value, checked)}>
+              {os.label}
+            </CheckableTag>
+          )
+        })}
+      </div>
+    </Style>
   )
 })
 
 export default OperationSystemTrigger
+
+const Style = styled.div`
+  .os-tags {
+    margin: 10px 0;
+  }
+
+  .ant-tag-checkable-checked {
+    background-color: #108ee9;
+  }
+`
