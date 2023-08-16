@@ -37,6 +37,14 @@ const Style = styled.div`
       margin-top: 10px;
     }
   }
+
+  .trigger-hidden {
+    display: none;
+  }
+
+  .trigger-visible {
+    display: block;
+  }
 `
 
 export default Style

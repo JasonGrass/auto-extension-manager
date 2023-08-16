@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react"
 
 import chromeP from "webext-polyfill-kinda"
 
-import { GroupOptions, ManageOptions, RuleConfigOptions, SceneOptions } from ".../storage"
+import {
+  GroupOptions,
+  ManageOptions,
+  RuleConfigOptions,
+  SceneOptions,
+  SyncOptionsStorage
+} from ".../storage"
 import { appendAdditionInfo, filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import Title from "../Title.jsx"
 import { RuleSettingStyle } from "./RuleSettingStyle.js"
@@ -17,8 +23,18 @@ function RuleSetting() {
 
   const [ruleConfigs, setRuleConfigs] = useState(null)
 
+  const [options, setOptions] = useState({})
+
   // 初始化
   useEffect(() => {
+    SyncOptionsStorage.getAll().then((options) => {
+      setOptions(options)
+    })
+
+    ManageOptions.get().then((list) => {
+      setManagementOptions(list)
+    })
+
     SceneOptions.getAll().then((list) => {
       setAllSceneOptions(list)
     })
@@ -73,6 +89,7 @@ function RuleSetting() {
       <Title title="规则设置"></Title>
 
       <ViewRule
+        options={options}
         config={ruleConfigs}
         extensions={extensions}
         sceneOption={allSceneOptions}
