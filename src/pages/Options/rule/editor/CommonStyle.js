@@ -14,7 +14,6 @@ const EditorCommonStyle = styled.div`
     .title {
       font-size: 18px;
       font-weight: bold;
-      width: 150px;
     }
   }
 `
