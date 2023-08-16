@@ -19,6 +19,7 @@ import Style from "./MatchRuleStyle"
 import OperationSystemTrigger from "./triggers/OsTrigger/Index"
 import SceneTrigger from "./triggers/SceneTrigger/Index"
 import TabUrlTrigger from "./triggers/TabUrlTrigger/Index"
+import TimeTrigger from "./triggers/TimeTrigger/Index"
 import TriggerWrapper from "./triggers/TriggerWrapper/Index"
 
 const triggerModes = [
@@ -181,6 +182,16 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
               onTriggerRemove("os")
             }}>
             <OperationSystemTrigger options={options} config={config}></OperationSystemTrigger>
+          </TriggerWrapper>
+        </div>
+
+        <div className={selectTriggerKeys.includes("time") ? "trigger-visible" : "trigger-hidden"}>
+          <TriggerWrapper
+            title="时间"
+            onClose={() => {
+              onTriggerRemove("time")
+            }}>
+            <TimeTrigger options={options} config={config}></TimeTrigger>
           </TriggerWrapper>
         </div>
       </Style>
