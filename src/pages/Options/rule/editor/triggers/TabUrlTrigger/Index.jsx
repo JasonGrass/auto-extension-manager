@@ -1,18 +1,13 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from "react"
 
 import { ClearOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Dropdown, Input, Space, Switch } from "antd"
+import { Button, Dropdown, Input, Radio, Space, Switch } from "antd"
+import { styled } from "styled-components"
 
-const matchMethods = [
-  {
-    label: "通配符",
-    key: "wildcard"
-  },
-  {
-    label: "正则表达式",
-    key: "regex"
-  }
-]
+/*
+wildcard 通配符
+regex 正则表达式
+*/
 
 /**
  * @param options 所有用户配置
@@ -22,7 +17,7 @@ const TabUrlTrigger = memo(({ options, config }) => {
   // 域名列表
   const [matchHostList, setMatchHostList] = useState([])
   // 域名匹配计算方法，regex / wildcard
-  const [matchMethod, setMatchMethod] = useState(matchMethods[0])
+  const [matchMethod, setMatchMethod] = useState("wildcard")
 
   useEffect(() => {
     // 初始化匹配的 HOST 列表
@@ -30,17 +25,17 @@ const TabUrlTrigger = memo(({ options, config }) => {
 
     // 初始化匹配的计算方式
     if (config?.matchMethod === "regex") {
-      setMatchMethod(matchMethods[1])
+      setMatchMethod("regex")
     } else {
-      setMatchMethod(matchMethods[0])
+      setMatchMethod("wildcard")
     }
   }, [config])
 
-  const onAppendHostClick = (e) => {
+  const onAppendPatternClick = (e) => {
     setMatchHostList([...matchHostList, ""])
   }
 
-  const onRemoveHostClick = (e) => {
+  const onRemovePatternClick = (e) => {
     const list = matchHostList.filter((host) => host && host !== "" && host.trim() !== "")
     setMatchHostList(list)
   }
@@ -52,49 +47,63 @@ const TabUrlTrigger = memo(({ options, config }) => {
   }
 
   const onMatchMethodSwitchChanged = (e) => {
-    if (e) {
-      setMatchMethod(matchMethods[1])
-    } else {
-      setMatchMethod(matchMethods[0])
-    }
+    setMatchMethod(e.target.value)
   }
 
   return (
-    <>
+    <Style>
       <div className="match-method">
-        <span className="match-method-title">是否使用正则</span>
-        <Switch
-          size="small"
-          checked={matchMethod.key === "regex"}
-          onChange={(e) => onMatchMethodSwitchChanged(e)}
-        />
-        <span className="match-method-label">匹配方式: {matchMethod.label}</span>
+        <span>
+          <span>匹配方式：</span>
+          <Radio.Group onChange={onMatchMethodSwitchChanged} value={matchMethod}>
+            <Radio value="wildcard">通配符</Radio>
+            <Radio value="regex">正则表达式</Radio>
+          </Radio.Group>
+        </span>
       </div>
 
       <div className="host-match-mode-container">
         {matchHostList.map((host, index) => (
-          <Input
-            key={index}
-            addonBefore="http(s)://"
-            value={host}
-            onChange={(e) => onHostInputChanged(e, index)}
-          />
+          <Input key={index} value={host} onChange={(e) => onHostInputChanged(e, index)} />
         ))}
-        <Button onClick={onAppendHostClick}>
+        <Button onClick={onAppendPatternClick}>
           <Space>
-            添加域名
+            添加 URL Pattern
             <PlusOutlined />
           </Space>
         </Button>
-        <Button onClick={onRemoveHostClick}>
+        <Button onClick={onRemovePatternClick}>
           <Space>
             清除空白项
             <ClearOutlined />
           </Space>
         </Button>
       </div>
-    </>
+    </Style>
   )
 })
 
 export default TabUrlTrigger
+
+const Style = styled.div`
+  .match-method {
+    font-size: 14px;
+  }
+
+  .host-match-mode-container {
+    margin: 10px 0;
+    max-width: 800px;
+
+    & > button {
+      margin-right: 10px;
+    }
+
+    & > * {
+      margin-bottom: 3px;
+    }
+
+    & > *:last-child {
+      margin-top: 10px;
+    }
+  }
+`

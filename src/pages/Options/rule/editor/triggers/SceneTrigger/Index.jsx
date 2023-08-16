@@ -2,6 +2,7 @@ import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } fro
 
 import { ClearOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Dropdown, Input, Space, Switch } from "antd"
+import { styled } from "styled-components"
 
 const SceneTrigger = memo(({ options, config }) => {
   const sceneList = options.scenes
@@ -31,7 +32,7 @@ const SceneTrigger = memo(({ options, config }) => {
   }
 
   return (
-    <div className="scene-match-mode-container">
+    <Style>
       <Dropdown menu={sceneListMenuProps}>
         <Button>
           <Space>
@@ -40,8 +41,10 @@ const SceneTrigger = memo(({ options, config }) => {
           </Space>
         </Button>
       </Dropdown>
-    </div>
+    </Style>
   )
 })
 
 export default SceneTrigger
+
+const Style = styled.div``

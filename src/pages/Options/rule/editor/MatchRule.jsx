@@ -16,13 +16,14 @@ import lodash from "lodash"
 
 import EditorCommonStyle from "./CommonStyle"
 import Style from "./MatchRuleStyle"
+import OperationSystemTrigger from "./triggers/OsTrigger/Index"
 import SceneTrigger from "./triggers/SceneTrigger/Index"
 import TabUrlTrigger from "./triggers/TabUrlTrigger/Index"
 import TriggerWrapper from "./triggers/TriggerWrapper/Index"
 
 const triggerModes = [
   {
-    label: "域名",
+    label: "URL 链接",
     key: "host",
     icon: <LinkOutlined />
   },
@@ -125,7 +126,6 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
 
   // 触发条件之间的组合关系
   const onTriggerRelationshipChange = (e) => {
-    console.log("radio checked", e.target.value)
     setTriggerRelationship(e.target.value)
   }
 
@@ -171,6 +171,16 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
               onTriggerRemove("host")
             }}>
             <TabUrlTrigger options={options} config={config}></TabUrlTrigger>
+          </TriggerWrapper>
+        </div>
+
+        <div className={selectTriggerKeys.includes("os") ? "trigger-visible" : "trigger-hidden"}>
+          <TriggerWrapper
+            title="操作系统类型"
+            onClose={() => {
+              onTriggerRemove("os")
+            }}>
+            <OperationSystemTrigger options={options} config={config}></OperationSystemTrigger>
           </TriggerWrapper>
         </div>
       </Style>

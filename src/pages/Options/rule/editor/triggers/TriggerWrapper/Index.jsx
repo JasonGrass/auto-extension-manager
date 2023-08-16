@@ -68,4 +68,8 @@ const Style = styled.div`
       }
     }
   }
+
+  .content {
+    margin: 5px;
+  }
 `
