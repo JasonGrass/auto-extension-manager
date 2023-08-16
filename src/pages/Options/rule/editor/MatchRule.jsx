@@ -93,7 +93,7 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
   // }))
 
   // 选择的触发器列表
-  const [selectTriggerKeys, setSelectTriggers] = useState([])
+  const [selectTriggerKeys, setSelectTriggers] = useState(["host"]) // 默认添加上 URL 匹配
   // 多个触发器之间的组合关系（且 or 或），默认是且
   const [triggerRelationship, setTriggerRelationship] = useState("and")
 
@@ -137,7 +137,7 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
           <span className="title">1 触发条件</span>
         </div>
 
-        <div>
+        <div className="trigger-operation-settings">
           <Dropdown menu={triggerModeMenuProps}>
             <Button>
               <Space>
@@ -147,22 +147,13 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
             </Button>
           </Dropdown>
 
-          <span className={selectTriggerKeys.length > 1 ? "trigger-visible" : "trigger-hidden"}>
+          <span
+            className={selectTriggerKeys.length > 1 ? "trigger-relationship" : "trigger-hidden"}>
             <Radio.Group onChange={onTriggerRelationshipChange} value={triggerRelationship}>
               <Radio value="and">满足以下所有条件触发</Radio>
               <Radio value="or">满足以下任一添加触发</Radio>
             </Radio.Group>
           </span>
-        </div>
-
-        <div className={selectTriggerKeys.includes("scene") ? "trigger-visible" : "trigger-hidden"}>
-          <TriggerWrapper
-            title="情景模式"
-            onClose={() => {
-              onTriggerRemove("scene")
-            }}>
-            <SceneTrigger options={options} config={config}></SceneTrigger>
-          </TriggerWrapper>
         </div>
 
         <div className={selectTriggerKeys.includes("host") ? "trigger-visible" : "trigger-hidden"}>
@@ -172,6 +163,16 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
               onTriggerRemove("host")
             }}>
             <TabUrlTrigger options={options} config={config}></TabUrlTrigger>
+          </TriggerWrapper>
+        </div>
+
+        <div className={selectTriggerKeys.includes("scene") ? "trigger-visible" : "trigger-hidden"}>
+          <TriggerWrapper
+            title="情景模式"
+            onClose={() => {
+              onTriggerRemove("scene")
+            }}>
+            <SceneTrigger options={options} config={config}></SceneTrigger>
           </TriggerWrapper>
         </div>
 

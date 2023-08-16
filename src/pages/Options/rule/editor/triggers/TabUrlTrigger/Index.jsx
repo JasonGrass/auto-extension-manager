@@ -1,7 +1,7 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from "react"
 
 import { ClearOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Dropdown, Input, Radio, Space, Switch } from "antd"
+import { Alert, Button, Dropdown, Input, Radio, Space, Switch } from "antd"
 import { styled } from "styled-components"
 
 /*
@@ -52,6 +52,20 @@ const TabUrlTrigger = memo(({ options, config }) => {
 
   return (
     <Style>
+      <Alert
+        message="在打开或关闭标签页之后触发，URL 的具体匹配规则见详细说明"
+        type="info"
+        showIcon
+        action={
+          <a
+            href="https://github.com/JasonGrass/auto-extension-manager/issues"
+            target="_blank"
+            rel="noreferrer">
+            详细说明
+          </a>
+        }
+      />
+
       <div className="match-method">
         <span>
           <span>匹配方式：</span>
@@ -62,10 +76,18 @@ const TabUrlTrigger = memo(({ options, config }) => {
         </span>
       </div>
 
-      <div className="host-match-mode-container">
+      <div className="url-pattern-container">
         {matchHostList.map((host, index) => (
-          <Input key={index} value={host} onChange={(e) => onHostInputChanged(e, index)} />
+          <Input
+            key={index}
+            value={host}
+            onChange={(e) => onHostInputChanged(e, index)}
+            placeholder="e.g. *baidu.com* ; file://*.pdf ;"
+          />
         ))}
+      </div>
+
+      <div className="url-pattern-buttons">
         <Button onClick={onAppendPatternClick}>
           <Space>
             添加 URL Pattern
@@ -87,23 +109,21 @@ export default TabUrlTrigger
 
 const Style = styled.div`
   .match-method {
+    margin-top: 5px;
     font-size: 14px;
   }
 
-  .host-match-mode-container {
-    margin: 10px 0;
-    max-width: 800px;
-
-    & > button {
-      margin-right: 10px;
-    }
+  .url-pattern-container {
+    margin: 5px 0;
 
     & > * {
       margin-bottom: 3px;
     }
+  }
 
-    & > *:last-child {
-      margin-top: 10px;
+  .url-pattern-buttons {
+    & > button {
+      margin-right: 10px;
     }
   }
 `

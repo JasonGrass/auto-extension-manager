@@ -1,7 +1,7 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from "react"
 
 import { ClearOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Dropdown, Input, Space, Switch } from "antd"
+import { Alert, Button, Dropdown, Space } from "antd"
 import { styled } from "styled-components"
 
 const SceneTrigger = memo(({ options, config }) => {
@@ -33,18 +33,26 @@ const SceneTrigger = memo(({ options, config }) => {
 
   return (
     <Style>
-      <Dropdown menu={sceneListMenuProps}>
-        <Button>
-          <Space>
-            {matchScene?.name ?? "选择情景模式"}
-            <DownOutlined />
-          </Space>
-        </Button>
-      </Dropdown>
+      <Alert message="在启动浏览器和切换情景模式时触发" type="info" showIcon />
+
+      <div className="scene-select-dropdown">
+        <Dropdown menu={sceneListMenuProps}>
+          <Button>
+            <Space>
+              {matchScene?.name ?? "选择情景模式"}
+              <DownOutlined />
+            </Space>
+          </Button>
+        </Dropdown>
+      </div>
     </Style>
   )
 })
 
 export default SceneTrigger
 
-const Style = styled.div``
+const Style = styled.div`
+  .scene-select-dropdown {
+    margin-top: 5px;
+  }
+`
