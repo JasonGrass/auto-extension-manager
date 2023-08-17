@@ -1,13 +1,15 @@
 import { List, Map } from "immutable"
 import { nanoid } from "nanoid"
 
+import ConvertRuleToV2 from ".../pages/Background/rule/RuleConverter"
 import OptionsStorage, { SyncOptionsStorage } from "./options-storage"
 
 export const RuleConfigOptions = {
   async get() {
     const all = await SyncOptionsStorage.getAll()
-    const configs = List(all.ruleConfig ?? [])
-    return configs.toJS()
+    const configs = all.ruleConfig ?? []
+
+    return configs.map((c) => ConvertRuleToV2(c)).filter((c) => c)
   },
 
   async addOne(config) {
