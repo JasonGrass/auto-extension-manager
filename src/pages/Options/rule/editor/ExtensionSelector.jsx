@@ -53,10 +53,13 @@ const ExtensionSelector = ({ options, config, extensions }, ref) => {
     // 初始化目标插件组
     if (myConfig.groups && myConfig.groups.length > 0) {
       setSelectGroupIds(myConfig.groups)
+    } else {
+      setSelectGroupIds([])
     }
 
     // 初始化目标插件
     if (!myConfig.extensions) {
+      setSelectedExtensions([])
       setUnselectedExtensions(extensions)
       setDisplayUnselectedExtensions(extensions)
     } else {
