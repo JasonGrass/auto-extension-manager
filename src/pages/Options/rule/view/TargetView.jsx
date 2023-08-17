@@ -4,19 +4,28 @@ import { styled } from "styled-components"
 
 import { getIcon } from ".../utils/extensionHelper"
 
-const TargetView = memo(({ config, record, groupOption, extensions }) => {
-  if (!config || !config.targetType) {
+/**
+ * 规则目标的显示
+ * @param config 规则中目标的那部分配置（ITarget）
+ * @param options 完整的配置
+ */
+const TargetView = memo(({ config, options, extensions }) => {
+  console.log("TargetView", config)
+
+  if (!config || (!config.extensions && !config.groups)) {
     return <span className="error-text">ERROR</span>
   }
 
-  if (config.targetType === "single") {
-    if (!config.targetExtensions || config.targetExtensions.length < 1) {
-      return <span className="error-text">ERROR</span>
-    }
+  let groupNames = ""
+  if (config.groups && config.groups.length > 0) {
+    groupNames = options.groups
+      .filter((g) => config.groups.includes(g.id))
+      .map((g) => g.name)
+      .join(",")
+  }
 
-    let list = extensions.filter((ext) =>
-      config.targetExtensions.includes(ext.id)
-    )
+  if (config.extensions && config.extensions.length > 0) {
+    let list = extensions.filter((ext) => config.extensions.includes(ext.id))
 
     let tooMany = false
     if (list.length > 12) {
@@ -24,30 +33,25 @@ const TargetView = memo(({ config, record, groupOption, extensions }) => {
       tooMany = true
     }
 
+    // groups 和 extensions 都有
     return (
-      <ListStyle>
-        {list.map((ext) => {
-          return (
-            <li key={ext.id}>
-              <img src={getIcon(ext, 64)} alt="" />
-            </li>
-          )
-        })}
-        {tooMany && <span className="too-many">...</span>}
-      </ListStyle>
+      <span>
+        {groupNames && <span>{groupNames}</span>}
+        <ListStyle>
+          {list.map((ext) => {
+            return (
+              <li key={ext.id}>
+                <img src={getIcon(ext, 64)} alt="" />
+              </li>
+            )
+          })}
+          {tooMany && <span className="too-many">...</span>}
+        </ListStyle>
+      </span>
     )
-  }
-
-  if (config.targetType === "group") {
-    if (!config.targetGroup) {
-      return <span className="error-text">ERROR</span>
-    }
-    const group = groupOption.filter((g) => g.id === config.targetGroup)[0]
-    if (!group) {
-      return <span className="error-text">ERROR</span>
-    }
-
-    return <span>{group.name}</span>
+  } else if (groupNames) {
+    // 仅有 groups
+    return <span>{groupNames}</span>
   }
 
   return <span className="error-text">ERROR</span>

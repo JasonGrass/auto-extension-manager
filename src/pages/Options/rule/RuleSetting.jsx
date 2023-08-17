@@ -2,39 +2,25 @@ import React, { useEffect, useState } from "react"
 
 import chromeP from "webext-polyfill-kinda"
 
-import {
-  GroupOptions,
-  ManageOptions,
-  RuleConfigOptions,
-  SceneOptions,
-  SyncOptionsStorage
-} from ".../storage"
+import { ManageOptions, RuleConfigOptions, SyncOptionsStorage } from ".../storage"
 import { appendAdditionInfo, filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import Title from "../Title.jsx"
 import { RuleSettingStyle } from "./RuleSettingStyle.js"
 import ViewRule from "./ViewRule.jsx"
 
 function RuleSetting() {
-  const [allSceneOptions, setAllSceneOptions] = useState([])
-  const [allGroupOptions, setAllGroupOptions] = useState([])
-
   const [extensions, setExtensions] = useState([])
 
+  // 所有的规则配置项，列表
   const [ruleConfigs, setRuleConfigs] = useState(null)
 
+  // 用户配置
   const [options, setOptions] = useState({})
 
   // 初始化
   useEffect(() => {
     SyncOptionsStorage.getAll().then((options) => {
       setOptions(options)
-    })
-
-    SceneOptions.getAll().then((list) => {
-      setAllSceneOptions(list)
-    })
-    GroupOptions.getGroups().then((list) => {
-      setAllGroupOptions(list)
     })
 
     chromeP.management.getAll().then((res) => {
@@ -83,8 +69,6 @@ function RuleSetting() {
         options={options}
         configs={ruleConfigs}
         extensions={extensions}
-        sceneOption={allSceneOptions}
-        groupOption={allGroupOptions}
         operation={operation}></ViewRule>
     </RuleSettingStyle>
   )
