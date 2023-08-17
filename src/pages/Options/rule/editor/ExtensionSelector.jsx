@@ -17,29 +17,22 @@ import Style, { SearchStyle } from "./ExtensionSelectorStyle"
 
 const { CheckableTag } = Tag
 
-const ExtensionSelector = ({ groupList, config, extensions, managementOptions }, ref) => {
-  // useImperativeHandle(ref, () => ({
-  //   // 获取配置
-  //   getExtensionSelectConfig: () => {
-  //     if (matchMode.key === "group" && !selectGroup) {
-  //       throw Error("选择选择任何扩展组")
-  //     }
+const ExtensionSelector = ({ options, config, extensions }, ref) => {
+  const groupList = options.groups || []
 
-  //     let extensionList = []
-  //     if (matchMode.key === "single") {
-  //       extensionList = selectedExtensions.filter((ext) => ext).map((ext) => ext.id)
-  //       if (extensionList.length < 1) {
-  //         throw Error("选择选择任何扩展")
-  //       }
-  //     }
+  useImperativeHandle(ref, () => ({
+    // 获取配置
+    getExtensionSelectConfig: () => {
+      if (selectGroupIds.length === 0 && selectedExtensions.length === 0) {
+        throw Error("执行目标没有选择任何扩展或扩展组")
+      }
 
-  //     return {
-  //       targetType: matchMode.key,
-  //       targetGroup: selectGroup?.id,
-  //       targetExtensions: extensionList
-  //     }
-  //   }
-  // }))
+      return {
+        groups: selectGroupIds.filter((id) => groupList.find((g) => (g.id = id))),
+        extensions: selectedExtensions.map((e) => e.id)
+      }
+    }
+  }))
 
   // 目标分组ID
   const [selectGroupIds, setSelectGroupIds] = useState([])
@@ -55,12 +48,23 @@ const ExtensionSelector = ({ groupList, config, extensions, managementOptions },
   const [searchText, setSearchText] = useState("")
 
   // 根据配置进行初始化
-  // TODO
   useEffect(() => {
-    if (!config) {
+    const myConfig = config.target ?? {}
+    // 初始化目标插件组
+    if (myConfig.groups && myConfig.groups.length > 0) {
+      setSelectGroupIds(myConfig.groups)
+    }
+
+    // 初始化目标插件
+    if (!myConfig.extensions) {
       setUnselectedExtensions(extensions)
       setDisplayUnselectedExtensions(extensions)
-      return
+    } else {
+      const inExtensions = extensions.filter((e) => myConfig.extensions?.includes(e.id))
+      const outExtension = extensions.filter((e) => !myConfig.extensions?.includes(e.id))
+      setSelectedExtensions(inExtensions)
+      setUnselectedExtensions(outExtension)
+      setDisplayUnselectedExtensions(outExtension)
     }
   }, [config, extensions])
 
@@ -145,7 +149,6 @@ const ExtensionSelector = ({ groupList, config, extensions, managementOptions },
           <h3>选择扩展</h3>
           <ExtensionItems
             items={selectedExtensions}
-            managementOptions={managementOptions}
             placeholder="未选择任何扩展"
             onClick={onSelectedExtensionClick}></ExtensionItems>
 
@@ -153,7 +156,6 @@ const ExtensionSelector = ({ groupList, config, extensions, managementOptions },
             <h3>未包含的扩展</h3>
             <ExtensionItems
               items={displayUnselectedExtensions}
-              managementOptions={managementOptions}
               placeholder="无任何扩展"
               onClick={onUnselectedExtensionClick}></ExtensionItems>
           </div>

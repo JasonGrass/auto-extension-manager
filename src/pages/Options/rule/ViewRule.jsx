@@ -15,8 +15,7 @@ const { Map } = require("immutable")
 const { Column } = Table
 
 const ViewRule = memo((props) => {
-  const { options, config, sceneOption, groupOption, extensions, operation, managementOptions } =
-    props
+  const { options, config, sceneOption, groupOption, extensions, operation } = props
 
   const [editingConfig, setEditingConfig] = useState(null)
 
@@ -155,7 +154,6 @@ const ViewRule = memo((props) => {
         extensions={extensions}
         config={editingConfig}
         groupOption={groupOption}
-        managementOptions={managementOptions}
         onSave={onSave}
         onCancel={onCancel}></EditRule>
     </Style>

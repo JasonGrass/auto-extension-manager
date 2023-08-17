@@ -8,7 +8,7 @@ import MatchRule from "./editor/MatchRule"
 import RuleAction from "./editor/RuleAction"
 
 const EditRule = memo((props) => {
-  const { options, extensions, config, groupOption, onSave, onCancel, managementOptions } = props
+  const { options, extensions, config, groupOption, onSave, onCancel } = props
   const matchRuleRef = useRef(null)
   const selectorRef = useRef(null)
   const actionRef = useRef(null)
@@ -42,17 +42,19 @@ const EditRule = memo((props) => {
 
   return (
     <Style>
+      {/* 1 匹配条件 */}
       <MatchRule options={options} config={config?.match ?? {}} ref={matchRuleRef} />
 
+      {/* 2 目标 */}
       <ExtensionSelector
-        groupList={groupOption}
+        options={options}
+        config={config?.target ?? {}}
         extensions={extensions}
-        config={config?.target}
-        managementOptions={managementOptions}
         ref={selectorRef}
       />
 
-      <RuleAction config={config?.action} ref={actionRef}></RuleAction>
+      {/* 3 动作 */}
+      <RuleAction options={options} config={config?.action ?? {}} ref={actionRef}></RuleAction>
 
       <div className="operation-box">
         <Button type="primary" onClick={onSaveClick}>

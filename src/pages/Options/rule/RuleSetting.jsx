@@ -17,7 +17,6 @@ import ViewRule from "./ViewRule.jsx"
 function RuleSetting() {
   const [allSceneOptions, setAllSceneOptions] = useState([])
   const [allGroupOptions, setAllGroupOptions] = useState([])
-  const [managementOptions, setManagementOptions] = useState([])
 
   const [extensions, setExtensions] = useState([])
 
@@ -29,10 +28,6 @@ function RuleSetting() {
   useEffect(() => {
     SyncOptionsStorage.getAll().then((options) => {
       setOptions(options)
-    })
-
-    ManageOptions.get().then((list) => {
-      setManagementOptions(list)
     })
 
     SceneOptions.getAll().then((list) => {
@@ -52,10 +47,6 @@ function RuleSetting() {
 
     RuleConfigOptions.get().then((list) => {
       setRuleConfigs(list)
-    })
-
-    ManageOptions.get().then((options) => {
-      setManagementOptions(options)
     })
   }, [])
 
@@ -94,7 +85,6 @@ function RuleSetting() {
         extensions={extensions}
         sceneOption={allSceneOptions}
         groupOption={allGroupOptions}
-        managementOptions={managementOptions}
         operation={operation}></ViewRule>
     </RuleSettingStyle>
   )
