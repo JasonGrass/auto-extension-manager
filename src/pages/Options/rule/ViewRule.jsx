@@ -151,12 +151,14 @@ const ViewRule = memo((props) => {
         </Button>
       </div>
 
-      <EditRule
-        options={options}
-        config={editingConfig}
-        extensions={extensions}
-        onSave={onSave}
-        onCancel={onCancel}></EditRule>
+      {editingConfig && (
+        <EditRule
+          options={options}
+          config={editingConfig}
+          extensions={extensions}
+          onSave={onSave}
+          onCancel={onCancel}></EditRule>
+      )}
     </Style>
   )
 })

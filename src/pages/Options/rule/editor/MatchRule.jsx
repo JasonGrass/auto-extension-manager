@@ -75,6 +75,10 @@ const MatchRule = ({ options, config }, ref) => {
         })
       }
 
+      if (matchConfig.triggers.length === 0) {
+        throw Error("至少添加一个匹配条件")
+      }
+
       return matchConfig
     }
   }))
@@ -90,7 +94,7 @@ const MatchRule = ({ options, config }, ref) => {
 
   // 初始化
   useEffect(() => {
-    const matchConfig = config.match ?? {}
+    const matchConfig = config.match ?? { triggers: [] }
     if (matchConfig.relationship === "or") {
       setSelectTriggers(matchConfig.relationship)
     }

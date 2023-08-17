@@ -13,10 +13,6 @@ const EditRule = memo((props) => {
   const selectorRef = useRef(null)
   const actionRef = useRef(null)
 
-  if (!config) {
-    return null
-  }
-
   const onSaveClick = (e) => {
     try {
       const matchRuleConfig = matchRuleRef.current.getMatchRuleConfig()

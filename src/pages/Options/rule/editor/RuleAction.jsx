@@ -49,7 +49,7 @@ const RuleAction = ({ options, config }, ref) => {
       }
 
       if (actionTypeKey === "custom") {
-        actionConfig.customRuleConfig = customRef.getCustomRuleConfig()
+        actionConfig.customRuleConfig = customRef.current.getCustomRuleConfig()
       }
 
       return actionConfig

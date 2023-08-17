@@ -21,7 +21,7 @@ const TargetView = memo(({ config, options, extensions }) => {
     groupNames = options.groups
       .filter((g) => config.groups.includes(g.id))
       .map((g) => g.name)
-      .join(",")
+      .join(", ")
   }
 
   if (config.extensions && config.extensions.length > 0) {
@@ -35,8 +35,8 @@ const TargetView = memo(({ config, options, extensions }) => {
 
     // groups 和 extensions 都有
     return (
-      <span>
-        {groupNames && <span>{groupNames}</span>}
+      <Style>
+        {groupNames && <span className="group-names">{groupNames}</span>}
         <ListStyle>
           {list.map((ext) => {
             return (
@@ -47,7 +47,7 @@ const TargetView = memo(({ config, options, extensions }) => {
           })}
           {tooMany && <span className="too-many">...</span>}
         </ListStyle>
-      </span>
+      </Style>
     )
   } else if (groupNames) {
     // 仅有 groups
@@ -58,6 +58,14 @@ const TargetView = memo(({ config, options, extensions }) => {
 })
 
 export default TargetView
+
+const Style = styled.div`
+  display: flex;
+
+  .group-names {
+    margin-right: 5px;
+  }
+`
 
 const ListStyle = styled.ul`
   display: flex;

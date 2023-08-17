@@ -34,7 +34,7 @@ const MatchView = memo(({ config, options }) => {
   const osTrigger = config.triggers.find((t) => t.trigger === "osTrigger")
   if (osTrigger) {
     const list = osTrigger.config.os
-    tips.push(list.toString)
+    tips.push(list.toString())
   }
 
   if (tips.length === 0) {

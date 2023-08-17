@@ -56,7 +56,7 @@ const CustomRuleAction = ({ options, config }, ref) => {
   const [resultDescription, setResultDescription] = useState("")
 
   useEffect(() => {
-    const customConfig = config.action.custom
+    const customConfig = config.action?.custom
     if (!customConfig) {
       return
     }
