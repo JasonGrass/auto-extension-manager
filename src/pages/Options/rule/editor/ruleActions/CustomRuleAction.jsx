@@ -331,7 +331,7 @@ const Style = styled.div`
     padding: 5px 20px 5px 5px;
 
     background: linear-gradient(135deg, #757f9a88, #d7dde888);
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0;
   }
 
   .steps-navigation {

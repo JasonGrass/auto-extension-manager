@@ -12,10 +12,6 @@ const Style = styled.div`
     }
   }
 
-  .action-refresh-options {
-    display: flex;
-  }
-
   .hidden-action-mode {
     display: none;
   }
@@ -24,6 +20,19 @@ const Style = styled.div`
     margin-left: 10px;
     font-size: 8px;
     color: #777;
+  }
+
+  .action-tip-url-match {
+    margin: 12px 0;
+  }
+
+  .action-tip-match-type {
+    margin: 2px 0 12px 0;
+  }
+
+  .action-refresh-options {
+    display: flex;
+    margin: 20px 0;
   }
 `
 

@@ -114,6 +114,7 @@ const RuleAction = ({ config }, ref) => {
         </div>
 
         <Alert
+          className="action-tip-url-match"
           message={urlMatchTip}
           type="warning"
           showIcon
@@ -126,7 +127,6 @@ const RuleAction = ({ config }, ref) => {
             </a>
           }
         />
-        <Alert message={actionTipMessage} type="info" showIcon />
 
         <Radio.Group onChange={handleActionTypeClick} value={actionTypeKey}>
           {actionSelections.map((item) => {
@@ -137,6 +137,7 @@ const RuleAction = ({ config }, ref) => {
             )
           })}
         </Radio.Group>
+        <Alert className="action-tip-match-type" message={actionTipMessage} type="info" showIcon />
 
         {actionTypeKey === "custom" && <CustomRuleAction></CustomRuleAction>}
 
