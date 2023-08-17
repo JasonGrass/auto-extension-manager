@@ -8,16 +8,7 @@ import MatchRule from "./editor/MatchRule"
 import RuleAction from "./editor/RuleAction"
 
 const EditRule = memo((props) => {
-  const {
-    options,
-    extensions,
-    config,
-    sceneOption,
-    groupOption,
-    onSave,
-    onCancel,
-    managementOptions
-  } = props
+  const { options, extensions, config, groupOption, onSave, onCancel, managementOptions } = props
   const matchRuleRef = useRef(null)
   const selectorRef = useRef(null)
   const actionRef = useRef(null)
@@ -51,12 +42,7 @@ const EditRule = memo((props) => {
 
   return (
     <Style>
-      <MatchRule
-        options={options}
-        sceneList={sceneOption}
-        config={config?.match}
-        ref={matchRuleRef}
-      />
+      <MatchRule options={options} config={config?.match ?? {}} ref={matchRuleRef} />
 
       <ExtensionSelector
         groupList={groupOption}

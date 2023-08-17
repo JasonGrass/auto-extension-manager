@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from "react"
+import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 
 import {
   ClearOutlined,
@@ -37,69 +37,74 @@ const triggerModes = [
     label: "操作系统类型",
     key: "os",
     icon: <LaptopOutlined />
-  },
-  {
-    label: "时间",
-    key: "time",
-    icon: <FieldTimeOutlined />
   }
+  // {
+  //   label: "时间",
+  //   key: "time",
+  //   icon: <FieldTimeOutlined />
+  // }
 ]
 
-/*
-sceneList
-[
-  {
-    id: "1",
-    name: "工作模式",
-    desc: "描述",
-    isActive: true
-  }
-]
+const MatchRule = ({ options, config }, ref) => {
+  useImperativeHandle(ref, () => ({
+    // 获取配置
+    getMatchRuleConfig: () => {
+      const matchConfig = {
+        relationship: triggerRelationship,
+        triggers: []
+      }
+      if (selectTriggerKeys.includes("host")) {
+        const urlConfig = urlTriggerRef.current.getTabUrlTriggerConfig()
+        matchConfig.triggers.push({
+          trigger: "urlTrigger",
+          config: urlConfig
+        })
+      }
+      if (selectTriggerKeys.includes("scene")) {
+        const sceneConfig = sceneTriggerRef.current.getSceneTriggerConfig()
+        matchConfig.triggers.push({
+          trigger: "sceneTrigger",
+          config: sceneConfig
+        })
+      }
+      if (selectTriggerKeys.includes("os")) {
+        const osConfig = osTriggerRef.current.getOsTriggerConfig()
+        matchConfig.triggers.push({
+          trigger: "osTrigger",
+          config: osConfig
+        })
+      }
 
-config
-{
-    "matchMode": "host/scene",
-    "matchScene": "scene id",
-    "matchHost": [
-      "*baidu.com*"
-    ],
-    "matchMethod": "regex/wildcard"
-}
+      return matchConfig
+    }
+  }))
 
-*/
-
-const MatchRule = ({ options, sceneList, config }, ref) => {
-  // useImperativeHandle(ref, () => ({
-  //   // 获取配置
-  //   getMatchRuleConfig: () => {
-  //     const hosts = matchHostList
-  //       .filter((host) => host && host.trim() !== "")
-  //       .map((host) => host.trim())
-
-  //     if (matchMode.key === "host" && hosts.length === 0) {
-  //       throw Error("没有添加任何域名规则")
-  //     }
-  //     if (matchMode.key === "scene" && !matchScene?.id) {
-  //       throw Error("没有选择任何情景模式")
-  //     }
-
-  //     return {
-  //       matchMode: matchMode.key,
-  //       matchMethod: matchMethod.key,
-  //       matchScene: matchScene?.id,
-  //       matchHost: hosts
-  //     }
-  //   }
-  // }))
+  const urlTriggerRef = useRef()
+  const sceneTriggerRef = useRef()
+  const osTriggerRef = useRef()
 
   // 选择的触发器列表
-  const [selectTriggerKeys, setSelectTriggers] = useState(["host"]) // 默认添加上 URL 匹配
+  const [selectTriggerKeys, setSelectTriggers] = useState([])
   // 多个触发器之间的组合关系（且 or 或），默认是且
   const [triggerRelationship, setTriggerRelationship] = useState("and")
 
+  // 初始化
   useEffect(() => {
-    // 初始化 selectTriggers
-    // TODO
+    const matchConfig = config.match ?? {}
+    if (matchConfig.relationship === "or") {
+      setSelectTriggers(matchConfig.relationship)
+    }
+    let triggerKeys = []
+    if (matchConfig.triggers.find((t) => t.trigger === "urlTrigger")) {
+      triggerKeys = [...triggerKeys, "urlTrigger"]
+    }
+    if (matchConfig.triggers.find((t) => t.trigger === "sceneTrigger")) {
+      triggerKeys = [...triggerKeys, "sceneTrigger"]
+    }
+    if (matchConfig.triggers.find((t) => t.trigger === "osTrigger")) {
+      triggerKeys = [...triggerKeys, "osTrigger"]
+    }
+    setSelectTriggers(triggerKeys)
   }, [config])
 
   // 添加触发条件的菜单
@@ -162,7 +167,7 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
             onClose={() => {
               onTriggerRemove("host")
             }}>
-            <TabUrlTrigger options={options} config={config}></TabUrlTrigger>
+            <TabUrlTrigger options={options} config={config} ref={urlTriggerRef}></TabUrlTrigger>
           </TriggerWrapper>
         </div>
 
@@ -172,7 +177,7 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
             onClose={() => {
               onTriggerRemove("scene")
             }}>
-            <SceneTrigger options={options} config={config}></SceneTrigger>
+            <SceneTrigger options={options} config={config} ref={sceneTriggerRef}></SceneTrigger>
           </TriggerWrapper>
         </div>
 
@@ -182,11 +187,12 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
             onClose={() => {
               onTriggerRemove("os")
             }}>
-            <OperationSystemTrigger options={options} config={config}></OperationSystemTrigger>
+            <OperationSystemTrigger options={options} config={config} ref={osTriggerRef} />
           </TriggerWrapper>
         </div>
 
-        <div className={selectTriggerKeys.includes("time") ? "trigger-visible" : "trigger-hidden"}>
+        {/* 暂不支持 */}
+        {/* <div className={selectTriggerKeys.includes("time") ? "trigger-visible" : "trigger-hidden"}>
           <TriggerWrapper
             title="时间"
             onClose={() => {
@@ -194,7 +200,7 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
             }}>
             <TimeTrigger options={options} config={config}></TimeTrigger>
           </TriggerWrapper>
-        </div>
+        </div> */}
       </Style>
     </EditorCommonStyle>
   )

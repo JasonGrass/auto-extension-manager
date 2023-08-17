@@ -154,7 +154,6 @@ const ViewRule = memo((props) => {
         options={options}
         extensions={extensions}
         config={editingConfig}
-        sceneOption={sceneOption}
         groupOption={groupOption}
         managementOptions={managementOptions}
         onSave={onSave}

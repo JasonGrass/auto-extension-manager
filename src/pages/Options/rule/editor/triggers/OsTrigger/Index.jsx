@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { memo, useEffect, useImperativeHandle } from "react"
 
 import { Alert, Tag } from "antd"
 import { styled } from "styled-components"
@@ -37,8 +37,26 @@ const PlatformOs = [
   }
 ]
 
-const OperationSystemTrigger = memo(() => {
+const OperationSystemTrigger = memo(({ options, config }, ref) => {
+  useImperativeHandle(ref, () => ({
+    getOsTriggerConfig: () => {
+      if (selectOsKeys.length === 0) {
+        throw new Error("请至少选择一个操作系统类型")
+      }
+
+      return {
+        os: selectOsKeys
+      }
+    }
+  }))
+
   const [selectOsKeys, setSelectOsKeys] = React.useState([])
+
+  // 初始化
+  useEffect(() => {
+    const myConfig = config.match?.triggers?.find((t) => t.trigger === "osTrigger")?.config ?? {}
+    setSelectOsKeys(myConfig.os ?? [])
+  }, [config])
 
   const handleOsSelectChange = (key, checked) => {
     const nextSelectedKeys = checked

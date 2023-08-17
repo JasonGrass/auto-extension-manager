@@ -4,15 +4,28 @@ import { ClearOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons"
 import { Alert, Button, Dropdown, Space } from "antd"
 import { styled } from "styled-components"
 
-const SceneTrigger = memo(({ options, config }) => {
+const SceneTrigger = memo(({ options, config }, ref) => {
   const sceneList = options.scenes
+
+  useImperativeHandle(ref, () => ({
+    getSceneTriggerConfig: () => {
+      if (!matchScene?.id) {
+        throw Error("没有选择任何情景模式")
+      }
+
+      return {
+        sceneId: matchScene?.id
+      }
+    }
+  }))
 
   // 匹配情景模式 ID
   const [matchScene, setMatchScene] = useState({})
 
   useEffect(() => {
-    const sceneId = config?.matchScene ?? ""
-    setMatchScene(sceneList.filter((s) => s.id === sceneId)[0])
+    const myConfig = config.match?.triggers?.find((t) => t.trigger === "sceneTrigger")?.config ?? {}
+    const sceneId = myConfig?.sceneId ?? ""
+    setMatchScene(sceneList.find((s) => s.id === sceneId))
   }, [options, sceneList, config])
 
   if (!sceneList || sceneList.length === 0) {

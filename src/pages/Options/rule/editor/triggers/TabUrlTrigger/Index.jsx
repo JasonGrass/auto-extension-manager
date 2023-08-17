@@ -13,18 +13,38 @@ regex 正则表达式
  * @param options 所有用户配置
  * @param config 当前规则的配置
  */
-const TabUrlTrigger = memo(({ options, config }) => {
+const TabUrlTrigger = memo(({ options, config }, ref) => {
+  useImperativeHandle(ref, () => ({
+    getTabUrlTriggerConfig: () => {
+      const urls = matchHostList
+        .filter((host) => host && host.trim() !== "")
+        .map((host) => host.trim())
+
+      if (urls.length === 0) {
+        throw Error("没有添加任何 URL")
+      }
+
+      return {
+        matchMethod: matchMethod,
+        matchUrl: urls
+      }
+    }
+  }))
+
   // 域名列表
   const [matchHostList, setMatchHostList] = useState([])
   // 域名匹配计算方法，regex / wildcard
   const [matchMethod, setMatchMethod] = useState("wildcard")
 
+  // 初始化
   useEffect(() => {
+    const myConfig = config.match?.triggers?.find((t) => t.trigger === "urlTrigger")?.config ?? {}
+
     // 初始化匹配的 HOST 列表
-    setMatchHostList(config?.matchHost ?? [""])
+    setMatchHostList(myConfig.matchUrl ?? [""])
 
     // 初始化匹配的计算方式
-    if (config?.matchMethod === "regex") {
+    if (myConfig.matchMethod === "regex") {
       setMatchMethod("regex")
     } else {
       setMatchMethod("wildcard")
@@ -53,7 +73,7 @@ const TabUrlTrigger = memo(({ options, config }) => {
   return (
     <Style>
       <Alert
-        message="URL 是指当前打开的那一个标签中的 URL，具体匹配规则见详细说明"
+        message="URL 默认是指当前打开的那个标签中的 URL，具体匹配规则见详细说明"
         type="info"
         showIcon
         action={
