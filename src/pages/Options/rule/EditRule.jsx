@@ -8,7 +8,7 @@ import MatchRule from "./editor/MatchRule"
 import RuleAction from "./editor/RuleAction"
 
 const EditRule = memo((props) => {
-  const { options, extensions, config, groupOption, onSave, onCancel } = props
+  const { options, extensions, config, onSave, onCancel } = props
   const matchRuleRef = useRef(null)
   const selectorRef = useRef(null)
   const actionRef = useRef(null)

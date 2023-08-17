@@ -153,7 +153,6 @@ const ViewRule = memo((props) => {
         options={options}
         extensions={extensions}
         config={editingConfig}
-        groupOption={groupOption}
         onSave={onSave}
         onCancel={onCancel}></EditRule>
     </Style>

@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from "react"
+import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 
 import { DownOutlined } from "@ant-design/icons"
 import { Alert, Button, Checkbox, Dropdown, Radio, Space, Switch } from "antd"
@@ -34,45 +34,46 @@ const actionSelections = [
   }
 ]
 
-const RuleAction = ({ config }, ref) => {
-  // useImperativeHandle(ref, () => ({
-  //   // 获取配置
-  //   getActionConfig: () => {
-  //     if (!actionType) {
-  //       throw Error("没有设置任何动作类型")
-  //     }
+const RuleAction = ({ options, config }, ref) => {
+  useImperativeHandle(ref, () => ({
+    // 获取配置
+    getActionConfig: () => {
+      if (!actionTypeKey) {
+        throw Error("没有设置任何动作类型")
+      }
 
-  //     return {
-  //       actionType: actionType.key,
-  //       refreshAfterOpen: refreshAfterOpen,
-  //       refreshAfterClose: refreshAfterClose,
-  //       isAdvanceMode: isShowAdvanceOptions,
-  //       timeWhenEnable: timeWhenEnable,
-  //       timeWhenDisable: timeWhenDisable
-  //     }
-  //   }
-  // }))
+      const actionConfig = {
+        actionType: actionTypeKey,
+        reloadAfterEnable: refreshAfterEnable,
+        reloadAfterDisable: refreshAfterDisable
+      }
 
-  const [actionTypeKey, setActionTypeKey] = useState()
-  const [actionTipMessage, setActionTipMessage] = useState("custom")
+      if (actionTypeKey === "custom") {
+        actionConfig.customRuleConfig = customRef.getCustomRuleConfig()
+      }
 
-  const [refreshAfterOpen, setRefreshAfterOpen] = useState(false)
-  const [refreshAfterClose, setRefreshAfterClose] = useState(false)
+      return actionConfig
+    }
+  }))
+
+  const customRef = useRef()
+
+  const [actionTypeKey, setActionTypeKey] = useState("custom")
+  const [actionTipMessage, setActionTipMessage] = useState("")
+
+  const [refreshAfterEnable, setRefreshAfterEnable] = useState(false)
+  const [refreshAfterDisable, setRefreshAfterDisable] = useState(false)
 
   // 根据配置初始化
-  // useEffect(() => {
-  //   const action = config?.actionType
-  //   if (action) {
-  //     setActionType(actionSelections.filter((m) => m.key === action)[0])
-  //   } else {
-  //     setActionType(actionSelections[0])
-  //   }
-
-  //   setTimeWhenEnable(config?.timeWhenEnable ?? "none")
-  //   setTimeWhenDisable(config?.timeWhenDisable ?? "none")
-  //   setRefreshAfterOpen(config?.refreshAfterOpen ?? false)
-  //   setRefreshAfterClose(config?.refreshAfterClose ?? false)
-  // }, [config])
+  useEffect(() => {
+    const actionConfig = config?.action
+    if (!actionConfig) {
+      return
+    }
+    setActionTypeKey(actionConfig.actionType)
+    setRefreshAfterEnable(actionConfig.reloadAfterEnable ?? false)
+    setRefreshAfterDisable(actionConfig.reloadAfterDisable ?? false)
+  }, [config])
 
   useEffect(() => {
     switch (actionTypeKey) {
@@ -99,11 +100,11 @@ const RuleAction = ({ config }, ref) => {
   }
 
   const onFreshAfterOpenChange = (e) => {
-    setRefreshAfterOpen(e.target.checked)
+    setRefreshAfterEnable(e.target.checked)
   }
 
   const onFreshAfterCloseChange = (e) => {
-    setRefreshAfterClose(e.target.checked)
+    setRefreshAfterDisable(e.target.checked)
   }
 
   return (
@@ -139,13 +140,15 @@ const RuleAction = ({ config }, ref) => {
         </Radio.Group>
         <Alert className="action-tip-match-type" message={actionTipMessage} type="info" showIcon />
 
-        {actionTypeKey === "custom" && <CustomRuleAction></CustomRuleAction>}
+        {actionTypeKey === "custom" && (
+          <CustomRuleAction options={options} config={config} ref={customRef}></CustomRuleAction>
+        )}
 
         <div className="action-label action-refresh-options">
-          <Checkbox checked={refreshAfterOpen} onChange={onFreshAfterOpenChange}>
+          <Checkbox checked={refreshAfterEnable} onChange={onFreshAfterOpenChange}>
             启用插件之后，刷新当前页面
           </Checkbox>
-          <Checkbox checked={refreshAfterClose} onChange={onFreshAfterCloseChange}>
+          <Checkbox checked={refreshAfterDisable} onChange={onFreshAfterCloseChange}>
             禁用插件之后，刷新当前页面
           </Checkbox>
         </div>

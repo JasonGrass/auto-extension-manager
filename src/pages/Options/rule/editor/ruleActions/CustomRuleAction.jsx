@@ -4,8 +4,8 @@ import { Alert, Button, Checkbox, Dropdown, Radio, Space, Steps, Switch } from "
 import classNames from "classnames"
 import { styled } from "styled-components"
 
-const CustomRuleAction = memo(() => {
-  const [step1, setStep1] = useState({
+const CustomRuleAction = ({ options, config }, ref) => {
+  const [step1] = useState({
     index: 1,
     key: "time-when-enable",
     enable: true
@@ -15,7 +15,7 @@ const CustomRuleAction = memo(() => {
     key: "url-match-when-enable",
     enable: false
   })
-  const [step3, setStep3] = useState({
+  const [step3] = useState({
     index: 3,
     key: "time-when-disable",
     enable: true
@@ -25,6 +25,20 @@ const CustomRuleAction = memo(() => {
     key: "url-match-when-disable",
     enable: false
   })
+
+  useImperativeHandle(ref, () => ({
+    getCustomRuleConfig: () => {
+      if (!timeWhenEnable || !timeWhenDisable) {
+        throw Error("没有指定启用或禁用扩展的时机")
+      }
+      return {
+        timeWhenEnable: timeWhenEnable,
+        urlMatchWhenEnable: urlMatchWhenEnable,
+        timeWhenDisable: timeWhenDisable,
+        urlMatchWhenDisable: urlMatchWhenDisable
+      }
+    }
+  }))
 
   // 启用插件的时机 none / match / notMatch
   const [timeWhenEnable, setTimeWhenEnable] = useState("none")
@@ -40,6 +54,17 @@ const CustomRuleAction = memo(() => {
   const [hasNext, setHasNext] = useState(true)
 
   const [resultDescription, setResultDescription] = useState("")
+
+  useEffect(() => {
+    const customConfig = config.action.custom
+    if (!customConfig) {
+      return
+    }
+    setTimeWhenEnable(customConfig.timeWhenEnable)
+    setTimeWhenDisable(customConfig.timeWhenDisable)
+    setUrlMatchWhenEnable(customConfig.urlMatchWhenEnable)
+    setUrlMatchWhenDisable(customConfig.urlMatchWhenDisable)
+  }, [config])
 
   useEffect(() => {
     if (currentStep.index === 1) {
@@ -318,9 +343,9 @@ const CustomRuleAction = memo(() => {
       </div>
     </Style>
   )
-})
+}
 
-export default CustomRuleAction
+export default memo(forwardRef(CustomRuleAction))
 
 const Style = styled.div`
   margin: 10px 0;
