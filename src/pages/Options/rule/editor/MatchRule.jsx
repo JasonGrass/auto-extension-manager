@@ -25,17 +25,17 @@ import TriggerWrapper from "./triggers/TriggerWrapper/Index"
 const triggerModes = [
   {
     label: "URL 链接",
-    key: "host",
+    key: "urlTrigger",
     icon: <LinkOutlined />
   },
   {
     label: "情景模式",
-    key: "scene",
+    key: "sceneTrigger",
     icon: <ThunderboltOutlined />
   },
   {
     label: "操作系统类型",
-    key: "os",
+    key: "osTrigger",
     icon: <LaptopOutlined />
   }
   // {
@@ -53,21 +53,21 @@ const MatchRule = ({ options, config }, ref) => {
         relationship: triggerRelationship,
         triggers: []
       }
-      if (selectTriggerKeys.includes("host")) {
+      if (selectTriggerKeys.includes("urlTrigger")) {
         const urlConfig = urlTriggerRef.current.getTabUrlTriggerConfig()
         matchConfig.triggers.push({
           trigger: "urlTrigger",
           config: urlConfig
         })
       }
-      if (selectTriggerKeys.includes("scene")) {
+      if (selectTriggerKeys.includes("sceneTrigger")) {
         const sceneConfig = sceneTriggerRef.current.getSceneTriggerConfig()
         matchConfig.triggers.push({
           trigger: "sceneTrigger",
           config: sceneConfig
         })
       }
-      if (selectTriggerKeys.includes("os")) {
+      if (selectTriggerKeys.includes("osTrigger")) {
         const osConfig = osTriggerRef.current.getOsTriggerConfig()
         matchConfig.triggers.push({
           trigger: "osTrigger",
@@ -96,7 +96,7 @@ const MatchRule = ({ options, config }, ref) => {
   useEffect(() => {
     const matchConfig = config.match ?? { triggers: [] }
     if (matchConfig.relationship === "or") {
-      setSelectTriggers(matchConfig.relationship)
+      setTriggerRelationship(matchConfig.relationship)
     }
     let triggerKeys = []
     if (matchConfig.triggers.find((t) => t.trigger === "urlTrigger")) {
@@ -165,7 +165,10 @@ const MatchRule = ({ options, config }, ref) => {
           </span>
         </div>
 
-        <div className={selectTriggerKeys.includes("host") ? "trigger-visible" : "trigger-hidden"}>
+        <div
+          className={
+            selectTriggerKeys.includes("urlTrigger") ? "trigger-visible" : "trigger-hidden"
+          }>
           <TriggerWrapper
             title="URL 匹配"
             onClose={() => {
@@ -175,7 +178,10 @@ const MatchRule = ({ options, config }, ref) => {
           </TriggerWrapper>
         </div>
 
-        <div className={selectTriggerKeys.includes("scene") ? "trigger-visible" : "trigger-hidden"}>
+        <div
+          className={
+            selectTriggerKeys.includes("sceneTrigger") ? "trigger-visible" : "trigger-hidden"
+          }>
           <TriggerWrapper
             title="情景模式"
             onClose={() => {
@@ -185,7 +191,10 @@ const MatchRule = ({ options, config }, ref) => {
           </TriggerWrapper>
         </div>
 
-        <div className={selectTriggerKeys.includes("os") ? "trigger-visible" : "trigger-hidden"}>
+        <div
+          className={
+            selectTriggerKeys.includes("osTrigger") ? "trigger-visible" : "trigger-hidden"
+          }>
           <TriggerWrapper
             title="操作系统类型"
             onClose={() => {

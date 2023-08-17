@@ -38,18 +38,18 @@ const EditRule = memo((props) => {
   return (
     <Style>
       {/* 1 匹配条件 */}
-      <MatchRule options={options} config={config.match ?? {}} ref={matchRuleRef} />
+      <MatchRule options={options} config={config} ref={matchRuleRef} />
 
       {/* 2 目标 */}
       <ExtensionSelector
         options={options}
-        config={config.target ?? {}}
+        config={config}
         extensions={extensions}
         ref={selectorRef}
       />
 
       {/* 3 动作 */}
-      <RuleAction options={options} config={config.action ?? {}} ref={actionRef}></RuleAction>
+      <RuleAction options={options} config={config} ref={actionRef}></RuleAction>
 
       <div className="operation-box">
         <Button type="primary" onClick={onSaveClick}>

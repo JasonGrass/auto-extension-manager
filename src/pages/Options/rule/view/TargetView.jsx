@@ -10,8 +10,6 @@ import { getIcon } from ".../utils/extensionHelper"
  * @param options 完整的配置
  */
 const TargetView = memo(({ config, options, extensions }) => {
-  console.log("TargetView", config)
-
   if (!config || (!config.extensions && !config.groups)) {
     return <span className="error-text">ERROR</span>
   }
