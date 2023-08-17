@@ -134,14 +134,14 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
     <EditorCommonStyle>
       <Style>
         <div className="header">
-          <span className="title">1 触发条件</span>
+          <span className="title">1 匹配条件</span>
         </div>
 
         <div className="trigger-operation-settings">
           <Dropdown menu={triggerModeMenuProps}>
             <Button>
               <Space>
-                添加触发条件
+                添加匹配条件
                 <PlusCircleOutlined />
               </Space>
             </Button>
@@ -150,8 +150,8 @@ const MatchRule = ({ options, sceneList, config }, ref) => {
           <span
             className={selectTriggerKeys.length > 1 ? "trigger-relationship" : "trigger-hidden"}>
             <Radio.Group onChange={onTriggerRelationshipChange} value={triggerRelationship}>
-              <Radio value="and">满足以下所有条件触发</Radio>
-              <Radio value="or">满足以下任一添加触发</Radio>
+              <Radio value="and">满足以下所有条件</Radio>
+              <Radio value="or">满足以下任一条件</Radio>
             </Radio.Group>
           </span>
         </div>

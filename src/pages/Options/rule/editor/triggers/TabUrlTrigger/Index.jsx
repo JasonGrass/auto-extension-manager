@@ -53,7 +53,7 @@ const TabUrlTrigger = memo(({ options, config }) => {
   return (
     <Style>
       <Alert
-        message="在打开或关闭标签页之后触发，URL 的具体匹配规则见详细说明"
+        message="URL 是指当前打开的那一个标签中的 URL，具体匹配规则见详细说明"
         type="info"
         showIcon
         action={
