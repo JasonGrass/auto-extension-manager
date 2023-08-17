@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useImperativeHandle } from "react"
+import React, { forwardRef, memo, useEffect, useImperativeHandle } from "react"
 
 import { Alert, Tag } from "antd"
 import { styled } from "styled-components"
@@ -37,7 +37,7 @@ const PlatformOs = [
   }
 ]
 
-const OperationSystemTrigger = memo(({ options, config }, ref) => {
+const OperationSystemTrigger = ({ options, config }, ref) => {
   useImperativeHandle(ref, () => ({
     getOsTriggerConfig: () => {
       if (selectOsKeys.length === 0) {
@@ -82,9 +82,9 @@ const OperationSystemTrigger = memo(({ options, config }, ref) => {
       </div>
     </Style>
   )
-})
+}
 
-export default OperationSystemTrigger
+export default memo(forwardRef(OperationSystemTrigger))
 
 const Style = styled.div`
   .os-tags {

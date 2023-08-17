@@ -13,7 +13,7 @@ regex 正则表达式
  * @param options 所有用户配置
  * @param config 当前规则的配置
  */
-const TabUrlTrigger = memo(({ options, config }, ref) => {
+const TabUrlTrigger = ({ options, config }, ref) => {
   useImperativeHandle(ref, () => ({
     getTabUrlTriggerConfig: () => {
       const urls = matchHostList
@@ -123,9 +123,9 @@ const TabUrlTrigger = memo(({ options, config }, ref) => {
       </div>
     </Style>
   )
-})
+}
 
-export default TabUrlTrigger
+export default memo(forwardRef(TabUrlTrigger))
 
 const Style = styled.div`
   .match-method {

@@ -15,16 +15,18 @@ const { Map } = require("immutable")
 const { Column } = Table
 
 const ViewRule = memo((props) => {
-  const { options, config, sceneOption, groupOption, extensions, operation } = props
+  const { options, configs, sceneOption, groupOption, extensions, operation } = props
 
+  // 正在编辑的规则
   const [editingConfig, setEditingConfig] = useState(null)
 
-  const [data, setData] = useState()
+  // 规则列表
+  const [records, setRecords] = useState()
   useEffect(() => {
-    if (config) {
-      setData(config.map((c, index) => Map(c).set("index", index).toJS()))
+    if (configs) {
+      setRecords(configs.map((c, index) => Map(c).set("index", index).toJS()))
     }
-  }, [config])
+  }, [configs])
 
   const onAdd = () => {
     setEditingConfig({})
@@ -79,7 +81,7 @@ const ViewRule = memo((props) => {
   return (
     <Style>
       <Table
-        dataSource={data}
+        dataSource={records}
         rowKey="id"
         size="small"
         pagination={{ position: ["bottomCenter"], hideOnSinglePage: true }}>
@@ -151,8 +153,8 @@ const ViewRule = memo((props) => {
 
       <EditRule
         options={options}
-        extensions={extensions}
         config={editingConfig}
+        extensions={extensions}
         onSave={onSave}
         onCancel={onCancel}></EditRule>
     </Style>

@@ -4,7 +4,7 @@ import { ClearOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons"
 import { Alert, Button, Dropdown, Space } from "antd"
 import { styled } from "styled-components"
 
-const SceneTrigger = memo(({ options, config }, ref) => {
+const SceneTrigger = ({ options, config }, ref) => {
   const sceneList = options.scenes
 
   useImperativeHandle(ref, () => ({
@@ -60,9 +60,9 @@ const SceneTrigger = memo(({ options, config }, ref) => {
       </div>
     </Style>
   )
-})
+}
 
-export default SceneTrigger
+export default memo(forwardRef(SceneTrigger))
 
 const Style = styled.div`
   .scene-select-dropdown {

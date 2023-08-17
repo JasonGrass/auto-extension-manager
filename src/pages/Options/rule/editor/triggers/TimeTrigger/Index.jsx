@@ -1,10 +1,10 @@
-import React, { memo, useState } from "react"
+import React, { forwardRef, memo, useState } from "react"
 
 import { CloseOutlined } from "@ant-design/icons"
 import { Alert, Tag, TimePicker, message } from "antd"
 import { styled } from "styled-components"
 
-const TimeTrigger = memo(() => {
+const TimeTrigger = () => {
   const [times, setTimes] = useState([])
 
   const onChange = (time, timeString) => {
@@ -52,8 +52,8 @@ const TimeTrigger = memo(() => {
       </div>
     </Style>
   )
-})
+}
 
-export default TimeTrigger
+export default memo(forwardRef(TimeTrigger))
 
 const Style = styled.div``

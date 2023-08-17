@@ -81,7 +81,7 @@ function RuleSetting() {
 
       <ViewRule
         options={options}
-        config={ruleConfigs}
+        configs={ruleConfigs}
         extensions={extensions}
         sceneOption={allSceneOptions}
         groupOption={allGroupOptions}
