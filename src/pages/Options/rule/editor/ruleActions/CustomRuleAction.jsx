@@ -140,7 +140,7 @@ const CustomRuleAction = ({ options, config }, ref) => {
             <Radio value="none">不自动启用</Radio>
             <Radio value="match">条件匹配时</Radio>
             <Radio value="notMatch">条件不匹配时</Radio>
-            <Radio value="closeWindow">所有浏览器窗口关闭时</Radio>
+            {/* <Radio value="closeWindow">所有浏览器窗口关闭时</Radio> */}
           </Radio.Group>
         </div>
 

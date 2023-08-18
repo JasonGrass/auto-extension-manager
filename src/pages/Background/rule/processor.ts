@@ -221,6 +221,10 @@ async function handleAdvanceMode(
   ) {
     close(action.reloadAfterDisable)
   }
+
+  if (customRule.timeWhenDisable === "closeWindow") {
+    // 暂未实现
+  }
 }
 
 async function closeExtensions(
