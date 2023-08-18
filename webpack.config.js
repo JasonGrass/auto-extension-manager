@@ -18,18 +18,7 @@ var alias = {
 // load the secrets
 var secretsPath = path.join(__dirname, "secrets." + env.NODE_ENV + ".js")
 
-var fileExtensions = [
-  "jpg",
-  "jpeg",
-  "png",
-  "gif",
-  "eot",
-  "otf",
-  "svg",
-  "ttf",
-  "woff",
-  "woff2"
-]
+var fileExtensions = ["jpg", "jpeg", "png", "gif", "eot", "otf", "svg", "ttf", "woff", "woff2"]
 
 if (fileSystem.existsSync(secretsPath)) {
   alias["secrets"] = secretsPath
@@ -100,9 +89,7 @@ var options = {
             loader: require.resolve("ts-loader"),
             options: {
               getCustomTransformers: () => ({
-                before: [isDevelopment && ReactRefreshTypeScript()].filter(
-                  Boolean
-                )
+                before: [isDevelopment && ReactRefreshTypeScript()].filter(Boolean)
               }),
               transpileOnly: isDevelopment
             }
@@ -118,9 +105,7 @@ var options = {
           {
             loader: require.resolve("babel-loader"),
             options: {
-              plugins: [
-                isDevelopment && require.resolve("react-refresh/babel")
-              ].filter(Boolean)
+              plugins: [isDevelopment && require.resolve("react-refresh/babel")].filter(Boolean)
             }
           }
         ],
@@ -140,6 +125,7 @@ var options = {
     new webpack.ProgressPlugin(),
     // expose and write the allowed env vars on the compiled bundle
     new webpack.EnvironmentPlugin(["NODE_ENV"]),
+    new webpack.DefinePlugin({ RUNTIME_ENV: env.NODE_ENV }),
     new CopyWebpackPlugin({
       patterns: [
         {

@@ -1,5 +1,6 @@
 import chromeP from "webext-polyfill-kinda"
 
+import logger from ".../utils/logger"
 import ConvertRuleToV2 from "./RuleConverter"
 import processRule from "./processor"
 
@@ -59,6 +60,8 @@ class RuleHandler {
   }
 
   private async do() {
+    logger().trace("执行规则计算")
+
     const self = await chromeP.management.getSelf()
     const tabs = await chromeP.tabs.query({})
 
