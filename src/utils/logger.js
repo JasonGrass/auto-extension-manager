@@ -21,7 +21,7 @@ class Logger {
     if (!this.showMoreLog) {
       return
     }
-    console.trace(...args)
+    console.info(...args)
   }
 
   debug(...args) {
