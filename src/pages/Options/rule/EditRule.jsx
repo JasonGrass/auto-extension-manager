@@ -35,6 +35,12 @@ const EditRule = memo((props) => {
     }
   }
 
+  const onHelp = () => {
+    chrome.tabs.create({
+      url: "https://github.com/JasonGrass/auto-extension-manager/wiki"
+    })
+  }
+
   return (
     <Style>
       {/* 1 匹配条件 */}
@@ -56,6 +62,7 @@ const EditRule = memo((props) => {
           保存
         </Button>
         <Button onClick={onCancel}>取消</Button>
+        <Button onClick={onHelp}>帮助</Button>
       </div>
     </Style>
   )
