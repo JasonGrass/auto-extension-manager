@@ -5,6 +5,8 @@ export const OptionsStorage = new OptionsSync({
   defaults: {
     popupWidth: 400,
     groups: [],
+    scenes: [],
+    ruleConfig: [],
     setting: {}
   },
   migrations: [
@@ -33,6 +35,15 @@ export const SyncOptionsStorage = {
     }
     if (!options.management.extensions) {
       options.management.extensions = []
+    }
+    if (!options.scenes) {
+      options.scenes = []
+    }
+    if (!options.groups) {
+      options.groups = []
+    }
+    if (!options.ruleConfig) {
+      options.ruleConfig = []
     }
     return options
   }
