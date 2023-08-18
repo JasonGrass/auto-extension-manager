@@ -52,6 +52,9 @@ class RuleHandler {
   }
 
   setRules(rules: any[]) {
+    if (!rules || rules.length === 0) {
+      return
+    }
     this._rules = this.convertRule(rules)
     this.do()
   }
@@ -65,6 +68,10 @@ class RuleHandler {
   }
 
   private convertRule(rules: any[]): ruleV2.IRuleConfig[] {
+    if (!rules || rules.length === 0) {
+      return []
+    }
+
     const ruleList = rules
       .map((r) => ConvertRuleToV2(r as rule.IRuleConfig))
       .filter((r) => r) as ruleV2.IRuleConfig[]
