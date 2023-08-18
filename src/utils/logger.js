@@ -48,11 +48,9 @@ function getLogger() {
   let l = undefined
   return () => {
     if (l) {
-      console.log("return logger")
       return l
     } else {
       l = new Logger()
-      console.log("create logger")
       return l
     }
   }
