@@ -2,7 +2,7 @@ import chromeP from "webext-polyfill-kinda"
 
 import { LocalOptionsStorage, SyncOptionsStorage } from ".../storage"
 import logger from ".../utils/logger"
-import { onTabClosed, onTabUrlChange } from "./event/tabChangeEvent"
+import { onTabClosed, onTabUrlChange, onWindowClosed } from "./event/tabChangeEvent"
 import "./message/MessageHandler"
 import createRuleHandler from "./rule/RuleHandler"
 
@@ -11,6 +11,7 @@ logger().init()
 const handler = createRuleHandler()
 onTabUrlChange(handler.onCurrentUrlChanged.bind(handler))
 onTabClosed(handler.onTabClosed.bind(handler))
+onWindowClosed(handler.onWindowClosed.bind(handler))
 
 // initial running
 ;(async () => {

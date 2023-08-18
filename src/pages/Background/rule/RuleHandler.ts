@@ -1,3 +1,4 @@
+import lodash from "lodash"
 import chromeP from "webext-polyfill-kinda"
 
 import logger from ".../utils/logger"
@@ -5,6 +6,13 @@ import ConvertRuleToV2 from "./RuleConverter"
 import processRule from "./processor"
 
 class RuleHandler {
+  /**
+   *
+   */
+  constructor() {
+    this.debounceDo = lodash.debounce(this.do, 20)
+  }
+
   /**
    * 当前标签信息
    */
@@ -36,7 +44,11 @@ class RuleHandler {
   }
 
   onTabClosed(tabId: number, removeInfo: any) {
-    this.do()
+    this.invokeDebounceDo()
+  }
+
+  onWindowClosed(windowsId: number) {
+    this.invokeDebounceDo()
   }
 
   setRules(rules: any[]) {
@@ -59,8 +71,14 @@ class RuleHandler {
     return ruleList
   }
 
+  private async invokeDebounceDo() {
+    this.debounceDo()
+  }
+
+  private debounceDo
+
   private async do() {
-    logger().trace("执行规则计算")
+    logger().trace("[Extension Manager] 执行规则")
 
     const self = await chromeP.management.getSelf()
     const tabs = await chromeP.tabs.query({})

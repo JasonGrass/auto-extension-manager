@@ -1,9 +1,12 @@
 chrome.tabs.onUpdated.addListener(onTabUpdated)
 chrome.tabs.onActivated.addListener(onTabActivated)
 chrome.tabs.onRemoved.addListener(onTabRemoved)
+chrome.windows.onRemoved.addListener(onWindowRemoved)
 
 let _currentTabUpdatedCallback
 let _tabClosedCallback
+let _windowClosedCallback
+
 let _lastTabInfo
 
 function onTabActivated(activeInfo) {
@@ -18,6 +21,10 @@ function onTabRemoved(tabId, removeInfo) {
   if (_lastTabInfo?.id !== tabId) {
     _tabClosedCallback?.(tabId, removeInfo)
   }
+}
+
+function onWindowRemoved(windowId) {
+  _windowClosedCallback?.(windowId)
 }
 
 function checkCurrentTab() {
@@ -43,11 +50,7 @@ function checkCurrentTab() {
 }
 
 function isSameTabInfo(one, other) {
-  return (
-    one.windowId === other.windowId &&
-    one.id === other.id &&
-    one.url === other.url
-  )
+  return one.windowId === other.windowId && one.id === other.id && one.url === other.url
 }
 
 export function onTabUrlChange(callback) {
@@ -56,4 +59,8 @@ export function onTabUrlChange(callback) {
 
 export function onTabClosed(callback) {
   _tabClosedCallback = callback
+}
+
+export function onWindowClosed(callback) {
+  _windowClosedCallback = callback
 }
