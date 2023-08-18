@@ -65,13 +65,21 @@ function isMatchUrl(
   if (!url || url === "") return false
   if (!patterns || patterns.length === 0) return false
 
-  const host = new URL(url).hostname
+  let matchUrl = url
+  const index1 = url.indexOf("?")
+  if (index1 > 0) {
+    matchUrl = matchUrl.substring(0, index1)
+  }
+  const index2 = matchUrl.indexOf("#")
+  if (index2 > 0) {
+    matchUrl = matchUrl.substring(0, index2)
+  }
 
   if (matchMethod === "wildcard") {
-    const exist = patterns.find((pattern) => isMatchByWildcard(host, pattern))
+    const exist = patterns.find((pattern) => isMatchByWildcard(matchUrl, pattern))
     return Boolean(exist)
   } else if (matchMethod === "regex") {
-    const exist = patterns.find((pattern) => isMatchByRegex(host, pattern))
+    const exist = patterns.find((pattern) => isMatchByRegex(matchUrl, pattern))
     return Boolean(exist)
   }
 
