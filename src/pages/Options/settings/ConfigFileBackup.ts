@@ -1,4 +1,5 @@
 import { OptionsStorage, SyncOptionsStorage } from ".../storage"
+import ConvertRuleToV2 from "../../Background/rule/RuleConverter"
 
 /**
  * 导出配置
@@ -36,7 +37,7 @@ export async function importConfig(): Promise<boolean> {
 type ImportData = {
   groups: config.IGroup[]
   scenes: config.IScene[]
-  ruleConfig: rule.IRuleConfig[]
+  ruleConfig: ruleV2.IRuleConfig[]
   management: config.IManagement
 }
 
@@ -63,7 +64,9 @@ function mergeConfig(importData: ImportData, config: ImportData): boolean {
     const newConfigs = importData.ruleConfig.filter(
       (r) => config.ruleConfig.findIndex((r2) => r2.id === r.id) < 0
     )
-    config.ruleConfig.push(...newConfigs)
+
+    const configV2 = newConfigs.map((c) => ConvertRuleToV2(c as any)).filter((c) => c)
+    config.ruleConfig.push(...(configV2 as any))
   }
 
   if (importData.management) {
