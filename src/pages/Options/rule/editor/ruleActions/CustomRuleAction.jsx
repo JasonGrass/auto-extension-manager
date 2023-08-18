@@ -28,6 +28,7 @@ const CustomRuleAction = ({ options, config }, ref) => {
   // 禁用插件时，URL 的匹配方式： currentMatch / anyMatch / currentNotMatch / allNotMatch
   const [urlMatchWhenDisable, setUrlMatchWhenDisable] = useState("")
 
+  // 初始化
   useEffect(() => {
     const customConfig = config.action?.custom
     if (!customConfig) {
