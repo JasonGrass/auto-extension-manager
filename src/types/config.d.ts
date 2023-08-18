@@ -1,5 +1,11 @@
 declare namespace config {
-  export interface ISetting {}
+  export interface ISetting {
+    isShowApp: boolean
+    isShowItemOperationAlways: boolean
+    isShowSearchBarDefault: boolean
+    isRaiseEnableWhenSwitchGroup: boolean
+    isShowFixedExtension: boolean
+  }
 
   export interface IScene {
     /**
