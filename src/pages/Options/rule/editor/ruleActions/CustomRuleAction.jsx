@@ -28,8 +28,6 @@ const CustomRuleAction = ({ options, config }, ref) => {
   // 禁用插件时，URL 的匹配方式： currentMatch / anyMatch / currentNotMatch / allNotMatch
   const [urlMatchWhenDisable, setUrlMatchWhenDisable] = useState("")
 
-  const [resultDescription, setResultDescription] = useState("")
-
   useEffect(() => {
     const customConfig = config.action?.custom
     if (!customConfig) {
@@ -40,52 +38,6 @@ const CustomRuleAction = ({ options, config }, ref) => {
     setUrlMatchWhenEnable(customConfig.urlMatchWhenEnable)
     setUrlMatchWhenDisable(customConfig.urlMatchWhenDisable)
   }, [config])
-
-  useEffect(() => {
-    let result = "🌳"
-
-    if (timeWhenEnable === "none") {
-      result += "启用插件的时机：不自动启用"
-    } else if (timeWhenEnable === "match") {
-      result += "启用插件的时机：条件匹配时启用"
-    } else if (timeWhenEnable === "notMatch") {
-      result += "启用插件的时机：条件不匹配时启用"
-    }
-
-    if (urlMatchWhenEnable === "currentMatch") {
-      result += ` (其中 URL 匹配的规则为：当前标签匹配才算匹配)`
-    } else if (urlMatchWhenEnable === "anyMatch") {
-      result += ` (其中 URL 匹配的规则为：任一标签匹配就算匹配)`
-    } else if (urlMatchWhenEnable === "currentNotMatch") {
-      result += ` (其中 URL 不匹配的规则为：当前标签不匹配就算不匹配)`
-    } else if (urlMatchWhenEnable === "allNotMatch") {
-      result += ` (其中 URL 不匹配的规则为：所有标签不匹配才算不匹配)`
-    }
-
-    result += "; 🌳"
-
-    if (timeWhenDisable === "none") {
-      result += "禁用插件的时机：不自动禁用"
-    } else if (timeWhenDisable === "match") {
-      result += "禁用插件的时机：条件匹配时禁用"
-    } else if (timeWhenDisable === "notMatch") {
-      result += "禁用插件的时机：条件不匹配时禁用"
-    } else if (timeWhenDisable === "closeWindow") {
-      result += "禁用插件的时机：关闭所有浏览器窗口时禁用"
-    }
-
-    if (urlMatchWhenDisable === "currentMatch") {
-      result += ` (其中 URL 匹配的规则为：当前标签匹配才算匹配)`
-    } else if (urlMatchWhenDisable === "anyMatch") {
-      result += ` (其中 URL 匹配的规则为：任一标签匹配就算匹配)`
-    } else if (urlMatchWhenDisable === "currentNotMatch") {
-      result += ` (其中 URL 不匹配的规则为：当前标签不匹配就算不匹配)`
-    } else if (urlMatchWhenDisable === "allNotMatch") {
-      result += ` (其中 URL 不匹配的规则为：所有标签不匹配才算不匹配)`
-    }
-
-    setResultDescription(result)
-  }, [timeWhenEnable, timeWhenDisable, urlMatchWhenEnable, urlMatchWhenDisable])
 
   // 配置：启用时机变化
   const onTimeWhenEnableChange = (e) => {
@@ -226,10 +178,6 @@ const CustomRuleAction = ({ options, config }, ref) => {
           </div>
         </div>
       </div>
-      <div className="result-description">
-        <span>自定义结果：</span>
-        <p>{resultDescription}</p>
-      </div>
     </Style>
   )
 }
@@ -271,16 +219,5 @@ const Style = styled.div`
         align-self: center;
       }
     }
-  }
-
-  .result-description {
-    display: none;
-    p {
-      margin: 0;
-      padding: 0;
-    }
-    padding: 5px 0 5px 10px;
-    font-size: 14px;
-    line-height: 24px;
   }
 `
