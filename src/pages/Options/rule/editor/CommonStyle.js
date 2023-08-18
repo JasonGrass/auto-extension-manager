@@ -1,15 +1,22 @@
 import { styled } from "styled-components"
 
 const EditorCommonStyle = styled.div`
-  .header {
-    display: flex;
-    align-items: center;
+  margin-bottom: 24px;
 
-    height: 40px;
-    padding-left: 5px;
+  .editor-step-header {
+    position: relative;
 
-    background-color: #337ab733;
-    border-radius: 5px;
+    height: 36px;
+
+    &:after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 3px;
+      margin: 5px 0;
+
+      background: #337ab7;
+    }
 
     .title {
       font-size: 18px;

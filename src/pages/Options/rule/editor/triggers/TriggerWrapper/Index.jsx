@@ -35,6 +35,8 @@ const Style = styled.div`
 
     height: 24px;
 
+    padding-left: 5px;
+
     font-weight: 700;
     border-radius: 5px 5px 0 0;
 

@@ -122,7 +122,7 @@ const ExtensionSelector = ({ options, config, extensions }, ref) => {
   return (
     <EditorCommonStyle>
       <Style>
-        <div className="header">
+        <div className="editor-step-header">
           <span className="title">2 规则执行目标：扩展（组）</span>
 
           <SearchStyle>
@@ -156,7 +156,7 @@ const ExtensionSelector = ({ options, config, extensions }, ref) => {
             onClick={onSelectedExtensionClick}></ExtensionItems>
 
           <div className="unselected-extensions-container">
-            <h3>未包含的扩展</h3>
+            <h3>其它扩展</h3>
             <ExtensionItems
               items={displayUnselectedExtensions}
               placeholder="无任何扩展"

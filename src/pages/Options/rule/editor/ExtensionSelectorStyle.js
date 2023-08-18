@@ -30,13 +30,15 @@ const Style = styled.div`
 `
 
 const SearchStyle = styled.div`
+  position: absolute;
+  top: -2px;
+  left: 240px;
+
   margin-left: 20px;
 
   input {
     width: 200px;
-    height: 30px;
-
-    margin: -1px -1px 0px 0px;
+    height: 24px;
 
     outline-style: none;
     border: 1px solid #ccc;

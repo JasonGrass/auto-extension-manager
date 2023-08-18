@@ -142,7 +142,7 @@ const MatchRule = ({ options, config }, ref) => {
   return (
     <EditorCommonStyle>
       <Style>
-        <div className="header">
+        <div className="editor-step-header">
           <span className="title">1 匹配条件</span>
         </div>
 

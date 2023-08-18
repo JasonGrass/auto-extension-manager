@@ -1,8 +1,6 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 
-import { DownOutlined } from "@ant-design/icons"
-import { Alert, Button, Checkbox, Dropdown, Radio, Space, Switch } from "antd"
-import classNames from "classnames"
+import { Alert, Checkbox, Radio } from "antd"
 
 import EditorCommonStyle from "./CommonStyle"
 import Style from "./RuleActionStyle"
@@ -110,7 +108,7 @@ const RuleAction = ({ options, config }, ref) => {
   return (
     <EditorCommonStyle>
       <Style>
-        <div className="header">
+        <div className="editor-step-header">
           <span className="title">3 动作</span>
         </div>
 
