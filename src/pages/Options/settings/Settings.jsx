@@ -10,8 +10,10 @@ import { exportConfig, importConfig } from "./ConfigFileBackup.ts"
 import { SettingStyle } from "./SettingStyle.js"
 
 function Settings() {
+  const [setting, setSetting] = useState(null)
+
   // 是否显示 APP
-  const [isShowApp, setIsShowApp] = useState(true)
+  const [isShowApp, setIsShowApp] = useState(false)
   // 是否总是显示扩展操作按钮
   const [isShowItemOperationAlways, setIsShowItemOperationAlways] = useState(false)
   // 是否总是显示搜索栏
@@ -23,21 +25,23 @@ function Settings() {
 
   const [messageApi, contextHolder] = message.useMessage()
 
+  // 初始化
   useEffect(() => {
-    // 根据保存的配置，初始化设置的显示
-    SyncOptionsStorage.getAll().then((options) => {
-      const showApp = options.setting.isShowApp ?? true
-      setIsShowApp(showApp)
-      const showItemOperationAlways = options.setting.isShowItemOperationAlways ?? false
-      setIsShowItemOperationAlways(showItemOperationAlways)
-      const showSearchBar = options.setting.isShowSearchBarDefault ?? false
-      setIsShowSearchBar(showSearchBar)
-      const raiseEnableWhenSwitchGroup = options.setting.isRaiseEnableWhenSwitchGroup ?? false
-      setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
-      const showFixedExtension = options.setting.isShowFixedExtension ?? true
-      setIsShowFixedExtension(showFixedExtension)
-    })
-  }, [])
+    if (setting == null) {
+      return
+    }
+
+    const showApp = setting.isShowApp ?? false
+    setIsShowApp(showApp)
+    const showItemOperationAlways = setting.isShowItemOperationAlways ?? false
+    setIsShowItemOperationAlways(showItemOperationAlways)
+    const showSearchBar = setting.isShowSearchBarDefault ?? false
+    setIsShowSearchBar(showSearchBar)
+    const raiseEnableWhenSwitchGroup = setting.isRaiseEnableWhenSwitchGroup ?? false
+    setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
+    const showFixedExtension = setting.isShowFixedExtension ?? true
+    setIsShowFixedExtension(showFixedExtension)
+  }, [setting])
 
   const onSettingChange = (value, settingHandler, optionKey) => {
     settingHandler(value)
@@ -62,6 +66,14 @@ function Settings() {
   }
   const onExportConfig = () => {
     exportConfig()
+  }
+
+  /**
+   * 恢复默认，将通用设置恢复成默认配置
+   */
+  const onRestoreDefault = () => {
+    OptionsStorage.set({ setting: {} })
+    setSetting({})
   }
 
   return (
@@ -145,6 +157,7 @@ function Settings() {
       <div className="import-export-container">
         <Button onClick={onImportConfig}>导入配置</Button>
         <Button onClick={onExportConfig}>导出配置</Button>
+        <Button onClick={onRestoreDefault}>恢复默认</Button>
       </div>
     </SettingStyle>
   )

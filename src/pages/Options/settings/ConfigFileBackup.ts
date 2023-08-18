@@ -7,6 +7,7 @@ import ConvertRuleToV2 from "../../Background/rule/RuleConverter"
 export async function exportConfig() {
   const config = await SyncOptionsStorage.getAll()
   const data = {
+    setting: config.setting,
     groups: config.groups,
     scenes: config.scenes,
     ruleConfig: config.ruleConfig,
@@ -35,6 +36,7 @@ export async function importConfig(): Promise<boolean> {
 }
 
 type ImportData = {
+  setting: config.ISetting
   groups: config.IGroup[]
   scenes: config.IScene[]
   ruleConfig: ruleV2.IRuleConfig[]
@@ -44,6 +46,11 @@ type ImportData = {
 function mergeConfig(importData: ImportData, config: ImportData): boolean {
   if (!importData || !config) {
     return false
+  }
+
+  if (importData.setting) {
+    const setting = { ...config.setting, ...importData.setting }
+    config.setting = setting
   }
 
   if (importData.groups) {

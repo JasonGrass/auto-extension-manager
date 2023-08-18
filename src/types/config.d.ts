@@ -1,4 +1,6 @@
 declare namespace config {
+  export interface ISetting {}
+
   export interface IScene {
     /**
      * 场景ID
