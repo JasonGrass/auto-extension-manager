@@ -201,7 +201,7 @@ function search(records, searchText) {
   }
 
   return records.filter((record) => {
-    const target = [record.name, record.shortName, record.alias, record.remark]
+    const target = [record.name, record.shortName, record.description, record.alias, record.remark]
     return isMatch(target, searchText, false)
   })
 }

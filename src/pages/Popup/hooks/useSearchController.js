@@ -36,7 +36,13 @@ export const useSearchController = (extensions) => {
       } else {
         const result = groupExtensions.filter((ext) => {
           return isMatch(
-            [ext.name, ext.shortName, ext.__attach__?.alias, ext.__attach__?.remark],
+            [
+              ext.name,
+              ext.shortName,
+              ext.description,
+              ext.__attach__?.alias,
+              ext.__attach__?.remark
+            ],
             search
           )
         })
@@ -55,7 +61,7 @@ export const useSearchController = (extensions) => {
         return
       }
       const searchResult = allApp.filter((ext) => {
-        return isMatch([ext.name, ext.shortName], text)
+        return isMatch([ext.name, ext.shortName, ext.description], text)
       })
 
       return searchResult

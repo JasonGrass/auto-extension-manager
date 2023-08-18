@@ -75,7 +75,7 @@ const ExtensionSelector = ({ options, config, extensions }, ref) => {
   useEffect(() => {
     const displayUnselected = unselectedExtensions.filter((ext) => {
       return isMatch(
-        [ext.name, ext.shortName, ext.__attach__?.alias, ext.__attach__?.remark],
+        [ext.name, ext.shortName, ext.description, ext.__attach__?.alias, ext.__attach__?.remark],
         searchText,
         true
       )
