@@ -1,17 +1,6 @@
 import React, { memo } from "react"
 
-import {
-  ClearOutlined,
-  CloseSquareOutlined,
-  DownOutlined,
-  FieldTimeOutlined,
-  LaptopOutlined,
-  LinkOutlined,
-  PlusCircleOutlined,
-  PlusOutlined,
-  RocketOutlined,
-  ThunderboltOutlined
-} from "@ant-design/icons"
+import { CloseSquareOutlined } from "@ant-design/icons"
 import { styled } from "styled-components"
 
 const TriggerWrapper = memo((props) => {

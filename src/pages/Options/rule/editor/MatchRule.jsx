@@ -172,7 +172,7 @@ const MatchRule = ({ options, config }, ref) => {
           <TriggerWrapper
             title="URL 匹配"
             onClose={() => {
-              onTriggerRemove("host")
+              onTriggerRemove("urlTrigger")
             }}>
             <TabUrlTrigger options={options} config={config} ref={urlTriggerRef}></TabUrlTrigger>
           </TriggerWrapper>
@@ -185,7 +185,7 @@ const MatchRule = ({ options, config }, ref) => {
           <TriggerWrapper
             title="情景模式"
             onClose={() => {
-              onTriggerRemove("scene")
+              onTriggerRemove("sceneTrigger")
             }}>
             <SceneTrigger options={options} config={config} ref={sceneTriggerRef}></SceneTrigger>
           </TriggerWrapper>
@@ -198,7 +198,7 @@ const MatchRule = ({ options, config }, ref) => {
           <TriggerWrapper
             title="操作系统类型"
             onClose={() => {
-              onTriggerRemove("os")
+              onTriggerRemove("osTrigger")
             }}>
             <OperationSystemTrigger options={options} config={config} ref={osTriggerRef} />
           </TriggerWrapper>
