@@ -5,27 +5,6 @@ import classNames from "classnames"
 import { styled } from "styled-components"
 
 const CustomRuleAction = ({ options, config }, ref) => {
-  const [step1] = useState({
-    index: 1,
-    key: "time-when-enable",
-    enable: true
-  })
-  const [step2, setStep2] = useState({
-    index: 2,
-    key: "url-match-when-enable",
-    enable: false
-  })
-  const [step3] = useState({
-    index: 3,
-    key: "time-when-disable",
-    enable: true
-  })
-  const [step4, setStep4] = useState({
-    index: 4,
-    key: "url-match-when-disable",
-    enable: false
-  })
-
   useImperativeHandle(ref, () => ({
     getCustomRuleConfig: () => {
       if (!timeWhenEnable || !timeWhenDisable) {
@@ -49,10 +28,6 @@ const CustomRuleAction = ({ options, config }, ref) => {
   // 禁用插件时，URL 的匹配方式： currentMatch / anyMatch / currentNotMatch / allNotMatch
   const [urlMatchWhenDisable, setUrlMatchWhenDisable] = useState("")
 
-  const [currentStep, setCurrentStep] = useState(step1)
-  const [hasPrevious, setHasPrevious] = useState(false)
-  const [hasNext, setHasNext] = useState(true)
-
   const [resultDescription, setResultDescription] = useState("")
 
   useEffect(() => {
@@ -65,22 +40,6 @@ const CustomRuleAction = ({ options, config }, ref) => {
     setUrlMatchWhenEnable(customConfig.urlMatchWhenEnable)
     setUrlMatchWhenDisable(customConfig.urlMatchWhenDisable)
   }, [config])
-
-  useEffect(() => {
-    if (currentStep.index === 1) {
-      setHasPrevious(false)
-      setHasNext(true)
-    } else if (currentStep.index === 2) {
-      setHasPrevious(true)
-      setHasNext(true)
-    } else if (currentStep.index === 3) {
-      setHasPrevious(true)
-      setHasNext(step4.enable)
-    } else if (currentStep.index === 4) {
-      setHasPrevious(true)
-      setHasNext(false)
-    }
-  }, [currentStep, step4])
 
   useEffect(() => {
     let result = "🌳"
@@ -132,11 +91,6 @@ const CustomRuleAction = ({ options, config }, ref) => {
   const onTimeWhenEnableChange = (e) => {
     const value = e.target.value
     setTimeWhenEnable(value)
-    if (value === "none") {
-      setStep2({ ...step2, enable: false })
-    } else {
-      setStep2({ ...step2, enable: true })
-    }
 
     if (value === "match") {
       setUrlMatchWhenEnable("currentMatch") // 默认
@@ -157,11 +111,6 @@ const CustomRuleAction = ({ options, config }, ref) => {
   const onTimeWhenDisableChange = (e) => {
     const value = e.target.value
     setTimeWhenDisable(value)
-    if (value === "none" || value === "closeWindow") {
-      setStep4({ ...step4, enable: false })
-    } else {
-      setStep4({ ...step4, enable: true })
-    }
 
     if (value === "match") {
       setUrlMatchWhenDisable("currentMatch") // 默认
@@ -178,53 +127,11 @@ const CustomRuleAction = ({ options, config }, ref) => {
     setUrlMatchWhenDisable(value)
   }
 
-  // 点击下一步
-  const next = () => {
-    if (currentStep.index === 1) {
-      if (step2.enable) {
-        setCurrentStep(step2)
-      } else {
-        setCurrentStep(step3)
-      }
-    }
-
-    if (currentStep.index === 2) {
-      setCurrentStep(step3)
-    }
-
-    if (currentStep.index === 3) {
-      if (step4.enable) {
-        setCurrentStep(step4)
-      } else {
-        throw Error("step 4 不可用，此处不应该执行")
-      }
-    }
-  }
-
-  // 点击上一步
-  const prev = () => {
-    if (currentStep.index === 4) {
-      setCurrentStep(step3)
-    }
-
-    if (currentStep.index === 3) {
-      if (step2.enable) {
-        setCurrentStep(step2)
-      } else {
-        setCurrentStep(step1)
-      }
-    }
-
-    if (currentStep.index === 2) {
-      setCurrentStep(step1)
-    }
-  }
-
   return (
     <Style>
       <div className="steps-container">
         {/* 1 设置启用目标插件的时机 */}
-        <div className="steps-item" style={{ display: currentStep.index === 1 ? "block" : "none" }}>
+        <div className="steps-item">
           <div className="steps-item-title">
             <span>（启用插件）设置启用目标插件的时机</span>
           </div>
@@ -236,7 +143,7 @@ const CustomRuleAction = ({ options, config }, ref) => {
         </div>
 
         {/* 2 设置 URL 匹配方式 */}
-        <div className="steps-item" style={{ display: currentStep.index === 2 ? "block" : "none" }}>
+        <div className="steps-item">
           <div className={classNames({ "step-item-hidden": timeWhenEnable !== "match" })}>
             <div className="steps-item-title">
               <span>（启用插件）URL 匹配的计算方式</span>
@@ -272,7 +179,7 @@ const CustomRuleAction = ({ options, config }, ref) => {
         </div>
 
         {/* 3 设置禁用目标插件的时机 */}
-        <div className="steps-item" style={{ display: currentStep.index === 3 ? "block" : "none" }}>
+        <div className="steps-item">
           <div className="steps-item-title">
             <span>（禁用插件）设置禁用目标插件的时机</span>
           </div>
@@ -285,7 +192,7 @@ const CustomRuleAction = ({ options, config }, ref) => {
         </div>
 
         {/* 4 设置 URL 匹配方式 */}
-        <div className="steps-item" style={{ display: currentStep.index === 4 ? "block" : "none" }}>
+        <div className="steps-item">
           <div className={classNames({ "step-item-hidden": timeWhenDisable !== "match" })}>
             <div className="steps-item-title">
               <span>（禁用插件）URL 匹配的计算方式</span>
@@ -317,24 +224,6 @@ const CustomRuleAction = ({ options, config }, ref) => {
               </Space>
             </Radio.Group>
           </div>
-        </div>
-
-        <div>
-          {hasNext && (
-            <Button className="steps-button" size="small" type="primary" onClick={() => next()}>
-              下一步
-            </Button>
-          )}
-          {hasPrevious && (
-            <Button className="steps-button" size="small" onClick={() => prev()}>
-              上一步
-            </Button>
-          )}
-          {/* {!hasNext && (
-            <Button className="steps-button" size="small" type="primary">
-              完成
-            </Button>
-          )} */}
         </div>
       </div>
       <div className="result-description">
@@ -368,13 +257,12 @@ const Style = styled.div`
   }
 
   .steps-item {
-    height: 80px;
-    margin: 3px 0 0 10px;
+    margin: 10px 0 20px 5px;
 
     .steps-item-title {
       display: flex;
 
-      margin-bottom: 20px;
+      margin: 0px 0 5px 0;
 
       font-size: 14px;
       font-weight: bold;
@@ -385,17 +273,13 @@ const Style = styled.div`
     }
   }
 
-  .steps-button {
-    width: 100px;
-    margin: 20px 10px 5px 10px;
-  }
-
   .result-description {
+    display: none;
     p {
       margin: 0;
       padding: 0;
     }
-    padding: 5px 0 5px 15px;
+    padding: 5px 0 5px 10px;
     font-size: 14px;
     line-height: 24px;
   }
