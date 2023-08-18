@@ -1,85 +1,98 @@
 import chromeP from "webext-polyfill-kinda"
 
-import isMatch, { getAdvanceMatchType } from "./handlers/matchHandler"
+import isMatch, { IMatchResult } from "./handlers/matchHandler"
 import getTarget from "./handlers/targetHandler"
 
 /**
  * 根据当前情景模式，标签页信息，规则信息，处理扩展的打开或关闭
  */
 
-type ProcessContext = {
+export type ProcessContext = {
+  /**
+   * 自身插件的信息
+   */
   self: chrome.management.ExtensionInfo
+  /**
+   * 当前激活的 tab
+   */
+  tab: chrome.tabs.Tab | undefined
+  /**
+   * 当前浏览器打开的全部 tab
+   */
+  tabs: chrome.tabs.Tab[]
 }
 
 type ProcessItem = {
+  /**
+   * 当前场景
+   */
   scene: config.IScene | undefined
-  tabInfo: chrome.tabs.Tab | undefined
-  rules: rule.IRuleConfig[] | undefined
+  /**
+   * 用户配置的分组数据
+   */
   groups: config.IGroup[] | undefined
+  /**
+   * 所有规则
+   */
+  rules: ruleV2.IRuleConfig[] | undefined
+  /**
+   * 执行上下文
+   */
   ctx: ProcessContext
 }
 
-function processRule({ scene, tabInfo, rules, groups, ctx }: ProcessItem) {
-  // console.log("processRule")
-  // console.log(scene)
-  // console.log(tabInfo)
-  // console.log(rules)
-  // console.log(groups)
-
+async function processRule({ scene, rules, groups, ctx }: ProcessItem) {
   if (!rules) {
     return
   }
 
-  for (let i = 0; i < rules.length; i++) {
+  for (const rule of rules) {
     try {
-      process(rules[i], scene, tabInfo, groups, ctx)
+      await process(rule, scene, groups, ctx)
     } catch (error) {
-      console.error("process rule error", rules[i], error)
+      console.error("[规则执行失败]", rules, error)
     }
   }
 }
 
-function process(
-  rule: rule.IRuleConfig,
+async function process(
+  rule: ruleV2.IRuleConfig,
   scene: config.IScene | undefined,
-  tabInfo: chrome.tabs.Tab | undefined,
   groups: config.IGroup[] | undefined,
   ctx: ProcessContext
 ) {
+  // 规则没有生效
   if (!rule.enable) {
     return
   }
 
-  const match = isMatch(scene, tabInfo, rule)
+  const match = await isMatch(scene, rule, ctx)
 
   const targetIdArray = getTarget(groups, rule)
   if (!targetIdArray || targetIdArray.length === 0) {
     return
   }
   // 执行目标中，过滤掉自己
-  const target = targetIdArray.filter((id) => id !== ctx.self.id)
+  const targetExtensionIds = targetIdArray.filter((id) => id !== ctx.self.id)
 
-  const { actionType } = rule.action
-  if (!actionType) {
-    return
-  }
-
-  handle(match, target, rule, tabInfo)
+  handle(match, targetExtensionIds, rule, ctx)
 }
 
 function handle(
-  isMatch: boolean,
+  matchResult: IMatchResult,
   targetExtensions: string[],
-  config: rule.IRuleConfig,
-  tabInfo: chrome.tabs.Tab | undefined
+  config: ruleV2.IRuleConfig,
+  ctx: ProcessContext
 ) {
-  // console.log(isMatch, targetExtensions, actionType)
-
   const action = config.action
-  if (!action.isAdvanceMode || config.match.matchMode === "scene") {
-    handleSimpleMode(isMatch, targetExtensions, action, tabInfo)
+  if (!action) {
+    return
+  }
+
+  if (action.actionType === "custom") {
+    handleAdvanceMode(matchResult, targetExtensions, action, ctx.tab)
   } else {
-    handleAdvanceMode(targetExtensions, config, tabInfo)
+    handleSimpleMode(matchResult, targetExtensions, action, ctx.tab)
   }
 }
 
@@ -87,33 +100,37 @@ function handle(
  * 简单模式下的动作执行
  */
 function handleSimpleMode(
-  isMatch: boolean,
+  matchResult: IMatchResult,
   targetExtensions: string[],
-  action: rule.IAction,
+  action: ruleV2.IAction,
   tabInfo: chrome.tabs.Tab | undefined
 ) {
   const actionType = action.actionType
 
+  const isMatch = matchResult.isCurrentMatch
+
   if (isMatch && actionType === "closeWhenMatched") {
-    closeExtensions(targetExtensions, action, tabInfo)
+    closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo)
   }
 
   if (isMatch && actionType === "openWhenMatched") {
-    openExtensions(targetExtensions, action, tabInfo)
+    openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo)
   }
 
-  if (isMatch && actionType === "closeOnlyWhenMatched") {
-    closeExtensions(targetExtensions, action, tabInfo)
-  }
-  if (!isMatch && actionType === "closeOnlyWhenMatched") {
-    openExtensions(targetExtensions, action, tabInfo)
+  if (actionType === "closeOnlyWhenMatched") {
+    if (isMatch) {
+      closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo)
+    } else {
+      openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo)
+    }
   }
 
-  if (isMatch && actionType === "openOnlyWhenMatched") {
-    openExtensions(targetExtensions, action, tabInfo)
-  }
-  if (!isMatch && actionType === "openOnlyWhenMatched") {
-    closeExtensions(targetExtensions, action, tabInfo)
+  if (actionType === "openOnlyWhenMatched") {
+    if (isMatch) {
+      openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo)
+    } else {
+      closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo)
+    }
   }
 }
 
@@ -121,105 +138,134 @@ function handleSimpleMode(
  * 高级模式下的动作执行
  */
 async function handleAdvanceMode(
+  matchResult: IMatchResult,
   targetExtensions: string[],
-  rule: rule.IRuleConfig,
+  action: ruleV2.IAction,
   tabInfo: chrome.tabs.Tab | undefined
 ) {
-  const matchType = await getAdvanceMatchType(tabInfo?.url, rule)
+  if (!action.custom) {
+    return
+  }
+  const customRule = action.custom
 
-  // 启用插件
-  if (matchType.currentTabMatch && rule.action.timeWhenEnable === "current") {
-    openExtensions(targetExtensions, rule.action, tabInfo)
-  } else if (
-    !matchType.currentTabMatch &&
-    rule.action.timeWhenEnable === "notCurrent"
-  ) {
-    openExtensions(targetExtensions, rule.action, tabInfo)
-  } else if (matchType.anyTabMatch && rule.action.timeWhenEnable === "any") {
-    openExtensions(targetExtensions, rule.action, tabInfo)
-  } else if (!matchType.anyTabMatch && rule.action.timeWhenEnable === "noAny") {
-    openExtensions(targetExtensions, rule.action, tabInfo)
+  const open = (reload: boolean) => {
+    openExtensions(targetExtensions, reload, tabInfo)
+  }
+  const close = (reload: boolean) => {
+    closeExtensions(targetExtensions, reload, tabInfo)
   }
 
-  // 禁用插件
-  if (matchType.currentTabMatch && rule.action.timeWhenDisable === "current") {
-    closeExtensions(targetExtensions, rule.action, tabInfo)
-  } else if (
-    !matchType.currentTabMatch &&
-    rule.action.timeWhenDisable === "notCurrent"
+  // 开启插件的判断
+  if (
+    customRule.timeWhenEnable === "match" &&
+    customRule.urlMatchWhenEnable === "currentMatch" &&
+    matchResult.isCurrentMatch
   ) {
-    closeExtensions(targetExtensions, rule.action, tabInfo)
-  } else if (matchType.anyTabMatch && rule.action.timeWhenDisable === "any") {
-    closeExtensions(targetExtensions, rule.action, tabInfo)
-  } else if (
-    !matchType.anyTabMatch &&
-    rule.action.timeWhenDisable === "noAny"
+    open(action.reloadAfterEnable)
+  }
+
+  if (
+    customRule.timeWhenEnable === "match" &&
+    customRule.urlMatchWhenEnable === "anyMatch" &&
+    matchResult.isAnyMatch
   ) {
-    closeExtensions(targetExtensions, rule.action, tabInfo)
+    open(matchResult.isCurrentMatch && action.reloadAfterEnable)
+  }
+
+  if (
+    customRule.timeWhenEnable === "notMatch" &&
+    customRule.urlMatchWhenEnable === "currentNotMatch" &&
+    !matchResult.isCurrentMatch
+  ) {
+    open(action.reloadAfterEnable)
+  }
+
+  if (
+    customRule.timeWhenEnable === "notMatch" &&
+    customRule.urlMatchWhenEnable === "allNotMatch" &&
+    !matchResult.isAnyMatch
+  ) {
+    open(action.reloadAfterEnable)
+  }
+
+  // 禁用插件的判断
+
+  if (
+    customRule.timeWhenDisable === "match" &&
+    customRule.urlMatchWhenDisable === "currentMatch" &&
+    matchResult.isCurrentMatch
+  ) {
+    close(action.reloadAfterDisable)
+  }
+
+  if (
+    customRule.timeWhenDisable === "match" &&
+    customRule.urlMatchWhenDisable === "anyMatch" &&
+    matchResult.isAnyMatch
+  ) {
+    close(matchResult.isCurrentMatch && action.reloadAfterDisable)
+  }
+
+  if (
+    customRule.timeWhenDisable === "notMatch" &&
+    customRule.urlMatchWhenDisable === "currentNotMatch" &&
+    !matchResult.isCurrentMatch
+  ) {
+    close(action.reloadAfterDisable)
+  }
+
+  if (
+    customRule.timeWhenDisable === "notMatch" &&
+    customRule.urlMatchWhenDisable === "allNotMatch" &&
+    !matchResult.isAnyMatch
+  ) {
+    close(action.reloadAfterDisable)
   }
 }
 
 async function closeExtensions(
   targetExtensions: string[],
-  action: rule.IAction,
+  reload: boolean,
   tabInfo: chrome.tabs.Tab | undefined
 ) {
   let worked = false
 
-  for (let i = 0; i < targetExtensions.length; i++) {
-    const extId = targetExtensions[i]
+  for (const extId of targetExtensions) {
     const info = await chromeP.management.get(extId)
     if (!info || !info.enabled) {
       continue
     }
     console.log(`[Extension Manager] disable extension [${info.name}]`)
-    await chrome.management.setEnabled(targetExtensions[i], false)
+    await chrome.management.setEnabled(extId, false)
     worked = true
   }
 
-  if (
-    worked &&
-    action.isAdvanceMode &&
-    action.refreshAfterClose &&
-    tabInfo &&
-    tabInfo.id
-  ) {
+  if (worked && reload && tabInfo && tabInfo.id) {
     chrome.tabs.reload(tabInfo.id)
-    console.log(
-      `[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`
-    )
+    console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
   }
 }
 
 async function openExtensions(
   targetExtensions: string[],
-  action: rule.IAction,
+  reload: boolean,
   tabInfo: chrome.tabs.Tab | undefined
 ) {
   let worked = false
 
-  for (let i = 0; i < targetExtensions.length; i++) {
-    const extId = targetExtensions[i]
+  for (const extId of targetExtensions) {
     const info = await chromeP.management.get(extId)
     if (!info || info.enabled) {
       continue
     }
-    await chromeP.management.setEnabled(targetExtensions[i], true)
+    await chromeP.management.setEnabled(extId, true)
     console.log(`[Extension Manager] enable extension [${info.name}]`)
     worked = true
   }
 
-  if (
-    worked &&
-    action.isAdvanceMode &&
-    action.refreshAfterOpen &&
-    tabInfo &&
-    tabInfo.id
-  ) {
+  if (worked && reload && tabInfo && tabInfo.id) {
     chrome.tabs.reload(tabInfo.id)
-    console.log(
-      `[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`
-    )
+    console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
   }
 }
 

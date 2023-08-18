@@ -4,24 +4,20 @@
  * @param rule 规则对象
  * @returns 规则适用的目标，插件ID列表
  */
-function getTarget(groups: config.IGroup[] | undefined, rule: rule.IRuleConfig): string[] | null | undefined {
-  const targetType = rule.target?.targetType
-  if (!targetType) {
-    return null
-  }
+export default function getTarget(
+  groups: config.IGroup[] | undefined,
+  rule: ruleV2.IRuleConfig
+): string[] {
+  const groupIds = rule.target?.groups ?? []
+  const extensions = rule.target?.extensions ?? []
 
-  if (targetType === "single") {
-    return rule.target?.targetExtensions
-  }
+  const groupExtensions =
+    groups
+      ?.filter((g) => groupIds.includes(g.id))
+      .map((g) => g.extensions)
+      .flat() ?? []
 
-  if (targetType === "group") {
-    const groupId = rule.target.targetGroup
-    if (!groupId) {
-      return null
-    }
+  const all = [...groupExtensions, ...extensions]
 
-    return groups?.find((g) => g.id === groupId)?.extensions
-  }
+  return Array.from(new Set(all))
 }
-
-export default getTarget

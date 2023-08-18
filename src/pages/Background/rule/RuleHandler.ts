@@ -1,5 +1,6 @@
 import chromeP from "webext-polyfill-kinda"
 
+import ConvertRuleToV2 from "./RuleConverter"
 import processRule from "./processor"
 
 class RuleHandler {
@@ -16,7 +17,7 @@ class RuleHandler {
   /**
    * 所有的规则数据，缓存起来，是避免每次执行规则时，都需要从 storage 中获取一遍
    */
-  #rules?: rule.IRuleConfig[]
+  private _rules?: ruleV2.IRuleConfig[]
 
   /**
    * 分组配置信息
@@ -37,35 +38,39 @@ class RuleHandler {
     this.do()
   }
 
-  setRules(rules: rule.IRuleConfig[]) {
-    this.#rules = rules
+  setRules(rules: any[]) {
+    this._rules = this.convertRule(rules)
     this.do()
   }
 
-  init(
-    scene: config.IScene,
-    tabInfo: chrome.tabs.Tab,
-    rules: rule.IRuleConfig[],
-    groups: config.IGroup[]
-  ) {
+  init(scene: config.IScene, tabInfo: chrome.tabs.Tab, rules: any[], groups: config.IGroup[]) {
     this.#currentScene = scene
     this.#currentTabInfo = tabInfo
-    this.#rules = rules
+    this._rules = this.convertRule(rules)
     this.#groups = groups
     this.do()
   }
 
+  private convertRule(rules: any[]): ruleV2.IRuleConfig[] {
+    const ruleList = rules
+      .map((r) => ConvertRuleToV2(r as rule.IRuleConfig))
+      .filter((r) => r) as ruleV2.IRuleConfig[]
+    return ruleList
+  }
+
   private async do() {
     const self = await chromeP.management.getSelf()
+    const tabs = await chromeP.tabs.query({})
 
     const ctx = {
-      self
+      self,
+      tabs,
+      tab: this.#currentTabInfo
     }
 
     await processRule({
       scene: this.#currentScene,
-      tabInfo: this.#currentTabInfo,
-      rules: this.#rules,
+      rules: this._rules,
       groups: this.#groups,
       ctx: ctx
     })
