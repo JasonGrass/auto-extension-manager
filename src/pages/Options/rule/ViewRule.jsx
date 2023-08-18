@@ -72,6 +72,11 @@ const ViewRule = memo((props) => {
   const onDelete = async (record) => {
     await operation.delete(record.id)
     sendMessage("rule-config-changed")
+
+    // 如果删除的正是当前正在编辑的，则取消编辑
+    if (editingConfig?.id === record.id) {
+      setEditingConfig(null)
+    }
   }
 
   const onCancel = () => {
