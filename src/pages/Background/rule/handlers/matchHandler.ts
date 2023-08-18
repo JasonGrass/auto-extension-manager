@@ -1,5 +1,6 @@
 import chromeP from "webext-polyfill-kinda"
 
+import logger from ".../utils/logger"
 import type { ProcessContext } from "../processor"
 import checkCurrentOsMatch from "./match/osMatchHandler"
 import checkCurrentSceneMatch from "./match/sceneMatchHandler"
@@ -62,8 +63,7 @@ export default async function isMatch(
     if (anyCheckList.filter((m) => m === true).length === anyCheckList.length) {
       result.isAnyMatch = true
     }
-  }
-  if (relationship === "or") {
+  } else if (relationship === "or") {
     if (currentCheckList.filter((m) => m === true).length > 0) {
       result.isCurrentMatch = true
     }
@@ -71,6 +71,8 @@ export default async function isMatch(
       result.isAnyMatch = true
     }
   }
+
+  logger().trace(`[matchHandler]`, rule, result)
 
   return result
 }

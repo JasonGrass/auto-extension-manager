@@ -1,5 +1,7 @@
 import chromeP from "webext-polyfill-kinda"
 
+import logger from ".../utils/logger"
+
 /**
  * 当前操作系统是否匹配规则
  * @returns true:匹配； false:不匹配； undefined:没有 OS 匹配规则
@@ -19,5 +21,9 @@ export default async function checkCurrentOsMatch(rule: ruleV2.IRuleConfig) {
     return false
   }
 
-  return config.os.includes(currentOsType)
+  const result = config.os.includes(currentOsType)
+  logger().trace(
+    `[checkCurrentOsMatch] config: ${config.os}; currentOs:${currentOsType}; result:${result}`
+  )
+  return result
 }
