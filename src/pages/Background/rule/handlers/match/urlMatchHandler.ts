@@ -1,3 +1,5 @@
+import logger from ".../utils/logger"
+
 /**
  * 判断当前 URL 是否匹配
  * @returns true:匹配； false:不匹配； undefined:没有 URL 匹配规则
@@ -46,25 +48,30 @@ export async function checkAnyUrlMatch(
     return false
   }
 
-  const one = tabs.find((t) => checkCurrentUrlMatch(t, rule))
-  return one !== undefined
+  for (const tab of tabs) {
+    const matchOne = await checkCurrentUrlMatch(tab, rule)
+    if (matchOne) {
+      return true
+    }
+  }
+  return false
 }
 
 function isMatchUrl(
   url: string | undefined,
-  hosts: string[] | undefined,
+  patterns: string[] | undefined,
   matchMethod: ruleV2.MatchMethod
 ): boolean {
   if (!url || url === "") return false
-  if (!hosts || hosts.length === 0) return false
+  if (!patterns || patterns.length === 0) return false
 
   const host = new URL(url).hostname
 
   if (matchMethod === "wildcard") {
-    const exist = hosts.find((pattern) => isMatchByWildcard(host, pattern))
+    const exist = patterns.find((pattern) => isMatchByWildcard(host, pattern))
     return Boolean(exist)
   } else if (matchMethod === "regex") {
-    const exist = hosts.find((pattern) => isMatchByRegex(host, pattern))
+    const exist = patterns.find((pattern) => isMatchByRegex(host, pattern))
     return Boolean(exist)
   }
 
