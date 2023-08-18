@@ -78,9 +78,9 @@ function Scene() {
       <Title title="情景模式"></Title>
       {contextHolder}
       {activeScene ? (
-        <h2>当前激活的情景模式：{activeScene.name}</h2>
+        <h2 className="current-active-scene-title">当前激活的情景模式：{activeScene.name}</h2>
       ) : (
-        <h2>当前未激活任何情景模式：</h2>
+        <h2 className="current-active-scene-title">当前未激活任何情景模式</h2>
       )}
 
       <div className="scene-item-container">

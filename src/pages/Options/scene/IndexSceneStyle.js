@@ -4,6 +4,11 @@ export const SceneStyle = styled.div`
   position: relative;
   height: 100%;
 
+  .current-active-scene-title {
+    font-size: 16px;
+    color: #555;
+  }
+
   .scene-item-container {
     display: flex;
     margin-top: 30px;
