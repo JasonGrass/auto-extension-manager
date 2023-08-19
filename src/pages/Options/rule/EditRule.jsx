@@ -37,7 +37,7 @@ const EditRule = memo((props) => {
 
   const onHelp = () => {
     chrome.tabs.create({
-      url: "https://github.com/JasonGrass/auto-extension-manager/wiki"
+      url: "https://ext.jgrass.cc/docs/rule"
     })
   }
 

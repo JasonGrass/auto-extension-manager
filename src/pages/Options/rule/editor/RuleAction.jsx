@@ -118,10 +118,7 @@ const RuleAction = ({ options, config }, ref) => {
           type="warning"
           showIcon
           action={
-            <a
-              href="https://github.com/JasonGrass/auto-extension-manager/issues"
-              target="_blank"
-              rel="noreferrer">
+            <a href="https://ext.jgrass.cc/docs/rule" target="_blank" rel="noreferrer">
               查看帮助
             </a>
           }

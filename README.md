@@ -24,7 +24,7 @@ Chrome 商店链接
 
 ## 🍉 帮助
 
-<https://github.com/JasonGrass/auto-extension-manager/wiki>
+<https://ext.jgrass.cc/>
 
 ## 🍉 待办
 

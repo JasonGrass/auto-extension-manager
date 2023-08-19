@@ -32,7 +32,7 @@ ${navigator.userAgent}`
 
   const openHelp = () => {
     chrome.tabs.create({
-      url: "https://github.com/JasonGrass/auto-extension-manager/wiki"
+      url: "https://ext.jgrass.cc/"
     })
   }
 

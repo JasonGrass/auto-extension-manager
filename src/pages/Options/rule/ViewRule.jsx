@@ -149,7 +149,7 @@ const ViewRule = memo((props) => {
         <Button
           onClick={() => {
             chrome.tabs.create({
-              url: "https://github.com/JasonGrass/auto-extension-manager/wiki"
+              url: "https://ext.jgrass.cc/docs/rule"
             })
           }}>
           帮助
