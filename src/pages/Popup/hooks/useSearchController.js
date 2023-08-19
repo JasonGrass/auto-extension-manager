@@ -56,14 +56,13 @@ export const useSearchController = (extensions) => {
   const searchApp = useCallback(
     (text) => {
       const allApp = filterExtensions(extensions, isAppExtension)
+
       if (!text || text.trim() === "") {
-        setAppExtensions(allApp)
-        return
+        return allApp
       }
       const searchResult = allApp.filter((ext) => {
         return isMatch([ext.name, ext.shortName, ext.description], text)
       })
-
       return searchResult
     },
     [extensions]
