@@ -163,13 +163,43 @@ const Style = styled.div`
     display: block;
   }
 
+  @keyframes menu-right-in {
+    0% {
+      opacity: 0;
+      transform: translateX(10%);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0%);
+    }
+  }
+
+  @keyframes menu-left-in {
+    0% {
+      opacity: 0;
+      transform: translateX(-10%);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0%);
+    }
+  }
+
   .menu-right {
+    opacity: 0;
     top: -10px;
     left: 48px;
+
+    animation: menu-right-in 0.3s ease-out 0.15s forwards;
   }
 
   .menu-left {
+    opacity: 0;
     top: -10px;
     right: 48px;
+
+    animation: menu-left-in 0.3s ease-out 0.15s forwards;
   }
 `
