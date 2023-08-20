@@ -31,15 +31,15 @@ const AppList = memo(({ items }) => {
                 "ext-item": true,
                 "not-enable": !item.enabled
               })}>
-              <img
-                src={getIcon(item, 32)}
-                alt=""
-                onClick={(e) => onIconClick(e, item)}
-              />
+              <img src={getIcon(item, 48)} alt="" onClick={(e) => onIconClick(e, item)} />
               <span>{item.shortName}</span>
             </li>
           )
         })}
+
+        {new Array(10).fill("").map(() => (
+          <i></i>
+        ))}
       </ul>
     </AppListStyle>
   )

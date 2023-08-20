@@ -1,17 +1,21 @@
 import styled from "styled-components"
 
 export const AppListStyle = styled.div`
-  padding: 0 5px;
-
   ul {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
+
+    i {
+      width: 42px;
+      margin: 0px 10px;
+    }
   }
 
   li {
-    margin: 2px;
-    width: 40px;
+    margin: 12px 10px;
+    width: 42px;
   }
 
   .ext-item {
@@ -20,8 +24,8 @@ export const AppListStyle = styled.div`
 
   li img {
     display: block;
-    width: 24px;
-    height: 24px;
+    width: 42px;
+    height: 42px;
     margin: 0 auto;
   }
 
