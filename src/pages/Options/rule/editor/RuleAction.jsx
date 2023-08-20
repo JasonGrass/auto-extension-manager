@@ -56,7 +56,7 @@ const RuleAction = ({ options, config }, ref) => {
 
   const customRef = useRef()
 
-  const [actionTypeKey, setActionTypeKey] = useState("custom")
+  const [actionTypeKey, setActionTypeKey] = useState("")
   const [actionTipMessage, setActionTipMessage] = useState("")
 
   const [refreshAfterEnable, setRefreshAfterEnable] = useState(false)
@@ -87,8 +87,11 @@ const RuleAction = ({ options, config }, ref) => {
       case "openOnlyWhenMatched":
         setActionTipMessage("匹配才打开：条件匹配时，自动打开扩展；条件不匹配时，自动关闭扩展；")
         break
-      default:
+      case "custom":
         setActionTipMessage("自定义启用或禁用扩展的时机")
+        break
+      default:
+        setActionTipMessage("请选择动作类型")
     }
   }, [actionTypeKey])
 

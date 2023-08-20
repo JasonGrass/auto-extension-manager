@@ -27,7 +27,7 @@ const Style = styled.div`
   }
 
   .action-tip-match-type {
-    margin: 2px 0 12px 0;
+    margin: 6px 0 12px 0;
   }
 
   .action-refresh-options {
