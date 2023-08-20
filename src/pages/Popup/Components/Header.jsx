@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef, useState } from "react"
 
-import { SearchOutlined, SettingOutlined } from "@ant-design/icons"
+import { LayoutOutlined, SearchOutlined, SettingOutlined } from "@ant-design/icons"
 import { Space } from "antd"
 
 import MainIcon from "../../../assets/img/icon-64.png"
@@ -100,11 +100,15 @@ const Header = memo((props) => {
               options={options}
               onGroupChanged={onGroupChanged}></GroupDropdown>
 
-            <Space className="search" onClick={onSearchClick}>
+            <Space className="search setting-icon" onClick={onSearchClick}>
               <SearchOutlined />
             </Space>
 
-            <Space className="setting" onClick={(e) => onSettingClick(e)}>
+            <Space className="layout setting-icon">
+              <LayoutOutlined />
+            </Space>
+
+            <Space className="setting setting-icon" onClick={(e) => onSettingClick(e)}>
               <SettingOutlined />
             </Space>
           </div>

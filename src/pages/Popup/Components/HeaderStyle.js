@@ -40,18 +40,19 @@ const Style = styled.div`
   }
 
   .right .search {
-    font-size: 20px;
     margin: 0 8px;
+  }
 
-    &:hover {
-      color: #555;
-    }
+  .right .layout {
+    margin-right: 8px;
   }
 
   .right .setting {
-    font-size: 20px;
     margin-right: 8px;
+  }
 
+  .setting-icon {
+    font-size: 20px;
     &:hover {
       color: #555;
     }

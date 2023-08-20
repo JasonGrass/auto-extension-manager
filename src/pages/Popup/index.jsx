@@ -14,7 +14,7 @@ import Popup from "./Components/Popup"
 const container = document.getElementById("app-container")
 const root = createRoot(container)
 
-document.body.style.width = "400px"
+document.body.style.width = "420px"
 
 const prepare = async function () {
   let allExtensions = await chromeP.management.getAll()
