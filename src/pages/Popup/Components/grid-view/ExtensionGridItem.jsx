@@ -48,14 +48,18 @@ const ExtensionGridItem = memo(({ item, options }) => {
    * 打开扩展设置页面
    */
   const handleSettingButtonClick = (e, item) => {
-    chrome.tabs.create({ url: item.optionsUrl })
+    if (existOptionPage) {
+      chrome.tabs.create({ url: item.optionsUrl })
+    }
   }
 
   /**
    * 打开扩展主页
    */
   const handleHomeButtonClick = (e, item) => {
-    chrome.tabs.create({ url: item.homepageUrl })
+    if (existHomePage) {
+      chrome.tabs.create({ url: item.homepageUrl })
+    }
   }
 
   /**
@@ -86,15 +90,25 @@ const ExtensionGridItem = memo(({ item, options }) => {
         ref={menuRef}>
         <h3 className="operation-menu-title">{item.name}</h3>
         <div className="operation-menu-items">
-          <Space disabled={!existOptionPage} onClick={(e) => handleSettingButtonClick(e, item)}>
+          <Space
+            className={classNames({
+              "operation-menu-item-disabled": !existOptionPage,
+              "operation-menu-item": existOptionPage
+            })}
+            onClick={(e) => handleSettingButtonClick(e, item)}>
             <SettingOutlined />
           </Space>
 
-          <Space onClick={(e) => handleDeleteButtonClick(e, item)}>
+          <Space className="operation-menu-item" onClick={(e) => handleDeleteButtonClick(e, item)}>
             <DeleteOutlined />
           </Space>
 
-          <Space disabled={!existHomePage} onClick={(e) => handleHomeButtonClick(e, item)}>
+          <Space
+            className={classNames({
+              "operation-menu-item-disabled": !existHomePage,
+              "operation-menu-item": existHomePage
+            })}
+            onClick={(e) => handleHomeButtonClick(e, item)}>
             <HomeOutlined />
           </Space>
         </div>

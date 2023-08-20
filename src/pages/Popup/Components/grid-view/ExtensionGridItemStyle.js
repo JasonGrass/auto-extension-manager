@@ -97,4 +97,16 @@ export const ExtensionGridItemStyle = styled.div`
 
     animation: menu-left-in 0.3s ease-out 0.15s forwards;
   }
+
+  .operation-menu-item-disabled {
+    color: #ccc;
+  }
+
+  .operation-menu-item {
+    &:hover {
+      transform: scale(1.2);
+      color: #346dbc;
+      text-shadow: 2px 2px 4px #24bfc4;
+    }
+  }
 `
