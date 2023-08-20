@@ -70,12 +70,24 @@ const ExtensionGridItem = memo(({ item, options }) => {
     setIsMouseEnter(false)
   }
 
+  const onItemClick = () => {
+    if (itemEnable) {
+      chrome.management.setEnabled(item.id, false)
+      setItemEnable(false)
+    } else {
+      chrome.management.setEnabled(item.id, true)
+      setItemEnable(true)
+    }
+  }
+
   return (
     <ExtensionGridItemStyle
       ref={containerRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
-      <div className="grid-display-item">
+      <div
+        className={classNames(["grid-display-item", { "grid-item-disable": !itemEnable }])}
+        onClick={onItemClick}>
         <img src={getIcon(item, 48)} alt="icon" />
       </div>
       <div

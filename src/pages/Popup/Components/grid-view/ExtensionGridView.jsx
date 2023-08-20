@@ -78,12 +78,4 @@ const Style = styled.div`
     background-color: #ccc;
     margin: 0px 10px 10px 10px;
   }
-
-  .grid-item-disable {
-    filter: grayscale(100%) opacity(50%);
-
-    &:hover {
-      filter: none;
-    }
-  }
 `

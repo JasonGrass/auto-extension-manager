@@ -109,4 +109,12 @@ export const ExtensionGridItemStyle = styled.div`
       text-shadow: 2px 2px 4px #24bfc4;
     }
   }
+
+  .grid-item-disable {
+    filter: grayscale(100%) opacity(50%);
+
+    &:hover {
+      filter: none;
+    }
+  }
 `
