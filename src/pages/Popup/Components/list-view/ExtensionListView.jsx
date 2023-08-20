@@ -3,7 +3,6 @@ import React, { memo, useEffect, useState } from "react"
 import classNames from "classnames"
 import { styled } from "styled-components"
 
-import { ManageOptions } from ".../storage"
 import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
 import ExtensionListItem from "./ExtensionListItem"
 
@@ -14,10 +13,8 @@ const ExtensionList = memo(({ extensions, options }) => {
   const [items, setItems] = useState([])
 
   useEffect(() => {
-    ManageOptions.get().then((options) => {
-      const list = appendAdditionInfo(extensions, options)
-      setItems(sortExtension(list))
-    })
+    const list = appendAdditionInfo(extensions, options)
+    setItems(sortExtension(list))
   }, [extensions, options])
 
   return (

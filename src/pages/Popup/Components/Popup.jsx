@@ -8,6 +8,7 @@ import { useSearchController } from "../hooks/useSearchController"
 import { useShowAppController } from "../hooks/useShowAppController"
 import AppList from "./AppList"
 import Header from "./Header"
+import ExtensionGrid from "./grid-view/ExtensionGridView.jsx"
 import ExtensionList from "./list-view/ExtensionListView"
 
 function IndexPopup({ originExtensions, options, params }) {
@@ -25,6 +26,9 @@ function IndexPopup({ originExtensions, options, params }) {
   const [pluginExtensions, appExtensions, onSearchByTextChange, onSearchByGroupChange] =
     useSearchController(extensions)
 
+  // 布局样式
+  const [layout, setLayout] = useState(options.setting.layout)
+
   useEffect(() => {
     const list = extensions.filter((ext) => isExtExtension(ext))
     setActiveExtensionCount(list.filter((ext) => ext.enabled).length)
@@ -34,6 +38,7 @@ function IndexPopup({ originExtensions, options, params }) {
   // 是否在切换分组时，执行扩展的禁用与启用
   const isRaiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
 
+  // 分组切换
   const onGroupChanged = async (group) => {
     // 如果开启了配置，切换分组意味着：执行扩展的启用与禁用，没有切换显示的功能
     // 如果开启了配置，并且当前组不为空，则执行扩展的启用与禁用
@@ -49,6 +54,11 @@ function IndexPopup({ originExtensions, options, params }) {
     }
   }
 
+  // 布局切换
+  const onLayoutChanged = (layout) => {
+    setLayout(layout)
+  }
+
   return (
     <Style mh={params.minHeight}>
       <div className="header-container">
@@ -57,11 +67,17 @@ function IndexPopup({ originExtensions, options, params }) {
           totalCount={allExtensionCount}
           options={options}
           onGroupChanged={onGroupChanged}
+          onLayoutChanged={onLayoutChanged}
           onSearch={onSearchByTextChange}></Header>
       </div>
 
       <div className="extension-container">
-        <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
+        {!layout || layout === "list" ? (
+          <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
+        ) : (
+          <ExtensionGrid extensions={pluginExtensions} options={options}></ExtensionGrid>
+        )}
+
         {isShowAppExtension && <AppList items={appExtensions}></AppList>}
       </div>
     </Style>

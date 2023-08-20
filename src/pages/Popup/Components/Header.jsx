@@ -3,18 +3,22 @@ import React, { memo, useEffect, useRef, useState } from "react"
 import { LayoutOutlined, SearchOutlined, SettingOutlined } from "@ant-design/icons"
 import { Space } from "antd"
 
+import { OptionsStorage, SyncOptionsStorage } from ".../storage"
 import MainIcon from "../../../assets/img/icon-64.png"
 import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
 import SceneDropdown from "./header/SceneDropdown"
 
 const Header = memo((props) => {
-  const { activeCount, totalCount, options, onGroupChanged, onSearch } = props
+  const { activeCount, totalCount, options, onGroupChanged, onLayoutChanged, onSearch } = props
 
   // 是否显示操作菜单，用于控制延迟渲染
   const [isShowOperations, setIsShowOperations] = useState(false)
   // 是否显示搜索框
-  const [isShowSearch, setIsShowSearch] = useState(false)
+  const [isShowSearch, setIsShowSearch] = useState(options.setting.isShowSearchBarDefault)
+  // 布局样式
+  const [layout, setLayout] = useState(options.setting.layout)
+
   const [searchText, setSearchText] = useState("")
   const searchInputRef = useRef(null)
 
@@ -28,17 +32,29 @@ const Header = memo((props) => {
     }
   }, [isShowSearch])
 
+  // layout 变更时，保存配置
   useEffect(() => {
-    if (options.setting.isShowSearchBarDefault) {
-      setIsShowSearch(true)
-    }
-  }, [options])
+    SyncOptionsStorage.getAll().then((options) => {
+      const setting = { ...options.setting, layout: layout }
+      OptionsStorage.set({ setting: setting })
+    })
+  }, [layout])
 
   const onSearchClick = () => {
     const show = !isShowSearch
     setIsShowSearch(show)
     if (!show) {
       setSearchText("")
+    }
+  }
+
+  const onLayoutClick = () => {
+    if (!layout || layout === "list") {
+      setLayout("grid")
+      onLayoutChanged("grid")
+    } else {
+      setLayout("list")
+      onLayoutChanged("list")
     }
   }
 
@@ -104,7 +120,7 @@ const Header = memo((props) => {
               <SearchOutlined />
             </Space>
 
-            <Space className="layout setting-icon">
+            <Space className="layout setting-icon" onClick={onLayoutClick}>
               <LayoutOutlined />
             </Space>
 
