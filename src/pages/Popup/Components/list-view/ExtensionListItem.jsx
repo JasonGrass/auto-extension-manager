@@ -6,8 +6,8 @@ import classNames from "classnames"
 
 import "./ExtensionListItem.css"
 
-import { getIcon } from "../../../utils/extensionHelper.js"
-import { isStringEmpty } from "../../../utils/utils.js"
+import { getIcon } from ".../utils/extensionHelper.js"
+import { isStringEmpty } from ".../utils/utils.js"
 
 /**
  * 打开扩展设置页面

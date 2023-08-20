@@ -1,8 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 
 import classNames from "classnames"
-
-import "./ExtensionListView.css"
+import { styled } from "styled-components"
 
 import { ManageOptions } from ".../storage"
 import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
@@ -22,7 +21,7 @@ const ExtensionList = memo(({ extensions, options }) => {
   }, [extensions, options])
 
   return (
-    <ul className="list-view">
+    <Style>
       {items.map((item) => {
         return (
           <li
@@ -35,8 +34,19 @@ const ExtensionList = memo(({ extensions, options }) => {
           </li>
         )
       })}
-    </ul>
+    </Style>
   )
 })
 
 export default ExtensionList
+
+const Style = styled.ul`
+  li {
+    /* border: 1px solid #cccccc55; */
+    margin-bottom: 1px;
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+`

@@ -7,8 +7,8 @@ import { handleExtensionOnOff } from "../ExtensionOnOffHandler.js"
 import { useSearchController } from "../hooks/useSearchController"
 import { useShowAppController } from "../hooks/useShowAppController"
 import AppList from "./AppList"
-import ExtensionList from "./ExtensionListView"
 import Header from "./Header"
+import ExtensionList from "./list-view/ExtensionListView"
 
 function IndexPopup({ originExtensions, options, params }) {
   const [extensions, setExtensions] = useState(originExtensions)
