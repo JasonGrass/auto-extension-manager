@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from "react"
 
 import { LayoutOutlined, SearchOutlined, SettingOutlined } from "@ant-design/icons"
+import Icon from "@ant-design/icons/lib/components/Icon"
 import { Space } from "antd"
 
 import { OptionsStorage, SyncOptionsStorage } from ".../storage"
@@ -121,7 +122,7 @@ const Header = memo((props) => {
             </Space>
 
             <Space className="layout setting-icon" onClick={onLayoutClick}>
-              <LayoutOutlined />
+              <Icon component={LayoutSvg}></Icon>
             </Space>
 
             <Space className="setting setting-icon" onClick={(e) => onSettingClick(e)}>
@@ -146,3 +147,20 @@ const Header = memo((props) => {
 })
 
 export default Header
+
+const LayoutSvg = () => (
+  <svg
+    t="1692520761982"
+    viewBox="0 0 1124 1124"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    p-id="4835"
+    fill="currentColor"
+    aria-hidden="true"
+    width="1em"
+    height="1em">
+    <path
+      d="M896 298.666667H128a128 128 0 0 1-128-128V128a128 128 0 0 1 128-128h768a128 128 0 0 1 128 128v42.666667a128 128 0 0 1-128 128zM128 85.333333a42.666667 42.666667 0 0 0-42.666667 42.666667v42.666667a42.666667 42.666667 0 0 0 42.666667 42.666666h768a42.666667 42.666667 0 0 0 42.666667-42.666666V128a42.666667 42.666667 0 0 0-42.666667-42.666667zM213.333333 1024H128a128 128 0 0 1-128-128v-384a128 128 0 0 1 128-128h85.333333a128 128 0 0 1 128 128v384a128 128 0 0 1-128 128zM128 469.333333a42.666667 42.666667 0 0 0-42.666667 42.666667v384a42.666667 42.666667 0 0 0 42.666667 42.666667h85.333333a42.666667 42.666667 0 0 0 42.666667-42.666667v-384a42.666667 42.666667 0 0 0-42.666667-42.666667zM896 1024h-341.333333a128 128 0 0 1-128-128v-384a128 128 0 0 1 128-128h341.333333a128 128 0 0 1 128 128v384a128 128 0 0 1-128 128z m-341.333333-554.666667a42.666667 42.666667 0 0 0-42.666667 42.666667v384a42.666667 42.666667 0 0 0 42.666667 42.666667h341.333333a42.666667 42.666667 0 0 0 42.666667-42.666667v-384a42.666667 42.666667 0 0 0-42.666667-42.666667z"
+      p-id="4836"></path>
+  </svg>
+)

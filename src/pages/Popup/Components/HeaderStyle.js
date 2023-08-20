@@ -36,19 +36,19 @@ const Style = styled.div`
   }
 
   .right .dropdown {
-    margin-left: 8px;
+    margin: 0 4px;
   }
 
   .right .search {
-    margin: 0 8px;
+    margin: 0 4px;
   }
 
   .right .layout {
-    margin-right: 8px;
+    margin: 0 4px;
   }
 
   .right .setting {
-    margin-right: 8px;
+    margin: 0 4px;
   }
 
   .setting-icon {
