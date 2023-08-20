@@ -10,6 +10,12 @@ const CustomRuleAction = ({ options, config }, ref) => {
       if (!timeWhenEnable || !timeWhenDisable) {
         throw Error("没有指定启用或禁用扩展的时机")
       }
+      if (timeWhenEnable !== "none" && !urlMatchWhenEnable) {
+        throw Error("（启用插件）没有指定 URL 匹配的计算方式")
+      }
+      if (timeWhenDisable !== "none" && !urlMatchWhenDisable) {
+        throw Error("（禁用插件）没有指定 URL 匹配的计算方式")
+      }
       return {
         timeWhenEnable: timeWhenEnable,
         urlMatchWhenEnable: urlMatchWhenEnable,
@@ -44,14 +50,7 @@ const CustomRuleAction = ({ options, config }, ref) => {
   const onTimeWhenEnableChange = (e) => {
     const value = e.target.value
     setTimeWhenEnable(value)
-
-    if (value === "match") {
-      setUrlMatchWhenEnable("currentMatch") // 默认
-    } else if (value === "notMatch") {
-      setUrlMatchWhenEnable("currentNotMatch") // 默认
-    } else {
-      setUrlMatchWhenEnable("")
-    }
+    setUrlMatchWhenEnable("") // 默认
   }
 
   // 配置：启用时机中，URL 匹配方式变化
@@ -64,14 +63,7 @@ const CustomRuleAction = ({ options, config }, ref) => {
   const onTimeWhenDisableChange = (e) => {
     const value = e.target.value
     setTimeWhenDisable(value)
-
-    if (value === "match") {
-      setUrlMatchWhenDisable("currentMatch") // 默认
-    } else if (value === "notMatch") {
-      setUrlMatchWhenDisable("currentNotMatch") // 默认
-    } else {
-      setUrlMatchWhenDisable("")
-    }
+    setUrlMatchWhenDisable("") // 默认
   }
 
   // 配置：禁用时机中，URL 匹配方式变化
