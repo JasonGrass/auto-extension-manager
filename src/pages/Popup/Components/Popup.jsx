@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import { styled } from "styled-components"
 
+import { isExtExtension } from "../../../utils/extensionHelper.js"
 import { handleExtensionOnOff } from "../ExtensionOnOffHandler.js"
 import { useSearchController } from "../hooks/useSearchController"
 import { useShowAppController } from "../hooks/useShowAppController"
@@ -12,12 +13,23 @@ import Header from "./Header"
 function IndexPopup({ originExtensions, options, params }) {
   const [extensions, setExtensions] = useState(originExtensions)
 
+  // 启用的扩展数量（不包括 APP 类型）
+  const [activeExtensionCount, setActiveExtensionCount] = useState(0)
+  // 总扩展数量，不包括 APP 类型
+  const [allExtensionCount, setAllExtensionCount] = useState(0)
+
   // 是否显示 APP 类型扩展
   const [isShowAppExtension, setIsShowAppExtension] = useShowAppController(options)
 
   // 搜索控制
   const [pluginExtensions, appExtensions, onSearchByTextChange, onSearchByGroupChange] =
     useSearchController(extensions)
+
+  useEffect(() => {
+    const list = extensions.filter((ext) => isExtExtension(ext))
+    setActiveExtensionCount(list.filter((ext) => ext.enabled).length)
+    setAllExtensionCount(list.length)
+  }, [extensions])
 
   // 是否在切换分组时，执行扩展的禁用与启用
   const isRaiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
@@ -41,8 +53,8 @@ function IndexPopup({ originExtensions, options, params }) {
     <Style mh={params.minHeight}>
       <div className="header-container">
         <Header
-          activeCount={extensions.filter((ext) => ext.enabled).length}
-          totalCount={extensions.length}
+          activeCount={activeExtensionCount}
+          totalCount={allExtensionCount}
           options={options}
           onGroupChanged={onGroupChanged}
           onSearch={onSearchByTextChange}></Header>
