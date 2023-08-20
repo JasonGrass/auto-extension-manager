@@ -75,7 +75,10 @@ function IndexPopup({ originExtensions, options, params }) {
         {!layout || layout === "list" ? (
           <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
         ) : (
-          <ExtensionGrid extensions={pluginExtensions} options={options}></ExtensionGrid>
+          <ExtensionGrid
+            extensions={pluginExtensions}
+            options={options}
+            isShowBottomDivider={isShowAppExtension && appExtensions.length > 0}></ExtensionGrid>
         )}
 
         {isShowAppExtension && <AppList items={appExtensions}></AppList>}

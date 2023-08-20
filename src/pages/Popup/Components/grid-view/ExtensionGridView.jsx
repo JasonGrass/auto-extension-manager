@@ -6,7 +6,7 @@ import { styled } from "styled-components"
 import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
 import ExtensionGridItem from "./ExtensionGridItem"
 
-const ExtensionGrid = memo(({ extensions, options }) => {
+const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
   const [items1, setItems1] = useState([])
   const [items2, setItems2] = useState([])
 
@@ -32,7 +32,7 @@ const ExtensionGrid = memo(({ extensions, options }) => {
           <i key={index}></i>
         ))}
       </ul>
-      {items2.length > 0 && <div className="divider"></div>}
+      {items1.length > 0 && items2.length > 0 && <div className="divider"></div>}
       <ul>
         {items2.map((item) => {
           return (
@@ -45,7 +45,7 @@ const ExtensionGrid = memo(({ extensions, options }) => {
           <i key={index}></i>
         ))}
       </ul>
-      <div className="divider"></div>
+      {isShowBottomDivider && <div className="divider"></div>}
     </Style>
   )
 })
