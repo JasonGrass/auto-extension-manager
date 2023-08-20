@@ -37,8 +37,8 @@ const AppList = memo(({ items }) => {
           )
         })}
 
-        {new Array(10).fill("").map(() => (
-          <i></i>
+        {new Array(10).fill("").map((_, index) => (
+          <i key={index}></i>
         ))}
       </ul>
     </AppListStyle>

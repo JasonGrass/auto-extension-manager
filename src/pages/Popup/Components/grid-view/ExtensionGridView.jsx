@@ -28,8 +28,8 @@ const ExtensionGrid = memo(({ extensions, options }) => {
             </li>
           )
         })}
-        {new Array(10).fill("").map(() => (
-          <i></i>
+        {new Array(10).fill("").map((_, index) => (
+          <i key={index}></i>
         ))}
       </ul>
       {items2.length > 0 && <div className="divider"></div>}
@@ -41,8 +41,8 @@ const ExtensionGrid = memo(({ extensions, options }) => {
             </li>
           )
         })}
-        {new Array(10).fill("").map(() => (
-          <i></i>
+        {new Array(10).fill("").map((_, index) => (
+          <i key={index}></i>
         ))}
       </ul>
       <div className="divider"></div>
