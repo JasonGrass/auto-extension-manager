@@ -75,7 +75,7 @@ export const appendAdditionInfo = (extensions, managementOptions) => {
   }
 
   for (const extension of extensions) {
-    const addition = managementOptions.extensions.filter((ext) => ext.extId === extension.id)[0]
+    const addition = managementOptions.extensions.find((ext) => ext.extId === extension.id)
     if (!addition) {
       extension.__attach__ = {}
       continue
