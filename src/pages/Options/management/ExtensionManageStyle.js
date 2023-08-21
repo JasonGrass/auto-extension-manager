@@ -1,9 +1,19 @@
 import { styled } from "styled-components"
 
 export const ExtensionManageStyle = styled.div`
-  .search {
-    width: 300px;
+  .extension-manage-tools {
+    display: flex;
+    align-items: baseline;
     margin-bottom: 10px;
+
+    .search {
+      width: 300px;
+      margin-right: 10px;
+    }
+
+    .search-checkbox {
+      margin: 0 0 0 10px;
+    }
   }
 
   .ant-table-wrapper {

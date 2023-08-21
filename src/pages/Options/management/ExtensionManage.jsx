@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Alert, Button, Form, Input, Table, Tooltip, message } from "antd"
+import { Alert, Button, Checkbox, Form, Input, Table, Tooltip, message } from "antd"
 
 import { ManageOptions } from ".../storage"
 import { getIcon, sortExtension } from ".../utils/extensionHelper"
@@ -53,9 +53,17 @@ const columns = [
 ]
 
 const ExtensionManage = memo(({ extensions, config }) => {
+  // 全部数据
   const [data, setData] = useState([])
+  // 展示的数据
   const [shownData, setShownData] = useState([])
-  const [searchValue, setSearchValue] = useState("")
+
+  // 搜索词
+  const [searchWord, setSearchWord] = useState("")
+  // 搜索 存在别名
+  const [searchExistAlias, setSearchExistAlias] = useState(false)
+  // 搜索 存在备注
+  const [searchExistRemark, setSearchExistRemark] = useState(false)
 
   // 初始化
   useEffect(() => {
@@ -64,10 +72,14 @@ const ExtensionManage = memo(({ extensions, config }) => {
     setShownData(initData)
   }, [extensions, config])
 
+  // 搜索
+  useEffect(() => {
+    setShownData(search(data, searchWord, searchExistAlias, searchExistRemark))
+  }, [data, searchWord, searchExistAlias, searchExistRemark])
+
   // 执行搜索
   const onSearch = (value) => {
-    setSearchValue(value)
-    setShownData(search(data, value))
+    setSearchWord(value)
   }
 
   // 重新加载配置
@@ -75,18 +87,44 @@ const ExtensionManage = memo(({ extensions, config }) => {
     ManageOptions.get().then((res) => {
       var reloadData = buildRecords(extensions, res)
       setData(reloadData)
-      setShownData(search(reloadData, searchValue))
     })
+  }
+
+  const onExistAliasChange = (e) => {
+    const value = e.target.checked
+    setSearchExistAlias(value)
+  }
+
+  const onExistRemarkChange = (e) => {
+    const value = e.target.checked
+    setSearchExistRemark(value)
   }
 
   return (
     <ExtensionManageStyle>
-      <Search
-        className="search"
-        placeholder="search"
-        onSearch={onSearch}
-        onChange={(e) => onSearch(e.target.value)}
-      />
+      <div className="extension-manage-tools">
+        <Search
+          className="search"
+          placeholder="search"
+          onSearch={onSearch}
+          onChange={(e) => onSearch(e.target.value)}
+        />
+
+        <Checkbox
+          checked={searchExistAlias}
+          onChange={onExistAliasChange}
+          className="search-checkbox">
+          存在别名
+        </Checkbox>
+
+        <Checkbox
+          checked={searchExistRemark}
+          onChange={onExistRemarkChange}
+          className="search-checkbox">
+          存在备注
+        </Checkbox>
+      </div>
+
       {/* [实现 antd table 自动调整可视高度 - 掘金](https://juejin.cn/post/6922375503798075400#comment ) */}
       <Table
         pagination={{ pageSize: 100 }}
@@ -201,15 +239,36 @@ function buildRecords(extensions, configs) {
   return sortExtension(records)
 }
 
-function search(records, searchText) {
-  if (!searchText || searchText.trim() === "") {
+function search(records, searchText, existAlias, existRemark) {
+  if ((!searchText || searchText.trim() === "") && !existAlias && !existRemark) {
     return records
   }
 
-  return records.filter((record) => {
-    const target = [record.name, record.shortName, record.description, record.alias, record.remark]
-    return isMatch(target, searchText, false)
-  })
+  return records
+    .filter((record) => {
+      const target = [
+        record.name,
+        record.shortName,
+        record.description,
+        record.alias,
+        record.remark
+      ]
+      return isMatch(target, searchText, true)
+    })
+    .filter((record) => {
+      if (existAlias) {
+        return record.alias
+      } else {
+        return true
+      }
+    })
+    .filter((record) => {
+      if (existRemark) {
+        return record.remark
+      } else {
+        return true
+      }
+    })
 }
 
 export default ExtensionManage
