@@ -87,11 +87,10 @@ const ExtensionManage = memo(({ extensions, config }) => {
         onSearch={onSearch}
         onChange={(e) => onSearch(e.target.value)}
       />
+      {/* [实现 antd table 自动调整可视高度 - 掘金](https://juejin.cn/post/6922375503798075400#comment ) */}
       <Table
         pagination={{ pageSize: 100 }}
-        scroll={{
-          y: 670
-        }}
+        scroll={{ y: "calc(100vh - 260px)" }}
         columns={columns}
         expandable={{
           expandedRowRender: (record) => (
