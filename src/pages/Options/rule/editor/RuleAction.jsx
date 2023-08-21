@@ -76,22 +76,22 @@ const RuleAction = ({ options, config, pipe }, ref) => {
   useEffect(() => {
     switch (actionTypeKey) {
       case "closeWhenMatched":
-        setActionTipMessage("匹配后关闭：条件匹配时，自动关闭扩展；（不会自动启用扩展）")
+        setActionTipMessage("🛠 匹配后关闭：条件匹配时，自动关闭扩展；（不会自动启用扩展）")
         break
       case "openWhenMatched":
-        setActionTipMessage("匹配后打开：条件匹配时，自动打开扩展；（不会自动关闭扩展）")
+        setActionTipMessage("🛠 匹配后打开：条件匹配时，自动打开扩展；（不会自动关闭扩展）")
         break
       case "closeOnlyWhenMatched":
-        setActionTipMessage("匹配才关闭：条件匹配时，自动关闭扩展；条件不匹配时，自动打开扩展。")
+        setActionTipMessage("🛠 匹配才关闭：条件匹配时，自动关闭扩展；条件不匹配时，自动打开扩展。")
         break
       case "openOnlyWhenMatched":
-        setActionTipMessage("匹配才打开：条件匹配时，自动打开扩展；条件不匹配时，自动关闭扩展；")
+        setActionTipMessage("🛠 匹配才打开：条件匹配时，自动打开扩展；条件不匹配时，自动关闭扩展；")
         break
       case "custom":
-        setActionTipMessage("自定义启用或禁用扩展的时机")
+        setActionTipMessage("🛠 自定义启用或禁用扩展的时机")
         break
       default:
-        setActionTipMessage("请选择动作类型")
+        setActionTipMessage("🛠 请选择动作类型")
     }
   }, [actionTypeKey])
 
@@ -136,7 +136,8 @@ const RuleAction = ({ options, config, pipe }, ref) => {
             )
           })}
         </Radio.Group>
-        <Alert className="action-tip-match-type" message={actionTipMessage} type="info" showIcon />
+
+        <p className="action-tip-match-type">{actionTipMessage}</p>
 
         {actionTypeKey === "custom" && (
           <CustomRuleAction

@@ -27,7 +27,10 @@ const Style = styled.div`
   }
 
   .action-tip-match-type {
-    margin: 6px 0 12px 0;
+    margin: 12px 0;
+
+    font-size: 12px;
+    color: #777;
   }
 
   .action-refresh-options {
