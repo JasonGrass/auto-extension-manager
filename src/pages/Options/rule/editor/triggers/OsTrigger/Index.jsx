@@ -67,7 +67,7 @@ const OperationSystemTrigger = ({ options, config }, ref) => {
 
   return (
     <Style>
-      <Alert message="当在选中的操作系统中首次打开浏览器时，将触发规则" type="info" showIcon />
+      <Alert message="选择需要匹配的操作系统，可以多选" type="info" showIcon />
       <div className="os-tags">
         {PlatformOs.map((os) => {
           return (

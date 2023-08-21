@@ -46,7 +46,7 @@ const SceneTrigger = ({ options, config }, ref) => {
 
   return (
     <Style>
-      <Alert message="在启动浏览器和切换情景模式时触发" type="info" showIcon />
+      <Alert message="选择需要匹配的情景模式" type="info" showIcon />
 
       <div className="scene-select-dropdown">
         <Dropdown menu={sceneListMenuProps}>
