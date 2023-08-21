@@ -24,7 +24,7 @@ const ExtensionManageIndex = () => {
 
   return (
     <div>
-      <Title title="插件管理"></Title>
+      <Title title="扩展别名"></Title>
       <ExtensionManage extensions={extensions} config={managementConfig}></ExtensionManage>
     </div>
   )
