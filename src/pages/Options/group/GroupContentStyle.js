@@ -1,6 +1,11 @@
 import styled from "styled-components"
 
 export const GroupContentStyle = styled.div`
+  .search {
+    width: 300px;
+    margin-bottom: 10px;
+  }
+
   .desc {
     margin-left: 10px;
     margin-top: 20px;

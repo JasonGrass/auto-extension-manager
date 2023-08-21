@@ -1,15 +1,31 @@
 import React, { memo, useEffect, useState } from "react"
 
+import { Input } from "antd"
+
 import { GroupOptions } from ".../storage/GroupOptions"
+import { ManageOptions } from ".../storage/index"
 import { isAppExtension } from ".../utils/extensionHelper"
-import { isStringEmpty } from ".../utils/utils.js"
+import { appendAdditionInfo } from ".../utils/extensionHelper"
+import { isExtensionMatch } from ".../utils/searchHelper"
 import ExtensionItems from "../components/ExtensionItems"
 import { GroupContentStyle } from "./GroupContentStyle"
 
+const { Search } = Input
+
 const GroupContent = memo(({ group, groupList, extensions, managementOptions }) => {
+  // 在分组中的扩展
   const [containExts, setContains] = useState([])
+  // 没有在分组中的扩展
   const [noneGroupExts, setNoneGroupExts] = useState([])
 
+  // 显示到界面的，在分组中的扩展（配合搜索功能）
+  const [shownContainExts, setShownContainExts] = useState([])
+  // 显示到界面的，没有在分组中的扩展（配合搜索功能）
+  const [shownNoneGroupExts, setShownNoneGroupExts] = useState([])
+  // 搜索词
+  const [searchWord, setSearchWord] = useState("")
+
+  // 初始化
   useEffect(() => {
     // 包含在当前分组中的扩展
     const containsExts =
@@ -21,15 +37,36 @@ const GroupContent = memo(({ group, groupList, extensions, managementOptions }) 
       .filter((ext) => !containsExtIds.includes(ext.id))
       .filter((ext) => !isAppExtension(ext))
 
-    setContains(containsExts)
-    setNoneGroupExts(noneGroupedExtensions)
+    ManageOptions.get().then((managementOptions) => {
+      setContains(appendAdditionInfo(containsExts, managementOptions))
+      setNoneGroupExts(appendAdditionInfo(noneGroupedExtensions, managementOptions))
+      setShownContainExts(containsExts)
+      setShownNoneGroupExts(noneGroupedExtensions)
+    })
   }, [group, groupList, extensions])
 
+  // 搜索
+  useEffect(() => {
+    if (!searchWord || searchWord.trim() === "") {
+      setShownContainExts(containExts)
+      setShownNoneGroupExts(noneGroupExts)
+      return
+    }
+
+    setShownContainExts(containExts.filter((ext) => isExtensionMatch(ext, searchWord)))
+    setShownNoneGroupExts(noneGroupExts.filter((ext) => isExtensionMatch(ext, searchWord)))
+  }, [searchWord, containExts, noneGroupExts])
+
+  // 保存分组中的扩展记录
   const save = async (contains) => {
-    const item = { ...group }
-    item.extensions = contains.map((ext) => ext.id)
-    console.log("update", item)
-    GroupOptions.update(item)
+    const duplicateGroup = { ...group }
+    duplicateGroup.extensions = contains.map((ext) => ext.id)
+    GroupOptions.update(duplicateGroup)
+  }
+
+  // 搜索
+  const onSearch = (value) => {
+    setSearchWord(value)
   }
 
   if (!group) {
@@ -38,15 +75,21 @@ const GroupContent = memo(({ group, groupList, extensions, managementOptions }) 
 
   return (
     <GroupContentStyle>
+      <Search
+        className="search"
+        placeholder="search"
+        onSearch={onSearch}
+        onChange={(e) => onSearch(e.target.value)}
+      />
       <h3>「{group.name}」中的插件</h3>
-      {buildExtContainer(containExts, true)}
+      {buildExtContainer(shownContainExts, true)}
       <h3>不在此分组</h3>
-      {buildExtContainer(noneGroupExts, false)}
+      {buildExtContainer(shownNoneGroupExts, false)}
       <p className="desc">{group.desc}</p>
     </GroupContentStyle>
   )
 
-  function buildExtContainer(extItems, isGrouped) {
+  function buildExtContainer(shownItems, isGrouped) {
     const onIconClick = (e, item) => {
       if (isGrouped) {
         const contain = containExts.filter((ext) => ext.id !== item.id)
@@ -65,7 +108,7 @@ const GroupContent = memo(({ group, groupList, extensions, managementOptions }) 
 
     return (
       <ExtensionItems
-        items={extItems}
+        items={shownItems}
         onClick={onIconClick}
         placeholder="none"
         managementOptions={managementOptions}
