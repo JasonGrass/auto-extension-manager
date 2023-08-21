@@ -32,7 +32,7 @@ const actionSelections = [
   }
 ]
 
-const RuleAction = ({ options, config }, ref) => {
+const RuleAction = ({ options, config, pipe }, ref) => {
   useImperativeHandle(ref, () => ({
     // 获取配置
     getActionConfig: () => {
@@ -139,7 +139,11 @@ const RuleAction = ({ options, config }, ref) => {
         <Alert className="action-tip-match-type" message={actionTipMessage} type="info" showIcon />
 
         {actionTypeKey === "custom" && (
-          <CustomRuleAction options={options} config={config} ref={customRef}></CustomRuleAction>
+          <CustomRuleAction
+            options={options}
+            config={config}
+            pipe={pipe}
+            ref={customRef}></CustomRuleAction>
         )}
 
         <div className="action-label action-refresh-options">

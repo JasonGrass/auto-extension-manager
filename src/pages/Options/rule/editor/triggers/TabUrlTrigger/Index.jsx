@@ -21,7 +21,7 @@ const TabUrlTrigger = ({ options, config }, ref) => {
         .map((host) => host.trim())
 
       if (urls.length === 0) {
-        throw Error("没有添加任何 URL")
+        throw Error("[匹配条件] 没有添加任何 URL")
       }
 
       return {

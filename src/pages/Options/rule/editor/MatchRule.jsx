@@ -1,19 +1,15 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 
 import {
-  ClearOutlined,
-  DownOutlined,
-  FieldTimeOutlined,
   LaptopOutlined,
   LinkOutlined,
   PlusCircleOutlined,
-  PlusOutlined,
   ThunderboltOutlined
 } from "@ant-design/icons"
-import { Button, Dropdown, Input, Radio, Space, Switch, message } from "antd"
-import classNames from "classnames"
+import { Button, Dropdown, Radio, Space, message } from "antd"
 import lodash from "lodash"
 
+import { ruleEmitBuilder } from "../emitter.js"
 import EditorCommonStyle from "./CommonStyle"
 import Style from "./MatchRuleStyle"
 import OperationSystemTrigger from "./triggers/OsTrigger/Index"
@@ -76,10 +72,13 @@ const MatchRule = ({ options, config }, ref) => {
       }
 
       if (matchConfig.triggers.length === 0) {
-        throw Error("至少添加一个匹配条件")
+        throw Error("[匹配条件] 至少添加一个匹配条件")
       }
 
       return matchConfig
+    },
+    getSelectTriggerKeys: () => {
+      return selectTriggerKeys
     }
   }))
 
@@ -110,6 +109,12 @@ const MatchRule = ({ options, config }, ref) => {
     }
     setSelectTriggers(triggerKeys)
   }, [config])
+
+  // 通知选择的 trigger 类型变更
+  useEffect(() => {
+    const emitter = ruleEmitBuilder()
+    emitter.emit("triggers-change", selectTriggerKeys)
+  }, [selectTriggerKeys])
 
   // 添加触发条件的菜单
   const triggerModeMenuProps = {

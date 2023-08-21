@@ -18,6 +18,7 @@
     "classnames": "^2.3.2",
     "immutable": "^4.3.0",
     "lodash": "^4.17.21",
+    "mitt": "^3.0.1",
     "nanoid": "^4.0.2",
     "new-github-issue-url": "^1.0.0",
     "pinyin-match": "^1.2.4",

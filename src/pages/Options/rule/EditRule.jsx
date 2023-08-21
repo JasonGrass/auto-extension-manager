@@ -41,6 +41,13 @@ const EditRule = memo((props) => {
     })
   }
 
+  // 用于在几个规则配置模块中，传递数据
+  const ruleSettingPipe = {
+    match: matchRuleRef,
+    selector: selectorRef,
+    action: actionRef
+  }
+
   return (
     <Style>
       {/* 1 匹配条件 */}
@@ -55,7 +62,11 @@ const EditRule = memo((props) => {
       />
 
       {/* 3 动作 */}
-      <RuleAction options={options} config={config} ref={actionRef}></RuleAction>
+      <RuleAction
+        options={options}
+        config={config}
+        ref={actionRef}
+        pipe={ruleSettingPipe}></RuleAction>
 
       <div className="operation-box">
         <Button type="primary" onClick={onSaveClick}>

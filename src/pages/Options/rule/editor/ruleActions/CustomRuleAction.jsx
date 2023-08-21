@@ -4,17 +4,19 @@ import { Alert, Button, Checkbox, Dropdown, Radio, Space, Steps, Switch } from "
 import classNames from "classnames"
 import { styled } from "styled-components"
 
-const CustomRuleAction = ({ options, config }, ref) => {
+import { ruleEmitBuilder } from "../../emitter.js"
+
+const CustomRuleAction = ({ options, config, pipe }, ref) => {
   useImperativeHandle(ref, () => ({
     getCustomRuleConfig: () => {
       if (!timeWhenEnable || !timeWhenDisable) {
-        throw Error("没有指定启用或禁用扩展的时机")
+        throw Error("[动作] 没有指定启用或禁用扩展的时机")
       }
-      if (timeWhenEnable !== "none" && !urlMatchWhenEnable) {
-        throw Error("（启用插件）没有指定 URL 匹配的计算方式")
+      if (hasUrlTrigger && timeWhenEnable !== "none" && !urlMatchWhenEnable) {
+        throw Error("[动作] （启用插件）没有指定 URL 匹配的计算方式")
       }
-      if (timeWhenDisable !== "none" && !urlMatchWhenDisable) {
-        throw Error("（禁用插件）没有指定 URL 匹配的计算方式")
+      if (hasUrlTrigger && timeWhenDisable !== "none" && !urlMatchWhenDisable) {
+        throw Error("[动作] （禁用插件）没有指定 URL 匹配的计算方式")
       }
       return {
         timeWhenEnable: timeWhenEnable,
@@ -34,6 +36,10 @@ const CustomRuleAction = ({ options, config }, ref) => {
   // 禁用插件时，URL 的匹配方式： currentMatch / anyMatch / currentNotMatch / allNotMatch
   const [urlMatchWhenDisable, setUrlMatchWhenDisable] = useState("")
 
+  // 初始化有无 URL trigger
+  const triggerKeys = pipe.match.current.getSelectTriggerKeys()
+  const [hasUrlTrigger, setHasUrlTrigger] = useState(triggerKeys.includes("urlTrigger"))
+
   // 初始化
   useEffect(() => {
     const customConfig = config.action?.custom
@@ -45,6 +51,18 @@ const CustomRuleAction = ({ options, config }, ref) => {
     setUrlMatchWhenEnable(customConfig.urlMatchWhenEnable)
     setUrlMatchWhenDisable(customConfig.urlMatchWhenDisable)
   }, [config])
+
+  // 订阅 trigger 变更的通知
+  useEffect(() => {
+    const emitter = ruleEmitBuilder()
+    const onTriggersChanged = (triggerKeys) => {
+      setHasUrlTrigger(triggerKeys.includes("urlTrigger"))
+    }
+    emitter.on("triggers-change", onTriggersChanged)
+    return () => {
+      emitter.off("triggers-change", onTriggersChanged)
+    }
+  }, [])
 
   // 配置：启用时机变化
   const onTimeWhenEnableChange = (e) => {
@@ -89,7 +107,13 @@ const CustomRuleAction = ({ options, config }, ref) => {
 
         {/* 2 设置 URL 匹配方式 */}
         <div className="steps-item">
-          <div className={classNames({ "step-item-hidden": timeWhenEnable !== "match" })}>
+          <div
+            className={classNames([
+              "step-item-hidden",
+              {
+                "step-item-visible": timeWhenEnable === "match" && hasUrlTrigger
+              }
+            ])}>
             <div className="steps-item-title">
               <span>（启用插件）URL 匹配的计算方式</span>
             </div>
@@ -106,7 +130,13 @@ const CustomRuleAction = ({ options, config }, ref) => {
             </Radio.Group>
           </div>
 
-          <div className={classNames({ "step-item-hidden": timeWhenEnable !== "notMatch" })}>
+          <div
+            className={classNames([
+              "step-item-hidden",
+              {
+                "step-item-visible": timeWhenEnable === "notMatch" && hasUrlTrigger
+              }
+            ])}>
             <div className="steps-item-title">
               <span>（启用插件）URL 不匹配的计算方式</span>
             </div>
@@ -138,7 +168,13 @@ const CustomRuleAction = ({ options, config }, ref) => {
 
         {/* 4 设置 URL 匹配方式 */}
         <div className="steps-item">
-          <div className={classNames({ "step-item-hidden": timeWhenDisable !== "match" })}>
+          <div
+            className={classNames([
+              "step-item-hidden",
+              {
+                "step-item-visible": timeWhenDisable === "match" && hasUrlTrigger
+              }
+            ])}>
             <div className="steps-item-title">
               <span>（禁用插件）URL 匹配的计算方式</span>
             </div>
@@ -154,7 +190,13 @@ const CustomRuleAction = ({ options, config }, ref) => {
             </Radio.Group>
           </div>
 
-          <div className={classNames({ "step-item-hidden": timeWhenDisable !== "notMatch" })}>
+          <div
+            className={classNames([
+              "step-item-hidden",
+              {
+                "step-item-visible": timeWhenDisable === "notMatch" && hasUrlTrigger
+              }
+            ])}>
             <div className="steps-item-title">
               <span>（禁用插件）URL 不匹配的计算方式</span>
             </div>
@@ -195,6 +237,10 @@ const Style = styled.div`
 
   .step-item-hidden {
     display: none;
+  }
+
+  .step-item-visible {
+    display: block;
   }
 
   .steps-item {
