@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Button, Form, Input, Table, Tooltip, message } from "antd"
+import { Alert, Button, Form, Input, Table, Tooltip, message } from "antd"
 
 import { ManageOptions } from ".../storage"
 import { getIcon, sortExtension } from ".../utils/extensionHelper"
@@ -118,51 +118,58 @@ const ExpandEditor = ({ record, reload }) => {
     console.log("Failed:", errorInfo)
     message.error(`update fail. ${errorInfo.errorFields[0]?.errors[0]}`)
   }
+
+  const info = `${record.description} (version: ${record.version})`
+
   return (
-    <Form
-      labelCol={{
-        span: 1
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      initialValues={initValue}>
-      <Form.Item
-        wrapperCol={{
-          span: 12
+    <div>
+      <Alert message={info} type="info" style={{ marginBottom: 16 }} />
+
+      <Form
+        labelCol={{
+          span: 1
         }}
-        label="别名"
-        name="alias"
-        rules={[
-          {
-            message: "插件别名长度最大50",
-            max: 50
-          }
-        ]}>
-        <Input />
-      </Form.Item>
-      <Form.Item
-        wrapperCol={{
-          span: 20
-        }}
-        label="备注"
-        name="remark"
-        rules={[
-          {
-            message: "备注长度最大为 100",
-            max: 100
-          }
-        ]}>
-        <Input />
-      </Form.Item>
-      <Form.Item
-        wrapperCol={{
-          offset: 1
-        }}>
-        <Button type="primary" htmlType="submit" style={{ width: 100 }}>
-          保存
-        </Button>
-      </Form.Item>
-    </Form>
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        initialValues={initValue}>
+        <Form.Item
+          wrapperCol={{
+            span: 12
+          }}
+          label="别名"
+          name="alias"
+          rules={[
+            {
+              message: "插件别名长度最大50",
+              max: 50
+            }
+          ]}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          wrapperCol={{
+            span: 20
+          }}
+          label="备注"
+          name="remark"
+          rules={[
+            {
+              message: "备注长度最大为 100",
+              max: 100
+            }
+          ]}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          wrapperCol={{
+            offset: 1
+          }}>
+          <Button type="primary" htmlType="submit" style={{ width: 100 }}>
+            保存
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
   )
 }
 

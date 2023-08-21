@@ -24,4 +24,8 @@ export const ExtensionManageStyle = styled.div`
       margin-right: 5px;
     }
   }
+
+  .ant-table-expanded-row .ant-table-cell {
+    padding-bottom: 2px;
+  }
 `
