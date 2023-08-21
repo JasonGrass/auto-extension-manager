@@ -40,7 +40,7 @@ const GroupContent = memo(({ group, groupList, extensions, managementOptions }) 
     <GroupContentStyle>
       <h3>「{group.name}」中的插件</h3>
       {buildExtContainer(containExts, true)}
-      <h3>剩余未分组</h3>
+      <h3>不在此分组</h3>
       {buildExtContainer(noneGroupExts, false)}
       <p className="desc">{group.desc}</p>
     </GroupContentStyle>
