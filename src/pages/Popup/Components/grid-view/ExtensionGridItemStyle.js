@@ -28,9 +28,15 @@ export const ExtensionGridItemStyle = styled.div`
     max-width: 66px;
     margin-top: 4px;
 
+    color: #333;
+
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .grid-display-item-title-gray {
+    color: #aaa;
   }
 
   .item-pined-dot {

@@ -116,7 +116,15 @@ const ExtensionGridItem = memo(({ item, options }) => {
           ])}>
           <img src={getIcon(item, 48)} alt="icon" />
           {isShowAppNameInGirdView && (
-            <span className="grid-display-item-title">{getExtItemDisplayName(item)}</span>
+            <span
+              className={classNames([
+                "grid-display-item-title",
+                {
+                  "grid-display-item-title-gray": !itemEnable
+                }
+              ])}>
+              {getExtItemDisplayName(item)}
+            </span>
           )}
         </div>
         {itemPined && <i className="item-pined-dot"></i>}
