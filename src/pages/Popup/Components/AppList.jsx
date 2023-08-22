@@ -2,6 +2,7 @@ import React, { memo } from "react"
 
 import { message } from "antd"
 import classNames from "classnames"
+import chromeP from "webext-polyfill-kinda"
 
 import { getIcon } from "../../../utils/extensionHelper"
 import { AppListStyle } from "./AppListStyle.js"
@@ -12,9 +13,17 @@ import { AppListStyle } from "./AppListStyle.js"
 const AppList = memo(({ items }) => {
   if (!items || items.length === 0) return null
 
-  const onIconClick = (e, item) => {
+  const onIconClick = async (e, item) => {
     if (item.enabled) {
-      chrome.management.launchApp(item.id)
+      try {
+        await chromeP.management.launchApp(item.id)
+      } catch (err) {
+        console.error(err)
+        message.warning(err.message)
+        if (err.message.indexOf("is deprecated") > -1) {
+          message.info("use `chrome://apps` for more info")
+        }
+      }
     } else {
       message.info(`${item.shortName} 未启用`)
     }
