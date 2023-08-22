@@ -9,11 +9,24 @@ export const ExtensionGridItemStyle = styled.div`
   }
 
   .grid-display-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     transition: transform 0.3s ease;
 
     &:hover {
       transform: scale(1.2);
     }
+  }
+
+  .grid-display-item-title {
+    max-width: 66px;
+    margin-top: 4px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .operation-menu {

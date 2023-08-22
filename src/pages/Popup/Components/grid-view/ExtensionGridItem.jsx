@@ -89,6 +89,7 @@ const ExtensionGridItem = memo(({ item, options }) => {
         className={classNames(["grid-display-item", { "grid-item-disable": !itemEnable }])}
         onClick={onItemClick}>
         <img src={getIcon(item, 48)} alt="icon" />
+        <span className="grid-display-item-title">{getExtItemDisplayName(item)}</span>
       </div>
       <div
         className={classNames([
@@ -130,3 +131,28 @@ const ExtensionGridItem = memo(({ item, options }) => {
 })
 
 export default ExtensionGridItem
+
+function getExtItemDisplayName(item) {
+  try {
+    if (item.__attach__?.alias) {
+      return item.__attach__.alias
+    }
+
+    if (item.name.indexOf("-") > 0) {
+      return item.name.split("-")[0].trim()
+    }
+
+    if (item.name.indexOf(":") > 0) {
+      return item.name.split(":")[0].trim()
+    }
+
+    if (item.name.indexOf("：") > 0) {
+      return item.name.split("：")[0].trim()
+    }
+
+    return item.name.trim()
+  } catch (error) {
+    console.error("尝试中扩展数据中获取短名称失败", item, error)
+    return item.name
+  }
+}

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react"
 
+import classNames from "classnames"
 import { styled } from "styled-components"
 
+import { getPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
 import { isExtExtension } from "../../../utils/extensionHelper.js"
 import { handleExtensionOnOff } from "../ExtensionOnOffHandler.js"
 import { useSearchController } from "../hooks/useSearchController"
@@ -57,10 +59,11 @@ function IndexPopup({ originExtensions, options, params }) {
   // 布局切换
   const onLayoutChanged = (layout) => {
     setLayout(layout)
+    document.body.style.width = getPopupWidth(layout, originExtensions.length, 7)
   }
 
   return (
-    <Style mh={params.minHeight}>
+    <Style>
       <div className="header-container">
         <Header
           activeCount={activeExtensionCount}
@@ -71,7 +74,11 @@ function IndexPopup({ originExtensions, options, params }) {
           onSearch={onSearchByTextChange}></Header>
       </div>
 
-      <div className="extension-container">
+      <div
+        className={classNames([
+          "extension-container",
+          { "extension-container-grid": layout === "grid" }
+        ])}>
         {!layout || layout === "list" ? (
           <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
         ) : (
@@ -90,9 +97,6 @@ function IndexPopup({ originExtensions, options, params }) {
 export default IndexPopup
 
 const Style = styled.div`
-  height: 100%;
-  min-height: ${(props) => props.mh};
-
   display: flex;
   flex-direction: column;
 
@@ -121,5 +125,9 @@ const Style = styled.div`
     -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     background: #cccccc33;
+  }
+
+  .extension-container-grid::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
   }
 `

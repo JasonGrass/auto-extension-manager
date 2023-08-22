@@ -7,14 +7,13 @@ import chromeP from "webext-polyfill-kinda"
 
 import "./index.css"
 
+import { getPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
 import { LocalOptionsStorage, ManageOptions, SyncOptionsStorage } from "../../storage/index"
 import Popup from "./Components/Popup"
 
 const container = document.getElementById("app-container")
 const root = createRoot(container)
-
-document.body.style.width = "420px"
 
 const prepare = async function () {
   let allExtensions = await chromeP.management.getAll()
@@ -35,7 +34,9 @@ const prepare = async function () {
   const extensions = appendAdditionInfo(allExtensions, managementOptions)
 
   const localOptions = await LocalOptionsStorage.getAll()
-  const minHeight = Math.min(600, Math.max(200, allExtensions.length * 40))
+
+  // popup 宽度设置
+  document.body.style.width = getPopupWidth(allOptions.setting.layout, allExtensions.count, 7)
 
   return {
     // 插件信息
@@ -43,9 +44,7 @@ const prepare = async function () {
     // 用户配置信息
     options: { ...allOptions, local: localOptions },
     // 运行时临时参数
-    params: {
-      minHeight: minHeight
-    }
+    params: {}
   }
 }
 
@@ -55,6 +54,11 @@ const prepare = async function () {
 
 prepare().then((props) => {
   root.render(
-    <Popup originExtensions={props.extensions} options={props.options} params={props.params} />
+    <Popup
+      style={{ height: "100%" }}
+      originExtensions={props.extensions}
+      options={props.options}
+      params={props.params}
+    />
   )
 })

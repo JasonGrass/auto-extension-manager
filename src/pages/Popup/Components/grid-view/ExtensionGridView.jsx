@@ -51,9 +51,11 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
 })
 
 export default ExtensionGrid
-const Style = styled.div`
-  margin-top: 10px;
 
+const imgSize = "46px"
+const imgMargin = "16px"
+
+const Style = styled.div`
   ul {
     display: flex;
     justify-content: space-between;
@@ -61,21 +63,21 @@ const Style = styled.div`
     flex-wrap: wrap;
 
     li {
-      width: 42px;
-      height: 42px;
+      width: ${imgSize};
+      height: ${imgSize};
 
-      margin: 12px 10px;
+      margin: 16px ${imgMargin};
     }
 
     i {
-      width: 42px;
-      margin: 0px 10px;
+      width: ${imgSize};
+      margin: 0px ${imgMargin};
     }
   }
 
   .divider {
     height: 1px;
     background-color: #ccc;
-    margin: 0px 10px 10px 10px;
+    margin: 0px 10px 0px 10px;
   }
 `
