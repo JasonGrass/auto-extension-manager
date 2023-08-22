@@ -46,11 +46,15 @@ const CustomRuleAction = ({ options, config, pipe }, ref) => {
     if (!customConfig) {
       return
     }
+
+    const triggerKeys = pipe.match.current.getSelectTriggerKeys()
+    setHasUrlTrigger(triggerKeys.includes("urlTrigger"))
+
     setTimeWhenEnable(customConfig.timeWhenEnable)
     setTimeWhenDisable(customConfig.timeWhenDisable)
     setUrlMatchWhenEnable(customConfig.urlMatchWhenEnable)
     setUrlMatchWhenDisable(customConfig.urlMatchWhenDisable)
-  }, [config])
+  }, [config, pipe])
 
   // 订阅 trigger 变更的通知
   useEffect(() => {
