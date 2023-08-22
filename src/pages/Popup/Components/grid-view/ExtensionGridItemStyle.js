@@ -140,6 +140,8 @@ export const ExtensionGridItemStyle = styled.div`
   }
 
   .operation-menu-item {
+    font-size: 20px;
+
     &:hover {
       transform: scale(1.2);
       color: #346dbc;

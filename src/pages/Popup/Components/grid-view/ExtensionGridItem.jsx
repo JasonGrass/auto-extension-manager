@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from "react"
 
 import { DeleteOutlined, HomeOutlined, PushpinOutlined, SettingOutlined } from "@ant-design/icons"
-import { Space } from "antd"
+import { Popconfirm, Space } from "antd"
 import classNames from "classnames"
 
 import { getIcon } from ".../utils/extensionHelper.js"
@@ -73,7 +73,7 @@ const ExtensionGridItem = memo(({ item, options }) => {
   /**
    * 删除扩展
    */
-  const handleDeleteButtonClick = (e, item) => {
+  const confirmDeleteExtension = (e, item) => {
     chrome.management.uninstall(item.id)
     setIsMouseEnter(false)
   }
@@ -137,9 +137,16 @@ const ExtensionGridItem = memo(({ item, options }) => {
             <SettingOutlined />
           </Space>
 
-          <Space className="operation-menu-item" onClick={(e) => handleDeleteButtonClick(e, item)}>
-            <DeleteOutlined />
-          </Space>
+          <Popconfirm
+            title="移除插件"
+            description={`确认要从浏览器中移除 ${item.shortName}`}
+            onConfirm={(e) => confirmDeleteExtension(e, item)}
+            okText="Yes"
+            cancelText="Cancel">
+            <Space className="operation-menu-item">
+              <DeleteOutlined />
+            </Space>
+          </Popconfirm>
 
           <Space
             className={classNames({
