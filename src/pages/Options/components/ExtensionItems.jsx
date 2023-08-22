@@ -12,11 +12,11 @@ import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
  * @param placeholder 列表中没有内容时，显示的提示文字
  * @param onClick 点击单个扩展项时的回调
  */
-const ExtensionItems = memo(({ items, placeholder, onClick, managementOptions, showFixedPin }) => {
+const ExtensionItems = memo(({ items, placeholder, onClick, options, showFixedPin }) => {
   const isEmpty = !items || items.length === 0
 
   // 附加了额外信息的扩展列表
-  const extensions = appendAdditionInfo(items, managementOptions)
+  const extensions = appendAdditionInfo(items, options.management)
   const sortedItems = sortExtension(extensions)
 
   return (

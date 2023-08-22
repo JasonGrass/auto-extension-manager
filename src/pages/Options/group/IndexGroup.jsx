@@ -4,7 +4,7 @@ import { message } from "antd"
 import classNames from "classnames"
 import chromeP from "webext-polyfill-kinda"
 
-import { GroupOptions, ManageOptions } from ".../storage/index"
+import { GroupOptions, SyncOptionsStorage } from ".../storage/index"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper"
 import { isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
@@ -16,11 +16,15 @@ import { AddNewNavItem } from "./helpers.js"
 
 function GroupManagement() {
   const [extensions, setExtensions] = useState([])
-  const [groupListInfo, setGroupListInfo] = useState([])
   const [selectedGroup, setSelectedGroup] = useState()
   const [itemEditInfo, setItemEditInfo] = useState()
   const [itemEditType, setItemEditType] = useState("")
-  const [managementOptions, setManagementOptions] = useState({})
+
+  // 不能使用其中的 groups 的数据，因为这里就是编辑 groups，随时可能会有变动
+  const [options, setOptions] = useState(null)
+  // 分组信息，保持快速更新
+  const [groupListInfo, setGroupListInfo] = useState([])
+
   const [messageApi, contextHolder] = message.useMessage()
 
   async function updateByGroupConfigs() {
@@ -29,23 +33,17 @@ function GroupManagement() {
   }
 
   useEffect(() => {
-    async function getManageOptions() {
-      const option = await ManageOptions.get()
-      setManagementOptions(option)
-    }
+    SyncOptionsStorage.getAll().then((o) => {
+      setOptions(o)
+    })
 
-    async function getExts() {
-      const exts = await chromeP.management.getAll()
+    chromeP.management.getAll().then((exts) => {
       setExtensions(filterExtensions(exts, isExtExtension))
-    }
+    })
+  }, [])
 
-    async function initGroupConfigs() {
-      await getManageOptions()
-      await getExts()
-      await updateByGroupConfigs()
-    }
-
-    initGroupConfigs()
+  useEffect(() => {
+    updateByGroupConfigs()
   }, [selectedGroup])
 
   const onSelectedChanged = (item) => {
@@ -95,6 +93,10 @@ function GroupManagement() {
     }
   }
 
+  if (!options) {
+    return null
+  }
+
   return (
     <GroupStyle>
       <Title title="分组管理"></Title>
@@ -119,7 +121,7 @@ function GroupManagement() {
               group={selectedGroup}
               groupList={groupListInfo}
               extensions={extensions}
-              managementOptions={managementOptions}
+              options={options}
             />
           </div>
 

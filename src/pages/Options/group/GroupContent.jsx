@@ -12,7 +12,7 @@ import { GroupContentStyle } from "./GroupContentStyle"
 
 const { Search } = Input
 
-const GroupContent = memo(({ group, groupList, extensions, managementOptions }) => {
+const GroupContent = memo(({ group, groupList, extensions, options }) => {
   // 在分组中的扩展
   const [containExts, setContains] = useState([])
   // 没有在分组中的扩展
@@ -111,8 +111,10 @@ const GroupContent = memo(({ group, groupList, extensions, managementOptions }) 
         items={shownItems}
         onClick={onIconClick}
         placeholder="none"
-        managementOptions={managementOptions}
-        showFixedPin={isGrouped && group.id === "fixed"}
+        options={options}
+        showFixedPin={
+          isGrouped && group.id === "fixed" && options.setting.isShowDotOfFixedExtension
+        }
       />
     )
   }
