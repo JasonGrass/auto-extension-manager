@@ -1,5 +1,7 @@
 import chromeP from "webext-polyfill-kinda"
 
+import { isExtExtension } from "../../utils/extensionHelper"
+
 /**
  * 执行扩展的启用与禁用
  * @param {*} extensions 所有被操作扩展
@@ -17,10 +19,14 @@ export async function handleExtensionOnOff(extensions, options, group) {
 
   const fixedExtensionIds = options.groups.find((g) => g.id === "fixed")?.extensions ?? []
   const currentExtensionIds = group.extensions ?? []
+  // 被启用的扩展：固定分组和当前分组中的扩展
   const enabledExtensionIds = Array.from(new Set([...fixedExtensionIds, ...currentExtensionIds]))
+  // 被禁用的扩展：除此之外的扩展（不包括 APP 类型的扩展，不包括自身）
   const disabledExtensionIds = extensions
+    .filter((ext) => isExtExtension(ext))
     .map((ext) => ext.id)
-    .filter((id) => !enabledExtensionIds.includes(id) && id !== self.id)
+    .filter((id) => id !== self.id)
+    .filter((id) => !enabledExtensionIds.includes(id))
 
   // const disabledExtensions = extensions.filter((ext) => disabledExtensionIds.includes(ext.id))
   // const enabledExtensions = extensions.filter((ext) => enabledExtensionIds.includes(ext.id))
