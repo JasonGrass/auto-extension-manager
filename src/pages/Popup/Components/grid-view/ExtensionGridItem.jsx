@@ -25,6 +25,9 @@ const ExtensionGridItem = memo(({ item, options }) => {
   // UI 状态：菜单显示的位置
   const [isMenuOnRight, setIsMenuOnRight] = useState(true)
 
+  // 是否显示 APP 名称
+  const isShowAppNameInGirdView = options.setting.isShowAppNameInGirdView ?? false
+
   const containerRef = useRef(null)
   const menuRef = useRef(null)
 
@@ -105,10 +108,11 @@ const ExtensionGridItem = memo(({ item, options }) => {
         <div
           className={classNames(["grid-display-item-box", { "grid-item-disable": !itemEnable }])}>
           <img src={getIcon(item, 48)} alt="icon" />
-          <span className="grid-display-item-title">{getExtItemDisplayName(item)}</span>
+          {isShowAppNameInGirdView && (
+            <span className="grid-display-item-title">{getExtItemDisplayName(item)}</span>
+          )}
         </div>
-
-        <i className={classNames(["item-pined-dot", { "item-pined-dot-hidden": !itemPined }])}></i>
+        {itemPined && <i className="item-pined-dot"></i>}
       </div>
 
       {/* hover 菜单 */}

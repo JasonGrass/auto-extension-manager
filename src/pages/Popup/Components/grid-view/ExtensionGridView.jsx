@@ -64,8 +64,6 @@ const Style = styled.div`
 
     li {
       width: ${imgSize};
-      height: ${imgSize};
-
       margin: 16px ${imgMargin};
     }
 

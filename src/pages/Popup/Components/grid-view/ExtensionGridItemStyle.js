@@ -49,10 +49,6 @@ export const ExtensionGridItemStyle = styled.div`
     background-color: #3ffa7b;
   }
 
-  .item-pined-dot-hidden {
-    display: none;
-  }
-
   .operation-menu {
     display: none;
     position: absolute;
