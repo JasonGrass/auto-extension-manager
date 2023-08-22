@@ -63,6 +63,11 @@ export const ExtensionGridItemStyle = styled.div`
     box-shadow: #24c1c0 0px 1px 4px;
   }
 
+  /* 扩展禁用时，hover 菜单的样式 */
+  .operation-menu-disable {
+    filter: grayscale(70%);
+  }
+
   .operation-menu-title {
     padding: 8px 5px;
     color: #fff;

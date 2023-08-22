@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from "react"
 
 import { DeleteOutlined, HomeOutlined, PushpinOutlined, SettingOutlined } from "@ant-design/icons"
-import { Popconfirm, Space } from "antd"
+import { Popconfirm, Space, message } from "antd"
 import classNames from "classnames"
 
 import { getIcon } from ".../utils/extensionHelper.js"
@@ -94,9 +94,11 @@ const ExtensionGridItem = memo(({ item, options }) => {
     if (itemEnable) {
       chrome.management.setEnabled(item.id, false)
       setItemEnable(false)
+      message.info(`禁用 ${item.name}`)
     } else {
       chrome.management.setEnabled(item.id, true)
       setItemEnable(true)
+      message.info(`启用 ${item.name}`)
     }
   }
 
@@ -127,7 +129,8 @@ const ExtensionGridItem = memo(({ item, options }) => {
           {
             "menu-right": isMenuOnRight,
             "menu-left": !isMenuOnRight,
-            "menu-on": isMouseEnter
+            "menu-on": isMouseEnter,
+            "operation-menu-disable": !itemEnable
           }
         ])}
         ref={menuRef}>
