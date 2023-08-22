@@ -1,6 +1,6 @@
 import chromeP from "webext-polyfill-kinda"
 
-import { isExtExtension } from "../../utils/extensionHelper"
+import { isAppExtension, isExtExtension } from "../../utils/extensionHelper"
 
 /**
  * 执行扩展的启用与禁用
@@ -55,7 +55,10 @@ export async function handleExtensionOnOff(extensions, options, group) {
 
   let allExtensions = await chromeP.management.getAll()
   allExtensions = allExtensions.filter(
-    (ext) => enabledExtensionIds.includes(ext.id) || disabledExtensionIds.includes(ext.id)
+    (ext) =>
+      enabledExtensionIds.includes(ext.id) ||
+      disabledExtensionIds.includes(ext.id) ||
+      isAppExtension(ext) // 启用和禁用的里面，都没有包含 APP 类型的扩展
   )
 
   // 如果用户配置了不显示固定分组中的扩展，则这里过滤掉

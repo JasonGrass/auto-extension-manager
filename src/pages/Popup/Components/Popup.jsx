@@ -31,6 +31,7 @@ function IndexPopup({ originExtensions, options, params }) {
   // 布局样式
   const [layout, setLayout] = useState(options.setting.layout)
 
+  // 数量显示
   useEffect(() => {
     const list = extensions.filter((ext) => isExtExtension(ext))
     setActiveExtensionCount(list.filter((ext) => ext.enabled).length)
