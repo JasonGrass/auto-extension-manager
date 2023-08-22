@@ -26,6 +26,8 @@ function Settings() {
   const [isShowAppNameInGirdView, setIsShowAppNameInGirdView] = useState(false)
   // 网格视图下，每行显示的扩展个数
   const [columnCountInGirdView, setColumnCountInGirdView] = useState(6)
+  // 网格视图下，禁用扩展使用灰色样式
+  const [isGaryStyleOfDisableInGridView, setIsGaryStyleOfDisableInGridView] = useState(false)
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -58,6 +60,10 @@ function Settings() {
       tempColumnInGirdView = 6
     }
     setColumnCountInGirdView(tempColumnInGirdView)
+
+    // 禁用扩展使用灰色样式
+    const grayWhenDisable = setting.isGaryStyleOfDisableInGridView ?? false
+    setIsGaryStyleOfDisableInGridView(grayWhenDisable)
   }, [setting])
 
   // 初始化，从配置中读取设置
@@ -123,6 +129,7 @@ function Settings() {
               onSettingChange(value, setIsShowSearchBar, "isShowSearchBarDefault")
             }></Switch>
         </div>
+
         <div className="setting-item">
           <span>底部显示 APP 类型的扩展</span>
           <Switch
@@ -130,6 +137,7 @@ function Settings() {
             checked={isShowApp}
             onChange={(value) => onSettingChange(value, setIsShowApp, "isShowApp")}></Switch>
         </div>
+
         <div className="setting-item">
           <span>列表视图下，始终显示快捷操作按钮（默认 hover 显示）</span>
           <Switch
@@ -185,6 +193,20 @@ function Settings() {
             max={10}
             step={1}
           />
+        </div>
+
+        <div className="setting-item">
+          <span>网格视图下，被禁用的扩展，使用灰色样式</span>
+          <Switch
+            size="small"
+            checked={isGaryStyleOfDisableInGridView}
+            onChange={(value) =>
+              onSettingChange(
+                value,
+                setIsGaryStyleOfDisableInGridView,
+                "isGaryStyleOfDisableInGridView"
+              )
+            }></Switch>
         </div>
       </div>
 

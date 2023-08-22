@@ -27,6 +27,8 @@ const ExtensionGridItem = memo(({ item, options }) => {
 
   // 是否显示 APP 名称
   const isShowAppNameInGirdView = options.setting.isShowAppNameInGirdView ?? false
+  // 禁用扩展使用灰色
+  const grayStyleOfDisable = options.setting.isGaryStyleOfDisableInGridView ?? false
 
   const containerRef = useRef(null)
   const menuRef = useRef(null)
@@ -106,7 +108,10 @@ const ExtensionGridItem = memo(({ item, options }) => {
       {/* 扩展显示 */}
       <div className={classNames(["grid-display-item"])} onClick={onItemClick}>
         <div
-          className={classNames(["grid-display-item-box", { "grid-item-disable": !itemEnable }])}>
+          className={classNames([
+            "grid-display-item-box",
+            { "grid-item-disable": !itemEnable && grayStyleOfDisable }
+          ])}>
           <img src={getIcon(item, 48)} alt="icon" />
           {isShowAppNameInGirdView && (
             <span className="grid-display-item-title">{getExtItemDisplayName(item)}</span>
