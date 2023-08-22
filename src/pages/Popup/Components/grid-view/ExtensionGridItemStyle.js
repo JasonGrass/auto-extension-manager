@@ -9,15 +9,19 @@ export const ExtensionGridItemStyle = styled.div`
   }
 
   .grid-display-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative;
 
     transition: transform 0.3s ease;
 
     &:hover {
       transform: scale(1.2);
     }
+  }
+
+  .grid-display-item-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .grid-display-item-title {
@@ -29,11 +33,31 @@ export const ExtensionGridItemStyle = styled.div`
     white-space: nowrap;
   }
 
+  .item-pined-dot {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+
+    width: 12px;
+    height: 12px;
+    margin: 0;
+
+    border: 3px solid #888;
+    border-radius: 6px;
+    box-shadow: 0 0 0px 1px #fff;
+
+    background-color: #3ffa7b;
+  }
+
+  .item-pined-dot-hidden {
+    display: none;
+  }
+
   .operation-menu {
     display: none;
     position: absolute;
-    width: 130px;
-    height: 64px;
+    width: 140px;
+    height: 70px;
 
     z-index: 1000;
 
@@ -44,7 +68,7 @@ export const ExtensionGridItemStyle = styled.div`
   }
 
   .operation-menu-title {
-    padding: 5px;
+    padding: 8px 5px;
     color: #fff;
     text-align: center;
 

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef, useState } from "react"
 
-import { DeleteOutlined, HomeOutlined, SettingOutlined } from "@ant-design/icons"
+import { DeleteOutlined, HomeOutlined, PushpinOutlined, SettingOutlined } from "@ant-design/icons"
 import { Space } from "antd"
 import classNames from "classnames"
 
@@ -9,16 +9,32 @@ import { isStringEmpty } from ".../utils/utils.js"
 import { ExtensionGridItemStyle } from "./ExtensionGridItemStyle"
 
 const ExtensionGridItem = memo(({ item, options }) => {
+  // 扩展存在设置页面
   const existOptionPage = !isStringEmpty(item.optionsUrl)
+  // 扩展存在 Home 页面
   const existHomePage = !isStringEmpty(item.homepageUrl)
 
+  // 扩展是否可用
   const [itemEnable, setItemEnable] = useState(item.enabled)
+  // 扩展是否在固定分组中
+  const [itemPined, setItemPined] = useState(false)
 
+  // 交互状态：鼠标是否 hover
   const [isMouseEnter, setIsMouseEnter] = useState(false)
-
+  // UI 状态：菜单显示的位置
   const [isMenuOnRight, setIsMenuOnRight] = useState(true)
+
   const containerRef = useRef(null)
   const menuRef = useRef(null)
+
+  useEffect(() => {
+    const fixExts = options.groups.find((g) => g.id === "fixed")?.extensions
+    if (!fixExts) {
+      return
+    }
+
+    setItemPined(fixExts.includes(item.id))
+  }, [item, options])
 
   const checkMenuPosition = () => {
     const containerRect = containerRef.current.getBoundingClientRect()
@@ -70,6 +86,11 @@ const ExtensionGridItem = memo(({ item, options }) => {
     setIsMouseEnter(false)
   }
 
+  /**
+   * 固定/解除固定扩展（是否放在固定分组中）
+   */
+  const handlePinButtonClick = (e, item) => {}
+
   const onItemClick = () => {
     if (itemEnable) {
       chrome.management.setEnabled(item.id, false)
@@ -85,12 +106,18 @@ const ExtensionGridItem = memo(({ item, options }) => {
       ref={containerRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
-      <div
-        className={classNames(["grid-display-item", { "grid-item-disable": !itemEnable }])}
-        onClick={onItemClick}>
-        <img src={getIcon(item, 48)} alt="icon" />
-        <span className="grid-display-item-title">{getExtItemDisplayName(item)}</span>
+      {/* 扩展显示 */}
+      <div className={classNames(["grid-display-item"])} onClick={onItemClick}>
+        <div
+          className={classNames(["grid-display-item-box", { "grid-item-disable": !itemEnable }])}>
+          <img src={getIcon(item, 48)} alt="icon" />
+          <span className="grid-display-item-title">{getExtItemDisplayName(item)}</span>
+        </div>
+
+        <i className={classNames(["item-pined-dot", { "item-pined-dot-hidden": !itemPined }])}></i>
       </div>
+
+      {/* hover 菜单 */}
       <div
         className={classNames([
           "operation-menu",
@@ -103,6 +130,10 @@ const ExtensionGridItem = memo(({ item, options }) => {
         ref={menuRef}>
         <h3 className="operation-menu-title">{item.name}</h3>
         <div className="operation-menu-items">
+          <Space className="operation-menu-item" onClick={(e) => handlePinButtonClick(e, item)}>
+            <PushpinOutlined />
+          </Space>
+
           <Space
             className={classNames({
               "operation-menu-item-disabled": !existOptionPage,
