@@ -112,7 +112,7 @@ function Settings() {
       {contextHolder}
       <Title title="通用设置"></Title>
 
-      <h2>Popup UI 显示偏好设置</h2>
+      <h2 className="setting-sub-title">Popup 显示偏好设置</h2>
 
       <div className="container">
         <div className="setting-item">
@@ -131,21 +131,18 @@ function Settings() {
         </div>
 
         <div className="setting-item">
-          <span>底部显示 APP 类型的扩展</span>
+          <span>
+            显示 APP 类型的扩展{" "}
+            <Tooltip
+              placement="top"
+              title="将在 Popup 底部显示 APP 类型的扩展，点击图标，可以直接启动应用">
+              <QuestionCircleOutlined />
+            </Tooltip>{" "}
+          </span>
           <Switch
             size="small"
             checked={isShowApp}
             onChange={(value) => onSettingChange(value, setIsShowApp, "isShowApp")}></Switch>
-        </div>
-
-        <div className="setting-item">
-          <span>列表视图下，始终显示快捷操作按钮（默认 hover 显示）</span>
-          <Switch
-            size="small"
-            checked={isShowItemOperationAlways}
-            onChange={(value) =>
-              onSettingChange(value, setIsShowItemOperationAlways, "isShowItemOperationAlways")
-            }></Switch>
         </div>
 
         <div className="setting-item">
@@ -162,6 +159,16 @@ function Settings() {
             checked={isShowFixedExtension}
             onChange={(value) =>
               onSettingChange(value, setIsShowFixedExtension, "isShowFixedExtension")
+            }></Switch>
+        </div>
+
+        <div className="setting-item">
+          <span>列表视图下，始终显示快捷操作按钮（默认 hover 显示）</span>
+          <Switch
+            size="small"
+            checked={isShowItemOperationAlways}
+            onChange={(value) =>
+              onSettingChange(value, setIsShowItemOperationAlways, "isShowItemOperationAlways")
             }></Switch>
         </div>
 
@@ -196,7 +203,7 @@ function Settings() {
         </div>
 
         <div className="setting-item">
-          <span>网格视图下，被禁用的扩展，使用灰色样式</span>
+          <span>网格视图下，使用灰色样式显示被禁用的扩展</span>
           <Switch
             size="small"
             checked={isGaryStyleOfDisableInGridView}
@@ -210,12 +217,12 @@ function Settings() {
         </div>
       </div>
 
-      <h2>Popup 功能偏好设置</h2>
+      <h2 className="setting-sub-title">Popup 功能偏好设置</h2>
 
       <div className="container">
         <div className="setting-item">
           <span>
-            在 Popup 中切换分组时，启用当前分组扩展，禁用其它的扩展{" "}
+            切换分组时，启用当前分组扩展，禁用其它的扩展{" "}
             <Tooltip
               placement="top"
               title="打开此配置之后，在 Popup 中切换分组时，会禁用掉所有不是固定分组也不是当前分组中的扩展">

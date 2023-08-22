@@ -10,6 +10,13 @@ export const SettingStyle = styled.div`
     border-radius: 5px;
   }
 
+  .setting-sub-title {
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+
   .setting-item {
     display: flex;
     align-items: center;
