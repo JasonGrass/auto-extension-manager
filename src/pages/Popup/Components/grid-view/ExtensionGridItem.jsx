@@ -6,6 +6,7 @@ import classNames from "classnames"
 
 import { getIcon } from ".../utils/extensionHelper.js"
 import { isStringEmpty } from ".../utils/utils.js"
+import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
 import { ExtensionGridItemStyle } from "./ExtensionGridItemStyle"
 
 const ExtensionGridItem = memo(({ item, options }) => {
@@ -17,7 +18,7 @@ const ExtensionGridItem = memo(({ item, options }) => {
   // 扩展是否可用
   const [itemEnable, setItemEnable] = useState(item.enabled)
   // 扩展是否在固定分组中
-  const [itemPined, setItemPined] = useState(false)
+  const [itemPined, setItemPined] = useExtensionItemPin(item, options)
 
   // 交互状态：鼠标是否 hover
   const [isMouseEnter, setIsMouseEnter] = useState(false)
@@ -26,15 +27,6 @@ const ExtensionGridItem = memo(({ item, options }) => {
 
   const containerRef = useRef(null)
   const menuRef = useRef(null)
-
-  useEffect(() => {
-    const fixExts = options.groups.find((g) => g.id === "fixed")?.extensions
-    if (!fixExts) {
-      return
-    }
-
-    setItemPined(fixExts.includes(item.id))
-  }, [item, options])
 
   const checkMenuPosition = () => {
     const containerRect = containerRef.current.getBoundingClientRect()
@@ -89,7 +81,9 @@ const ExtensionGridItem = memo(({ item, options }) => {
   /**
    * 固定/解除固定扩展（是否放在固定分组中）
    */
-  const handlePinButtonClick = (e, item) => {}
+  const handlePinButtonClick = (e, item) => {
+    setItemPined(!itemPined)
+  }
 
   const onItemClick = () => {
     if (itemEnable) {
