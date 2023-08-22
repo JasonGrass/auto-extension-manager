@@ -26,16 +26,24 @@ export async function handleExtensionOnOff(extensions, options, group) {
   // const enabledExtensions = extensions.filter((ext) => enabledExtensionIds.includes(ext.id))
 
   for (const extId of enabledExtensionIds) {
-    const info = await chromeP.management.get(extId)
-    if (!info.enabled) {
-      await chromeP.management.setEnabled(extId, true)
+    try {
+      const info = await chromeP.management.get(extId)
+      if (!info.enabled) {
+        await chromeP.management.setEnabled(extId, true)
+      }
+    } catch (error) {
+      console.warn(`enable extension fail(${extId}).`, error)
     }
   }
 
   for (const extId of disabledExtensionIds) {
-    const info = await chromeP.management.get(extId)
-    if (info.enabled) {
-      await chromeP.management.setEnabled(extId, false)
+    try {
+      const info = await chromeP.management.get(extId)
+      if (info.enabled) {
+        await chromeP.management.setEnabled(extId, false)
+      }
+    } catch (error) {
+      console.warn(`disable extension fail(${extId}).`, error)
     }
   }
 

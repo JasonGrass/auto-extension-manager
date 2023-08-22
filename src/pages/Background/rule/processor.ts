@@ -235,13 +235,17 @@ async function closeExtensions(
   let worked = false
 
   for (const extId of targetExtensions) {
-    const info = await chromeP.management.get(extId)
-    if (!info || !info.enabled) {
-      continue
+    try {
+      const info = await chromeP.management.get(extId)
+      if (!info || !info.enabled) {
+        continue
+      }
+      console.log(`[Extension Manager] disable extension [${info.name}]`)
+      await chrome.management.setEnabled(extId, false)
+      worked = true
+    } catch (err) {
+      console.warn(`closeExtension fail (${extId}).`, err)
     }
-    console.log(`[Extension Manager] disable extension [${info.name}]`)
-    await chrome.management.setEnabled(extId, false)
-    worked = true
   }
 
   if (worked && reload && tabInfo && tabInfo.id) {
@@ -258,13 +262,17 @@ async function openExtensions(
   let worked = false
 
   for (const extId of targetExtensions) {
-    const info = await chromeP.management.get(extId)
-    if (!info || info.enabled) {
-      continue
+    try {
+      const info = await chromeP.management.get(extId)
+      if (!info || info.enabled) {
+        continue
+      }
+      await chromeP.management.setEnabled(extId, true)
+      console.log(`[Extension Manager] enable extension [${info.name}]`)
+      worked = true
+    } catch (err) {
+      console.warn(`openExtension fail (${extId}).`, err)
     }
-    await chromeP.management.setEnabled(extId, true)
-    console.log(`[Extension Manager] enable extension [${info.name}]`)
-    worked = true
   }
 
   if (worked && reload && tabInfo && tabInfo.id) {
