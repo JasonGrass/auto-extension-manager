@@ -12,7 +12,7 @@ import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
  * @param placeholder 列表中没有内容时，显示的提示文字
  * @param onClick 点击单个扩展项时的回调
  */
-const ExtensionItems = memo(({ items, placeholder, onClick, managementOptions }) => {
+const ExtensionItems = memo(({ items, placeholder, onClick, managementOptions, showFixedPin }) => {
   const isEmpty = !items || items.length === 0
 
   // 附加了额外信息的扩展列表
@@ -38,7 +38,17 @@ const ExtensionItems = memo(({ items, placeholder, onClick, managementOptions })
                 onClick={(e) => onClick(e, item)}>
                 <Tooltip placement="top" title={item.name}>
                   <div className="ext-item">
-                    <img src={getIcon(item, 128)} alt="" />
+                    <div>
+                      <img src={getIcon(item, 128)} alt="" />
+                      <i
+                        className={classNames([
+                          "ext-item-fixed-dot",
+                          {
+                            "ext-item-fixed-dot-hidden": !showFixedPin
+                          }
+                        ])}></i>
+                    </div>
+
                     <span>{showName}</span>
                   </div>
                 </Tooltip>
@@ -67,6 +77,31 @@ const Style = styled.div`
     width: 100px;
     margin: 12px 15px;
     margin-bottom: 20px;
+
+    div {
+      position: relative;
+    }
+  }
+
+  .ext-item-fixed-dot {
+    position: absolute;
+
+    top: -3px;
+    right: -3px;
+
+    width: 12px;
+    height: 12px;
+    margin: 0;
+
+    border: 3px solid #888;
+    border-radius: 6px;
+    box-shadow: 0 0 0px 1px #fff;
+
+    background-color: #3ffa7b;
+  }
+
+  .ext-item-fixed-dot-hidden {
+    display: none;
   }
 
   .ext-item img {

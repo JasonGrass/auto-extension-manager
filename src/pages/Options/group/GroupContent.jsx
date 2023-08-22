@@ -112,6 +112,7 @@ const GroupContent = memo(({ group, groupList, extensions, managementOptions }) 
         onClick={onIconClick}
         placeholder="none"
         managementOptions={managementOptions}
+        showFixedPin={isGrouped && group.id === "fixed"}
       />
     )
   }
