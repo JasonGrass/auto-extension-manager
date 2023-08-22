@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { QuestionCircleOutlined } from "@ant-design/icons"
-import { Button, InputNumber, Switch, Tooltip, message } from "antd"
+import { Button, Slider, Switch, Tooltip, message } from "antd"
 import { fromJS } from "immutable"
 
 import OptionsStorage, { SyncOptionsStorage } from ".../storage/index"
@@ -24,6 +24,8 @@ function Settings() {
   const [isShowFixedExtension, setIsShowFixedExtension] = useState(true)
   // 网格视图下，显示 APP 名称
   const [isShowAppNameInGirdView, setIsShowAppNameInGirdView] = useState(false)
+  // 网格视图下，每行显示的扩展个数
+  const [columnCountInGirdView, setColumnCountInGirdView] = useState(6)
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -43,6 +45,19 @@ function Settings() {
     setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
     const showFixedExtension = setting.isShowFixedExtension ?? true
     setIsShowFixedExtension(showFixedExtension)
+    const showAppNameInGridView = setting.isShowAppNameInGirdView ?? false
+    setIsShowAppNameInGirdView(showAppNameInGridView)
+
+    // 网格视图下的列数
+    let tempColumnInGirdView = Number(setting.columnCountInGirdView)
+    if (
+      Number.isNaN(tempColumnInGirdView) ||
+      tempColumnInGirdView < 6 ||
+      tempColumnInGirdView > 10
+    ) {
+      tempColumnInGirdView = 6
+    }
+    setColumnCountInGirdView(tempColumnInGirdView)
   }, [setting])
 
   // 初始化，从配置中读取设置
@@ -140,6 +155,36 @@ function Settings() {
             onChange={(value) =>
               onSettingChange(value, setIsShowFixedExtension, "isShowFixedExtension")
             }></Switch>
+        </div>
+
+        <div className="setting-item">
+          <span>
+            网格视图下，显示 APP 名称{" "}
+            <Tooltip placement="top" title="如果设置了扩展别名，将优先显示别名">
+              <QuestionCircleOutlined />
+            </Tooltip>{" "}
+          </span>
+          <Switch
+            size="small"
+            checked={isShowAppNameInGirdView}
+            onChange={(value) =>
+              onSettingChange(value, setIsShowAppNameInGirdView, "isShowAppNameInGirdView")
+            }></Switch>
+        </div>
+
+        <div className="setting-item">
+          <span>网格视图下，扩展显示的列数（{columnCountInGirdView}）</span>
+          <Slider
+            style={{ width: 100, margin: "0 10px 0 0" }}
+            defaultValue={30}
+            value={columnCountInGirdView}
+            onChange={(value) =>
+              onSettingChange(value, setColumnCountInGirdView, "columnCountInGirdView")
+            }
+            min={6}
+            max={10}
+            step={1}
+          />
         </div>
       </div>
 
