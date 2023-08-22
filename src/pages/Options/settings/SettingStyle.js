@@ -24,10 +24,6 @@ export const SettingStyle = styled.div`
     }
   }
 
-  .setting-width {
-    display: none;
-  }
-
   .import-export-container {
     margin-top: 20px;
     & > button {

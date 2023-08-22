@@ -22,6 +22,8 @@ function Settings() {
   const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
   // 是否在 Popup 中，展示固定分组中的扩展
   const [isShowFixedExtension, setIsShowFixedExtension] = useState(true)
+  // 网格视图下，显示 APP 名称
+  const [isShowAppNameInGirdView, setIsShowAppNameInGirdView] = useState(false)
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -89,26 +91,12 @@ function Settings() {
       {contextHolder}
       <Title title="通用设置"></Title>
 
+      <h2>Popup UI 显示偏好设置</h2>
+
       <div className="container">
         <div className="setting-item">
-          <span>在 Popup 底部中显示 APP 类型的扩展</span>
-          <Switch
-            size="small"
-            checked={isShowApp}
-            onChange={(value) => onSettingChange(value, setIsShowApp, "isShowApp")}></Switch>
-        </div>
-        <div className="setting-item">
-          <span>在 Popup 列表中始终显示快捷操作按钮（默认 hover 显示）</span>
-          <Switch
-            size="small"
-            checked={isShowItemOperationAlways}
-            onChange={(value) =>
-              onSettingChange(value, setIsShowItemOperationAlways, "isShowItemOperationAlways")
-            }></Switch>
-        </div>
-        <div className="setting-item">
           <span>
-            在 Popup 顶部默认显示搜索框（未设置时点击 🔍 显示）
+            顶部默认显示搜索框（未设置时点击 🔍 显示）
             <Tooltip placement="top" title="也可以使用快捷键 'F' 打开搜索框">
               <QuestionCircleOutlined />
             </Tooltip>{" "}
@@ -120,6 +108,44 @@ function Settings() {
               onSettingChange(value, setIsShowSearchBar, "isShowSearchBarDefault")
             }></Switch>
         </div>
+        <div className="setting-item">
+          <span>底部显示 APP 类型的扩展</span>
+          <Switch
+            size="small"
+            checked={isShowApp}
+            onChange={(value) => onSettingChange(value, setIsShowApp, "isShowApp")}></Switch>
+        </div>
+        <div className="setting-item">
+          <span>列表视图下，始终显示快捷操作按钮（默认 hover 显示）</span>
+          <Switch
+            size="small"
+            checked={isShowItemOperationAlways}
+            onChange={(value) =>
+              onSettingChange(value, setIsShowItemOperationAlways, "isShowItemOperationAlways")
+            }></Switch>
+        </div>
+
+        <div className="setting-item">
+          <span>
+            显示固定分组中的扩展{" "}
+            <Tooltip
+              placement="top"
+              title="固定分组中的扩展，通常为常驻扩展，如果不想在 Popup 列表中展示，可以关闭此选项">
+              <QuestionCircleOutlined />
+            </Tooltip>{" "}
+          </span>
+          <Switch
+            size="small"
+            checked={isShowFixedExtension}
+            onChange={(value) =>
+              onSettingChange(value, setIsShowFixedExtension, "isShowFixedExtension")
+            }></Switch>
+        </div>
+      </div>
+
+      <h2>Popup 功能偏好设置</h2>
+
+      <div className="container">
         <div className="setting-item">
           <span>
             在 Popup 中切换分组时，启用当前分组扩展，禁用其它的扩展{" "}
@@ -139,26 +165,6 @@ function Settings() {
                 "isRaiseEnableWhenSwitchGroup"
               )
             }></Switch>
-        </div>
-        <div className="setting-item">
-          <span>
-            在 Popup 中展示固定分组中的扩展{" "}
-            <Tooltip
-              placement="top"
-              title="固定分组中的扩展，通常为常驻扩展，如果不想在 Popup 列表中展示，可以关闭此选项">
-              <QuestionCircleOutlined />
-            </Tooltip>{" "}
-          </span>
-          <Switch
-            size="small"
-            checked={isShowFixedExtension}
-            onChange={(value) =>
-              onSettingChange(value, setIsShowFixedExtension, "isShowFixedExtension")
-            }></Switch>
-        </div>
-        <div className="setting-width setting-item">
-          <span>Popup 弹窗宽度</span>
-          <InputNumber size="small" min={300} max={800} defaultValue={400} />
         </div>
       </div>
 
