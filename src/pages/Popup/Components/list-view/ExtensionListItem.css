@@ -6,15 +6,43 @@
   font-size: 14px;
 }
 
-.list-item-container > img {
+.list-item-container img {
   margin-right: 5px;
   padding: 1px;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
+}
+
+.list-item-img-box {
+  position: relative;
+}
+
+.list-item-fix-dot {
+  position: absolute;
+
+  top: -2px;
+  right: 0px;
+
+  width: 10px;
+  height: 10px;
+  margin: 0;
+
+  border: 3px solid #888;
+  border-radius: 6px;
+  box-shadow: 0 0 0px 1px #fff;
+
+  background-color: #3ffa7b;
+}
+
+.list-item-fix-dot-hidden {
+  display: none;
 }
 
 .list-item-container > .ext-name {
   flex-grow: 1;
+
+  margin-left: 2px;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { DeleteOutlined, HomeOutlined, SettingOutlined } from "@ant-design/icons"
+import { DeleteOutlined, HomeOutlined, PushpinOutlined, SettingOutlined } from "@ant-design/icons"
 import { Button, Popconfirm, Switch } from "antd"
 import classNames from "classnames"
 
@@ -8,6 +8,7 @@ import "./ExtensionListItem.css"
 
 import { getIcon } from ".../utils/extensionHelper.js"
 import { isStringEmpty } from ".../utils/utils.js"
+import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
 
 /**
  * 打开扩展设置页面
@@ -34,6 +35,9 @@ const ExtensionListItem = memo(({ item, options }) => {
   const [itemEnable, setItemEnable] = useState(item.enabled)
   const existOptionPage = !isStringEmpty(item.optionsUrl)
   const existHomePage = !isStringEmpty(item.homepageUrl)
+
+  // 是否在固定分组
+  const [itemPined, setItemPined] = useExtensionItemPin(item, options)
 
   // 在切换分组可以控制扩展的开启或关闭时，这里需要主动更新 enabled，否则 UI 显示会有问题
   useEffect(() => {
@@ -80,7 +84,15 @@ const ExtensionListItem = memo(({ item, options }) => {
         "list-item-container",
         { "is-enable": itemEnable, "not-enable": !itemEnable }
       ])}>
-      <img src={getIcon(item, 24)} alt="" />
+      <div className="list-item-img-box">
+        <img src={getIcon(item, 24)} alt="" />
+        <i
+          className={classNames([
+            "list-item-fix-dot",
+            { "list-item-fix-dot-hidden": !itemPined }
+          ])}></i>
+      </div>
+
       <span className="ext-name">{showName}</span>
       {buildOperationButton(isHover || isShowOperationButton)}
     </div>
@@ -97,6 +109,8 @@ const ExtensionListItem = memo(({ item, options }) => {
             size="small"
             checked={itemEnable}
             onChange={(e) => onSwitchChange(e, item)}></Switch>
+
+          <Button type="text" icon={<PushpinOutlined />} onClick={() => setItemPined(!itemPined)} />
 
           <Button
             disabled={!existOptionPage}
