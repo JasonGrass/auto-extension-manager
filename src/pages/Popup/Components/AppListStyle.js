@@ -1,5 +1,8 @@
 import styled from "styled-components"
 
+const imgSize = "46px"
+const imgMargin = "16px"
+
 export const AppListStyle = styled.div`
   ul {
     display: flex;
@@ -8,13 +11,13 @@ export const AppListStyle = styled.div`
     justify-content: space-between;
 
     i {
-      width: 42px;
-      margin: 0px 10px;
+      width: ${imgSize};
+      margin: 0px ${imgMargin};
     }
   }
 
   li {
-    margin: 12px 10px;
+    margin: 12px ${imgMargin};
     width: 42px;
   }
 
@@ -24,8 +27,8 @@ export const AppListStyle = styled.div`
 
   li img {
     display: block;
-    width: 42px;
-    height: 42px;
+    width: ${imgSize};
+    height: ${imgSize};
     margin: 0 auto;
   }
 
