@@ -38,6 +38,8 @@ const ExtensionListItem = memo(({ item, options }) => {
 
   // 是否在固定分组
   const [itemPined, setItemPined] = useExtensionItemPin(item, options)
+  // 固定分组的小圆点
+  const isShowDotOfFixedExtension = options.setting.isShowDotOfFixedExtension ?? true
 
   // 在切换分组可以控制扩展的开启或关闭时，这里需要主动更新 enabled，否则 UI 显示会有问题
   useEffect(() => {
@@ -86,11 +88,7 @@ const ExtensionListItem = memo(({ item, options }) => {
       ])}>
       <div className="list-item-img-box">
         <img src={getIcon(item, 24)} alt="" />
-        <i
-          className={classNames([
-            "list-item-fix-dot",
-            { "list-item-fix-dot-hidden": !itemPined }
-          ])}></i>
+        {itemPined && isShowDotOfFixedExtension && <i className="list-item-fix-dot"></i>}
       </div>
 
       <span className="ext-name">{showName}</span>

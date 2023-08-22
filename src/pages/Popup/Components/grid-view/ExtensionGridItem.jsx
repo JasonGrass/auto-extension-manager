@@ -29,6 +29,8 @@ const ExtensionGridItem = memo(({ item, options }) => {
   const isShowAppNameInGirdView = options.setting.isShowAppNameInGirdView ?? false
   // 禁用扩展使用灰色
   const grayStyleOfDisable = options.setting.isGaryStyleOfDisableInGridView ?? false
+  // 固定分组扩展的小圆点
+  const isShowDotOfFixedExtension = options.setting.isShowDotOfFixedExtension ?? true
 
   const containerRef = useRef(null)
   const menuRef = useRef(null)
@@ -127,7 +129,7 @@ const ExtensionGridItem = memo(({ item, options }) => {
             </span>
           )}
         </div>
-        {itemPined && <i className="item-pined-dot"></i>}
+        {itemPined && isShowDotOfFixedExtension && <i className="item-pined-dot"></i>}
       </div>
 
       {/* hover 菜单 */}

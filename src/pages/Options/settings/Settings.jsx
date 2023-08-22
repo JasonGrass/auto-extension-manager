@@ -22,6 +22,8 @@ function Settings() {
   const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
   // 是否在 Popup 中，展示固定分组中的扩展
   const [isShowFixedExtension, setIsShowFixedExtension] = useState(true)
+  // 是否显示固定分组扩展上面的小圆点
+  const [isShowDotOfFixedExtension, setIsShowDotOfFixedExtension] = useState(true)
   // 网格视图下，显示 APP 名称
   const [isShowAppNameInGirdView, setIsShowAppNameInGirdView] = useState(false)
   // 网格视图下，每行显示的扩展个数
@@ -64,6 +66,10 @@ function Settings() {
     // 禁用扩展使用灰色样式
     const grayWhenDisable = setting.isGaryStyleOfDisableInGridView ?? false
     setIsGaryStyleOfDisableInGridView(grayWhenDisable)
+
+    // 固定分组扩展的小圆点
+    const dotOfFixedExtension = setting.isShowDotOfFixedExtension ?? true
+    setIsShowDotOfFixedExtension(dotOfFixedExtension)
   }, [setting])
 
   // 初始化，从配置中读取设置
@@ -159,6 +165,16 @@ function Settings() {
             checked={isShowFixedExtension}
             onChange={(value) =>
               onSettingChange(value, setIsShowFixedExtension, "isShowFixedExtension")
+            }></Switch>
+        </div>
+
+        <div className="setting-item">
+          <span>显示固定分组扩展右上角的小圆点</span>
+          <Switch
+            size="small"
+            checked={isShowDotOfFixedExtension}
+            onChange={(value) =>
+              onSettingChange(value, setIsShowDotOfFixedExtension, "isShowDotOfFixedExtension")
             }></Switch>
         </div>
 
