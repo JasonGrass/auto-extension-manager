@@ -36,7 +36,11 @@ const prepare = async function () {
   const localOptions = await LocalOptionsStorage.getAll()
 
   // popup 宽度设置
-  document.body.style.width = getPopupWidth(allOptions.setting.layout, allExtensions.count, 7)
+  document.body.style.width = getPopupWidth(
+    allOptions.setting.layout,
+    allExtensions.count,
+    allOptions.setting.columnCountInGirdView
+  )
 
   return {
     // 插件信息

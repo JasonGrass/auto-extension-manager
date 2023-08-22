@@ -59,7 +59,11 @@ function IndexPopup({ originExtensions, options, params }) {
   // 布局切换
   const onLayoutChanged = (layout) => {
     setLayout(layout)
-    document.body.style.width = getPopupWidth(layout, originExtensions.length, 7)
+    document.body.style.width = getPopupWidth(
+      layout,
+      originExtensions.length,
+      options.setting.columnCountInGirdView
+    )
   }
 
   return (
