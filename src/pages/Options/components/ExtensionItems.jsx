@@ -14,9 +14,10 @@ import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
  */
 const ExtensionItems = memo(({ items, placeholder, onClick, options, showFixedPin }) => {
   const isEmpty = !items || items.length === 0
+  const showFixedPinDot = showFixedPin ?? false
 
   // 附加了额外信息的扩展列表
-  const extensions = appendAdditionInfo(items, options.management)
+  const extensions = appendAdditionInfo(items, options?.management)
   const sortedItems = sortExtension(extensions)
 
   return (
@@ -40,13 +41,7 @@ const ExtensionItems = memo(({ items, placeholder, onClick, options, showFixedPi
                   <div className="ext-item">
                     <div>
                       <img src={getIcon(item, 128)} alt="" />
-                      <i
-                        className={classNames([
-                          "ext-item-fixed-dot",
-                          {
-                            "ext-item-fixed-dot-hidden": !showFixedPin
-                          }
-                        ])}></i>
+                      {showFixedPinDot && <i className="ext-item-fixed-dot"></i>}
                     </div>
 
                     <span>{showName}</span>
@@ -98,10 +93,6 @@ const Style = styled.div`
     box-shadow: 0 0 0px 1px #fff;
 
     background-color: #3ffa7b;
-  }
-
-  .ext-item-fixed-dot-hidden {
-    display: none;
   }
 
   .ext-item img {
