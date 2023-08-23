@@ -36,7 +36,7 @@ const CustomRuleAction = ({ options, config, pipe }, ref) => {
   // 禁用插件时，URL 的匹配方式： currentMatch / anyMatch / currentNotMatch / allNotMatch
   const [urlMatchWhenDisable, setUrlMatchWhenDisable] = useState("")
 
-  // 初始化有无 URL trigger
+  // 初始化有无 URL trigger(新增规则场景)
   const triggerKeys = pipe.match.current.getSelectTriggerKeys()
   const [hasUrlTrigger, setHasUrlTrigger] = useState(triggerKeys.includes("urlTrigger"))
 
@@ -47,14 +47,15 @@ const CustomRuleAction = ({ options, config, pipe }, ref) => {
       return
     }
 
-    const triggerKeys = pipe.match.current.getSelectTriggerKeys()
-    setHasUrlTrigger(triggerKeys.includes("urlTrigger"))
+    // 初始化有无 URL trigger(编辑现有规则场景)
+    const hasUrl = config.match?.triggers?.find((t) => t.trigger === "urlTrigger")
+    setHasUrlTrigger(Boolean(hasUrl))
 
     setTimeWhenEnable(customConfig.timeWhenEnable)
     setTimeWhenDisable(customConfig.timeWhenDisable)
     setUrlMatchWhenEnable(customConfig.urlMatchWhenEnable)
     setUrlMatchWhenDisable(customConfig.urlMatchWhenDisable)
-  }, [config, pipe])
+  }, [config])
 
   // 订阅 trigger 变更的通知
   useEffect(() => {
