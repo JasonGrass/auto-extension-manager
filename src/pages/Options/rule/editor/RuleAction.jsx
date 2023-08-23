@@ -149,10 +149,10 @@ const RuleAction = ({ options, config, pipe }, ref) => {
 
         <div className="action-label action-refresh-options">
           <Checkbox checked={refreshAfterEnable} onChange={onFreshAfterOpenChange}>
-            启用插件之后，刷新当前页面
+            启用扩展之后，刷新当前页面
           </Checkbox>
           <Checkbox checked={refreshAfterDisable} onChange={onFreshAfterCloseChange}>
-            禁用插件之后，刷新当前页面
+            禁用扩展之后，刷新当前页面
           </Checkbox>
         </div>
       </Style>
