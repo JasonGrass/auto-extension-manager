@@ -3,6 +3,7 @@ import chromeP from "webext-polyfill-kinda"
 import logger from ".../utils/logger"
 import type { ProcessContext } from "../processor"
 import checkCurrentOsMatch from "./match/osMatchHandler"
+import checkCurrentTimeMatch from "./match/periodMatchHandler"
 import checkCurrentSceneMatch from "./match/sceneMatchHandler"
 import checkCurrentUrlMatch, { checkAnyUrlMatch } from "./match/urlMatchHandler"
 
@@ -42,18 +43,35 @@ export default async function isMatch(
   const isAnyUrlMatch = isCurrentUrlMatch || (await checkAnyUrlMatch(ctx.tabs, rule))
   const isCurrentSceneMatch = await checkCurrentSceneMatch(scene, rule)
   const isCurrentOsMatch = await checkCurrentOsMatch(rule)
+  const isCurrentTimeMatch = await checkCurrentTimeMatch(rule)
 
-  const list = [isCurrentUrlMatch, isAnyUrlMatch, isCurrentSceneMatch, isCurrentOsMatch]
+  const list = [
+    isCurrentUrlMatch,
+    isAnyUrlMatch,
+    isCurrentSceneMatch,
+    isCurrentOsMatch,
+    isCurrentTimeMatch
+  ]
   if (list.filter((m) => m !== undefined).length === 0) {
+    // 没有任何匹配条件，直接返回 不匹配
     return result
   }
 
-  const currentCheckList = [isCurrentUrlMatch, isCurrentSceneMatch, isCurrentOsMatch].filter(
-    (m) => m !== undefined
-  )
-  const anyCheckList = [isAnyUrlMatch, isCurrentSceneMatch, isCurrentOsMatch].filter(
-    (m) => m !== undefined
-  )
+  // 当前标签是否匹配
+  const currentCheckList = [
+    isCurrentUrlMatch,
+    isCurrentSceneMatch,
+    isCurrentOsMatch,
+    isCurrentTimeMatch
+  ].filter((m) => m !== undefined)
+
+  // 任一标签是否匹配
+  const anyCheckList = [
+    isAnyUrlMatch,
+    isCurrentSceneMatch,
+    isCurrentOsMatch,
+    isCurrentTimeMatch
+  ].filter((m) => m !== undefined)
 
   const relationship = rule.match.relationship
   if (relationship === "and") {

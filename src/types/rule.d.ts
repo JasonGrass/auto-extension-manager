@@ -57,12 +57,12 @@ declare namespace rule {
 declare namespace ruleV2 {
   export type MatchMethod = "wildcard" | "regex"
   export type Relationship = "and" | "or"
-  export type TriggerType = "urlTrigger" | "sceneTrigger" | "osTrigger" | "timeTrigger"
+  export type TriggerType = "urlTrigger" | "sceneTrigger" | "osTrigger" | "periodTrigger"
   export type OsType = "mac" | "win" | "android" | "cros" | "linux" | "openbsd" | "fuchsia"
 
   export interface ITrigger {
     trigger: TriggerType
-    config: IUrlTriggerConfig | ISceneTriggerConfig | IOsTriggerConfig | ITimeTriggerConfig
+    config: IUrlTriggerConfig | ISceneTriggerConfig | IOsTriggerConfig | IPeriodTriggerConfig
   }
 
   export interface IUrlTriggerConfig {
@@ -78,8 +78,8 @@ declare namespace ruleV2 {
     os: OsType[]
   }
 
-  export interface ITimeTriggerConfig {
-    time: string[]
+  export interface IPeriodTriggerConfig {
+    periods: { start: string; end: string }[]
   }
 
   export interface IMatch {
