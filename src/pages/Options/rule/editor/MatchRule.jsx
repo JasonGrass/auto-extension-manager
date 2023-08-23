@@ -1,6 +1,7 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 
 import {
+  FieldTimeOutlined,
   LaptopOutlined,
   LinkOutlined,
   PlusCircleOutlined,
@@ -33,12 +34,12 @@ const triggerModes = [
     label: "操作系统类型",
     key: "osTrigger",
     icon: <LaptopOutlined />
+  },
+  {
+    label: "时间区间",
+    key: "periodTrigger",
+    icon: <FieldTimeOutlined />
   }
-  // {
-  //   label: "时间",
-  //   key: "time",
-  //   icon: <FieldTimeOutlined />
-  // }
 ]
 
 const MatchRule = ({ options, config }, ref) => {
@@ -70,6 +71,13 @@ const MatchRule = ({ options, config }, ref) => {
           config: osConfig
         })
       }
+      if (selectTriggerKeys.includes("periodTrigger")) {
+        const periodConfig = periodTriggerRef.current.getPeriodTriggerConfig()
+        matchConfig.triggers.push({
+          trigger: "periodTrigger",
+          config: periodConfig
+        })
+      }
 
       if (matchConfig.triggers.length === 0) {
         throw Error("[匹配条件] 至少添加一个匹配条件")
@@ -85,6 +93,7 @@ const MatchRule = ({ options, config }, ref) => {
   const urlTriggerRef = useRef()
   const sceneTriggerRef = useRef()
   const osTriggerRef = useRef()
+  const periodTriggerRef = useRef()
 
   // 选择的触发器列表
   const [selectTriggerKeys, setSelectTriggers] = useState([])
@@ -106,6 +115,9 @@ const MatchRule = ({ options, config }, ref) => {
     }
     if (matchConfig.triggers.find((t) => t.trigger === "osTrigger")) {
       triggerKeys = [...triggerKeys, "osTrigger"]
+    }
+    if (matchConfig.triggers.find((t) => t.trigger === "periodTrigger")) {
+      triggerKeys = [...triggerKeys, "periodTrigger"]
     }
     setSelectTriggers(triggerKeys)
   }, [config])
@@ -209,16 +221,18 @@ const MatchRule = ({ options, config }, ref) => {
           </TriggerWrapper>
         </div>
 
-        {/* 暂不支持 */}
-        {/* <div className={selectTriggerKeys.includes("time") ? "trigger-visible" : "trigger-hidden"}>
+        <div
+          className={
+            selectTriggerKeys.includes("periodTrigger") ? "trigger-visible" : "trigger-hidden"
+          }>
           <TriggerWrapper
-            title="时间"
+            title="时间区间"
             onClose={() => {
-              onTriggerRemove("time")
+              onTriggerRemove("periodTrigger")
             }}>
-            <TimeTrigger options={options} config={config}></TimeTrigger>
+            <TimeTrigger options={options} config={config} ref={periodTriggerRef}></TimeTrigger>
           </TriggerWrapper>
-        </div> */}
+        </div>
       </Style>
     </EditorCommonStyle>
   )

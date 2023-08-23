@@ -37,6 +37,12 @@ const MatchView = memo(({ config, options }) => {
     tips.push(list.toString())
   }
 
+  const periodTrigger = config.triggers.find((t) => t.trigger === "periodTrigger")
+  if (periodTrigger) {
+    const list = periodTrigger.config.periods
+    tips.push(list.map((period) => period.start + "-" + period.end).join(", "))
+  }
+
   if (tips.length === 0) {
     return <span className="error-text">ERROR</span>
   }
