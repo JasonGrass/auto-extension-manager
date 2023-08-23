@@ -81,7 +81,7 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
         onSearch={onSearch}
         onChange={(e) => onSearch(e.target.value)}
       />
-      <h3>「{group.name}」中的插件</h3>
+      <h3>「{group.name}」中的扩展</h3>
       {buildExtContainer(shownContainExts, true)}
       <h3>不在此分组</h3>
       {buildExtContainer(shownNoneGroupExts, false)}
