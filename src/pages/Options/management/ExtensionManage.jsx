@@ -177,7 +177,7 @@ const ExpandEditor = ({ record, reload }) => {
           name="alias"
           rules={[
             {
-              message: "插件别名长度最大50",
+              message: "扩展别名长度最大50",
               max: 50
             }
           ]}>

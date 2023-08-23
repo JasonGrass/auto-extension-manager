@@ -118,7 +118,7 @@ const ExtensionListItem = memo(({ item, options }) => {
           />
 
           <Popconfirm
-            title="移除插件"
+            title="移除扩展"
             description={`确认要从浏览器中移除 ${item.shortName}`}
             onConfirm={(e) => confirmDeleteExtension(e, item)}
             onCancel={(e) => cancelDeleteExtension(e, item)}

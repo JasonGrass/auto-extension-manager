@@ -13,8 +13,8 @@ function GroupNav({ groupInfo, current, onSelectedChanged, onGroupItemDeleted, o
   const fixedGroup = groupInfo.find((g) => g.id === "fixed")
   if (fixedGroup) {
     fixedGroup.name = "固定分组"
-    fixedGroup.desc = `这是一个内置分组，与其它分组独立。此分组中的插件，在 Popup 中手动切换分组时，不会被禁用。通常将常驻的扩展放在此分组中。
-    注意：如果在规则配置中，明确配置了关闭某个扩展，即使此扩展在固定分组中，禁用依旧会有效。`
+    fixedGroup.desc = `这是一个内置分组，此分组中的扩展，在 Popup 中手动切换分组时，不会被禁用。通常将常驻的扩展放在此分组中。
+    注意：如果在规则配置中，明确配置关闭某个扩展，即使此扩展在固定分组中，禁用依旧有效。`
     showGroupItems = [fixedGroup, ...groupInfo.filter((g) => g.id !== "fixed")]
   }
 
