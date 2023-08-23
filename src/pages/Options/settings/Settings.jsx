@@ -7,6 +7,7 @@ import { fromJS } from "immutable"
 import OptionsStorage, { SyncOptionsStorage } from ".../storage/index"
 import Title from "../Title.jsx"
 import { exportConfig, importConfig } from "./ConfigFileBackup.ts"
+import { MAX_COLUMN_COUNT, MIN_COLUMN_COUNT } from "./SettingConst.js"
 import { SettingStyle } from "./SettingStyle.js"
 
 function Settings() {
@@ -56,10 +57,10 @@ function Settings() {
     let tempColumnInGirdView = Number(setting.columnCountInGirdView)
     if (
       Number.isNaN(tempColumnInGirdView) ||
-      tempColumnInGirdView < 6 ||
-      tempColumnInGirdView > 10
+      tempColumnInGirdView < MIN_COLUMN_COUNT ||
+      tempColumnInGirdView > MAX_COLUMN_COUNT
     ) {
-      tempColumnInGirdView = 6
+      tempColumnInGirdView = MIN_COLUMN_COUNT
     }
     setColumnCountInGirdView(tempColumnInGirdView)
 
@@ -212,8 +213,8 @@ function Settings() {
             onChange={(value) =>
               onSettingChange(value, setColumnCountInGirdView, "columnCountInGirdView")
             }
-            min={6}
-            max={10}
+            min={MIN_COLUMN_COUNT}
+            max={MAX_COLUMN_COUNT}
             step={1}
           />
         </div>
