@@ -37,19 +37,18 @@ export const AboutStyle = styled.div`
 
     margin-top: 50px;
 
-    span {
+    .version {
       font-size: 14px;
       margin-bottom: 10px;
     }
 
-    a {
-      color: #337ab7;
-      font-size: 14px;
-      text-decoration: none;
+    .ant-tag-has-color {
+      padding: 1px 5px 3px 5px;
+    }
 
+    .badges-tag {
       &:hover {
-        color: #23527c;
-        text-decoration: underline;
+        cursor: pointer;
       }
     }
   }

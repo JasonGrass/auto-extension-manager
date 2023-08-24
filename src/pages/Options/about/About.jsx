@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 
-import { Button } from "antd"
+import { GithubOutlined, HeartOutlined } from "@ant-design/icons"
+import { Button, Space, Tag } from "antd"
 import newGithubIssueUrl from "new-github-issue-url"
 
 import Icon from ".../assets/img/icon-128.png"
@@ -36,6 +37,18 @@ ${navigator.userAgent}`
     })
   }
 
+  const openGithub = () => {
+    chrome.tabs.create({
+      url: "https://github.com/JasonGrass/auto-extension-manager"
+    })
+  }
+
+  const openSponsorPage = () => {
+    chrome.tabs.create({
+      url: "https://ext.jgrass.cc/separate/buy-me-a-coffee"
+    })
+  }
+
   return (
     <AboutStyle>
       <Title title="关于"></Title>
@@ -54,13 +67,24 @@ ${navigator.userAgent}`
       </div>
 
       <div className="footer">
-        <span>版本 {version}</span>
-        <a
-          href="https://github.com/JasonGrass/auto-extension-manager"
-          target="_blank"
-          rel="noreferrer">
-          Github
-        </a>
+        <span className="version">版本 {version}</span>
+
+        <Space size={[0, 8]}>
+          <Tag
+            className="badges-tag"
+            icon={<GithubOutlined />}
+            color="#2d333b"
+            onClick={openGithub}>
+            Github
+          </Tag>
+          <Tag
+            className="badges-tag"
+            icon={<HeartOutlined />}
+            color="#c12c1f"
+            onClick={openSponsorPage}>
+            捐助
+          </Tag>
+        </Space>
       </div>
     </AboutStyle>
   )
