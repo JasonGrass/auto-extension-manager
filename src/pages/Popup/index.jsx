@@ -30,8 +30,7 @@ const prepare = async function () {
   const self = await chromeP.management.getSelf()
   allExtensions = allExtensions.filter((ext) => ext.id !== self.id)
 
-  const managementOptions = await allOptions.management.get()
-  const extensions = appendAdditionInfo(allExtensions, managementOptions)
+  const extensions = appendAdditionInfo(allExtensions, allOptions.management)
 
   const localOptions = await LocalOptionsStorage.getAll()
 

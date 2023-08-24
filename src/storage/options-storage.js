@@ -75,6 +75,8 @@ export const LocalOptionsStorage = {
     if (!options.scene) {
       options.scene = {}
     }
+
+    return options
   },
 
   async set(option) {
