@@ -3,25 +3,22 @@ import OptionsSync from "webext-options-sync"
 export const OptionsStorage = new OptionsSync({
   storageType: "sync",
   defaults: {
-    popupWidth: 400,
+    // 分组数据
     groups: [],
+    // 情景模式数据
     scenes: [],
+    // 规则配置
     ruleConfig: [],
-    setting: {}
-  },
-  migrations: [
-    (options) => {
-      let { popupWidth } = options
-      popupWidth = Math.min(Math.max(200, popupWidth), 1000)
-      options.popupWidth = popupWidth
-    }
-  ]
+    // 通用配置
+    setting: {},
+    // 扩展管理类数据
+    management: {}
+  }
 })
 
 export const LocalOptionsStorage = new OptionsSync({
   storageType: "local",
-  defaults: {},
-  migrations: [(options) => {}]
+  defaults: {}
 })
 
 export const SyncOptionsStorage = {
