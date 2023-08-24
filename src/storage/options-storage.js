@@ -16,11 +16,6 @@ const OptionsStorage = new OptionsSync({
   }
 })
 
-export const LocalOptionsStorage = new OptionsSync({
-  storageType: "local",
-  defaults: {}
-})
-
 export const SyncOptionsStorage = {
   /**
    * 获取全部配置
@@ -60,5 +55,29 @@ export const SyncOptionsStorage = {
    */
   async setAll(options) {
     await OptionsStorage.setAll(options)
+  }
+}
+
+const InnerLocalOptionsStorage = new OptionsSync({
+  storageType: "local",
+  defaults: {
+    scene: {}
+  }
+})
+
+export const LocalOptionsStorage = {
+  /**
+   * 获取全部本地配置
+   */
+  async getAll() {
+    const options = await InnerLocalOptionsStorage.getAll()
+
+    if (!options.scene) {
+      options.scene = {}
+    }
+  },
+
+  async set(option) {
+    await InnerLocalOptionsStorage.set(option)
   }
 }
