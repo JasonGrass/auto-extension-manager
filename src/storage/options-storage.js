@@ -1,6 +1,6 @@
 import OptionsSync from "webext-options-sync"
 
-export const OptionsStorage = new OptionsSync({
+const OptionsStorage = new OptionsSync({
   storageType: "sync",
   defaults: {
     // 分组数据
@@ -22,6 +22,9 @@ export const LocalOptionsStorage = new OptionsSync({
 })
 
 export const SyncOptionsStorage = {
+  /**
+   * 获取全部配置
+   */
   async getAll() {
     const options = await OptionsStorage.getAll()
     if (!options.setting) {
@@ -43,7 +46,19 @@ export const SyncOptionsStorage = {
       options.ruleConfig = []
     }
     return options
+  },
+
+  /**
+   * 更新配置中的某一项，e.g. set({setting: settingObj})
+   */
+  async set(option) {
+    await OptionsStorage.set(option)
+  },
+
+  /**
+   * 覆盖式更新所有配置
+   */
+  async setAll(options) {
+    await OptionsStorage.setAll(options)
   }
 }
-
-export default OptionsStorage

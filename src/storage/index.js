@@ -2,15 +2,16 @@ import { GroupOptions } from "./GroupOptions"
 import { ManageOptions } from "./ManageOptions"
 import { RuleConfigOptions } from "./RuleConfigOptions"
 import { SceneOptions } from "./SceneOptions"
-import OptionsStorage, { LocalOptionsStorage, SyncOptionsStorage } from "./options-storage"
+import { LocalOptionsStorage, SyncOptionsStorage } from "./options-storage"
+import storage from "./webext-options"
 
-export default OptionsStorage
+export default storage
 export {
-  OptionsStorage,
+  LocalOptionsStorage,
+  SyncOptionsStorage,
   GroupOptions,
   SceneOptions,
   RuleConfigOptions,
-  LocalOptionsStorage,
-  SyncOptionsStorage,
-  ManageOptions
+  ManageOptions,
+  storage
 }

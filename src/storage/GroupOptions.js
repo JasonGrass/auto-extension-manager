@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid"
 
-import { OptionsStorage, SyncOptionsStorage } from "./options-storage"
+import { SyncOptionsStorage } from "./options-storage"
 
 export const GroupOptions = {
   async getGroups() {
@@ -42,7 +42,7 @@ export const GroupOptions = {
       groups.push(group)
     }
 
-    await OptionsStorage.set({ groups })
+    await SyncOptionsStorage.set({ groups })
   },
 
   async update(info) {
@@ -62,7 +62,7 @@ export const GroupOptions = {
     }
 
     Object.assign(exist, info)
-    await OptionsStorage.set({ groups })
+    await SyncOptionsStorage.set({ groups })
   },
 
   async deleteGroup(id) {
@@ -71,7 +71,7 @@ export const GroupOptions = {
       return
     }
     const newGroups = all.groups.filter((g) => g.id !== id)
-    await OptionsStorage.set({ groups: newGroups })
+    await SyncOptionsStorage.set({ groups: newGroups })
   }
 }
 

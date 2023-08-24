@@ -1,4 +1,4 @@
-import OptionsStorage, { SyncOptionsStorage } from "./options-storage"
+import { SyncOptionsStorage } from "./options-storage"
 
 export const ManageOptions = {
   /**
@@ -27,6 +27,6 @@ export const ManageOptions = {
     }
 
     all.extensions = extConfigs
-    await OptionsStorage.set({ management: all })
+    await SyncOptionsStorage.set({ management: all })
   }
 }

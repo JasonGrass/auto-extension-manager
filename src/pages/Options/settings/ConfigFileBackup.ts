@@ -1,11 +1,11 @@
-import { OptionsStorage, SyncOptionsStorage } from ".../storage"
+import storage from ".../storage"
 import ConvertRuleToV2 from "../../Background/rule/RuleConverter"
 
 /**
  * 导出配置
  */
 export async function exportConfig() {
-  const config = await SyncOptionsStorage.getAll()
+  const config = await storage.options.getAll()
   const data = {
     setting: config.setting,
     groups: config.groups,
@@ -22,10 +22,10 @@ export async function exportConfig() {
 export async function importConfig(): Promise<boolean> {
   try {
     const data = await importFromJsonFile()
-    const config = await SyncOptionsStorage.getAll()
+    const config = await storage.options.getAll()
 
     if (mergeConfig(data as ImportData, config as any as ImportData)) {
-      await OptionsStorage.setAll(config)
+      await storage.options.setAll(config)
       return true
     }
     return false

@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid"
 
-import OptionsStorage, { SyncOptionsStorage } from "./options-storage"
+import { SyncOptionsStorage } from "./options-storage"
 import { LocalOptionsStorage } from "./options-storage"
 
 export const SceneOptions = {
@@ -38,7 +38,7 @@ export const SceneOptions = {
 
     scenes.push(info)
 
-    await OptionsStorage.set({ scenes })
+    await SyncOptionsStorage.set({ scenes })
   },
 
   async update(info) {
@@ -57,7 +57,7 @@ export const SceneOptions = {
     }
 
     Object.assign(exist, info)
-    await OptionsStorage.set({ scenes })
+    await SyncOptionsStorage.set({ scenes })
   },
 
   async deleteOne(id) {
@@ -66,7 +66,7 @@ export const SceneOptions = {
       return
     }
     const leftScenes = all.scenes.filter((item) => item.id !== id)
-    await OptionsStorage.set({ scenes: leftScenes })
+    await SyncOptionsStorage.set({ scenes: leftScenes })
   }
 }
 

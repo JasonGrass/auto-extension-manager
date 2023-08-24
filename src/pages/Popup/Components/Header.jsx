@@ -4,7 +4,7 @@ import { LayoutOutlined, SearchOutlined, SettingOutlined } from "@ant-design/ico
 import Icon from "@ant-design/icons/lib/components/Icon"
 import { Space } from "antd"
 
-import { OptionsStorage, SyncOptionsStorage } from ".../storage"
+import storage from ".../storage"
 import MainIcon from "../../../assets/img/icon-64.png"
 import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
@@ -35,9 +35,9 @@ const Header = memo((props) => {
 
   // layout 变更时，保存配置
   useEffect(() => {
-    SyncOptionsStorage.getAll().then((options) => {
+    storage.options.getAll().then((options) => {
       const setting = { ...options.setting, layout: layout }
-      OptionsStorage.set({ setting: setting })
+      storage.options.set({ setting: setting })
     })
   }, [layout])
 

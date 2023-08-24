@@ -4,7 +4,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons"
 import { Button, Slider, Switch, Tooltip, message } from "antd"
 import { fromJS } from "immutable"
 
-import OptionsStorage, { SyncOptionsStorage } from ".../storage/index"
+import storage from ".../storage"
 import Title from "../Title.jsx"
 import { exportConfig, importConfig } from "./ConfigFileBackup.ts"
 import { MAX_COLUMN_COUNT, MIN_COLUMN_COUNT } from "./SettingConst.js"
@@ -75,17 +75,17 @@ function Settings() {
 
   // 初始化，从配置中读取设置
   useEffect(() => {
-    SyncOptionsStorage.getAll().then((options) => {
+    storage.options.getAll().then((options) => {
       setSetting(options.setting)
     })
   }, [])
 
   const onSettingChange = (value, settingHandler, optionKey) => {
     settingHandler(value)
-    SyncOptionsStorage.getAll().then((options) => {
+    storage.options.getAll().then((options) => {
       // 将新配置，合并到已经存在的 setting中，然后更新到 storage 中
       const setting = fromJS(options.setting).set(optionKey, value).toJS()
-      OptionsStorage.set({ setting: setting })
+      storage.options.set({ setting: setting })
     })
   }
 
@@ -110,7 +110,7 @@ function Settings() {
    * 恢复默认，将通用设置恢复成默认配置
    */
   const onRestoreDefault = () => {
-    OptionsStorage.set({ setting: {} })
+    storage.options.set({ setting: {} })
     setSetting({})
   }
 

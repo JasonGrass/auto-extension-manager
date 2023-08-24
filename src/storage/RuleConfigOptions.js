@@ -2,7 +2,7 @@ import { List, Map } from "immutable"
 import { nanoid } from "nanoid"
 
 import ConvertRuleToV2 from ".../pages/Background/rule/RuleConverter"
-import OptionsStorage, { SyncOptionsStorage } from "./options-storage"
+import { SyncOptionsStorage } from "./options-storage"
 
 export const RuleConfigOptions = {
   async get() {
@@ -21,7 +21,7 @@ export const RuleConfigOptions = {
 
     configs.push(config)
 
-    await OptionsStorage.set({ ruleConfig: configs })
+    await SyncOptionsStorage.set({ ruleConfig: configs })
   },
 
   async update(config) {
@@ -34,7 +34,7 @@ export const RuleConfigOptions = {
 
     Object.assign(exist, config)
 
-    await OptionsStorage.set({ ruleConfig: configs })
+    await SyncOptionsStorage.set({ ruleConfig: configs })
   },
 
   async duplicate(config) {
@@ -47,7 +47,7 @@ export const RuleConfigOptions = {
     const newConfig = Map(exist).set("id", nanoid()).toJS()
     configs.splice(configs.indexOf(exist), 0, newConfig)
 
-    await OptionsStorage.set({ ruleConfig: configs })
+    await SyncOptionsStorage.set({ ruleConfig: configs })
   },
 
   async deleteOne(id) {
@@ -57,7 +57,7 @@ export const RuleConfigOptions = {
     }
 
     const leftConfigs = all.ruleConfig.filter((item) => item.id !== id)
-    await OptionsStorage.set({ ruleConfig: leftConfigs })
+    await SyncOptionsStorage.set({ ruleConfig: leftConfigs })
   }
 }
 
