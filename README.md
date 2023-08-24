@@ -41,3 +41,7 @@ Chrome 商店链接
 
 - [扩展管理器（Extension Manager） - Chrome 应用商店](https://chrome.google.com/webstore/detail/extension-manager/gjldcdngmdknpinoemndlidpcabkggco )  
 一个界面和功能都很出色的扩展管理器，但作者近期没有维护了，有一些小功能问题。
+
+---
+
+[❤️ Buy me a coffee](https://ext.jgrass.cc/separate/buy-me-a-coffee)
