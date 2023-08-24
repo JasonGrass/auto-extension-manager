@@ -7,7 +7,7 @@ import Style from "./RuleActionStyle"
 import CustomRuleAction from "./ruleActions/CustomRuleAction"
 
 const urlMatchTip =
-  "默认情况下，在计算 URL 匹配时，是按照当前打开标签的 URL 计算。切换标签就会导致 URL 匹配发生变化。更多匹配方式，请在自定义中设置。"
+  "默认按照当前打开的浏览器标签计算 URL 匹配。切换标签就会导致 URL 匹配发生变化。更多匹配方式，可在自定义中设置。（无 URL 匹配条件则无需关注此问题）"
 
 const actionSelections = [
   {

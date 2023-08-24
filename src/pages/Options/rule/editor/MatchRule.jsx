@@ -1,7 +1,7 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 
 import {
-  FieldTimeOutlined,
+  ClockCircleOutlined,
   LaptopOutlined,
   LinkOutlined,
   PlusCircleOutlined,
@@ -38,7 +38,7 @@ const triggerModes = [
   {
     label: "时间区间",
     key: "periodTrigger",
-    icon: <FieldTimeOutlined />
+    icon: <ClockCircleOutlined />
   }
 ]
 

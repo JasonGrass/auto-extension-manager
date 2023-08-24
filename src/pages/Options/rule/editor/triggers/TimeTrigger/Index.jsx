@@ -74,7 +74,7 @@ const TimeTrigger = ({ options, config }, ref) => {
   return (
     <Style>
       <Alert
-        message="不建议使用此匹配条件。由于浏览器限制，后台操作不能常驻，必须由事件触发。所以仅在浏览器有活动时，才能触发此条件的匹配，时机会不精确。"
+        message="由于浏览器限制，后台操作不能常驻，必须由事件触发。所以仅在浏览器有活动时，才能触发此条件的匹配，时机会不精确。"
         type="warning"
         showIcon
         action={
