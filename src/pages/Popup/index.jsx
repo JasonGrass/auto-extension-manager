@@ -9,7 +9,7 @@ import "./index.css"
 
 import { getPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
-import { LocalOptionsStorage, ManageOptions, SyncOptionsStorage } from "../../storage/index"
+import { LocalOptionsStorage, SyncOptionsStorage } from "../../storage/index"
 import Popup from "./Components/Popup"
 
 const container = document.getElementById("app-container")
@@ -30,7 +30,7 @@ const prepare = async function () {
   const self = await chromeP.management.getSelf()
   allExtensions = allExtensions.filter((ext) => ext.id !== self.id)
 
-  const managementOptions = await ManageOptions.get()
+  const managementOptions = await allOptions.management.get()
   const extensions = appendAdditionInfo(allExtensions, managementOptions)
 
   const localOptions = await LocalOptionsStorage.getAll()

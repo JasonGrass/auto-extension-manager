@@ -4,7 +4,7 @@ import { message } from "antd"
 import classNames from "classnames"
 import chromeP from "webext-polyfill-kinda"
 
-import { GroupOptions, SyncOptionsStorage } from ".../storage/index"
+import storage, { GroupOptions } from ".../storage/index"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper"
 import { isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
@@ -33,7 +33,7 @@ function GroupManagement() {
   }
 
   useEffect(() => {
-    SyncOptionsStorage.getAll().then((o) => {
+    storage.options.getAll().then((o) => {
       setOptions(o)
     })
 

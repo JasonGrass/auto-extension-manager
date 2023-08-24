@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import chromeP from "webext-polyfill-kinda"
 
-import { ManageOptions, RuleConfigOptions, SyncOptionsStorage } from ".../storage"
+import storage, { ManageOptions, RuleConfigOptions } from ".../storage"
 import { appendAdditionInfo, filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import Title from "../Title.jsx"
 import { RuleSettingStyle } from "./RuleSettingStyle.js"
@@ -19,7 +19,7 @@ function RuleSetting() {
 
   // 初始化
   useEffect(() => {
-    SyncOptionsStorage.getAll().then((options) => {
+    storage.options.getAll().then((options) => {
       setOptions(options)
     })
 
