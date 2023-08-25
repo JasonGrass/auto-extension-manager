@@ -43,7 +43,7 @@ export const AboutStyle = styled.div`
     }
 
     .ant-tag-has-color {
-      padding: 1px 5px 3px 5px;
+      padding: 0px 5px 1px 5px;
     }
 
     .badges-tag {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 
-import { GithubOutlined, HeartOutlined } from "@ant-design/icons"
+import { GiftOutlined, GithubOutlined, HeartOutlined } from "@ant-design/icons"
 import { Button, Space, Tag } from "antd"
 import newGithubIssueUrl from "new-github-issue-url"
 
@@ -43,6 +43,20 @@ ${navigator.userAgent}`
     })
   }
 
+  const openRatePage = () => {
+    chrome.management.getSelf((self) => {
+      if (window.navigator.userAgent.includes("Edg/")) {
+        chrome.tabs.create({
+          url: `https://microsoftedge.microsoft.com/addons/detail/extension-manager/${self.id}`
+        })
+      } else {
+        chrome.tabs.create({
+          url: `https://chrome.google.com/webstore/detail/extension-manager/${self.id}`
+        })
+      }
+    })
+  }
+
   const openSponsorPage = () => {
     chrome.tabs.create({
       url: "https://ext.jgrass.cc/separate/buy-me-a-coffee"
@@ -80,9 +94,16 @@ ${navigator.userAgent}`
           <Tag
             className="badges-tag"
             icon={<HeartOutlined />}
-            color="#c12c1f"
+            color="#337ab7"
+            onClick={openRatePage}>
+            Rate Me 5 Stars
+          </Tag>
+          <Tag
+            className="badges-tag"
+            icon={<GiftOutlined />}
+            color="#ad2102"
             onClick={openSponsorPage}>
-            捐助
+            Buy Me a Coffee
           </Tag>
         </Space>
       </div>
