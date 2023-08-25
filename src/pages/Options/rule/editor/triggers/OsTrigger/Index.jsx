@@ -6,7 +6,7 @@ import { styled } from "styled-components"
 const { CheckableTag } = Tag
 
 // https://developer.chrome.com/docs/extensions/reference/runtime/#type-PlatformOs
-const PlatformOs = [
+export const PlatformOs = [
   {
     label: "Windows",
     value: "win"

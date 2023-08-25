@@ -2,6 +2,8 @@ import React, { memo } from "react"
 
 import { styled } from "styled-components"
 
+import { PlatformOs } from ".../pages/Options/rule/editor/triggers/OsTrigger/Index"
+
 /**
  * 匹配条件的显示
  * @param config 单个规则中，匹配条件的那部分（IMatch）
@@ -33,8 +35,10 @@ const MatchView = memo(({ config, options }) => {
 
   const osTrigger = config.triggers.find((t) => t.trigger === "osTrigger")
   if (osTrigger) {
-    const list = osTrigger.config.os
-    tips.push(list.toString())
+    const list = osTrigger.config.os.map(
+      (osKey) => PlatformOs.find((p) => p.value === osKey)?.label ?? osKey
+    )
+    tips.push(list.join(", "))
   }
 
   const periodTrigger = config.triggers.find((t) => t.trigger === "periodTrigger")
