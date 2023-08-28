@@ -35,12 +35,12 @@ export class RuleHandler {
 
   onCurrentSceneChanged(scene: config.IScene) {
     this.#currentScene = scene
-    this.do()
+    this.invokeDebounceDo()
   }
 
   onCurrentUrlChanged(tabInfo: chrome.tabs.Tab) {
     this.#currentTabInfo = tabInfo
-    this.do()
+    this.invokeDebounceDo()
   }
 
   onTabClosed(tabId: number, removeInfo: any) {
@@ -56,7 +56,7 @@ export class RuleHandler {
       return
     }
     this._rules = this.convertRule(rules)
-    this.do()
+    this.invokeDebounceDo()
   }
 
   init(
@@ -69,7 +69,7 @@ export class RuleHandler {
     this.#currentTabInfo = tabInfo
     this._rules = this.convertRule(rules)
     this.#groups = groups
-    this.do()
+    this.debounceDo()
   }
 
   private convertRule(rules: any[]): ruleV2.IRuleConfig[] {

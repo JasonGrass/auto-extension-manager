@@ -3,7 +3,7 @@ import createExtension from "./extension"
 import createHistory from "./history"
 import createRule from "./rule"
 
-console.log(`[Extension Manager] Background Init. ${new Date().toLocaleString()}`)
+console.log(`[Extension Manager] Background Run. ${new Date().toLocaleString()}`)
 
 // 日志初始化
 logger().init()
