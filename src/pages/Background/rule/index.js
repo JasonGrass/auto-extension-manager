@@ -35,7 +35,8 @@ const createRule = async (EM) => {
     },
     tab,
     options.ruleConfig,
-    options.groups
+    options.groups,
+    EM
   )
 
   // 初始化规则相关的事件监听

@@ -1,5 +1,6 @@
 import chromeP from "webext-polyfill-kinda"
 
+import type { IExtensionManager } from ".../types/global"
 import isMatch, { IMatchResult } from "./handlers/matchHandler"
 import getTarget from "./handlers/targetHandler"
 
@@ -20,6 +21,16 @@ export type ProcessContext = {
    * 当前浏览器打开的全部 tab
    */
   tabs: chrome.tabs.Tab[]
+
+  /**
+   * 当前正在执行的规则
+   */
+  rule?: ruleV2.IRuleConfig
+
+  /**
+   * 全局对象
+   */
+  EM?: IExtensionManager
 }
 
 type ProcessItem = {
@@ -48,6 +59,7 @@ async function processRule({ scene, rules, groups, ctx }: ProcessItem) {
 
   for (const rule of rules) {
     try {
+      ctx.rule = rule
       await process(rule, scene, groups, ctx)
     } catch (error) {
       console.error("[规则执行失败]", rules, error)
@@ -90,9 +102,9 @@ function handle(
   }
 
   if (action.actionType === "custom") {
-    handleAdvanceMode(matchResult, targetExtensions, action, ctx.tab)
+    handleAdvanceMode(matchResult, targetExtensions, action, ctx)
   } else {
-    handleSimpleMode(matchResult, targetExtensions, action, ctx.tab)
+    handleSimpleMode(matchResult, targetExtensions, action, ctx)
   }
 }
 
@@ -103,33 +115,35 @@ function handleSimpleMode(
   matchResult: IMatchResult,
   targetExtensions: string[],
   action: ruleV2.IAction,
-  tabInfo: chrome.tabs.Tab | undefined
+  ctx: ProcessContext
 ) {
   const actionType = action.actionType
 
   const isMatch = matchResult.isCurrentMatch
 
+  const tabInfo = ctx.tab
+
   if (isMatch && actionType === "closeWhenMatched") {
-    closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo)
+    closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo, ctx)
   }
 
   if (isMatch && actionType === "openWhenMatched") {
-    openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo)
+    openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo, ctx)
   }
 
   if (actionType === "closeOnlyWhenMatched") {
     if (isMatch) {
-      closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo)
+      closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo, ctx)
     } else {
-      openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo)
+      openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo, ctx)
     }
   }
 
   if (actionType === "openOnlyWhenMatched") {
     if (isMatch) {
-      openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo)
+      openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo, ctx)
     } else {
-      closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo)
+      closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo, ctx)
     }
   }
 }
@@ -141,18 +155,19 @@ async function handleAdvanceMode(
   matchResult: IMatchResult,
   targetExtensions: string[],
   action: ruleV2.IAction,
-  tabInfo: chrome.tabs.Tab | undefined
+  ctx: ProcessContext
 ) {
   if (!action.custom) {
     return
   }
   const customRule = action.custom
+  const tabInfo = ctx.tab
 
   const open = (reload: boolean) => {
-    openExtensions(targetExtensions, reload, tabInfo)
+    openExtensions(targetExtensions, reload, tabInfo, ctx)
   }
   const close = (reload: boolean) => {
-    closeExtensions(targetExtensions, reload, tabInfo)
+    closeExtensions(targetExtensions, reload, tabInfo, ctx)
   }
 
   // 开启插件的判断
@@ -230,7 +245,8 @@ async function handleAdvanceMode(
 async function closeExtensions(
   targetExtensions: string[],
   reload: boolean,
-  tabInfo: chrome.tabs.Tab | undefined
+  tabInfo: chrome.tabs.Tab | undefined,
+  ctx: ProcessContext
 ) {
   let worked = false
 
@@ -242,6 +258,7 @@ async function closeExtensions(
       }
       console.log(`[Extension Manager] disable extension [${info.name}]`)
       await chrome.management.setEnabled(extId, false)
+      ctx.EM?.History.EventHandler.onAutoDisabled(info, ctx.rule!)
       worked = true
     } catch (err) {
       console.warn(`closeExtension fail (${extId}).`, err)
@@ -257,7 +274,8 @@ async function closeExtensions(
 async function openExtensions(
   targetExtensions: string[],
   reload: boolean,
-  tabInfo: chrome.tabs.Tab | undefined
+  tabInfo: chrome.tabs.Tab | undefined,
+  ctx: ProcessContext
 ) {
   let worked = false
 
@@ -267,8 +285,9 @@ async function openExtensions(
       if (!info || info.enabled) {
         continue
       }
-      await chromeP.management.setEnabled(extId, true)
       console.log(`[Extension Manager] enable extension [${info.name}]`)
+      await chromeP.management.setEnabled(extId, true)
+      ctx.EM?.History.EventHandler.onAutoEnabled(info, ctx.rule!)
       worked = true
     } catch (err) {
       console.warn(`openExtension fail (${extId}).`, err)

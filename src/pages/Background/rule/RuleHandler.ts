@@ -1,6 +1,7 @@
 import lodash from "lodash"
 import chromeP from "webext-polyfill-kinda"
 
+import type { IExtensionManager } from ".../types/global"
 import logger from ".../utils/logger"
 import ConvertRuleToV2 from "./RuleConverter"
 import processRule from "./processor"
@@ -33,6 +34,11 @@ export class RuleHandler {
    */
   #groups?: config.IGroup[]
 
+  /**
+   * 全局对象
+   */
+  private EM?: IExtensionManager
+
   onCurrentSceneChanged(scene: config.IScene) {
     this.#currentScene = scene
     this.invokeDebounceDo()
@@ -63,12 +69,14 @@ export class RuleHandler {
     scene: config.IScene,
     tabInfo: chrome.tabs.Tab | undefined,
     rules: any[],
-    groups: config.IGroup[]
+    groups: config.IGroup[],
+    EM: IExtensionManager
   ) {
     this.#currentScene = scene
     this.#currentTabInfo = tabInfo
     this._rules = this.convertRule(rules)
     this.#groups = groups
+    this.EM = EM
     this.debounceDo()
   }
 
@@ -98,7 +106,8 @@ export class RuleHandler {
     const ctx = {
       self,
       tabs,
-      tab: this.#currentTabInfo
+      tab: this.#currentTabInfo,
+      EM: this.EM
     }
 
     await processRule({
