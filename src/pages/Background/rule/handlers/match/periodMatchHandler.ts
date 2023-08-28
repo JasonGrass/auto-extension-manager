@@ -29,15 +29,15 @@ export default async function checkCurrentTimeMatch(rule: ruleV2.IRuleConfig) {
     const end = period.end.replace(":", "")
 
     if (start <= now && now <= end) {
-      logger().trace(
-        `[checkCurrentTimeMatch] config: ${periodsString}; currentTime: ${now}; result: match`
-      )
+      // logger().trace(
+      //   `[checkCurrentTimeMatch] config: ${periodsString}; currentTime: ${now}; result: match`
+      // )
       return true
     }
   }
 
-  logger().trace(
-    `[checkCurrentTimeMatch] config: ${periodsString}; currentTime: ${now}; result: not match`
-  )
+  // logger().trace(
+  //   `[checkCurrentTimeMatch] config: ${periodsString}; currentTime: ${now}; result: not match`
+  // )
   return false
 }
