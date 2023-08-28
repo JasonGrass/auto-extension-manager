@@ -1,4 +1,4 @@
-import { SceneOptions } from ".../storage"
+import storage, { SceneOptions } from ".../storage"
 import logger from ".../utils/logger"
 
 export const createCurrentSceneChangedHandler = (handler) => {
@@ -18,6 +18,17 @@ export const createCurrentSceneChangedHandler = (handler) => {
     // 2. run rules for current scene
     handler.onCurrentSceneChanged(params)
 
+    ctx.sendResponse()
+  }
+}
+
+export const createRuleConfigChangedHandler = (handler) => {
+  // rule 配置发生变化时触发
+  return (ctx) => {
+    logger().trace("[规则配置发生变更，重新触发规则执行]", ctx)
+    storage.options.getAll().then((options) => {
+      handler.setRules(options.ruleConfig)
+    })
     ctx.sendResponse()
   }
 }

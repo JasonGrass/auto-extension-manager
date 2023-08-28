@@ -1,6 +1,6 @@
 import { listen } from ".../utils/messageHelper"
-import { createRuleConfigChangedHandler } from "./RuleConfigHandler"
-import { createCurrentSceneChangedHandler } from "./SceneHandler"
+import { createManualChangeGroupHandler } from "./historyMessage"
+import { createCurrentSceneChangedHandler, createRuleConfigChangedHandler } from "./ruleMessage"
 
 /**
  * 自定义 message 的处理（popup / options 页面发送过来的 message）
@@ -20,6 +20,7 @@ const createMessageHandler = (EM) => {
     }
 
     createRuleMessage(EM.Rule.handler, ctx)
+    createHistoryMessage(EM, ctx)
   })
 }
 
@@ -32,6 +33,13 @@ const createRuleMessage = (handler, ctx) => {
 
   // 规则配置发生变更
   listen("rule-config-changed", ctx, createRuleConfigChangedHandler(handler))
+}
+
+/**
+ * 处理历史记录相关的 message
+ */
+const createHistoryMessage = (EM, ctx) => {
+  listen("manual-change-group", ctx, createManualChangeGroupHandler(EM))
 }
 
 export default createMessageHandler

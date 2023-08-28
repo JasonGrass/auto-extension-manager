@@ -1,5 +1,6 @@
 import chromeP from "webext-polyfill-kinda"
 
+import { sendMessage } from ".../utils/messageHelper"
 import { isAppExtension, isExtExtension } from "../../utils/extensionHelper"
 
 /**
@@ -31,27 +32,38 @@ export async function handleExtensionOnOff(extensions, options, group) {
   // const disabledExtensions = extensions.filter((ext) => disabledExtensionIds.includes(ext.id))
   // const enabledExtensions = extensions.filter((ext) => enabledExtensionIds.includes(ext.id))
 
+  const actuallyEnabledIds = [] // 实际执行了启用动作的扩展 ID
   for (const extId of enabledExtensionIds) {
     try {
       const info = await chromeP.management.get(extId)
       if (!info.enabled) {
         await chromeP.management.setEnabled(extId, true)
+        actuallyEnabledIds.push(extId)
       }
     } catch (error) {
       console.warn(`enable extension fail(${extId}).`, error)
     }
   }
 
+  const actuallyDisabledIds = [] // 实际执行了禁用动作的扩展 ID
   for (const extId of disabledExtensionIds) {
     try {
       const info = await chromeP.management.get(extId)
       if (info.enabled) {
         await chromeP.management.setEnabled(extId, false)
+        actuallyDisabledIds.push(extId)
       }
     } catch (error) {
       console.warn(`disable extension fail(${extId}).`, error)
     }
   }
+
+  // 通知 background，手动启用或禁用了哪些扩展，以进行历史操作记录
+  sendMessage("manual-change-group", {
+    actuallyEnabledIds,
+    actuallyDisabledIds,
+    group
+  })
 
   let allExtensions = await chromeP.management.getAll()
   allExtensions = allExtensions.filter(
