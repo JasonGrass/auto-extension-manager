@@ -3,7 +3,7 @@ import chromeP from "webext-polyfill-kinda"
 import { LocalOptionsStorage, SyncOptionsStorage } from ".../storage"
 import logger from ".../utils/logger"
 import { onTabClosed, onTabUrlChange, onWindowClosed } from "./event/tabChangeEvent"
-import "./message/MessageHandler"
+import "./message/Index"
 import createRuleHandler from "./rule/RuleHandler"
 
 logger().init()

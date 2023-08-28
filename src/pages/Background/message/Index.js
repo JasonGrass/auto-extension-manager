@@ -2,6 +2,7 @@ import { listen } from ".../utils/messageHelper"
 import { onRuleConfigChanged } from "./RuleConfigHandler"
 import { onCurrentSceneChanged } from "./SceneHandler"
 
+// 监听其它页面（popup / options）发送给 background 的消息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const ctx = {
     message,
@@ -30,6 +31,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   */
 
+  // 当前情况模式发生变更
   listen("current-scene-changed", ctx, onCurrentSceneChanged)
+
+  // 规则配置发生变更
   listen("rule-config-changed", ctx, onRuleConfigChanged)
 })
