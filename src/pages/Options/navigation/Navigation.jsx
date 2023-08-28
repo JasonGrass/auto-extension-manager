@@ -5,6 +5,7 @@ import {
   FilterFilled,
   FolderOpenFilled,
   FormatPainterFilled,
+  ReconciliationFilled,
   ThunderboltFilled,
   ToolFilled
 } from "@ant-design/icons"
@@ -41,6 +42,11 @@ function Navigation() {
       <NavLink to="/rule" className="nav-item">
         <FilterFilled />
         <span className="text">规则设置</span>
+      </NavLink>
+
+      <NavLink to="/history" className="nav-item">
+        <ReconciliationFilled />
+        <span className="text">历史记录</span>
       </NavLink>
     </NavigationStyle>
   )
