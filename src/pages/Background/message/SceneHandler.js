@@ -1,7 +1,7 @@
 import { SceneOptions } from ".../storage"
 import logger from ".../utils/logger"
 
-export const createCurrentSceneChangedHandler = (EM) => {
+export const createCurrentSceneChangedHandler = (handler) => {
   // 当前情景模式变化时触发
   return (ctx) => {
     logger().trace("[当前情景模式发生变更，重新触发规则执行]", ctx)
@@ -16,7 +16,7 @@ export const createCurrentSceneChangedHandler = (EM) => {
     }
 
     // 2. run rules for current scene
-    EM.Rule.handler.onCurrentSceneChanged(params)
+    handler.onCurrentSceneChanged(params)
 
     ctx.sendResponse()
   }

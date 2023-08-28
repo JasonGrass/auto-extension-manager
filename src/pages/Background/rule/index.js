@@ -2,6 +2,7 @@ import chromeP from "webext-polyfill-kinda"
 
 import { LocalOptionsStorage, SyncOptionsStorage } from ".../storage"
 import { onTabClosed, onTabUrlChange, onWindowClosed } from "../event/tabChangeEvent"
+import { createRuleMessage } from "../message"
 import createRuleHandler from "./RuleHandler"
 
 /*
@@ -36,6 +37,9 @@ const createRule = async (EM) => {
     options.ruleConfig,
     options.groups
   )
+
+  // 初始化规则相关的事件监听
+  createRuleMessage(handler)
 
   return {
     handler

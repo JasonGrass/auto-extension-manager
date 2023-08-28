@@ -5,8 +5,8 @@ import { createCurrentSceneChangedHandler } from "./SceneHandler"
 /*
  * 规则处理相关的 message
  */
-const createRuleMessage = (EM) => {
-  if (!EM.Rule.handler) {
+export const createRuleMessage = (handler) => {
+  if (!handler) {
     throw new Error("Rule handler is not defined")
   }
 
@@ -19,16 +19,14 @@ const createRuleMessage = (EM) => {
     }
 
     // 当前情况模式发生变更
-    listen("current-scene-changed", ctx, createCurrentSceneChangedHandler(EM))
+    listen("current-scene-changed", ctx, createCurrentSceneChangedHandler(handler))
 
     // 规则配置发生变更
-    listen("rule-config-changed", ctx, createRuleConfigChangedHandler(EM))
+    listen("rule-config-changed", ctx, createRuleConfigChangedHandler(handler))
   })
 
   return {}
 }
-
-export default createRuleMessage
 
 /*
   listen("message id", ctx, OnMessageCallback)
