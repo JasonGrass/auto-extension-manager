@@ -94,14 +94,14 @@ ${navigator.userAgent}`
           <Tag
             className="badges-tag"
             icon={<HeartOutlined />}
-            color="#337ab7"
+            color="#0050b3"
             onClick={openRatePage}>
             Rate Me 5 Stars
           </Tag>
           <Tag
             className="badges-tag"
             icon={<GiftOutlined />}
-            color="#ad2102"
+            color="#0050b3"
             onClick={openSponsorPage}>
             Buy Me a Coffee
           </Tag>
