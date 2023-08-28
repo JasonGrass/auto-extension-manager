@@ -2,11 +2,12 @@ import { listen } from ".../utils/messageHelper"
 import { createRuleConfigChangedHandler } from "./RuleConfigHandler"
 import { createCurrentSceneChangedHandler } from "./SceneHandler"
 
-/*
- * 规则处理相关的 message
+/**
+ * 自定义 message 的处理（popup / options 页面发送过来的 message）
  */
-export const createRuleMessage = (handler) => {
-  if (!handler) {
+const createMessageHandler = (EM) => {
+  const ruleHandler = EM.Rule.handler
+  if (!ruleHandler) {
     throw new Error("Rule handler is not defined")
   }
 
@@ -18,15 +19,22 @@ export const createRuleMessage = (handler) => {
       sendResponse
     }
 
-    // 当前情况模式发生变更
-    listen("current-scene-changed", ctx, createCurrentSceneChangedHandler(handler))
-
-    // 规则配置发生变更
-    listen("rule-config-changed", ctx, createRuleConfigChangedHandler(handler))
+    createRuleMessage(EM.Rule.handler, ctx)
   })
-
-  return {}
 }
+
+/*
+ * 规则处理相关的 message
+ */
+const createRuleMessage = (handler, ctx) => {
+  // 当前情况模式发生变更
+  listen("current-scene-changed", ctx, createCurrentSceneChangedHandler(handler))
+
+  // 规则配置发生变更
+  listen("rule-config-changed", ctx, createRuleConfigChangedHandler(handler))
+}
+
+export default createMessageHandler
 
 /*
   listen("message id", ctx, OnMessageCallback)
