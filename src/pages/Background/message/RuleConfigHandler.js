@@ -1,14 +1,13 @@
 import storage from ".../storage"
-import createRuleHandler from "../rule/RuleHandler"
+import logger from ".../utils/logger"
 
-/**
- * rule 配置发生变化时触发
- */
-export const onRuleConfigChanged = (ctx) => {
-  storage.options.getAll().then((options) => {
-    const handler = createRuleHandler()
-    handler.setRules(options.ruleConfig)
-  })
-
-  ctx.sendResponse()
+export const createRuleConfigChangedHandler = (EM) => {
+  // rule 配置发生变化时触发
+  return (ctx) => {
+    logger().trace("[规则配置发生变更，重新触发规则执行]", ctx)
+    storage.options.getAll().then((options) => {
+      EM.Rule.handler.setRules(options.ruleConfig)
+    })
+    ctx.sendResponse()
+  }
 }

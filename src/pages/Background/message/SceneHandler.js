@@ -1,24 +1,23 @@
 import { SceneOptions } from ".../storage"
-import createRuleHandler from "../rule/RuleHandler"
+import logger from ".../utils/logger"
 
-/**
- * 当前情景模式变化时触发
- */
-export const onCurrentSceneChanged = (ctx) => {
-  // console.log("onCurrentSceneChanged", ctx)
+export const createCurrentSceneChangedHandler = (EM) => {
+  // 当前情景模式变化时触发
+  return (ctx) => {
+    logger().trace("[当前情景模式发生变更，重新触发规则执行]", ctx)
 
-  // 1. modify active scene id local storage
-  const { params } = ctx
-  if (!params || !params.id || params.id === "" || params.id === "cancel") {
-    // 取消了情景模式的设置
-    SceneOptions.setActive("")
-  } else {
-    SceneOptions.setActive(params.id)
+    // 1. modify active scene id local storage
+    const { params } = ctx
+    if (!params || !params.id || params.id === "" || params.id === "cancel") {
+      // 取消了情景模式的设置
+      SceneOptions.setActive("")
+    } else {
+      SceneOptions.setActive(params.id)
+    }
+
+    // 2. run rules for current scene
+    EM.Rule.handler.onCurrentSceneChanged(params)
+
+    ctx.sendResponse()
   }
-
-  // 2. run rules for current scene
-  const handler = createRuleHandler()
-  handler.onCurrentSceneChanged(params)
-
-  ctx.sendResponse()
 }

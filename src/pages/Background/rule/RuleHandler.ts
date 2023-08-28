@@ -5,7 +5,7 @@ import logger from ".../utils/logger"
 import ConvertRuleToV2 from "./RuleConverter"
 import processRule from "./processor"
 
-class RuleHandler {
+export class RuleHandler {
   /**
    *
    */
@@ -59,7 +59,12 @@ class RuleHandler {
     this.do()
   }
 
-  init(scene: config.IScene, tabInfo: chrome.tabs.Tab, rules: any[], groups: config.IGroup[]) {
+  init(
+    scene: config.IScene,
+    tabInfo: chrome.tabs.Tab | undefined,
+    rules: any[],
+    groups: config.IGroup[]
+  ) {
     this.#currentScene = scene
     this.#currentTabInfo = tabInfo
     this._rules = this.convertRule(rules)

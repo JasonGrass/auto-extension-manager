@@ -1,16 +1,36 @@
 import { listen } from ".../utils/messageHelper"
-import { onRuleConfigChanged } from "./RuleConfigHandler"
-import { onCurrentSceneChanged } from "./SceneHandler"
+import { createRuleConfigChangedHandler } from "./RuleConfigHandler"
+import { createCurrentSceneChangedHandler } from "./SceneHandler"
 
-// 监听其它页面（popup / options）发送给 background 的消息
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  const ctx = {
-    message,
-    sender,
-    sendResponse
+/*
+ * 规则处理相关的 message
+ */
+const createRuleMessage = (EM) => {
+  if (!EM.Rule.handler) {
+    throw new Error("Rule handler is not defined")
   }
 
-  /*
+  // 监听其它页面（popup / options）发送给 background 的消息
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    const ctx = {
+      message,
+      sender,
+      sendResponse
+    }
+
+    // 当前情况模式发生变更
+    listen("current-scene-changed", ctx, createCurrentSceneChangedHandler(EM))
+
+    // 规则配置发生变更
+    listen("rule-config-changed", ctx, createRuleConfigChangedHandler(EM))
+  })
+
+  return {}
+}
+
+export default createRuleMessage
+
+/*
   listen("message id", ctx, OnMessageCallback)
   OnMessageCallback is a function that takes the message and sender as parameters, like
   OnMessageCallback(ctx),
@@ -29,11 +49,4 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     },
     sendResponse: ƒ()
   }
-  */
-
-  // 当前情况模式发生变更
-  listen("current-scene-changed", ctx, onCurrentSceneChanged)
-
-  // 规则配置发生变更
-  listen("rule-config-changed", ctx, onRuleConfigChanged)
-})
+*/
