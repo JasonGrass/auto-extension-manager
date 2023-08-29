@@ -16,6 +16,7 @@
     "@ant-design/icons": "^5.1.0",
     "antd": "^5.5.0",
     "classnames": "^2.3.2",
+    "dexie": "^3.2.4",
     "immutable": "^4.3.0",
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",

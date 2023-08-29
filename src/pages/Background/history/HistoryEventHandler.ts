@@ -1,8 +1,10 @@
 import type { IExtensionManager } from ".../types/global"
 import logger from ".../utils/logger"
+import { HistoryService } from "./HistoryService"
+import { HistoryRecord } from "./Record"
 
 export class HistoryEventHandler {
-  private _output: HistoryEventRaiser = new HistoryEventRaiser(this.EM)
+  private _output: HistoryEventRaiser = new HistoryEventRaiser(this.EM, this.service)
 
   private _enabledEventFilter: ReduplicativeEventFilter = new ReduplicativeEventFilter(
     this._output,
@@ -13,7 +15,7 @@ export class HistoryEventHandler {
     "disabled"
   )
 
-  constructor(private EM: IExtensionManager) {}
+  constructor(private EM: IExtensionManager, private service: HistoryService) {}
 
   public onInstalled(info: chrome.management.ExtensionInfo) {
     this._output.onInstalled(info)
@@ -65,7 +67,7 @@ export class HistoryEventHandler {
 }
 
 export class HistoryEventRaiser {
-  constructor(private EM: IExtensionManager) {}
+  constructor(private EM: IExtensionManager, private service: HistoryService) {}
 
   public onInstalled(info: chrome.management.ExtensionInfo) {}
 
@@ -76,7 +78,7 @@ export class HistoryEventRaiser {
   public onUninstalled2(id: string) {}
 
   public onEnabled(info: chrome.management.ExtensionInfo) {
-    logger().trace("onEnabled", info)
+    this.service.add(HistoryRecord.buildPlain(info, "enabled"))
   }
 
   public onDisabled(info: chrome.management.ExtensionInfo) {
