@@ -90,7 +90,7 @@ export default async function isMatch(
     }
   }
 
-  logger().trace(`[matchHandler]`, rule, result)
+  // logger().trace(`[matchHandler]`, rule, result)
 
   return result
 }
