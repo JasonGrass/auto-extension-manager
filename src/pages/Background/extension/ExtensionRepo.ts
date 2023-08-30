@@ -22,7 +22,15 @@ export class ExtensionRepo {
   }
 
   public async set(extension: ExtensionRecord): Promise<void> {
-    await this.forage.setItem(extension.id, extension)
+    if (!extension.id) {
+      throw new Error("Extension id is required.")
+    }
+    const old = await this.get(extension.id)
+    if (old) {
+      await this.forage.setItem(extension.id, { ...old, ...extension })
+    } else {
+      await this.forage.setItem(extension.id, extension)
+    }
   }
 
   public async remove(id: string): Promise<void> {

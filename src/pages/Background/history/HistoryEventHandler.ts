@@ -77,6 +77,7 @@ export class HistoryEventRaiser {
 
   public onInstalled(info: chrome.management.ExtensionInfo) {
     this.service.add(HistoryRecord.buildPlain(info, "install"))
+    this.EM.LocalOptions.setNeedBuildExtensionIcon(true)
     this.EM.Extension.service.setChromeExtension(info)
   }
 
