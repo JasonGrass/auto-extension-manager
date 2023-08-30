@@ -16,6 +16,7 @@
     "@ant-design/icons": "^5.1.0",
     "antd": "^5.5.0",
     "classnames": "^2.3.2",
+    "dayjs": "^1.11.9",
     "dexie": "^3.2.4",
     "immutable": "^4.3.0",
     "localforage": "^1.10.0",
