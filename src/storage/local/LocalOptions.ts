@@ -54,4 +54,12 @@ export class LocalOptions {
   async setLastInitialTime(time: number) {
     await this.forage.setItem("lastInitialExtensionTime", time)
   }
+
+  async getIsAnyNewInstalled(): Promise<boolean | null> {
+    return await this.forage.getItem<boolean>("isAnyNewInstalled")
+  }
+
+  async setIsAnyNewInstalled(isAnyNewInstalled: boolean) {
+    await this.forage.setItem("isAnyNewInstalled", isAnyNewInstalled)
+  }
 }

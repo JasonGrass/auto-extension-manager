@@ -7,6 +7,7 @@ import "antd/dist/reset.css"
 import ".../utils/reset.css"
 import "./index.css"
 
+import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Options from "./Options"
 
 const container = document.getElementById("app-container")
@@ -18,3 +19,5 @@ root.render(
     </HashRouter>
   </StrictMode>
 )
+
+ExtensionIconBuilder.build()

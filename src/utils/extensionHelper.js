@@ -1,4 +1,5 @@
 import defaultPuzzleIcon from "../assets/img/puzzle.svg"
+import { downloadImageDataUri } from "./utils"
 
 export const getIcon = function (extension, size = 16) {
   const { icons } = extension
@@ -20,6 +21,46 @@ export const getIcon = function (extension, size = 16) {
   }
 
   return defaultPuzzleIcon
+}
+
+/**
+ * 下载 ICON 并将其转换成 dataUri，如果失败，则返回空字符串
+ */
+export const downloadIconDataUri = async function (appInfo) {
+  let iconUrl = undefined
+  if (appInfo.icons) {
+    let maxSize = 0
+    for (let j = 0; j < appInfo.icons.length; j++) {
+      const iconInfo = appInfo.icons[j]
+      if (iconInfo.size > maxSize) {
+        maxSize = iconInfo.size
+        iconUrl = iconInfo.url
+      }
+    }
+  }
+  if (!iconUrl) {
+    return ""
+  } else {
+    const uri = await downloadImageDataUri(iconUrl)
+    return uri
+  }
+}
+
+/**
+ * 根据名称，生成一个默认的，使用第一个字符的文字 ICON
+ */
+export const buildTextIcon = (name) => {
+  if (!name) {
+    return ""
+  }
+  const canvas = new OffscreenCanvas(128, 128)
+  const ctx = canvas.getContext("2d")
+  ctx.font = "120px Arial"
+  ctx.fillStyle = "grey"
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  ctx.fillStyle = "white"
+  ctx.fillText(name[0], 22, 110)
+  return canvas.toDataURL()
 }
 
 export const isAppExtension = function (ext) {

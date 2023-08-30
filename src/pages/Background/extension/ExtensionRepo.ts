@@ -24,4 +24,12 @@ export class ExtensionRepo {
   public async set(extension: ExtensionRecord): Promise<void> {
     await this.forage.setItem(extension.id, extension)
   }
+
+  public async remove(id: string): Promise<void> {
+    await this.forage.removeItem(id)
+  }
+
+  public async getKeys(): Promise<string[]> {
+    return await this.forage.keys()
+  }
 }

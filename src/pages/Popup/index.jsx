@@ -10,6 +10,7 @@ import "./index.css"
 import { getPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
 import { SyncOptionsStorage } from "../../storage/index"
+import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Popup from "./Components/Popup"
 
 const container = document.getElementById("app-container")
@@ -63,3 +64,5 @@ prepare().then((props) => {
     />
   )
 })
+
+ExtensionIconBuilder.build()
