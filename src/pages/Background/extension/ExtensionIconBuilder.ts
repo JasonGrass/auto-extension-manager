@@ -1,6 +1,6 @@
 import chromeP from "webext-polyfill-kinda"
 
-import { buildTextIcon, downloadIconDataUri } from ".../utils/extensionHelper"
+import { buildTextIcon, downloadIconDataUrl } from ".../utils/extensionHelper"
 import { LocalOptions } from "../../../storage/local"
 import { HistoryRecord } from "../history/Record"
 import { ExtensionRepo } from "./ExtensionRepo"
@@ -36,12 +36,12 @@ export class ExtensionIconBuilder {
       }
 
       useFallbackMethod = true
-      const icon = await downloadIconDataUri(record.id)
+      const icon = await downloadIconDataUrl(record.id)
       if (icon) {
         record.icon = icon
         continue
       }
-      record.icon = buildTextIcon(record.name)
+      record.icon = await buildTextIcon(record.name)
     }
 
     if (useFallbackMethod) {
@@ -76,7 +76,7 @@ export class ExtensionIconBuilder {
 
       try {
         const chromeExt = await chromeP.management.get(key)
-        const dataUri = await downloadIconDataUri(chromeExt)
+        const dataUri = await downloadIconDataUrl(chromeExt)
         if (!dataUri) {
           continue
         }

@@ -13,7 +13,7 @@ export const isStringEmpty = function (str) {
  * 下载 Image 并获取其 data uri
  * 仅在支持 XMLHttpRequest 时可用
  */
-export const downloadImageDataUri = (imageUrl) => {
+export const downloadImageDataUrl = (imageUrl) => {
   // 使用 XMLHttpRequest 下载图片
 
   return new Promise((resolve, reject) => {
