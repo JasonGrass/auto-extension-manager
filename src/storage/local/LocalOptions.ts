@@ -10,7 +10,7 @@ export class LocalOptions {
   constructor() {
     this.forage = localforage.createInstance({
       driver: localforage.INDEXEDDB,
-      name: "ExtensionManager",
+      name: "ExtensionManagerForage",
       version: 1.0,
       storeName: "options"
     })

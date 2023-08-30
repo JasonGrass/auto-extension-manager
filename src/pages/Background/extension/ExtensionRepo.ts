@@ -11,7 +11,7 @@ export class ExtensionRepo {
   constructor() {
     this.forage = localforage.createInstance({
       driver: localforage.INDEXEDDB,
-      name: "ExtensionManager",
+      name: "ExtensionManagerForage",
       version: 1.0,
       storeName: "extensions"
     })
