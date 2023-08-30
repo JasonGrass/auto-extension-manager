@@ -1,3 +1,4 @@
+import { LocalOptions } from ".../storage/local"
 import logger from ".../utils/logger"
 import createExtension from "./extension"
 import createHistory from "./history"
@@ -14,6 +15,10 @@ const EM = {}
 
 // initial running
 ;(async () => {
+  const local = new LocalOptions()
+  await local.migrate()
+  EM.LocalOptions = local
+
   EM.Rule = await createRule(EM)
 
   EM.Extension = await createExtension(EM)

@@ -57,29 +57,3 @@ export const SyncOptionsStorage = {
     await OptionsStorage.setAll(options)
   }
 }
-
-const InnerLocalOptionsStorage = new OptionsSync({
-  storageType: "local",
-  defaults: {
-    scene: {}
-  }
-})
-
-export const LocalOptionsStorage = {
-  /**
-   * 获取全部本地配置
-   */
-  async getAll() {
-    const options = await InnerLocalOptionsStorage.getAll()
-
-    if (!options.scene) {
-      options.scene = {}
-    }
-
-    return options
-  },
-
-  async set(option) {
-    await InnerLocalOptionsStorage.set(option)
-  }
-}

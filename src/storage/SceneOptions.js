@@ -1,20 +1,17 @@
 import { nanoid } from "nanoid"
 
+import { LocalOptions } from "./local/LocalOptions"
 import { SyncOptionsStorage } from "./options-storage"
-import { LocalOptionsStorage } from "./options-storage"
 
 export const SceneOptions = {
   async getActive() {
-    const all = await LocalOptionsStorage.getAll()
-    let scene = all.scene ? { ...all.scene } : {}
-    return scene.activeId
+    const local = new LocalOptions()
+    return await local.getActiveSceneId()
   },
 
   async setActive(id) {
-    const all = await LocalOptionsStorage.getAll()
-    let scene = all.scene ? { ...all.scene } : {}
-    scene.activeId = id
-    await LocalOptionsStorage.set({ scene })
+    const local = new LocalOptions()
+    await local.setActiveSceneId(id)
   },
 
   async getAll() {

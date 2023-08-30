@@ -9,7 +9,7 @@ import "./index.css"
 
 import { getPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
-import { LocalOptionsStorage, SyncOptionsStorage } from "../../storage/index"
+import { SyncOptionsStorage } from "../../storage/index"
 import Popup from "./Components/Popup"
 
 const container = document.getElementById("app-container")
@@ -32,8 +32,6 @@ const prepare = async function () {
 
   const extensions = appendAdditionInfo(allExtensions, allOptions.management)
 
-  const localOptions = await LocalOptionsStorage.getAll()
-
   // popup 宽度设置
   document.body.style.width = getPopupWidth(
     allOptions.setting.layout,
@@ -45,7 +43,7 @@ const prepare = async function () {
     // 插件信息
     extensions: extensions,
     // 用户配置信息
-    options: { ...allOptions, local: localOptions },
+    options: allOptions,
     // 运行时临时参数
     params: {}
   }

@@ -1,18 +1,21 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { CaretDownOutlined } from "@ant-design/icons"
-import { Dropdown, Space } from "antd"
+import { Dropdown } from "antd"
 
+import { LocalOptions } from ".../storage/local"
 import { sendMessage } from ".../utils/messageHelper"
 import { MenuStyle } from "./GroupDropdown"
 
 const SceneDropdown = memo(({ options, className }) => {
   const [scene, setScene] = useState(null)
   useEffect(() => {
-    const activeId = options.local.scene?.activeId
-    if (activeId) {
-      setScene(options.scenes?.filter((s) => s.id === activeId)[0])
-    }
+    const local = new LocalOptions()
+    local.getActiveSceneId().then((activeId) => {
+      if (activeId) {
+        setScene(options.scenes?.find((s) => s.id === activeId))
+      }
+    })
   }, [options])
 
   const fixMenu = [
