@@ -5,8 +5,10 @@ import OptionsSync from "webext-options-sync"
  * 保存在本地的配置项
  */
 export class LocalOptions {
+  private forage: LocalForage
+
   constructor() {
-    localforage.config({
+    this.forage = localforage.createInstance({
       driver: localforage.INDEXEDDB,
       name: "ExtensionManager",
       version: 1.0,
@@ -33,7 +35,7 @@ export class LocalOptions {
   }
 
   async getActiveSceneId(): Promise<string | null> {
-    const id = await localforage.getItem<string>("activeSceneId")
+    const id = await this.forage.getItem<string>("activeSceneId")
     if (id === null || id === undefined) {
       return null
     }
@@ -41,6 +43,6 @@ export class LocalOptions {
   }
 
   async setActiveSceneId(id: string) {
-    await localforage.setItem("activeSceneId", id)
+    await this.forage.setItem("activeSceneId", id)
   }
 }
