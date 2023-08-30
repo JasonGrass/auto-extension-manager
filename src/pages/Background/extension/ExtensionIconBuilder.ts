@@ -1,7 +1,8 @@
 import chromeP from "webext-polyfill-kinda"
 
-import { downloadIconDataUri } from ".../utils/extensionHelper"
+import { buildTextIcon, downloadIconDataUri } from ".../utils/extensionHelper"
 import { LocalOptions } from "../../../storage/local"
+import { HistoryRecord } from "../history/Record"
 import { ExtensionRepo } from "./ExtensionRepo"
 
 /**
@@ -9,11 +10,43 @@ import { ExtensionRepo } from "./ExtensionRepo"
  * 此类仅限 Popup, Options 等有 BOM 和 DOM 支持的页面调用
  */
 export class ExtensionIconBuilder {
-  public static build() {
+  /**
+   * 构建 ICON，保存到本地数据库缓存中
+   */
+  public static build(force: boolean = false) {
     setTimeout(() => {
       const builder = new ExtensionIconBuilder()
       builder.exec()
     }, 1000)
+  }
+
+  /**
+   * 为历史记录中的项，补充 ICON
+   */
+  public static async fill(records: HistoryRecord[]) {
+    let useFallbackMethod = false
+    for (const record of records) {
+      if (record.icon) continue
+
+      const repo = new ExtensionRepo()
+      const extension = await repo.get(record.extensionId)
+      if (extension && extension.icon) {
+        record.icon = extension.icon // 绝大多数情况下，这里能获取到数据
+        continue
+      }
+
+      useFallbackMethod = true
+      const icon = await downloadIconDataUri(record.id)
+      if (icon) {
+        record.icon = icon
+        continue
+      }
+      record.icon = buildTextIcon(record.name)
+    }
+
+    if (useFallbackMethod) {
+      ExtensionIconBuilder.build(true)
+    }
   }
 
   private repo: ExtensionRepo
@@ -24,12 +57,14 @@ export class ExtensionIconBuilder {
     this.localOptions = new LocalOptions()
   }
 
-  public async exec() {
+  public async exec(force: boolean = false) {
     // 因为是好性能的操作，不必每次都执行。
-    const isAnyNewInstalled = await this.localOptions.getIsAnyNewInstalled()
-    if (isAnyNewInstalled === false) {
+    const isAnyNewInstalled = await this.localOptions.getNeedBuildExtensionIcon()
+    if (!force && isAnyNewInstalled === false) {
       return
     }
+
+    console.log("[ExtensionIconBuilder] build")
 
     const keys = await this.repo.getKeys()
 
@@ -52,6 +87,6 @@ export class ExtensionIconBuilder {
       }
     }
 
-    await this.localOptions.setIsAnyNewInstalled(false)
+    await this.localOptions.setNeedBuildExtensionIcon(false)
   }
 }
