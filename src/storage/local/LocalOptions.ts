@@ -45,4 +45,13 @@ export class LocalOptions {
   async setActiveSceneId(id: string) {
     await this.forage.setItem("activeSceneId", id)
   }
+
+  async getLastInitialTime(): Promise<number> {
+    const time = await this.forage.getItem<number>("lastInitialExtensionTime")
+    return time ?? 0
+  }
+
+  async setLastInitialTime(time: number) {
+    await this.forage.setItem("lastInitialExtensionTime", time)
+  }
 }
