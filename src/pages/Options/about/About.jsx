@@ -84,25 +84,13 @@ ${navigator.userAgent}`
         <span className="version">版本 {version}</span>
 
         <Space size={[0, 8]}>
-          <Tag
-            className="badges-tag"
-            icon={<GithubOutlined />}
-            color="#2d333b"
-            onClick={openGithub}>
+          <Tag className="badges-tag" icon={<GithubOutlined />} onClick={openGithub}>
             Github
           </Tag>
-          <Tag
-            className="badges-tag"
-            icon={<HeartOutlined />}
-            color="#0050b3"
-            onClick={openRatePage}>
+          <Tag className="badges-tag" icon={<HeartOutlined />} onClick={openRatePage}>
             Rate Me 5 Stars
           </Tag>
-          <Tag
-            className="badges-tag"
-            icon={<GiftOutlined />}
-            color="#0050b3"
-            onClick={openSponsorPage}>
+          <Tag className="badges-tag" icon={<GiftOutlined />} onClick={openSponsorPage}>
             Buy Me a Coffee
           </Tag>
         </Space>
