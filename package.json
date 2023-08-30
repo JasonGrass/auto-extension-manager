@@ -18,6 +18,7 @@
     "classnames": "^2.3.2",
     "dexie": "^3.2.4",
     "immutable": "^4.3.0",
+    "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",
     "nanoid": "^4.0.2",
