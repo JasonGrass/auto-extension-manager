@@ -3,6 +3,9 @@ import logger from ".../utils/logger"
 import { HistoryService } from "./HistoryService"
 import { HistoryRecord } from "./Record"
 
+/**
+ * 历史记录关心的事件，这里是原始事件
+ */
 export class HistoryEventHandler {
   private _output: HistoryEventRaiser = new HistoryEventRaiser(this.EM, this.service)
 
@@ -66,51 +69,87 @@ export class HistoryEventHandler {
   }
 }
 
+/**
+ * 历史记录关心的事件，这里是去重过滤之后的事件
+ */
 export class HistoryEventRaiser {
   constructor(private EM: IExtensionManager, private service: HistoryService) {}
 
-  public onInstalled(info: chrome.management.ExtensionInfo) {}
-
-  public onUninstalled(info: chrome.management.ExtensionInfo) {
-    logger().trace("onUninstalled", info)
+  public onInstalled(info: chrome.management.ExtensionInfo) {
+    this.service.add(HistoryRecord.buildPlain(info, "install"))
+    this.EM.Extension.service.setChromeExtension(info)
   }
 
-  public onUninstalled2(id: string) {}
+  public onUninstalled(info: chrome.management.ExtensionInfo) {
+    this.service.add(HistoryRecord.buildPlain(info, "uninstall"))
+  }
+
+  public async onUninstalled2(id: string) {
+    const ext = await this.EM.Extension.service.getExtension(id)
+    if (ext) {
+      this.service.add(HistoryRecord.buildPlain(ext, "uninstall"))
+    } else {
+      const record = new HistoryRecord(
+        0,
+        Date.now(),
+        "uninstall",
+        id,
+        "",
+        "UNKNOWN",
+        "",
+        "unknown id",
+        "",
+        ""
+      )
+      logger().warn("onUninstalled2", id, "not found")
+      this.service.add(record)
+    }
+  }
 
   public onEnabled(info: chrome.management.ExtensionInfo) {
     this.service.add(HistoryRecord.buildPlain(info, "enabled"))
   }
 
   public onDisabled(info: chrome.management.ExtensionInfo) {
-    logger().trace("onDisabled", info)
+    this.service.add(HistoryRecord.buildPlain(info, "disabled"))
   }
 
   /*
    * 执行规则时自动启用了扩展
    */
   public onAutoEnabled(info: chrome.management.ExtensionInfo, rule: ruleV2.IRuleConfig) {
-    console.log("onAutoEnabled", info, rule)
+    // console.log("onAutoEnabled", info, rule)
+    this.service.add(HistoryRecord.buildWithRule(info, "enabled", rule))
   }
 
   /*
    * 执行规则时自动禁用了扩展
    */
   public onAutoDisabled(info: chrome.management.ExtensionInfo, rule: ruleV2.IRuleConfig) {
-    console.log("onAutoDisabled", info, rule)
+    // console.log("onAutoDisabled", info, rule)
+    this.service.add(HistoryRecord.buildWithRule(info, "disabled", rule))
   }
 
   /**
    * 切换分组时，自动启用了扩展
    */
   public onManualEnabled(infos: chrome.management.ExtensionInfo[], group: config.IGroup) {
-    console.log("onManualEnabled", infos, group)
+    // console.log("onManualEnabled", infos, group)
+    for (const info of infos) {
+      const record = HistoryRecord.buildWithGroup(info, "enabled", group)
+      this.service.add(record)
+    }
   }
 
   /**
    * 切换分组时，自动禁用了扩展
    */
   public onManualDisabled(infos: chrome.management.ExtensionInfo[], group: config.IGroup) {
-    console.log("onManualDisabled", infos, group)
+    // console.log("onManualDisabled", infos, group)
+    for (const info of infos) {
+      const record = HistoryRecord.buildWithGroup(info, "disabled", group)
+      this.service.add(record)
+    }
   }
 }
 

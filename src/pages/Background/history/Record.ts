@@ -23,6 +23,44 @@ export class HistoryRecord {
   static buildPlain(info: chrome.management.ExtensionInfo, event: RecordEvent) {
     return new HistoryRecord(0, Date.now(), event, info.id, "", info.name, info.version, "", "", "")
   }
+
+  static buildWithRule(
+    info: chrome.management.ExtensionInfo,
+    event: RecordEvent,
+    rule: ruleV2.IRuleConfig
+  ) {
+    return new HistoryRecord(
+      0,
+      Date.now(),
+      event,
+      info.id,
+      "",
+      info.name,
+      info.version,
+      "",
+      rule.id ?? "",
+      ""
+    )
+  }
+
+  static buildWithGroup(
+    info: chrome.management.ExtensionInfo,
+    event: RecordEvent,
+    group: config.IGroup
+  ) {
+    return new HistoryRecord(
+      0,
+      Date.now(),
+      event,
+      info.id,
+      "",
+      info.name,
+      info.version,
+      "",
+      "",
+      group.id
+    )
+  }
 }
 
 export class ImageRecord {

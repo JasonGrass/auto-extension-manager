@@ -1,5 +1,6 @@
 import { History } from ".../pages/Background/history/History"
 import { RuleHandler } from ".../pages/Background/rule/RuleHandler"
+import { ExtensionService } from "../pages/Background/extension/ExtensionService"
 import { LocalOptions } from "../storage/local"
 
 declare interface IExtensionManager {
@@ -9,7 +10,7 @@ declare interface IExtensionManager {
   }
   Extension: {
     items: chrome.management.ExtensionInfo[]
-    update: () => Promise<void>
+    service: ExtensionService
   }
   History: History
 }
