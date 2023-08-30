@@ -1,3 +1,5 @@
+import chromeP from "webext-polyfill-kinda"
+
 import type { IExtensionManager } from ".../types/global"
 import logger from ".../utils/logger"
 import { HistoryService } from "./HistoryService"
@@ -19,6 +21,18 @@ export class HistoryEventHandler {
   )
 
   constructor(private EM: IExtensionManager, private service: HistoryService) {}
+
+  public async onSelfInstalled(info: chrome.runtime.InstalledDetails) {
+    if (info.reason === "install") {
+      const self = await chromeP.management.getSelf()
+      const record = HistoryRecord.buildPlain(self, "install")
+      await this.service.add(record)
+    } else if (info.reason === "update") {
+      const self = await chromeP.management.getSelf()
+      const record = HistoryRecord.buildPlain(self, "updated")
+      await this.service.add(record)
+    }
+  }
 
   public onInstalled(info: chrome.management.ExtensionInfo) {
     this._output.onInstalled(info)
@@ -75,14 +89,24 @@ export class HistoryEventHandler {
 export class HistoryEventRaiser {
   constructor(private EM: IExtensionManager, private service: HistoryService) {}
 
-  public onInstalled(info: chrome.management.ExtensionInfo) {
-    this.service.add(HistoryRecord.buildPlain(info, "install"))
+  public async onInstalled(info: chrome.management.ExtensionInfo) {
+    const old = await this.EM.Extension.service.getExtension(info.id)
+    if (!old || !old.state || old.state === "uninstall") {
+      this.service.add(HistoryRecord.buildPlain(info, "install"))
+    } else {
+      this.service.add(HistoryRecord.buildPlain(info, "updated"))
+    }
+
     this.EM.LocalOptions.setNeedBuildExtensionIcon(true)
     this.EM.Extension.service.setChromeExtension(info)
   }
 
-  public onUninstalled(info: chrome.management.ExtensionInfo) {
+  public async onUninstalled(info: chrome.management.ExtensionInfo) {
     this.service.add(HistoryRecord.buildPlain(info, "uninstall"))
+    const old = await this.EM.Extension.service.getExtension(info.id)
+    if (old) {
+      this.EM.Extension.service.setExtension({ ...old, state: "uninstall" })
+    }
   }
 
   public async onUninstalled2(id: string) {

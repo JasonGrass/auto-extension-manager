@@ -26,6 +26,12 @@ const createHistoryEventListener = (EM: IExtensionManager, eventHandler: History
   chrome.management.onDisabled.addListener((info) => {
     eventHandler.onDisabled(info)
   })
+
+  // 仅对当前扩展生效
+  // Fired when the extension is first installed, when the extension is updated to a new version, and when Chrome is updated to a new version.
+  chrome.runtime.onInstalled.addListener((info) => {
+    eventHandler.onSelfInstalled(info)
+  })
 }
 
 export default createHistoryEventListener
