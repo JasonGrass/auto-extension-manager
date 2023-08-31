@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react"
 import chromeP from "webext-polyfill-kinda"
 
 import { ManageOptions } from ".../storage"
-import { filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import { ExtensionIconBuilder } from "../../Background/extension/ExtensionIconBuilder"
 import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
 import { HistoryRepo } from "../../Background/history/HistoryRepo"
@@ -28,11 +27,13 @@ const ExtensionManageIndex = () => {
     const attach = await ManageOptions.get()
     const attachExtensionInfo = attach.extensions ?? []
     for (const attachItem of attachExtensionInfo) {
-      const record = records.find((item) => item.extensionId === attachItem.extId)
-      if (record) {
-        record.__attach__ = attachItem
-      }
+      records
+        .filter((item) => item.extensionId === attachItem.extId)
+        .forEach((item) => {
+          item.__attach__ = attachItem
+        })
     }
+
     // 附加扩展数据本身
     const extRepo = new ExtensionRepo()
     for (const record of records) {

@@ -51,10 +51,15 @@ const ExtensionHistory = memo(({ records }) => {
         showTitle: false
       },
       render: (name, record, index) => {
+        let showName = name
+        if (record.__attach__?.alias) {
+          showName = record.__attach__.alias
+        }
+
         return (
           <span className="column-name">
             <img src={record.icon} alt="" width={16} height={16} />
-            <span>{name}</span>
+            <span>{showName}</span>
           </span>
         )
       }
