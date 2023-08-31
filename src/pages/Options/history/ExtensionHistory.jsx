@@ -2,12 +2,20 @@ import React, { memo, useEffect, useState } from "react"
 
 import { Alert, Button, Checkbox, Form, Input, Table, Tooltip, message } from "antd"
 
+import isMatch from "../../../utils/searchHelper"
 import ExtensionHistoryDetail from "./ExtensionHistoryDetail"
 import Style from "./ExtensionHistoryStyle"
 import { formatEventText, formatTimeAbsolute, formatTimeRelative } from "./formatter"
 
+const { Search } = Input
+
 const ExtensionHistory = memo(({ records }) => {
   const [timeShowWay, setTimeShowWay] = useState("relative") //absolute relative
+  // 搜索词
+  const [searchWord, setSearchWord] = useState("")
+
+  // 显示的记录
+  const [shownRecords, setShownRecords] = useState(records)
 
   const columns = [
     Table.EXPAND_COLUMN,
@@ -82,6 +90,15 @@ const ExtensionHistory = memo(({ records }) => {
     }
   ]
 
+  // 执行搜索
+  useEffect(() => {
+    setShownRecords(search(records, searchWord))
+  }, [records, searchWord])
+
+  const onSearch = (value) => {
+    setSearchWord(value)
+  }
+
   const onTimeShowWayChange = (e) => {
     if (e.target.checked) {
       setTimeShowWay("absolute")
@@ -93,6 +110,12 @@ const ExtensionHistory = memo(({ records }) => {
   return (
     <Style>
       <div>
+        <Search
+          className="search"
+          placeholder="search"
+          onSearch={onSearch}
+          onChange={(e) => onSearch(e.target.value)}
+        />
         <Checkbox checked={timeShowWay === "absolute"} onChange={onTimeShowWayChange}>
           绝对时间
         </Checkbox>
@@ -109,13 +132,16 @@ const ExtensionHistory = memo(({ records }) => {
           },
           expandRowByClick: true
         }}
-        dataSource={records}></Table>
+        dataSource={shownRecords}></Table>
     </Style>
   )
 })
 
 export default ExtensionHistory
 
+/**
+ * 格式化备注的显示
+ */
 const formatRemark = (record) => {
   const remark = record.remark
   const ruleId = record.ruleId
@@ -158,4 +184,21 @@ const formatRemark = (record) => {
   }
 
   return <span>{remark}</span>
+}
+
+const search = (records, word) => {
+  if (!word || word.trim() === "") return records
+
+  return records.filter((record) => {
+    const target = [
+      record.name,
+      record.__extension__?.shortName,
+      record.__extension__?.description,
+      record.__attach__?.alias,
+      record.__attach__?.remark,
+      record.extensionId
+    ]
+
+    return isMatch(target, word, true)
+  })
 }
