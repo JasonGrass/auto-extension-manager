@@ -2,19 +2,12 @@ import React, { memo, useEffect, useState } from "react"
 
 import { Alert, Button, Checkbox, Form, Input, Table, Tooltip, message } from "antd"
 
-import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
 import ExtensionHistoryDetail from "./ExtensionHistoryDetail"
 import Style from "./ExtensionHistoryStyle"
 import { formatEventText, formatTimeAbsolute, formatTimeRelative } from "./formatter"
 
 const ExtensionHistory = memo(({ records }) => {
   const [timeShowWay, setTimeShowWay] = useState("relative") //absolute relative
-
-  const [extensionRepo, setExtensionRepo] = useState(null)
-
-  useEffect(() => {
-    setExtensionRepo(new ExtensionRepo())
-  }, [])
 
   const columns = [
     Table.EXPAND_COLUMN,
@@ -31,7 +24,7 @@ const ExtensionHistory = memo(({ records }) => {
       title: "时间",
       dataIndex: "timestamp",
       key: "time",
-      width: 160,
+      width: 150,
       render: (timestamp, record, index) => {
         if (timeShowWay === "absolute") {
           return <span className="column-time">{formatTimeAbsolute(timestamp)}</span>
@@ -44,7 +37,7 @@ const ExtensionHistory = memo(({ records }) => {
       title: "事件",
       dataIndex: "event",
       key: "event",
-      width: 100,
+      width: 60,
       render: (event, record, index) => {
         return <span className="column-event">{formatEventText(event)}</span>
       }
@@ -59,12 +52,10 @@ const ExtensionHistory = memo(({ records }) => {
       },
       render: (name, record, index) => {
         return (
-          <Tooltip placement="topLeft" title={name}>
-            <span className="column-name">
-              <img src={record.icon} alt="" width={16} height={16} />
-              <span>{name}</span>
-            </span>
-          </Tooltip>
+          <span className="column-name">
+            <img src={record.icon} alt="" width={16} height={16} />
+            <span>{name}</span>
+          </span>
         )
       }
     },
@@ -86,8 +77,22 @@ const ExtensionHistory = memo(({ records }) => {
     }
   ]
 
+  const onTimeShowWayChange = (e) => {
+    if (e.target.checked) {
+      setTimeShowWay("absolute")
+    } else {
+      setTimeShowWay("relative")
+    }
+  }
+
   return (
     <Style>
+      <div>
+        <Checkbox checked={timeShowWay === "absolute"} onChange={onTimeShowWayChange}>
+          绝对时间
+        </Checkbox>
+      </div>
+
       <Table
         rowKey="id"
         pagination={{ pageSize: 100 }}
@@ -95,11 +100,7 @@ const ExtensionHistory = memo(({ records }) => {
         columns={columns}
         expandable={{
           expandedRowRender: (record) => {
-            return (
-              <ExtensionHistoryDetail
-                record={record}
-                extensionRepo={extensionRepo}></ExtensionHistoryDetail>
-            )
+            return <ExtensionHistoryDetail record={record}></ExtensionHistoryDetail>
           },
           expandRowByClick: true
         }}

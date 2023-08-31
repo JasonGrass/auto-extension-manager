@@ -8,7 +8,7 @@ const Style = styled.div`
   .column-index {
     display: inline-block;
     width: 100%;
-    text-align: center;
+    padding-left: 2px;
   }
 
   .column-name {

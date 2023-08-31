@@ -3,15 +3,10 @@ import React, { memo, useEffect, useState } from "react"
 import { Col, Result, Row } from "antd"
 import { styled } from "styled-components"
 
-const ExtensionHistoryDetail = memo(({ record, extensionRepo }) => {
-  const [ext, setExtensionCache] = useState(null)
+const ExtensionHistoryDetail = memo(({ record }) => {
   const [manageUrl, setManageUrl] = useState("")
 
-  useEffect(() => {
-    extensionRepo.get(record.extensionId).then((cache) => {
-      setExtensionCache(cache)
-    })
-  }, [record, extensionRepo])
+  const ext = record.__extension__
 
   useEffect(() => {
     if (!ext) {
