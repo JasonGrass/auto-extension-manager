@@ -1,12 +1,20 @@
-import React, { memo, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 
 import { Alert, Button, Checkbox, Form, Input, Table, Tooltip, message } from "antd"
 
+import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
+import ExtensionHistoryDetail from "./ExtensionHistoryDetail"
 import Style from "./ExtensionHistoryStyle"
 import { formatEventText, formatTimeAbsolute, formatTimeRelative } from "./formatter"
 
 const ExtensionHistory = memo(({ records }) => {
   const [timeShowWay, setTimeShowWay] = useState("relative") //absolute relative
+
+  const [extensionRepo, setExtensionRepo] = useState(null)
+
+  useEffect(() => {
+    setExtensionRepo(new ExtensionRepo())
+  }, [])
 
   const columns = [
     Table.EXPAND_COLUMN,
@@ -87,8 +95,11 @@ const ExtensionHistory = memo(({ records }) => {
         columns={columns}
         expandable={{
           expandedRowRender: (record) => {
-            const content = JSON.stringify({ ...record, icon: "" }, null, 2)
-            return <code>{content}</code>
+            return (
+              <ExtensionHistoryDetail
+                record={record}
+                extensionRepo={extensionRepo}></ExtensionHistoryDetail>
+            )
           },
           expandRowByClick: true
         }}
@@ -109,7 +120,12 @@ const formatRemark = (record) => {
     return (
       <span>
         由
-        <a href={url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
+        <a
+          className="column-remark-link"
+          href={url}
+          target="_blank"
+          rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}>
           规则
         </a>
         触发
@@ -122,7 +138,12 @@ const formatRemark = (record) => {
     return (
       <span>
         由
-        <a href={url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
+        <a
+          className="column-remark-link"
+          href={url}
+          target="_blank"
+          rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}>
           切换分组
         </a>
         触发

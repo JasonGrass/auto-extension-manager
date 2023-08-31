@@ -20,8 +20,8 @@ const Style = styled.div`
     }
   }
 
-  .ant-table-expanded-row .ant-table-cell {
-    padding-bottom: 2px;
+  .column-remark-link {
+    margin: 0 0.2rem;
   }
 `
 
