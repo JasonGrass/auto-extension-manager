@@ -27,7 +27,8 @@ export class ExtensionRepo {
     }
     const old = await this.get(extension.id)
     if (old) {
-      await this.forage.setItem(extension.id, { ...old, ...extension })
+      const icon = extension.icon || old.icon
+      await this.forage.setItem(extension.id, { ...old, ...extension, icon: icon })
     } else {
       await this.forage.setItem(extension.id, extension)
     }
@@ -39,5 +40,9 @@ export class ExtensionRepo {
 
   public async getKeys(): Promise<string[]> {
     return await this.forage.keys()
+  }
+
+  public async clear(): Promise<void> {
+    await this.forage.clear()
   }
 }

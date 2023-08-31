@@ -20,4 +20,8 @@ export class HistoryRepo extends Dexie {
   public async getAll(): Promise<Partial<HistoryRecord>[]> {
     return await this.history.toArray()
   }
+
+  public async clearAll() {
+    await this.history.clear()
+  }
 }

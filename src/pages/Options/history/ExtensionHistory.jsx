@@ -1,8 +1,24 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Alert, Button, Checkbox, Form, Input, Table, Tooltip, message } from "antd"
+import { EyeOutlined } from "@ant-design/icons"
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Popconfirm,
+  Space,
+  Table,
+  Tooltip,
+  message
+} from "antd"
+import chromeP from "webext-polyfill-kinda"
 
+import { downloadIconDataUrl, getIcon } from "../../../utils/extensionHelper"
 import isMatch from "../../../utils/searchHelper"
+import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
+import { HistoryRepo } from "../../Background/history/HistoryRepo"
 import ExtensionHistoryDetail from "./ExtensionHistoryDetail"
 import Style from "./ExtensionHistoryStyle"
 import { formatEventText, formatTimeAbsolute, formatTimeRelative } from "./formatter"
@@ -16,6 +32,11 @@ const ExtensionHistory = memo(({ records }) => {
 
   // 显示的记录
   const [shownRecords, setShownRecords] = useState(records)
+
+  const solo = (e, record) => {
+    e.stopPropagation()
+    setSearchWord(record.extensionId)
+  }
 
   const columns = [
     Table.EXPAND_COLUMN,
@@ -66,8 +87,15 @@ const ExtensionHistory = memo(({ records }) => {
 
         return (
           <span className="column-name">
-            <img src={record.icon} alt="" width={16} height={16} />
-            <span>{showName}</span>
+            <div className="column-name-title">
+              <img src={record.icon} alt="" width={16} height={16} />
+              <span>{showName}</span>
+            </div>
+            <div className="column-name-solo">
+              <Space onClick={(e) => solo(e, record)}>
+                <EyeOutlined />
+              </Space>
+            </div>
           </span>
         )
       }
@@ -107,18 +135,54 @@ const ExtensionHistory = memo(({ records }) => {
     }
   }
 
+  // 清空历史记录
+  const confirmClearHistoryRecords = async () => {
+    setShownRecords([])
+    setSearchWord("")
+    // 清除记录
+    await new HistoryRepo().clearAll()
+    // 清除 Extension 缓存
+    const extRepo = new ExtensionRepo()
+    await extRepo.clear()
+    // 重建 Extension 缓存
+    const list = await chromeP.management.getAll()
+    const now = Date.now()
+    for (const item of list) {
+      const iconDataUrl = await downloadIconDataUrl(item)
+      const ext = { ...item, icon: iconDataUrl, recordUpdateTime: now }
+      extRepo.set(ext)
+    }
+  }
+
   return (
     <Style>
-      <div>
-        <Search
-          className="search"
-          placeholder="search"
-          onSearch={onSearch}
-          onChange={(e) => onSearch(e.target.value)}
-        />
-        <Checkbox checked={timeShowWay === "absolute"} onChange={onTimeShowWayChange}>
-          绝对时间
-        </Checkbox>
+      <div className="history-manage-tools">
+        <div className="history-manage-tools-left">
+          <Search
+            className="search"
+            placeholder="search"
+            allowClear
+            value={searchWord}
+            onSearch={onSearch}
+            onChange={(e) => onSearch(e.target.value)}
+          />
+          <Checkbox
+            className="setting-operation-item"
+            checked={timeShowWay === "absolute"}
+            onChange={onTimeShowWayChange}>
+            绝对时间
+          </Checkbox>
+        </div>
+        <div className="history-manage-tools-right">
+          <Popconfirm
+            title="Clear History Data"
+            description="Are you sure to delete all the history records?"
+            onConfirm={confirmClearHistoryRecords}
+            okText="Yes"
+            cancelText="No">
+            <Button className="setting-operation-item">清空记录</Button>
+          </Popconfirm>
+        </div>
       </div>
 
       <Table
