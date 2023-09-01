@@ -69,4 +69,6 @@ const MatchView = memo(({ config, options }) => {
 
 export default MatchView
 
-const Style = styled.div``
+const Style = styled.div`
+  max-width: 600px;
+`

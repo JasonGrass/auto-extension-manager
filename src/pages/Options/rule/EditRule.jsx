@@ -13,7 +13,7 @@ const EditRule = memo((props) => {
   const selectorRef = useRef(null)
   const actionRef = useRef(null)
 
-  const onSaveClick = (e) => {
+  const onSaveClick = async (e) => {
     try {
       const matchRuleConfig = matchRuleRef.current.getMatchRuleConfig()
       const selectConfig = selectorRef.current.getExtensionSelectConfig()
@@ -29,9 +29,14 @@ const EditRule = memo((props) => {
 
       console.log("保存规则配置", newConfig)
 
-      onSave(newConfig)
+      await onSave(newConfig)
     } catch (error) {
-      message.error(error.message)
+      console.error("保存规则配置", error)
+      if (error.message.includes("QUOTA_BYTES_PER_ITEM")) {
+        message.error("保存失败，超过浏览器存储限制")
+      } else {
+        message.error(error.message)
+      }
     }
   }
 

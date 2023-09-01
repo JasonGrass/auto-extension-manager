@@ -3,6 +3,19 @@ import { styled } from "styled-components"
 const Style = styled.div`
   margin-right: 20px;
 
+  .rule-edit-tools {
+    margin: 8px 0;
+  }
+
+  .rule-edit-storage-limit-tip {
+    padding: 4px 8px;
+    border: 1px solid #ffeb3b;
+    border-radius: 5px;
+    background-color: #fffbe6;
+
+    font-size: 14px;
+  }
+
   .ant-table-cell {
     font-size: 14px;
   }
