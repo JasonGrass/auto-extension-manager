@@ -123,7 +123,12 @@ const ViewRule = memo((props) => {
           dataIndex="index"
           width={60}
           align="center"
-          render={(index, record) => <span>{index + 1}</span>}
+          render={(index, record) => {
+            if (record.id === selectedRuleId) {
+              return <span>✔</span>
+            }
+            return <span>{index + 1}</span>
+          }}
         />
         <Column
           title="匹配"
