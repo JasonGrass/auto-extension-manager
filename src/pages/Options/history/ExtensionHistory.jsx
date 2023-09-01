@@ -42,11 +42,11 @@ const ExtensionHistory = memo(({ records }) => {
     Table.EXPAND_COLUMN,
     {
       title: "序号",
-      dataIndex: "id",
+      dataIndex: "index",
       key: "index",
       width: 60,
-      render: (text, record, index) => {
-        return <span className="column-index">{(index + 1).toString().padStart(3, "0")}</span>
+      render: (dataIndex, record, index) => {
+        return <span className="column-index">{(dataIndex + 1).toString().padStart(3, "0")}</span>
       }
     },
     {

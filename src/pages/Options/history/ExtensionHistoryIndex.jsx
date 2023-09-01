@@ -21,6 +21,10 @@ const ExtensionManageIndex = () => {
     const records = await service.queryAll()
     // 最新的在最前
     records.reverse()
+    // 附加序号
+    records.forEach((item, index) => {
+      item.index = index
+    })
     // 填充 ICON 数据
     await ExtensionIconBuilder.fill(records)
     // 填充附加数据(别名与备注)
