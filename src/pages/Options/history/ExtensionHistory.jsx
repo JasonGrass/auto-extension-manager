@@ -187,7 +187,7 @@ const ExtensionHistory = memo(({ records }) => {
 
       <Table
         rowKey="id"
-        pagination={{ pageSize: 100 }}
+        pagination={{ pageSize: 100, showSizeChanger: false }}
         scroll={{ y: "calc(100vh - 260px)" }}
         columns={columns}
         expandable={{

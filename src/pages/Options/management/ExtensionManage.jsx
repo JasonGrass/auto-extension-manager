@@ -127,7 +127,7 @@ const ExtensionManage = memo(({ extensions, config }) => {
 
       {/* [实现 antd table 自动调整可视高度 - 掘金](https://juejin.cn/post/6922375503798075400#comment ) */}
       <Table
-        pagination={{ pageSize: 100 }}
+        pagination={{ pageSize: 100, showSizeChanger: false }}
         scroll={{ y: "calc(100vh - 260px)" }}
         columns={columns}
         expandable={{
