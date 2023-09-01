@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import { message } from "antd"
 import classNames from "classnames"
@@ -15,6 +16,11 @@ import { GroupStyle } from "./IndexGroupStyle.js"
 import { AddNewNavItem } from "./helpers.js"
 
 function GroupManagement() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const searchParams = new URLSearchParams(location.search)
+  const paramGroupId = searchParams.get("id")
+
   const [extensions, setExtensions] = useState([])
   const [selectedGroup, setSelectedGroup] = useState()
   const [itemEditInfo, setItemEditInfo] = useState()
@@ -31,7 +37,7 @@ function GroupManagement() {
     const groupList = await GroupOptions.getGroups()
     setGroupListInfo(groupList)
   }
-
+  // 初始化
   useEffect(() => {
     storage.options.getAll().then((o) => {
       setOptions(o)
@@ -40,11 +46,42 @@ function GroupManagement() {
     chromeP.management.getAll().then((exts) => {
       setExtensions(filterExtensions(exts, isExtExtension))
     })
+
+    GroupOptions.getGroups().then((groups) => {
+      setGroupListInfo(groups)
+    })
   }, [])
 
+  // 如果 URL 中有 ID 参数，则切换到对应分组
+  useEffect(() => {
+    if (!paramGroupId) {
+      return
+    }
+    const group = groupListInfo.find((g) => g.id === paramGroupId)
+    if (group) {
+      setSelectedGroup(group)
+      // 切换分组之后，就删除 URL 参数中的 ID
+      searchParams.delete("id")
+      navigate(`?${searchParams.toString()}`, { replace: true })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupListInfo, paramGroupId])
+
+  // 更新分组数据
   useEffect(() => {
     updateByGroupConfigs()
   }, [selectedGroup])
+
+  // 如果当前分组为空，则自动选择固定分组
+  useEffect(() => {
+    if (paramGroupId) {
+      return
+    }
+    if (!selectedGroup) {
+      const fix = groupListInfo.find((g) => g.id === "fixed")
+      setSelectedGroup(fix)
+    }
+  }, [selectedGroup, groupListInfo, paramGroupId])
 
   const onSelectedChanged = (item) => {
     setSelectedGroup(item)

@@ -18,12 +18,6 @@ function GroupNav({ groupInfo, current, onSelectedChanged, onGroupItemDeleted, o
     showGroupItems = [fixedGroup, ...groupInfo.filter((g) => g.id !== "fixed")]
   }
 
-  useEffect(() => {
-    if (!current || !current.id) {
-      selectFirstGroupTab()
-    }
-  })
-
   const onGroupTabClick = (e, item) => {
     onSelectedChanged?.(item)
   }
