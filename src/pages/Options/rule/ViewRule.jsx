@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import { Button, Table } from "antd"
 
@@ -17,8 +18,14 @@ const { Column } = Table
 const ViewRule = memo((props) => {
   const { options, configs, extensions, operation } = props
 
+  const location = useLocation()
+  const navigate = useNavigate()
+  const searchParams = new URLSearchParams(location.search)
+  const paramRuleId = searchParams.get("id")
+
   // 正在编辑的规则
   const [editingConfig, setEditingConfig] = useState(null)
+  const [selectedRuleId, setSelectedRuleId] = useState(null)
 
   // 规则列表
   const [records, setRecords] = useState()
@@ -27,6 +34,20 @@ const ViewRule = memo((props) => {
       setRecords(configs.map((c, index) => Map(c).set("index", index).toJS()))
     }
   }, [configs])
+
+  useEffect(() => {
+    if (!paramRuleId) {
+      return
+    }
+    setSelectedRuleId(paramRuleId)
+    searchParams.delete("id")
+    navigate(`?${searchParams.toString()}`, { replace: true })
+    setTimeout(() => {
+      // 一段时间之后，高亮显示消失
+      setSelectedRuleId("")
+    }, 3000)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paramRuleId])
 
   const onAdd = () => {
     setEditingConfig({})
@@ -89,7 +110,14 @@ const ViewRule = memo((props) => {
         dataSource={records}
         rowKey="id"
         size="small"
-        pagination={{ position: ["bottomCenter"], hideOnSinglePage: true }}>
+        pagination={{ position: ["bottomCenter"], hideOnSinglePage: true }}
+        rowClassName={(record, index) => {
+          if (record.id === selectedRuleId) {
+            return "rule-row-selected"
+          } else {
+            return ""
+          }
+        }}>
         <Column
           title="序号"
           dataIndex="index"

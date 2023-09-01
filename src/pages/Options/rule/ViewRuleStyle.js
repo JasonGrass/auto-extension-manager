@@ -12,6 +12,22 @@ const Style = styled.div`
     color: #f5222d;
   }
 
+  .rule-row-selected {
+    animation: flashing 1s infinite;
+  }
+
+  @keyframes flashing {
+    0% {
+      background-color: #95de6400;
+    }
+    50% {
+      background-color: #95de64ff;
+    }
+    100% {
+      background-color: #95de6400;
+    }
+  }
+
   .button-group {
     margin-top: 10px;
     margin-bottom: 20px;
