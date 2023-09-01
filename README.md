@@ -9,7 +9,7 @@
 Chrome 商店链接  
 <https://chrome.google.com/webstore/detail/extension-manager/efajbgpnlnobnkgdcgcnclngeolnmggp>
 
-Edge 商店链接
+Edge 商店链接  
 <https://microsoftedge.microsoft.com/addons/detail/pifijhmfdnkanlcnecpifkmjbfoopokf>
 
 > Edge 的审核比较慢，所以版本可能会落后于 Chrome 商店
