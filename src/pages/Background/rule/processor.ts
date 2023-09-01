@@ -59,8 +59,9 @@ async function processRule({ scene, rules, groups, ctx }: ProcessItem) {
 
   for (const rule of rules) {
     try {
-      ctx.rule = rule
-      await process(rule, scene, groups, ctx)
+      // 每条规则处理的 rule 数据是不用的，这里需要对 ctx 拷贝一个副本，每个实例都是不同的 rule 数据
+      const copyCtx = { ...ctx, rule }
+      await process(rule, scene, groups, copyCtx)
     } catch (error) {
       console.error("[规则执行失败]", rules, error)
     }
