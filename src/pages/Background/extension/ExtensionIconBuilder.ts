@@ -16,7 +16,7 @@ export class ExtensionIconBuilder {
   public static build(force: boolean = false) {
     setTimeout(() => {
       const builder = new ExtensionIconBuilder()
-      builder.exec()
+      builder.exec(force)
     }, 1000)
   }
 
@@ -60,7 +60,7 @@ export class ExtensionIconBuilder {
   public async exec(force: boolean = false) {
     // 因为是好性能的操作，不必每次都执行。
     const isAnyNewInstalled = await this.localOptions.getNeedBuildExtensionIcon()
-    if (!force && isAnyNewInstalled === false) {
+    if (!force && !isAnyNewInstalled) {
       return
     }
 

@@ -55,11 +55,20 @@ export class LocalOptions {
     await this.forage.setItem("lastInitialExtensionTime", time)
   }
 
-  async getNeedBuildExtensionIcon(): Promise<boolean | null> {
-    return await this.forage.getItem<boolean>("isNeedBuildExtensionIcon")
+  async getNeedBuildExtensionIcon(): Promise<boolean> {
+    const str = await this.forage.getItem<string>("isNeedBuildExtensionIcon")
+    if (str === "true") {
+      return true
+    } else if (str === "false") {
+      return false
+    }
+    return true
   }
 
   async setNeedBuildExtensionIcon(isNeedBuildExtensionIcon: boolean) {
-    await this.forage.setItem("isNeedBuildExtensionIcon", isNeedBuildExtensionIcon)
+    await this.forage.setItem(
+      "isNeedBuildExtensionIcon",
+      isNeedBuildExtensionIcon.toString().toLowerCase()
+    )
   }
 }
