@@ -31,10 +31,6 @@ export class ExtensionService {
     return this.repo.get(id)
   }
 
-  public async setChromeExtension(extension: chrome.management.ExtensionInfo): Promise<void> {
-    await this.setExtension({ ...extension, recordUpdateTime: Date.now() })
-  }
-
   public async setExtension(extension: ExtensionRecord): Promise<void> {
     await this.repo.set(extension)
   }

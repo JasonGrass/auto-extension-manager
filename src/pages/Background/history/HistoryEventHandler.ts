@@ -97,8 +97,23 @@ export class HistoryEventRaiser {
       this.service.add(HistoryRecord.buildPlain(info, "updated"))
     }
 
+    // 更新记录
+    if (old) {
+      this.EM.Extension.service.setExtension({
+        ...old,
+        ...info,
+        state: "install",
+        recordUpdateTime: Date.now()
+      })
+    } else {
+      this.EM.Extension.service.setExtension({
+        ...info,
+        state: "install",
+        recordUpdateTime: Date.now()
+      })
+    }
+
     this.EM.LocalOptions.setNeedBuildExtensionIcon(true)
-    this.EM.Extension.service.setChromeExtension(info)
   }
 
   public async onUninstalled(info: chrome.management.ExtensionInfo) {
