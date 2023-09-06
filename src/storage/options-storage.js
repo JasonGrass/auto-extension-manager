@@ -27,22 +27,31 @@ export const SyncOptionsStorage = {
     if (!options.setting) {
       options.setting = {}
     }
-    if (!options.management) {
-      options.management = {}
-    }
-    if (!options.management.extensions) {
-      options.management.extensions = []
-    }
+
+    // 情景模式
     if (!options.scenes) {
       options.scenes = []
     }
 
+    // 分组管理
     if (!options.groups) {
       options.groups = []
     } else {
       options.groups = strCompress.decompress(options.groups)
     }
 
+    // 扩展别名
+    if (!options.management) {
+      options.management = {}
+    } else {
+      options.management = strCompress.decompress(options.management)
+    }
+
+    if (!options.management.extensions) {
+      options.management.extensions = []
+    }
+
+    // 规则设置
     if (!options.ruleConfig) {
       options.ruleConfig = []
     } else {
@@ -66,6 +75,9 @@ export const SyncOptionsStorage = {
     if (option.groups) {
       option.groups = strCompress.compress(option.groups)
     }
+    if (option.management) {
+      option.management = strCompress.compress(option.management)
+    }
     if (option.ruleConfig) {
       option.ruleConfig = strCompress.compress(option.ruleConfig)
     }
@@ -77,6 +89,7 @@ export const SyncOptionsStorage = {
    */
   async setAll(options) {
     options.groups = strCompress.compress(options.groups)
+    options.management = strCompress.compress(options.management)
     options.ruleConfig = strCompress.compress(options.ruleConfig)
     await OptionsStorage.setAll(options)
   }
