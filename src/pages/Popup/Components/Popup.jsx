@@ -107,7 +107,7 @@ const Style = styled.div`
   height: 100%;
 
   .header-container {
-    flex: 1 0 auto;
+    flex: 0 0 auto;
   }
 
   .extension-container {
