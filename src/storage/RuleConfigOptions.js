@@ -8,10 +8,7 @@ import strCompress from "./utils/ConfigCompress"
 export const RuleConfigOptions = {
   async get() {
     const all = await SyncOptionsStorage.getAll()
-    let configs = all.ruleConfig ?? []
-
-    configs = strCompress.decompress(configs)
-
+    const configs = all.ruleConfig ?? []
     return configs.map((c) => ConvertRuleToV2(c)).filter((c) => c)
   },
 
@@ -24,7 +21,7 @@ export const RuleConfigOptions = {
 
     configs.push(config)
 
-    await SyncOptionsStorage.set({ ruleConfig: strCompress.compress(configs) })
+    await SyncOptionsStorage.set({ ruleConfig: configs })
   },
 
   async update(config) {
@@ -37,7 +34,7 @@ export const RuleConfigOptions = {
 
     Object.assign(exist, config)
 
-    await SyncOptionsStorage.set({ ruleConfig: strCompress.compress(configs) })
+    await SyncOptionsStorage.set({ ruleConfig: configs })
   },
 
   async duplicate(config) {
@@ -50,7 +47,7 @@ export const RuleConfigOptions = {
     const newConfig = Map(exist).set("id", nanoid()).toJS()
     configs.splice(configs.indexOf(exist), 0, newConfig)
 
-    await SyncOptionsStorage.set({ ruleConfig: strCompress.compress(configs) })
+    await SyncOptionsStorage.set({ ruleConfig: configs })
   },
 
   async deleteOne(id) {
@@ -60,7 +57,7 @@ export const RuleConfigOptions = {
     }
 
     const leftConfigs = all.ruleConfig.filter((item) => item.id !== id)
-    await SyncOptionsStorage.set({ ruleConfig: strCompress.compress(leftConfigs) })
+    await SyncOptionsStorage.set({ ruleConfig: leftConfigs })
   }
 }
 
