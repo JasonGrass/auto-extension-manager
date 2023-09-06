@@ -29,11 +29,9 @@ const ViewRule = memo((props) => {
 
   // 规则列表
   const [records, setRecords] = useState()
-  const [storageLength, setStorageLength] = useState(0)
   useEffect(() => {
     if (configs) {
       setRecords(configs.map((c, index) => Map(c).set("index", index).toJS()))
-      setStorageLength(JSON.stringify(configs).length)
     }
   }, [configs])
 
@@ -108,20 +106,6 @@ const ViewRule = memo((props) => {
 
   return (
     <Style>
-      <div className="rule-edit-tools">
-        <span className="rule-edit-storage-limit-tip">
-          由于{" "}
-          <a
-            href="https://developer.chrome.com/docs/extensions/reference/storage/"
-            target="_blank"
-            rel="noreferrer">
-            浏览器限制
-          </a>{" "}
-          ，最多只能保存 8KB 的规则设置数据，当前数据量估算为：
-          {(storageLength / 1024).toFixed(2)}
-          KB
-        </span>
-      </div>
       <Table
         dataSource={records}
         rowKey="id"

@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from "react"
 
-import { GiftOutlined, GithubOutlined, HeartOutlined } from "@ant-design/icons"
+import {
+  GiftOutlined,
+  GithubOutlined,
+  HeartOutlined,
+  QuestionCircleOutlined
+} from "@ant-design/icons"
 import { Button, Space, Tag } from "antd"
 import newGithubIssueUrl from "new-github-issue-url"
 
 import Icon from ".../assets/img/icon-128.png"
+import { SyncOptionsStorage } from ".../storage"
 import Title from "../Title.jsx"
 import { AboutStyle } from "./AboutStyle"
 
 function About() {
   const [version, setVersion] = useState("UNKNOWN")
+  const [storageMessage, setStorageMessage] = useState("")
 
   useEffect(() => {
     chrome.management.getSelf((self) => {
       setVersion(self.version)
+    })
+  }, [])
+
+  useEffect(() => {
+    SyncOptionsStorage.getOriginAll().then((options) => {
+      setStorageMessage(buildStorageMessage(options))
     })
   }, [])
 
@@ -63,6 +76,12 @@ ${navigator.userAgent}`
     })
   }
 
+  const openStorageExplainPage = () => {
+    chrome.tabs.create({
+      url: "https://ext.jgrass.cc/docs/storage"
+    })
+  }
+
   return (
     <AboutStyle>
       <Title title="关于"></Title>
@@ -95,8 +114,33 @@ ${navigator.userAgent}`
           </Tag>
         </Space>
       </div>
+
+      <div className="footer-storage">
+        <span>{storageMessage}</span>
+        <QuestionCircleOutlined
+          className="storage-detail-tip-icon"
+          onClick={openStorageExplainPage}
+        />
+      </div>
     </AboutStyle>
   )
 }
 
 export default About
+
+function buildStorageMessage(options) {
+  const lengthStr = (obj) => {
+    if (!obj) {
+      return "0 KB"
+    }
+    const l = JSON.stringify(obj).length
+    return (l / 1024).toFixed(2) + " KB"
+  }
+
+  const sceneLength = lengthStr(options.scenes)
+  const groupLength = lengthStr(options.groups)
+  const managementLength = lengthStr(options.management)
+  const ruleLength = lengthStr(options.ruleConfig)
+  const message = `浏览器同步存储空间使用情况：情景模式(${sceneLength}), 分组(${groupLength}), 别名备注(${managementLength}), 规则设置(${ruleLength})`
+  return message
+}
