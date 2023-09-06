@@ -7,9 +7,11 @@ import { styled } from "styled-components"
 const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
   const [group, setGroup] = useState(null)
 
+  const raiseEnable = options.setting.isRaiseEnableWhenSwitchGroup
+  const menuTitleAll = raiseEnable ? "未选择分组" : "全部"
   const fixMenu = [
     {
-      label: "默认",
+      label: menuTitleAll,
       key: "all"
     }
   ]
@@ -50,7 +52,7 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
       <Dropdown menu={groupMenu} trigger={["hover"]} placement="bottom">
         <MenuStyle>
           <span className="content">
-            <span className="menu-item-text">{group?.name ?? "默认"}</span>
+            <span className="menu-item-text">{group?.name ?? menuTitleAll}</span>
             <CaretDownOutlined className="caret" />
           </span>
         </MenuStyle>
