@@ -21,6 +21,7 @@
     "immutable": "^4.3.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
+    "lz-string": "^1.5.0",
     "mitt": "^3.0.1",
     "nanoid": "^4.0.2",
     "new-github-issue-url": "^1.0.0",
