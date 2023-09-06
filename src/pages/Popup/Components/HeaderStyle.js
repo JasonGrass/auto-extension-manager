@@ -70,7 +70,7 @@ const Style = styled.div`
 const SearchStyle = styled.div`
   input {
     width: 100%;
-    height: 24px;
+    height: 30px;
 
     margin: -1px -1px 0px 0px;
 

@@ -104,13 +104,14 @@ export default IndexPopup
 const Style = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   .header-container {
-    flex: 1 1 auto;
+    flex: 1 0 auto;
   }
 
   .extension-container {
-    flex: 1 1 530px;
+    flex: 1 1 auto;
     overflow: auto;
     margin-left: 0px;
   }
