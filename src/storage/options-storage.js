@@ -36,8 +36,11 @@ export const SyncOptionsStorage = {
     if (!options.scenes) {
       options.scenes = []
     }
+
     if (!options.groups) {
       options.groups = []
+    } else {
+      options.groups = strCompress.decompress(options.groups)
     }
 
     if (!options.ruleConfig) {
@@ -60,6 +63,9 @@ export const SyncOptionsStorage = {
    * 更新配置中的某一项，e.g. set({setting: settingObj})
    */
   async set(option) {
+    if (option.groups) {
+      option.groups = strCompress.compress(option.groups)
+    }
     if (option.ruleConfig) {
       option.ruleConfig = strCompress.compress(option.ruleConfig)
     }
@@ -70,6 +76,7 @@ export const SyncOptionsStorage = {
    * 覆盖式更新所有配置
    */
   async setAll(options) {
+    options.groups = strCompress.compress(options.groups)
     options.ruleConfig = strCompress.compress(options.ruleConfig)
     await OptionsStorage.setAll(options)
   }
