@@ -33,6 +33,8 @@ const createRuleMessage = (handler, ctx) => {
 
   // 规则配置发生变更
   listen("rule-config-changed", ctx, createRuleConfigChangedHandler(handler))
+
+  ctx.sendResponse({ state: "success" })
 }
 
 /**
@@ -40,6 +42,8 @@ const createRuleMessage = (handler, ctx) => {
  */
 const createHistoryMessage = (EM, ctx) => {
   listen("manual-change-group", ctx, createManualChangeGroupHandler(EM))
+
+  ctx.sendResponse({ state: "success" })
 }
 
 export default createMessageHandler

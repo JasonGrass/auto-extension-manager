@@ -59,7 +59,7 @@ export async function handleExtensionOnOff(extensions, options, group) {
   }
 
   // 通知 background，手动启用或禁用了哪些扩展，以进行历史操作记录
-  sendMessage("manual-change-group", {
+  await sendMessage("manual-change-group", {
     actuallyEnabledIds,
     actuallyDisabledIds,
     group

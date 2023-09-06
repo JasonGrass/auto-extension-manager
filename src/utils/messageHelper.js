@@ -1,11 +1,15 @@
 import chromeP from "webext-polyfill-kinda"
 
 export const sendMessage = async (message, params) => {
-  const msg = {
-    id: message,
-    params: params
+  try {
+    const msg = {
+      id: message,
+      params: params
+    }
+    return await chromeP.runtime.sendMessage(JSON.stringify(msg))
+  } catch (error) {
+    console.log("sendMessage", error)
   }
-  return await chromeP.runtime.sendMessage(JSON.stringify(msg))
 }
 
 export const listen = async (message, ctx, callback) => {
