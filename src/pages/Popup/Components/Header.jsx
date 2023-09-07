@@ -4,7 +4,10 @@ import { LayoutOutlined, SearchOutlined, SettingOutlined } from "@ant-design/ico
 import Icon from "@ant-design/icons/lib/components/Icon"
 import { Space } from "antd"
 
+import EdgeIcon from ".../assets/img/Microsoft_Store.svg"
+import ChromeWebStoreIcon from ".../assets/img/chrome-web-store-icon.svg"
 import storage from ".../storage"
+import { isEdgeBrowser } from ".../utils/utils"
 import MainIcon from "../../../assets/img/icon-64.png"
 import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
@@ -98,6 +101,42 @@ const Header = memo((props) => {
     }
   }, [isShowSearch])
 
+  const onStoreSearch = () => {
+    if (!searchText || searchText.trim() === "") {
+      return
+    }
+
+    if (isEdgeBrowser()) {
+      chrome.tabs.create({
+        url: `https://microsoftedge.microsoft.com/addons/search/${searchText.trim()}`
+      })
+    } else {
+      chrome.tabs.create({ url: `https://chromewebstore.google.com/search/${searchText.trim()}` })
+    }
+  }
+
+  const buildStoreSearchIcon = () => {
+    if (!searchText || searchText.trim() === "") {
+      return null
+    }
+
+    return isEdgeBrowser() ? (
+      <img
+        src={EdgeIcon}
+        className="store-icon edge-store-icon"
+        alt="edge icon"
+        onClick={(e) => onStoreSearch()}
+      />
+    ) : (
+      <img
+        src={ChromeWebStoreIcon}
+        className="store-icon chrome-store-icon"
+        alt="chrome web store icon"
+        onClick={(e) => onStoreSearch()}
+      />
+    )
+  }
+
   return (
     <>
       <Style>
@@ -139,7 +178,13 @@ const Header = memo((props) => {
             placeholder="Search"
             value={searchText}
             onChange={(e) => onSearchTextChange(e)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onStoreSearch()
+              }
+            }}
             ref={searchInputRef}></input>
+          {buildStoreSearchIcon()}
         </SearchStyle>
       )}
     </>

@@ -68,6 +68,8 @@ const Style = styled.div`
 `
 
 const SearchStyle = styled.div`
+  position: relative;
+
   input {
     width: 100%;
     height: 30px;
@@ -83,6 +85,25 @@ const SearchStyle = styled.div`
       outline: 0;
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(102, 175, 233, 0.6);
     }
+  }
+
+  .store-icon {
+    position: absolute;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .chrome-store-icon {
+    top: 4px;
+    right: 10px;
+    width: 24px;
+  }
+
+  .edge-store-icon {
+    top: 1px;
+    right: 10px;
+    width: 24px;
   }
 `
 
