@@ -6,6 +6,7 @@
     "INDEXEDDB",
     "localforage",
     "noreferrer",
+    "pangea",
     "Popconfirm",
     "webext"
   ]

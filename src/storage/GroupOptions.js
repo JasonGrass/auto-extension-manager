@@ -72,6 +72,28 @@ export const GroupOptions = {
     }
     const newGroups = all.groups.filter((g) => g.id !== id)
     await SyncOptionsStorage.set({ groups: newGroups })
+  },
+
+  async orderGroups(items) {
+    const all = await SyncOptionsStorage.getAll()
+    if (!all.groups) {
+      return
+    }
+    const newGroups = []
+    const fixedGroup = all.groups.find((g) => g.id === "fixed")
+    newGroups.push(fixedGroup)
+
+    for (const item of items) {
+      if (item.id === "fixed") {
+        continue
+      }
+      const exist = all.groups.find((g) => g.id === item.id)
+      if (exist) {
+        newGroups.push(exist)
+      }
+    }
+
+    await SyncOptionsStorage.set({ groups: newGroups })
   }
 }
 

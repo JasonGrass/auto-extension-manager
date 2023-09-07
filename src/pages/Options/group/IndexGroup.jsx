@@ -95,6 +95,11 @@ function GroupManagement() {
     await updateByGroupConfigs()
   }
 
+  const onGroupOrdered = async (items) => {
+    await GroupOptions.orderGroups(items)
+    await updateByGroupConfigs()
+  }
+
   const onGroupItemEdit = async (item) => {
     setItemEditInfo(item)
     setItemEditType("edit")
@@ -145,7 +150,8 @@ function GroupManagement() {
             current={selectedGroup}
             onSelectedChanged={onSelectedChanged}
             onGroupItemDeleted={onGroupDeleted}
-            onGroupItemEdit={onGroupItemEdit}></GroupNav>
+            onGroupItemEdit={onGroupItemEdit}
+            onGroupOrdered={onGroupOrdered}></GroupNav>
         </div>
 
         <div className="right-box">

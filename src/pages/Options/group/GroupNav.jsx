@@ -1,6 +1,7 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 
 import { DeleteFilled, EditFilled, PlusOutlined } from "@ant-design/icons"
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd"
 import { Popconfirm, message } from "antd"
 import classNames from "classnames"
 
@@ -8,15 +9,27 @@ import { GroupOptions } from ".../storage/index"
 import { GroupNavStyle } from "./GroupNavStyle"
 import { AddNewNavItem } from "./helpers"
 
-function GroupNav({ groupInfo, current, onSelectedChanged, onGroupItemDeleted, onGroupItemEdit }) {
-  let showGroupItems = []
-  const fixedGroup = groupInfo.find((g) => g.id === "fixed")
-  if (fixedGroup) {
-    fixedGroup.name = "固定分组"
-    fixedGroup.desc = `这是一个内置分组，此分组中的扩展，在 Popup 中手动切换分组时，不会被禁用。通常将常驻的扩展放在此分组中。
-    注意：如果在规则配置中，明确配置关闭某个扩展，即使此扩展在固定分组中，禁用依旧有效。`
-    showGroupItems = [fixedGroup, ...groupInfo.filter((g) => g.id !== "fixed")]
-  }
+function GroupNav({
+  groupInfo,
+  current,
+  onSelectedChanged,
+  onGroupItemDeleted,
+  onGroupItemEdit,
+  onGroupOrdered
+}) {
+  const [groupItems, setGroupItems] = useState([])
+
+  useEffect(() => {
+    let showGroupItems = []
+    const fixedGroup = groupInfo.find((g) => g.id === "fixed")
+    if (fixedGroup) {
+      fixedGroup.name = "固定分组"
+      fixedGroup.desc = `这是一个内置分组，此分组中的扩展，在 Popup 中手动切换分组时，不会被禁用。通常将常驻的扩展放在此分组中。
+      注意：如果在规则配置中，明确配置关闭某个扩展，即使此扩展在固定分组中，禁用依旧有效。`
+      showGroupItems = [fixedGroup, ...groupInfo.filter((g) => g.id !== "fixed")]
+    }
+    setGroupItems(showGroupItems)
+  }, [groupInfo])
 
   const onGroupTabClick = (e, item) => {
     onSelectedChanged?.(item)
@@ -76,54 +89,98 @@ function GroupNav({ groupInfo, current, onSelectedChanged, onGroupItemDeleted, o
     message.info(`delete ${group.name}`)
   }
 
+  const handleDrop = (droppedItem) => {
+    console.log(droppedItem)
+
+    if (!droppedItem.destination) return
+    if (droppedItem.droppableId === "fixed") {
+      return
+    }
+
+    var updatedList = [...groupItems]
+    // Remove dragged item
+    const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1)
+    // Add dropped item
+    updatedList.splice(droppedItem.destination.index, 0, reorderedItem)
+    // Update State
+    setGroupItems(updatedList)
+
+    onGroupOrdered?.(updatedList)
+  }
+
+  // 单个 Group Item 的显示
+  const buildGroupItemView = (group) => {
+    return (
+      <div onClick={(e) => onGroupTabClick(e, group)}>
+        <div
+          className={classNames([
+            "tab-container",
+            { "selected-group-item": group.id === current?.id }
+          ])}>
+          <h3>{group.name}</h3>
+          <div className="tab-operation">
+            <EditFilled
+              onClick={(e) => onEditGroupClick(e, group)}
+              className="tab-operation-item"
+            />
+
+            <Popconfirm
+              className="tab-operation-item"
+              title="删除分组"
+              description={`确认删除分组"${group.name}"`}
+              onConfirm={(e) => onDeleteGroupClick(e, group)}
+              onCancel={(e) => e.stopPropagation()}
+              okText="Yes"
+              cancelText="Cancel"
+              onClick={(e) => e.stopPropagation()}>
+              <DeleteFilled />
+            </Popconfirm>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <GroupNavStyle>
-      <ul>
-        {showGroupItems.map((group) => {
-          return (
-            <li key={group.id} onClick={(e) => onGroupTabClick(e, group)}>
-              <div
-                className={classNames([
-                  "tab-container",
-                  { "selected-group-item": group.id === current?.id }
-                ])}>
-                <h3>{group.name}</h3>
-                <div className="tab-operation">
-                  <EditFilled
-                    onClick={(e) => onEditGroupClick(e, group)}
-                    className="tab-operation-item"
-                  />
+      <DragDropContext onDragEnd={handleDrop}>
+        <Droppable droppableId="group-droppable">
+          {(provided, snapshot) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {groupItems.map((group, index) => (
+                <Draggable
+                  key={group.id}
+                  draggableId={group.id}
+                  index={index}
+                  isDragDisabled={group.id === "fixed"}>
+                  {(provided, snapshot) => (
+                    <div
+                      className="item-container"
+                      ref={provided.innerRef}
+                      {...provided.dragHandleProps}
+                      {...provided.draggableProps}>
+                      {buildGroupItemView(group)}
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
 
-                  <Popconfirm
-                    className="tab-operation-item"
-                    title="删除分组"
-                    description={`确认删除分组"${group.name}"`}
-                    onConfirm={(e) => onDeleteGroupClick(e, group)}
-                    onCancel={(e) => e.stopPropagation()}
-                    okText="Yes"
-                    cancelText="Cancel"
-                    onClick={(e) => e.stopPropagation()}>
-                    <DeleteFilled />
-                  </Popconfirm>
-                </div>
-              </div>
-            </li>
-          )
-        })}
-        <li>
-          <div
-            className={classNames([
-              "tab-container",
-              "add-new-group",
-              {
-                "selected-group-item": current?.id === AddNewNavItem.id
-              }
-            ])}
-            onClick={(e) => onAddNewGroupClick(e)}>
-            <PlusOutlined />
-          </div>
-        </li>
-      </ul>
+      <div
+        className={classNames([
+          "tab-container",
+          "add-new-group",
+          {
+            "selected-group-item": current?.id === AddNewNavItem.id
+          }
+        ])}
+        onClick={(e) => onAddNewGroupClick(e)}>
+        <PlusOutlined />
+      </div>
     </GroupNavStyle>
   )
 }
