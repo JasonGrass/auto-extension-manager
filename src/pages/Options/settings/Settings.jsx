@@ -19,6 +19,8 @@ function Settings() {
   const [isShowItemOperationAlways, setIsShowItemOperationAlways] = useState(false)
   // 是否总是显示搜索栏
   const [isShowSearchBar, setIsShowSearchBar] = useState(false)
+  // 是否支持跳转到应用商店搜索
+  const [isSupportSearchAppStore, setIsSupportSearchAppStore] = useState(false)
   // 切换分组时，是否执行扩展启用与禁用
   const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
   // 是否在 Popup 中，展示固定分组中的扩展
@@ -52,6 +54,8 @@ function Settings() {
     setIsShowFixedExtension(showFixedExtension)
     const showAppNameInGridView = setting.isShowAppNameInGirdView ?? false
     setIsShowAppNameInGirdView(showAppNameInGridView)
+    const supportSearchAppStore = setting.isSupportSearchAppStore ?? false
+    setIsSupportSearchAppStore(supportSearchAppStore)
 
     // 网格视图下的列数
     let tempColumnInGirdView = Number(setting.columnCountInGirdView)
@@ -124,7 +128,7 @@ function Settings() {
       <div className="container">
         <div className="setting-item">
           <span>
-            顶部默认显示搜索框（未设置时点击 🔍 显示）
+            搜索框：默认显示（未开启时点击 🔍 显示）
             <Tooltip placement="top" title="也可以使用快捷键 'F' 打开搜索框">
               <QuestionCircleOutlined />
             </Tooltip>{" "}
@@ -134,6 +138,23 @@ function Settings() {
             checked={isShowSearchBar}
             onChange={(value) =>
               onSettingChange(value, setIsShowSearchBar, "isShowSearchBarDefault")
+            }></Switch>
+        </div>
+
+        <div className="setting-item">
+          <span>
+            搜索框：支持跳转应用商店搜索{" "}
+            <Tooltip
+              placement="top"
+              title="开启之后，可以跳转到浏览器应用商店搜索扩展（支持 Enter 快捷跳转）">
+              <QuestionCircleOutlined />
+            </Tooltip>{" "}
+          </span>
+          <Switch
+            size="small"
+            checked={isSupportSearchAppStore}
+            onChange={(value) =>
+              onSettingChange(value, setIsSupportSearchAppStore, "isSupportSearchAppStore")
             }></Switch>
         </div>
 

@@ -101,7 +101,14 @@ const Header = memo((props) => {
     }
   }, [isShowSearch])
 
+  /**
+   * 应用商店搜索
+   */
   const onStoreSearch = () => {
+    if (!options.setting.isSupportSearchAppStore) {
+      return
+    }
+
     if (!searchText || searchText.trim() === "") {
       return
     }
@@ -115,7 +122,13 @@ const Header = memo((props) => {
     }
   }
 
+  /**
+   * 构建应用商店搜索的按钮图标
+   */
   const buildStoreSearchIcon = () => {
+    if (!options.setting.isSupportSearchAppStore) {
+      return
+    }
     if (!searchText || searchText.trim() === "") {
       return null
     }
