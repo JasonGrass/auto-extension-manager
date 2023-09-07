@@ -1,6 +1,6 @@
 {
   "name": "extension-manager",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "a chrome extension manager where you can add rules",
   "license": "MIT",
   "repository": {
