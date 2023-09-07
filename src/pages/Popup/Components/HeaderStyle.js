@@ -79,9 +79,9 @@ const SearchStyle = styled.div`
     border-radius: 1px;
 
     &:focus {
-      border-color: #66afe9;
+      border-color: #66afe9cc;
       outline: 0;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(102, 175, 233, 0.6);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(102, 175, 233, 0.6);
     }
   }
 `
