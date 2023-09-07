@@ -14,6 +14,8 @@ export const GroupNavStyle = styled.div`
     border-radius: 5px;
     box-shadow: 1px 1px 4px 0px #337ab788;
 
+    user-select: none;
+
     &:hover {
       background-color: #337ab7cc;
     }
