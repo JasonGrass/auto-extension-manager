@@ -106,16 +106,58 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
       }
     }
 
+    // 是否显示固定分组的小圆点标记
+    const shouldShowFixedPin = (item) => {
+      if (!options.setting.isShowDotOfFixedExtension) {
+        return false
+      }
+
+      if (isGrouped && group.id === "fixed") {
+        return true
+      }
+
+      const fixedGroup = groupList.find((g) => g.id === "fixed")
+      return fixedGroup?.extensions?.includes(item.id)
+    }
+
     return (
       <ExtensionItems
         items={shownItems}
         onClick={onIconClick}
         placeholder="none"
         options={options}
-        showFixedPin={
-          isGrouped && group.id === "fixed" && options.setting.isShowDotOfFixedExtension
+        showFixedPin={shouldShowFixedPin}
+        footer={otherGroupInfoFooter}></ExtensionItems>
+    )
+  }
+
+  // 显示扩展所在的其它分组
+  function otherGroupInfoFooter(item) {
+    if (!groupList) {
+      return null
+    }
+
+    const names = groupList
+      .filter((g) => {
+        if (!g.extensions) {
+          return false
         }
-      />
+        return g.extensions.includes(item.id)
+      })
+      .filter((g) => g.id !== "fixed")
+      .filter((g) => g.id !== group.id)
+      .map((g) => g.name)
+
+    return (
+      <div className="other-group-info-container">
+        {names.map((n) => {
+          return (
+            <div key={n} className="other-group-info-name">
+              {n}
+            </div>
+          )
+        })}
+      </div>
     )
   }
 })

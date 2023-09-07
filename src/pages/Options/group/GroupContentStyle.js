@@ -17,4 +17,16 @@ export const GroupContentStyle = styled.div`
 
     border-left: 2px solid #cccccc;
   }
+
+  .other-group-info-container {
+    margin: -16px 0 0 0;
+  }
+
+  .other-group-info-name {
+    margin: 1px 0;
+    padding: 2px 4px;
+    color: #666;
+    border-radius: 2px;
+    background-color: #ddd;
+  }
 `

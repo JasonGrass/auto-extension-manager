@@ -12,9 +12,8 @@ import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
  * @param placeholder 列表中没有内容时，显示的提示文字
  * @param onClick 点击单个扩展项时的回调
  */
-const ExtensionItems = memo(({ items, placeholder, onClick, options, showFixedPin }) => {
+const ExtensionItems = memo(({ items, placeholder, onClick, options, showFixedPin, footer }) => {
   const isEmpty = !items || items.length === 0
-  const showFixedPinDot = showFixedPin ?? false
 
   // 附加了额外信息的扩展列表
   const extensions = appendAdditionInfo(items, options?.management)
@@ -41,12 +40,13 @@ const ExtensionItems = memo(({ items, placeholder, onClick, options, showFixedPi
                   <div className="ext-item">
                     <div>
                       <img src={getIcon(item, 128)} alt="" />
-                      {showFixedPinDot && <i className="ext-item-fixed-dot"></i>}
+                      {showFixedPin?.(item) && <i className="ext-item-fixed-dot"></i>}
                     </div>
 
                     <span>{showName}</span>
                   </div>
                 </Tooltip>
+                {footer?.(item)}
               </li>
             )
           })}
@@ -62,6 +62,12 @@ const Style = styled.div`
   ul {
     display: flex;
     flex-wrap: wrap;
+  }
+
+  li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .ext-item {
