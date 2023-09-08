@@ -91,10 +91,14 @@ export class HistoryEventRaiser {
 
   public async onInstalled(info: chrome.management.ExtensionInfo) {
     const old = await this.EM.Extension.service.getExtension(info.id)
+
+    let time = {}
     if (!old || !old.state || old.state === "uninstall") {
       this.service.add(HistoryRecord.buildPlain(info, "install"))
+      time = { installDate: Date.now() }
     } else {
       this.service.add(HistoryRecord.buildPlain(info, "updated"))
+      time = { updateDate: Date.now() }
     }
 
     // 更新记录
@@ -103,13 +107,15 @@ export class HistoryEventRaiser {
         ...old,
         ...info,
         state: "install",
-        recordUpdateTime: Date.now()
+        recordUpdateTime: Date.now(),
+        ...time
       })
     } else {
       this.EM.Extension.service.setExtension({
         ...info,
         state: "install",
-        recordUpdateTime: Date.now()
+        recordUpdateTime: Date.now(),
+        ...time
       })
     }
 
