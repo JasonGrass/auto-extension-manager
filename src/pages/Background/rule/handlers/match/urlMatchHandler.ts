@@ -28,7 +28,7 @@ export default async function checkCurrentUrlMatch(
     return false
   }
 
-  return isMatchUrl(currentUrl, config.matchUrl, config.matchMethod)
+  return isMatchUrl(currentUrl, config.matchUrl, config.matchMethod, config.useFullUrl ?? false)
 }
 
 /**
@@ -60,19 +60,22 @@ export async function checkAnyUrlMatch(
 function isMatchUrl(
   url: string | undefined,
   patterns: string[] | undefined,
-  matchMethod: ruleV2.MatchMethod
+  matchMethod: ruleV2.MatchMethod,
+  useFullUrl: boolean
 ): boolean {
   if (!url || url === "") return false
   if (!patterns || patterns.length === 0) return false
 
   let matchUrl = url
-  const index1 = url.indexOf("?")
-  if (index1 > 0) {
-    matchUrl = matchUrl.substring(0, index1)
-  }
-  const index2 = matchUrl.indexOf("#")
-  if (index2 > 0) {
-    matchUrl = matchUrl.substring(0, index2)
+  if (!useFullUrl) {
+    const index1 = url.indexOf("?")
+    if (index1 > 0) {
+      matchUrl = matchUrl.substring(0, index1)
+    }
+    const index2 = matchUrl.indexOf("#")
+    if (index2 > 0) {
+      matchUrl = matchUrl.substring(0, index2)
+    }
   }
 
   if (matchMethod === "wildcard") {

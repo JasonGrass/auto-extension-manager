@@ -68,6 +68,7 @@ declare namespace ruleV2 {
   export interface IUrlTriggerConfig {
     matchMethod: MatchMethod
     matchUrl: string[]
+    useFullUrl?: boolean
   }
 
   export interface ISceneTriggerConfig {

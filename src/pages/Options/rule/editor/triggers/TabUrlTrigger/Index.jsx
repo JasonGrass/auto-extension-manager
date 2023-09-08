@@ -1,7 +1,12 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from "react"
 
-import { ClearOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons"
-import { Alert, Button, Dropdown, Input, Radio, Space, Switch } from "antd"
+import {
+  ClearOutlined,
+  DownOutlined,
+  PlusOutlined,
+  QuestionCircleOutlined
+} from "@ant-design/icons"
+import { Alert, Button, Checkbox, Dropdown, Input, Radio, Space, Switch, Tooltip } from "antd"
 import { styled } from "styled-components"
 
 /*
@@ -26,7 +31,8 @@ const TabUrlTrigger = ({ options, config }, ref) => {
 
       return {
         matchMethod: matchMethod,
-        matchUrl: urls
+        matchUrl: urls,
+        useFullUrl: useFullUrl
       }
     }
   }))
@@ -35,6 +41,8 @@ const TabUrlTrigger = ({ options, config }, ref) => {
   const [matchHostList, setMatchHostList] = useState([])
   // 域名匹配计算方法，regex / wildcard
   const [matchMethod, setMatchMethod] = useState("wildcard")
+  // 是否使用完整 URL 进行计算
+  const [useFullUrl, setUseFullUrl] = useState(false)
 
   // 初始化
   useEffect(() => {
@@ -49,6 +57,8 @@ const TabUrlTrigger = ({ options, config }, ref) => {
     } else {
       setMatchMethod("wildcard")
     }
+
+    setUseFullUrl(myConfig.useFullUrl === true)
   }, [config])
 
   const onAppendPatternClick = (e) => {
@@ -68,6 +78,10 @@ const TabUrlTrigger = ({ options, config }, ref) => {
 
   const onMatchMethodSwitchChanged = (e) => {
     setMatchMethod(e.target.value)
+  }
+
+  const onFullUrlSettingChange = (e) => {
+    setUseFullUrl(e.target.checked)
   }
 
   return (
@@ -90,6 +104,18 @@ const TabUrlTrigger = ({ options, config }, ref) => {
             <Radio value="wildcard">通配符</Radio>
             <Radio value="regex">正则表达式</Radio>
           </Radio.Group>
+        </span>
+        <span style={{ marginLeft: 80 }}>
+          <Checkbox checked={useFullUrl} onChange={onFullUrlSettingChange}>
+            <span>
+              使用完整 URL 进行计算{" "}
+              <Tooltip
+                placement="top"
+                title="默认情况下，不考虑 URL 中的查询参数和锚点部分，详细说明见文档">
+                <QuestionCircleOutlined />
+              </Tooltip>{" "}
+            </span>
+          </Checkbox>
         </span>
       </div>
 
