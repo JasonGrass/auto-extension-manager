@@ -14,6 +14,7 @@ import "./ExtensionListItem.css"
 
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
 import { getIcon } from ".../utils/extensionHelper.js"
+import { getLang } from ".../utils/utils"
 import { isStringEmpty } from ".../utils/utils.js"
 import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
 
@@ -134,8 +135,8 @@ const ExtensionListItem = memo(({ item, options }) => {
           />
 
           <Popconfirm
-            title="移除扩展"
-            description={`确认要从浏览器中移除 ${item.shortName}`}
+            title={getLang("remove_extension")}
+            description={getLang("remove_extension_confirm", item.shortName)}
             onConfirm={(e) => confirmDeleteExtension(e, item)}
             onCancel={(e) => cancelDeleteExtension(e, item)}
             onClick={(e) => setIsInteractive(true)}

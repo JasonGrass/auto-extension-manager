@@ -4,5 +4,35 @@
   },
   "ext_desc": {
     "message": "一个可以自由配置规则的扩展管理工具"
+  },
+  "scene_title": {
+    "message": "情景模式"
+  },
+  "scene_cancel_all": {
+    "message": "取消所有"
+  },
+  "group_title": {
+    "message": "分组管理"
+  },
+  "group_unselect": {
+    "message": "未选择分组"
+  },
+  "group_select_all": {
+    "message": "全部"
+  },
+  "enable_extension": {
+    "message": "启用"
+  },
+  "disable_extension": {
+    "message": "禁用"
+  },
+  "remove_extension": {
+    "message": "移除扩展"
+  },
+  "remove_extension_confirm": {
+    "message": "确认要从浏览器中移除 $1"
+  },
+  "app_not_enable": {
+    "message": "未启用"
   }
 }

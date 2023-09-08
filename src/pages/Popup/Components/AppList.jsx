@@ -4,6 +4,7 @@ import { message } from "antd"
 import classNames from "classnames"
 import chromeP from "webext-polyfill-kinda"
 
+import { getLang } from ".../utils/utils"
 import { getIcon } from "../../../utils/extensionHelper"
 import { AppListStyle } from "./AppListStyle.js"
 
@@ -25,7 +26,7 @@ const AppList = memo(({ items }) => {
         }
       }
     } else {
-      message.info(`${item.shortName} 未启用`)
+      message.info(`${item.shortName} ${getLang("app_not_enable")}`)
     }
   }
 

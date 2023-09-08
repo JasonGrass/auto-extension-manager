@@ -3,6 +3,36 @@
     "message": "Extension Manager"
   },
   "ext_desc": {
-    "message": "a simple way to manage your chrome extensions"
+    "message": "A simple way to manage your chrome extensions"
+  },
+  "scene_title": {
+    "message": "Profile"
+  },
+  "scene_cancel_all": {
+    "message": "Cancel all"
+  },
+  "group_title": {
+    "message": "Group"
+  },
+  "group_unselect": {
+    "message": "Unselect"
+  },
+  "group_select_all": {
+    "message": "All"
+  },
+  "enable_extension": {
+    "message": "Enable"
+  },
+  "disable_extension": {
+    "message": "Disable"
+  },
+  "remove_extension": {
+    "message": "Remove"
+  },
+  "remove_extension_confirm": {
+    "message": "Remove '$1' ?"
+  },
+  "app_not_enable": {
+    "message": "not enable"
   }
 }

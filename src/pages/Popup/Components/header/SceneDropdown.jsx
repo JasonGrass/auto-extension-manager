@@ -5,6 +5,7 @@ import { Dropdown } from "antd"
 
 import { LocalOptions } from ".../storage/local"
 import { sendMessage } from ".../utils/messageHelper"
+import { getLang } from ".../utils/utils"
 import { MenuStyle } from "./GroupDropdown"
 
 const SceneDropdown = memo(({ options, className }) => {
@@ -20,7 +21,7 @@ const SceneDropdown = memo(({ options, className }) => {
 
   const fixMenu = [
     {
-      label: "取消所有",
+      label: getLang("scene_cancel_all"),
       key: "cancel"
     }
   ]
@@ -57,7 +58,7 @@ const SceneDropdown = memo(({ options, className }) => {
       <Dropdown menu={sceneMenu} trigger={["hover"]} placement="bottom">
         <MenuStyle>
           <span className="content">
-            <span className="menu-item-text">{scene?.name ?? "情景模式"}</span>
+            <span className="menu-item-text">{scene?.name ?? getLang("scene_title")}</span>
             <CaretDownOutlined className="caret" />
           </span>
         </MenuStyle>

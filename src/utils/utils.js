@@ -9,6 +9,16 @@ export const isStringEmpty = function (str) {
   return false
 }
 
+export const getLang = (key, ...params) => {
+  if (isStringEmpty(key)) {
+    return ""
+  }
+  if (!params || params.length === 0) {
+    return chrome.i18n.getMessage(key)
+  }
+  return chrome.i18n.getMessage(key, params)
+}
+
 /**
  * 下载 Image 并获取其 data uri
  * 仅在支持 XMLHttpRequest 时可用
