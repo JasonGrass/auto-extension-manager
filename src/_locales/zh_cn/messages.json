@@ -100,5 +100,68 @@
   },
   "about_storage_usage": {
     "message": "浏览器同步存储空间使用情况：情景模式($1), 分组($2), 别名备注($3), 规则设置($4)"
+  },
+  "column_index": {
+    "message": "序号"
+  },
+  "column_time": {
+    "message": "时间"
+  },
+  "column_event": {
+    "message": "事件"
+  },
+  "column_name": {
+    "message": "名称"
+  },
+  "column_version": {
+    "message": "版本"
+  },
+  "column_remark": {
+    "message": "备注"
+  },
+  "history_absolute_time": {
+    "message": "绝对时间"
+  },
+  "history_clean_record": {
+    "message": "清空记录"
+  },
+  "history_cause": {
+    "message": "由"
+  },
+  "history_raise": {
+    "message": "触发"
+  },
+  "history_rule": {
+    "message": "规则"
+  },
+  "history_switch_group": {
+    "message": "切换分组"
+  },
+  "history_manage_extension": {
+    "message": "管理扩展程序"
+  },
+  "history_title": {
+    "message": "历史记录"
+  },
+  "history_install": {
+    "message": "安装"
+  },
+  "history_uninstall": {
+    "message": "卸载"
+  },
+  "history_update": {
+    "message": "更新"
+  },
+  "history_enable": {
+    "message": "启用"
+  },
+  "history_disable": {
+    "message": "禁用"
+  },
+  "history_browser_update": {
+    "message": "浏览器更新"
+  },
+  "end": {
+    "message": "end"
   }
 }

@@ -15,6 +15,7 @@ import {
 } from "antd"
 import chromeP from "webext-polyfill-kinda"
 
+import { getLang } from ".../utils/utils"
 import { downloadIconDataUrl, getIcon } from "../../../utils/extensionHelper"
 import isMatch from "../../../utils/searchHelper"
 import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
@@ -41,7 +42,7 @@ const ExtensionHistory = memo(({ records }) => {
   const columns = [
     Table.EXPAND_COLUMN,
     {
-      title: "序号",
+      title: getLang("column_index"),
       dataIndex: "index",
       key: "index",
       width: 60,
@@ -50,7 +51,7 @@ const ExtensionHistory = memo(({ records }) => {
       }
     },
     {
-      title: "时间",
+      title: getLang("column_time"),
       dataIndex: "timestamp",
       key: "time",
       width: 150,
@@ -63,7 +64,7 @@ const ExtensionHistory = memo(({ records }) => {
       }
     },
     {
-      title: "事件",
+      title: getLang("column_event"),
       dataIndex: "event",
       key: "event",
       width: 60,
@@ -72,7 +73,7 @@ const ExtensionHistory = memo(({ records }) => {
       }
     },
     {
-      title: "名称",
+      title: getLang("column_name"),
       dataIndex: "name",
       key: "name",
       width: 320,
@@ -101,7 +102,7 @@ const ExtensionHistory = memo(({ records }) => {
       }
     },
     {
-      title: "版本",
+      title: getLang("column_version"),
       dataIndex: "version",
       key: "version",
       width: 100,
@@ -110,10 +111,10 @@ const ExtensionHistory = memo(({ records }) => {
       }
     },
     {
-      title: "备注",
+      title: getLang("column_remark"),
       dataIndex: "remark",
       key: "remark",
-      width: 320,
+      width: 200,
       render: (remark, record, index) => formatRemark(record)
     }
   ]
@@ -170,7 +171,7 @@ const ExtensionHistory = memo(({ records }) => {
             className="setting-operation-item"
             checked={timeShowWay === "absolute"}
             onChange={onTimeShowWayChange}>
-            绝对时间
+            {getLang("history_absolute_time")}
           </Checkbox>
         </div>
         <div className="history-manage-tools-right">
@@ -180,7 +181,7 @@ const ExtensionHistory = memo(({ records }) => {
             onConfirm={confirmClearHistoryRecords}
             okText="Yes"
             cancelText="No">
-            <Button className="setting-operation-item">清空记录</Button>
+            <Button className="setting-operation-item">{getLang("history_clean_record")}</Button>
           </Popconfirm>
         </div>
       </div>
@@ -215,16 +216,16 @@ const formatRemark = (record) => {
     const url = `options.html#/rule?id=${ruleId}`
     return (
       <span>
-        由
+        {getLang("history_cause")}
         <a
           className="column-remark-link"
           href={url}
           target="_blank"
           rel="noreferrer"
           onClick={(e) => e.stopPropagation()}>
-          规则
+          {getLang("history_rule")}
         </a>
-        触发
+        {getLang("history_raise")}
       </span>
     )
   }
@@ -233,16 +234,16 @@ const formatRemark = (record) => {
     const url = `options.html#/group?id=${groupId}`
     return (
       <span>
-        由
+        {getLang("history_cause")}
         <a
           className="column-remark-link"
           href={url}
           target="_blank"
           rel="noreferrer"
           onClick={(e) => e.stopPropagation()}>
-          切换分组
+          {getLang("history_switch_group")}
         </a>
-        触发
+        {getLang("history_raise")}
       </span>
     )
   }

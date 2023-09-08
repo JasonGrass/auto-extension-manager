@@ -100,5 +100,68 @@
   },
   "about_storage_usage": {
     "message": "Browser sync storage usage: Profile($1), Group($2), Alias($3), Rule($4)"
+  },
+  "column_index": {
+    "message": "Index"
+  },
+  "column_time": {
+    "message": "Time"
+  },
+  "column_event": {
+    "message": "Event"
+  },
+  "column_name": {
+    "message": "Name"
+  },
+  "column_version": {
+    "message": "Version"
+  },
+  "column_remark": {
+    "message": "Remark"
+  },
+  "history_absolute_time": {
+    "message": "Absolute Time"
+  },
+  "history_clean_record": {
+    "message": "Clear Record"
+  },
+  "history_cause": {
+    "message": "Because of"
+  },
+  "history_raise": {
+    "message": ""
+  },
+  "history_rule": {
+    "message": "Rule"
+  },
+  "history_switch_group": {
+    "message": "Switch Group"
+  },
+  "history_manage_extension": {
+    "message": "Manage This Extension"
+  },
+  "history_title": {
+    "message": "History"
+  },
+  "history_install": {
+    "message": "Install"
+  },
+  "history_uninstall": {
+    "message": "Uninstall"
+  },
+  "history_update": {
+    "message": "Updated"
+  },
+  "history_enable": {
+    "message": "Enable"
+  },
+  "history_disable": {
+    "message": "Disable"
+  },
+  "history_browser_update": {
+    "message": "Browser Updated"
+  },
+  "end": {
+    "message": "end"
   }
 }
