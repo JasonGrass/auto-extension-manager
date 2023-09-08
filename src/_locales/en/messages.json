@@ -185,6 +185,12 @@
   "alias_title": {
     "message": "Alias"
   },
+  "setting_title": {
+    "message": "Settings"
+  },
+  "rule_title": {
+    "message": "Rules"
+  },
   "end": {
     "message": "end"
   }

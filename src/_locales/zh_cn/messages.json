@@ -185,6 +185,12 @@
   "alias_title": {
     "message": "扩展别名"
   },
+  "setting_title": {
+    "message": "通用设置"
+  },
+  "rule_title": {
+    "message": "规则设置"
+  },
   "end": {
     "message": "end"
   }
