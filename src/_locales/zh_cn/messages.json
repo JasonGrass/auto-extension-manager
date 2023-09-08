@@ -34,5 +34,23 @@
   },
   "app_not_enable": {
     "message": "未启用"
+  },
+  "about_title": {
+    "message": "关于"
+  },
+  "about_desc": {
+    "message": "一个可以根据规则自动打开或关闭浏览器扩展的工具"
+  },
+  "about_feedback": {
+    "message": "问题反馈"
+  },
+  "about_help": {
+    "message": "查看帮助"
+  },
+  "about_version": {
+    "message": "版本"
+  },
+  "about_storage_usage": {
+    "message": "浏览器同步存储空间使用情况：情景模式($1), 分组($2), 别名备注($3), 规则设置($4)"
   }
 }

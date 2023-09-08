@@ -34,5 +34,23 @@
   },
   "app_not_enable": {
     "message": "not enable"
+  },
+  "about_title": {
+    "message": "About"
+  },
+  "about_desc": {
+    "message": "A extension that can automatically open or close browser extension based on rules"
+  },
+  "about_feedback": {
+    "message": "Feedback"
+  },
+  "about_help": {
+    "message": "Help"
+  },
+  "about_version": {
+    "message": "version"
+  },
+  "about_storage_usage": {
+    "message": "Browser sync storage usage: Profile($1), Group($2), Alias($3), Rule($4)"
   }
 }
