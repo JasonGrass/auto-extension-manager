@@ -14,6 +14,9 @@
   "cancel": {
     "message": "取消"
   },
+  "save": {
+    "message": "保存"
+  },
   "scene_title": {
     "message": "情景模式"
   },
@@ -119,6 +122,12 @@
   "column_remark": {
     "message": "备注"
   },
+  "column_extension": {
+    "message": "扩展"
+  },
+  "column_alias": {
+    "message": "别名"
+  },
   "history_absolute_time": {
     "message": "绝对时间"
   },
@@ -160,6 +169,21 @@
   },
   "history_browser_update": {
     "message": "浏览器更新"
+  },
+  "alias_exist": {
+    "message": "存在别名"
+  },
+  "alias_remark_exist": {
+    "message": "存在备注"
+  },
+  "alias_max_length": {
+    "message": "扩展别名长度最大 50"
+  },
+  "alias_remark_max_length": {
+    "message": "备注长度最大为 100"
+  },
+  "alias_title": {
+    "message": "扩展别名"
   },
   "end": {
     "message": "end"

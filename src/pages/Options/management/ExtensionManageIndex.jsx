@@ -4,6 +4,7 @@ import chromeP from "webext-polyfill-kinda"
 
 import { ManageOptions } from ".../storage"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
+import { getLang } from "../../../utils/utils.js"
 import Title from "../Title.jsx"
 import ExtensionManage from "./ExtensionManage.jsx"
 
@@ -24,7 +25,7 @@ const ExtensionManageIndex = () => {
 
   return (
     <div>
-      <Title title="扩展别名"></Title>
+      <Title title={getLang("alias_title")}></Title>
       <ExtensionManage extensions={extensions} config={managementConfig}></ExtensionManage>
     </div>
   )

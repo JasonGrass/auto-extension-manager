@@ -14,6 +14,9 @@
   "cancel": {
     "message": "Cancel"
   },
+  "save": {
+    "message": "Save"
+  },
   "scene_title": {
     "message": "Profile"
   },
@@ -119,6 +122,12 @@
   "column_remark": {
     "message": "Remark"
   },
+  "column_extension": {
+    "message": "Extension"
+  },
+  "column_alias": {
+    "message": "Alias"
+  },
   "history_absolute_time": {
     "message": "Absolute Time"
   },
@@ -160,6 +169,21 @@
   },
   "history_browser_update": {
     "message": "Browser Updated"
+  },
+  "alias_exist": {
+    "message": "Has alias"
+  },
+  "alias_remark_exist": {
+    "message": "Has remark"
+  },
+  "alias_max_length": {
+    "message": "The maximum length of an alias is 50 characters"
+  },
+  "alias_remark_max_length": {
+    "message": "The maximum length of a remark is 100 characters"
+  },
+  "alias_title": {
+    "message": "Alias"
   },
   "end": {
     "message": "end"
