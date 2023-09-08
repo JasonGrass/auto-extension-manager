@@ -4,10 +4,13 @@ import { DeleteOutlined, HomeOutlined, PushpinOutlined, SettingOutlined } from "
 import { Popconfirm, Space, message } from "antd"
 import classNames from "classnames"
 
+import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
 import { getIcon } from ".../utils/extensionHelper.js"
 import { isStringEmpty } from ".../utils/utils.js"
 import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
 import { ExtensionGridItemStyle } from "./ExtensionGridItemStyle"
+
+const manualEnableCounter = new ManualEnableCounter()
 
 const ExtensionGridItem = memo(({ item, options }) => {
   // 扩展存在设置页面
@@ -101,6 +104,7 @@ const ExtensionGridItem = memo(({ item, options }) => {
       chrome.management.setEnabled(item.id, true)
       setItemEnable(true)
       message.info(`启用 ${item.name}`)
+      manualEnableCounter.count(item.id)
     }
   }
 

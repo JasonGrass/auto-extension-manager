@@ -6,9 +6,12 @@ import classNames from "classnames"
 
 import "./ExtensionListItem.css"
 
+import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
 import { getIcon } from ".../utils/extensionHelper.js"
 import { isStringEmpty } from ".../utils/utils.js"
 import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
+
+const manualEnableCounter = new ManualEnableCounter()
 
 /**
  * 打开扩展设置页面
@@ -54,6 +57,9 @@ const ExtensionListItem = memo(({ item, options }) => {
   const onSwitchChange = (checked, item) => {
     chrome.management.setEnabled(item.id, checked)
     setItemEnable(checked)
+    if (checked) {
+      manualEnableCounter.count(item.id)
+    }
   }
 
   const onItemMouseOver = (e) => {
