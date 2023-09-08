@@ -6,6 +6,7 @@ import { Popconfirm, message } from "antd"
 import classNames from "classnames"
 
 import { GroupOptions } from ".../storage/index"
+import { getLang } from "../../../utils/utils"
 import { GroupNavStyle } from "./GroupNavStyle"
 import { AddNewNavItem } from "./helpers"
 
@@ -23,9 +24,8 @@ function GroupNav({
     let showGroupItems = []
     const fixedGroup = groupInfo.find((g) => g.id === "fixed")
     if (fixedGroup) {
-      fixedGroup.name = "固定分组"
-      fixedGroup.desc = `这是一个内置分组，此分组中的扩展，在 Popup 中手动切换分组时，不会被禁用。通常将常驻的扩展放在此分组中。
-      注意：如果在规则配置中，明确配置关闭某个扩展，即使此扩展在固定分组中，禁用依旧有效。`
+      fixedGroup.name = getLang("group_fixed_name")
+      fixedGroup.desc = getLang("group_fixed_desc")
       showGroupItems = [fixedGroup, ...groupInfo.filter((g) => g.id !== "fixed")]
     }
     setGroupItems(showGroupItems)
@@ -42,7 +42,7 @@ function GroupNav({
   const onEditGroupClick = (e, group) => {
     e.stopPropagation()
     if (group.id === "fixed") {
-      message.warning("固定分组的名称不能被编辑")
+      message.warning(getLang("group_fixed_cannot_edit"))
       return
     }
     onGroupItemEdit?.(group)
@@ -75,7 +75,7 @@ function GroupNav({
     e.stopPropagation()
 
     if (group.id === "fixed") {
-      message.warning("固定分组不能被删除")
+      message.warning(getLang("group_fixed_cannot_delete"))
       return
     }
 
@@ -126,8 +126,8 @@ function GroupNav({
 
             <Popconfirm
               className="tab-operation-item"
-              title="删除分组"
-              description={`确认删除分组"${group.name}"`}
+              title={getLang("group_delete_title")}
+              description={getLang("group_delete_confirm", group.name)}
               onConfirm={(e) => onDeleteGroupClick(e, group)}
               onCancel={(e) => e.stopPropagation()}
               okText="Yes"

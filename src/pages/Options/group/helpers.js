@@ -1,4 +1,6 @@
+import { getLang } from ".../utils/utils"
+
 export const AddNewNavItem = {
-  name: "新建分组",
+  name: getLang("group_new"),
   id: "__add__"
 }

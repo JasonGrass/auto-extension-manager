@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { Button, Form, Input, message } from "antd"
 
 import { GroupOptions } from ".../storage/index"
-import { isStringEmpty } from ".../utils/utils"
+import { getLang, isStringEmpty } from ".../utils/utils"
 import ModalEditorWrapper from "../utils/ModalEditorWrapper"
 import { AddNewNavItem } from "./helpers"
 
@@ -15,9 +15,9 @@ function GroupEditor({ editType, groupInfo, editCallback }) {
 
   let title = ""
   if (editType === "new") {
-    title = "新建分组"
+    title = getLang("group_new")
   } else if (editType === "edit") {
-    title = "编辑分组"
+    title = getLang("group_edit")
   }
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function GroupEditor({ editType, groupInfo, editCallback }) {
 
   const onSummitClick = async (e) => {
     if (isStringEmpty(name)) {
-      message.warning("分组名称不能为空")
+      message.warning(getLang("group_name_cannot_empty"))
       return
     }
 
@@ -77,14 +77,10 @@ function GroupEditor({ editType, groupInfo, editCallback }) {
   return (
     <ModalEditorWrapper title={title}>
       <Form labelCol={{ span: 4 }}>
-        <Form.Item label="分组名称">
-          <Input
-            maxLength={50}
-            value={name}
-            onChange={(e) => onNameChanged(e)}
-          />
+        <Form.Item label={getLang("group_name")}>
+          <Input maxLength={50} value={name} onChange={(e) => onNameChanged(e)} />
         </Form.Item>
-        <Form.Item label="分组描述">
+        <Form.Item label={getLang("group_desc")}>
           <TextArea
             rows={3}
             showCount
@@ -96,12 +92,10 @@ function GroupEditor({ editType, groupInfo, editCallback }) {
         <Form.Item wrapperCol={{ offset: 4, span: 4 }}>
           <div style={{ display: "flex" }}>
             <Button type="primary" onClick={(e) => onSummitClick(e)}>
-              {editType === "new" ? "添加" : "更新"}
+              {editType === "new" ? getLang("add") : getLang("update")}
             </Button>
-            <Button
-              style={{ marginLeft: 10 }}
-              onClick={(e) => onCancelClick(e)}>
-              取消
+            <Button style={{ marginLeft: 10 }} onClick={(e) => onCancelClick(e)}>
+              {getLang("cancel")}
             </Button>
           </div>
         </Form.Item>

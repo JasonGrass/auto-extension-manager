@@ -5,6 +5,15 @@
   "ext_desc": {
     "message": "A simple way to manage your chrome extensions"
   },
+  "add": {
+    "message": "Add"
+  },
+  "update": {
+    "message": "Update"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
   "scene_title": {
     "message": "Profile"
   },
@@ -19,6 +28,45 @@
   },
   "group_select_all": {
     "message": "All"
+  },
+  "group_include": {
+    "message": "Extensions in \"$1\""
+  },
+  "group_not_include": {
+    "message": "Not Contains"
+  },
+  "group_new": {
+    "message": "New Group"
+  },
+  "group_edit": {
+    "message": "Edit Group"
+  },
+  "group_name_cannot_empty": {
+    "message": "Group name cannot be empty"
+  },
+  "group_name": {
+    "message": "Name"
+  },
+  "group_desc": {
+    "message": "Description"
+  },
+  "group_fixed_name": {
+    "message": "Fixed Group"
+  },
+  "group_fixed_desc": {
+    "message": "This is a built-in group where extensions within this group will not be disabled when manually switching groups in the Popup. Typically, permanent extensions are placed in this group. Note: If a specific extension is explicitly configured to be disabled in a rule configuration, it will still be disabled even if it is in the fixed group."
+  },
+  "group_fixed_cannot_edit": {
+    "message": "The fixed group cannot be edited"
+  },
+  "group_fixed_cannot_delete": {
+    "message": "The fixed group cannot be deleted"
+  },
+  "group_delete_title": {
+    "message": "Delete"
+  },
+  "group_delete_confirm": {
+    "message": "Delete group \"$1\"?"
   },
   "enable_extension": {
     "message": "Enable"

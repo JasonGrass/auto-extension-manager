@@ -5,6 +5,15 @@
   "ext_desc": {
     "message": "一个可以自由配置规则的扩展管理工具"
   },
+  "add": {
+    "message": "添加"
+  },
+  "update": {
+    "message": "更新"
+  },
+  "cancel": {
+    "message": "取消"
+  },
   "scene_title": {
     "message": "情景模式"
   },
@@ -19,6 +28,45 @@
   },
   "group_select_all": {
     "message": "全部"
+  },
+  "group_include": {
+    "message": "「$1」中的扩展"
+  },
+  "group_not_include": {
+    "message": "不在此分组"
+  },
+  "group_new": {
+    "message": "新建分组"
+  },
+  "group_edit": {
+    "message": "编辑分组"
+  },
+  "group_name_cannot_empty": {
+    "message": "分组名称不能为空"
+  },
+  "group_name": {
+    "message": "分组名称"
+  },
+  "group_desc": {
+    "message": "分组描述"
+  },
+  "group_fixed_name": {
+    "message": "固定分组"
+  },
+  "group_fixed_desc": {
+    "message": "这是一个内置分组，此分组中的扩展，在 Popup 中手动切换分组时，不会被禁用。通常将常驻的扩展放在此分组中。注意：如果在规则配置中，明确配置关闭某个扩展，即使此扩展在固定分组中，禁用依旧有效。"
+  },
+  "group_fixed_cannot_edit": {
+    "message": "固定分组不能被编辑"
+  },
+  "group_fixed_cannot_delete": {
+    "message": "固定分组不能被删除"
+  },
+  "group_delete_title": {
+    "message": "删除分组"
+  },
+  "group_delete_confirm": {
+    "message": "确认删除分组 \"$1\""
   },
   "enable_extension": {
     "message": "启用"
