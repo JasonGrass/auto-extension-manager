@@ -27,6 +27,13 @@ export const SyncOptionsStorage = {
     if (!options.setting) {
       options.setting = {}
     }
+    // setting 中的默认值 (尤其是默认为 true 的值，需要额外处理)
+    if (options.setting.isShowFixedExtension === undefined) {
+      options.setting.isShowFixedExtension = true
+    }
+    if (options.setting.isShowDotOfFixedExtension === undefined) {
+      options.setting.isShowDotOfFixedExtension = true
+    }
 
     // 情景模式
     if (!options.scenes) {
