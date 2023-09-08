@@ -33,6 +33,8 @@ function Settings() {
   const [columnCountInGirdView, setColumnCountInGirdView] = useState(6)
   // 网格视图下，禁用扩展使用灰色样式
   const [isGaryStyleOfDisableInGridView, setIsGaryStyleOfDisableInGridView] = useState(false)
+  // Popup 中，按照频率进行排序
+  const [isSortByFrequency, setIsSortByFrequency] = useState(false)
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -56,6 +58,8 @@ function Settings() {
     setIsShowAppNameInGirdView(showAppNameInGridView)
     const supportSearchAppStore = setting.isSupportSearchAppStore ?? false
     setIsSupportSearchAppStore(supportSearchAppStore)
+    const sortByFrequency = setting.isSortByFrequency ?? false
+    setIsSortByFrequency(sortByFrequency)
 
     // 网格视图下的列数
     let tempColumnInGirdView = Number(setting.columnCountInGirdView)
@@ -251,6 +255,21 @@ function Settings() {
                 setIsGaryStyleOfDisableInGridView,
                 "isGaryStyleOfDisableInGridView"
               )
+            }></Switch>
+        </div>
+
+        <div className="setting-item">
+          <span>
+            排序：按照启用频率进行排序{" "}
+            <Tooltip placement="top" title="默认按照名称排序">
+              <QuestionCircleOutlined />
+            </Tooltip>{" "}
+          </span>
+          <Switch
+            size="small"
+            checked={isSortByFrequency}
+            onChange={(value) =>
+              onSettingChange(value, setIsSortByFrequency, "isSortByFrequency")
             }></Switch>
         </div>
       </div>

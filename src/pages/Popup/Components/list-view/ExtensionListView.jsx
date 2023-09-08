@@ -3,7 +3,7 @@ import React, { memo, useEffect, useState } from "react"
 import classNames from "classnames"
 import { styled } from "styled-components"
 
-import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
+import { usePopupExtensions } from "../../utils/usePopupExtensions"
 import ExtensionListItem from "./ExtensionListItem"
 
 /**
@@ -12,10 +12,10 @@ import ExtensionListItem from "./ExtensionListItem"
 const ExtensionList = memo(({ extensions, options }) => {
   const [items, setItems] = useState([])
 
+  const [items1, items2] = usePopupExtensions(extensions, options)
   useEffect(() => {
-    const list = appendAdditionInfo(extensions, options)
-    setItems(sortExtension(list))
-  }, [extensions, options])
+    setItems(items1.concat(items2))
+  }, [items1, items2])
 
   return (
     <Style>

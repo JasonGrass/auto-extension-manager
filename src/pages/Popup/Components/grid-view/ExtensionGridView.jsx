@@ -1,22 +1,12 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo } from "react"
 
-import classNames from "classnames"
 import { styled } from "styled-components"
 
-import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
+import { usePopupExtensions } from "../../utils/usePopupExtensions"
 import ExtensionGridItem from "./ExtensionGridItem"
 
 const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
-  const [items1, setItems1] = useState([])
-  const [items2, setItems2] = useState([])
-
-  useEffect(() => {
-    const list = appendAdditionInfo(extensions, options)
-    const list1 = list.filter((i) => i.enabled)
-    const list2 = list.filter((i) => !i.enabled)
-    setItems1(sortExtension(list1))
-    setItems2(sortExtension(list2))
-  }, [extensions, options])
+  const [items1, items2] = usePopupExtensions(extensions, options)
 
   return (
     <Style>
