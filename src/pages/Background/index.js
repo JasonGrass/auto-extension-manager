@@ -2,7 +2,7 @@ import { LocalOptions } from ".../storage/local"
 import logger from ".../utils/logger"
 import createExtension from "./extension"
 import createHistory from "./history"
-import createMessageHandler from "./message"
+import createMessageHandler from "./message/index"
 import createRule from "./rule"
 
 console.log(`[Extension Manager] Background Run. ${new Date().toLocaleString()}`)
