@@ -4,19 +4,20 @@ import { Alert, Button, Checkbox, Dropdown, Radio, Space, Steps, Switch } from "
 import classNames from "classnames"
 import { styled } from "styled-components"
 
+import { getLang } from ".../utils/utils"
 import { ruleEmitBuilder } from "../../emitter.js"
 
 const CustomRuleAction = ({ options, config, pipe }, ref) => {
   useImperativeHandle(ref, () => ({
     getCustomRuleConfig: () => {
       if (!timeWhenEnable || !timeWhenDisable) {
-        throw Error("[动作] 没有指定启用或禁用扩展的时机")
+        throw Error(getLang("rule_tip_no_set_time"))
       }
       if (hasUrlTrigger && timeWhenEnable !== "none" && !urlMatchWhenEnable) {
-        throw Error("[动作] （启用插件）没有指定 URL 匹配的计算方式")
+        throw Error(getLang("rule_tip_no_set_url_method_enable"))
       }
       if (hasUrlTrigger && timeWhenDisable !== "none" && !urlMatchWhenDisable) {
-        throw Error("[动作] （禁用插件）没有指定 URL 匹配的计算方式")
+        throw Error(getLang("rule_tip_no_set_url_method_disable"))
       }
       return {
         timeWhenEnable: timeWhenEnable,
@@ -101,12 +102,12 @@ const CustomRuleAction = ({ options, config, pipe }, ref) => {
         {/* 1 设置启用目标插件的时机 */}
         <div className="steps-item">
           <div className="steps-item-title">
-            <span>（启用插件）设置启用目标插件的时机</span>
+            <span>{getLang("rule_set_time_of_enable")}</span>
           </div>
           <Radio.Group value={timeWhenEnable} onChange={onTimeWhenEnableChange}>
-            <Radio value="none">不自动启用</Radio>
-            <Radio value="match">条件匹配时</Radio>
-            <Radio value="notMatch">条件不匹配时</Radio>
+            <Radio value="none">{getLang("rule_set_when_enable_none")}</Radio>
+            <Radio value="match">{getLang("rule_set_when_match")}</Radio>
+            <Radio value="notMatch">{getLang("rule_set_when_not_match")}</Radio>
           </Radio.Group>
         </div>
 
@@ -120,17 +121,13 @@ const CustomRuleAction = ({ options, config, pipe }, ref) => {
               }
             ])}>
             <div className="steps-item-title">
-              <span>（启用插件）URL 匹配的计算方式</span>
+              <span>{getLang("rule_set_url_match_method_enable")}</span>
             </div>
 
             <Radio.Group value={urlMatchWhenEnable} onChange={onUrlMatchWhenEnableChange}>
               <Space direction="vertical">
-                <Radio value="currentMatch">
-                  当前标签匹配（只有当前标签页匹配时，扩展才会被开启）
-                </Radio>
-                <Radio value="anyMatch">
-                  任一标签匹配（所有标签中任一标签页匹配时，扩展就会被开启）
-                </Radio>
+                <Radio value="currentMatch">{getLang("rule_set_url_enable_current_match")}</Radio>
+                <Radio value="anyMatch">{getLang("rule_set_url_enable_any_match")}</Radio>
               </Space>
             </Radio.Group>
           </div>
@@ -143,16 +140,14 @@ const CustomRuleAction = ({ options, config, pipe }, ref) => {
               }
             ])}>
             <div className="steps-item-title">
-              <span>（启用插件）URL 不匹配的计算方式</span>
+              <span>{getLang("rule_set_url_not_match_method_enable")}</span>
             </div>
             <Radio.Group value={urlMatchWhenEnable} onChange={onUrlMatchWhenEnableChange}>
               <Space direction="vertical">
                 <Radio value="currentNotMatch">
-                  当前标签不匹配（只要当前标签不匹配，扩展就会被开启）
+                  {getLang("rule_set_url_enable_current_not_match")}
                 </Radio>
-                <Radio value="allNotMatch">
-                  所有标签不匹配（只有所有标签都不匹配，扩展才会被开启）
-                </Radio>
+                <Radio value="allNotMatch">{getLang("rule_set_url_enable_all_not_match")}</Radio>
               </Space>
             </Radio.Group>
           </div>
@@ -161,12 +156,12 @@ const CustomRuleAction = ({ options, config, pipe }, ref) => {
         {/* 3 设置禁用目标插件的时机 */}
         <div className="steps-item">
           <div className="steps-item-title">
-            <span>（禁用插件）设置禁用目标插件的时机</span>
+            <span>{getLang("rule_set_time_of_disable")}</span>
           </div>
           <Radio.Group value={timeWhenDisable} onChange={onTimeWhenDisableChange}>
-            <Radio value="none">不自动禁用</Radio>
-            <Radio value="match">条件匹配时</Radio>
-            <Radio value="notMatch">条件不匹配时</Radio>
+            <Radio value="none">{getLang("rule_set_when_disable_none")}</Radio>
+            <Radio value="match">{getLang("rule_set_when_match")}</Radio>
+            <Radio value="notMatch">{getLang("rule_set_when_not_match")}</Radio>
             {/* <Radio value="closeWindow">所有浏览器窗口关闭时</Radio> */}
           </Radio.Group>
         </div>
@@ -181,16 +176,12 @@ const CustomRuleAction = ({ options, config, pipe }, ref) => {
               }
             ])}>
             <div className="steps-item-title">
-              <span>（禁用插件）URL 匹配的计算方式</span>
+              <span>{getLang("rule_set_url_match_method_disable")}</span>
             </div>
             <Radio.Group value={urlMatchWhenDisable} onChange={onUrlMatchWhenDisableChange}>
               <Space direction="vertical">
-                <Radio value="currentMatch">
-                  当前标签匹配（只有当前标签页匹配时，扩展才会被禁用）
-                </Radio>
-                <Radio value="anyMatch">
-                  任一标签匹配（所有标签中任一标签页匹配时，扩展就会被禁用）
-                </Radio>
+                <Radio value="currentMatch">{getLang("rule_set_url_disable_current_match")}</Radio>
+                <Radio value="anyMatch">{getLang("rule_set_url_disable_any_match")}</Radio>
               </Space>
             </Radio.Group>
           </div>
@@ -203,16 +194,14 @@ const CustomRuleAction = ({ options, config, pipe }, ref) => {
               }
             ])}>
             <div className="steps-item-title">
-              <span>（禁用插件）URL 不匹配的计算方式</span>
+              <span>{getLang("rule_set_url_not_match_method_disable")}</span>
             </div>
             <Radio.Group value={urlMatchWhenDisable} onChange={onUrlMatchWhenDisableChange}>
               <Space direction="vertical">
                 <Radio value="currentNotMatch">
-                  当前标签不匹配（只要当前标签不匹配，扩展就会被禁用）
+                  {getLang("rule_set_url_disable_current_not_match")}
                 </Radio>
-                <Radio value="allNotMatch">
-                  所有标签不匹配（只有所有标签都不匹配，扩展才会被禁用）
-                </Radio>
+                <Radio value="allNotMatch">{getLang("rule_set_url_disable_all_not_match")}</Radio>
               </Space>
             </Radio.Group>
           </div>

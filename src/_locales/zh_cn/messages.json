@@ -191,6 +191,69 @@
   "rule_title": {
     "message": "规则设置"
   },
+  "rule_tip_no_set_time": {
+    "message": "[动作] 没有指定启用或禁用扩展的时机"
+  },
+  "rule_tip_no_set_url_method_enable": {
+    "message": "[动作] （启用插件）没有指定 URL 匹配的计算方式"
+  },
+  "rule_tip_no_set_url_method_disable": {
+    "message": "[动作] （禁用插件）没有指定 URL 匹配的计算方式"
+  },
+  "rule_set_time_of_enable": {
+    "message": "（启用插件）设置启用目标插件的时机"
+  },
+  "rule_set_time_of_disable": {
+    "message": "（禁用插件）设置禁用目标插件的时机"
+  },
+  "rule_set_when_enable_none": {
+    "message": "不自动启用"
+  },
+  "rule_set_when_disable_none": {
+    "message": "不自动禁用"
+  },
+  "rule_set_when_match": {
+    "message": "条件匹配时"
+  },
+  "rule_set_when_not_match": {
+    "message": "条件不匹配时"
+  },
+  "rule_set_url_match_method_enable": {
+    "message": "（启用插件）URL 匹配的计算方式"
+  },
+  "rule_set_url_not_match_method_enable": {
+    "message": "（启用插件）URL 不匹配的计算方式"
+  },
+  "rule_set_url_match_method_disable": {
+    "message": "（禁用插件）URL 匹配的计算方式"
+  },
+  "rule_set_url_not_match_method_disable": {
+    "message": "（禁用插件）URL 不匹配的计算方式"
+  },
+  "rule_set_url_enable_current_match": {
+    "message": "当前标签匹配（只有当前标签页匹配时，扩展才会被开启）"
+  },
+  "rule_set_url_enable_any_match": {
+    "message": "任一标签匹配（所有标签中任一标签页匹配时，扩展就会被开启）"
+  },
+  "rule_set_url_enable_current_not_match": {
+    "message": "当前标签不匹配（只要当前标签不匹配，扩展就会被开启）"
+  },
+  "rule_set_url_enable_all_not_match": {
+    "message": "所有标签不匹配（只有所有标签都不匹配，扩展才会被开启）"
+  },
+  "rule_set_url_disable_current_match": {
+    "message": "当前标签匹配（只有当前标签页匹配时，扩展才会被禁用）"
+  },
+  "rule_set_url_disable_any_match": {
+    "message": "任一标签匹配（所有标签中任一标签页匹配时，扩展就会被禁用）"
+  },
+  "rule_set_url_disable_current_not_match": {
+    "message": "当前标签不匹配（只要当前标签不匹配，扩展就会被禁用）"
+  },
+  "rule_set_url_disable_all_not_match": {
+    "message": "所有标签不匹配（只有所有标签都不匹配，扩展才会被禁用）"
+  },
   "end": {
     "message": "end"
   }
