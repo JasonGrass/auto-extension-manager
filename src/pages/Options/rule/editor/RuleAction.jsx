@@ -2,32 +2,32 @@ import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useSta
 
 import { Alert, Checkbox, Radio } from "antd"
 
+import { getLang } from ".../utils/utils"
 import EditorCommonStyle from "./CommonStyle"
 import Style from "./RuleActionStyle"
 import CustomRuleAction from "./ruleActions/CustomRuleAction"
 
-const urlMatchTip =
-  "默认按照当前打开的浏览器标签计算 URL 匹配。切换标签就会导致 URL 匹配发生变化。更多匹配方式，可在自定义中设置。（无 URL 匹配条件则无需关注此问题）"
+const urlMatchTip = getLang("rule_match_url_tip")
 
 const actionSelections = [
   {
-    label: "匹配后关闭",
+    label: getLang("rule_action_close_when_matched"),
     key: "closeWhenMatched"
   },
   {
-    label: "匹配后打开",
+    label: getLang("rule_action_open_when_matched"),
     key: "openWhenMatched"
   },
   {
-    label: "匹配才关闭",
+    label: getLang("rule_action_close_only_when_matched"),
     key: "closeOnlyWhenMatched"
   },
   {
-    label: "匹配才打开",
+    label: getLang("rule_action_open_only_when_matched"),
     key: "openOnlyWhenMatched"
   },
   {
-    label: "自定义",
+    label: getLang("rule_action_custom"),
     key: "custom"
   }
 ]
@@ -37,7 +37,7 @@ const RuleAction = ({ options, config, pipe }, ref) => {
     // 获取配置
     getActionConfig: () => {
       if (!actionTypeKey) {
-        throw Error("没有设置任何动作类型")
+        throw Error(getLang("rule_action_no_any_action"))
       }
 
       const actionConfig = {
@@ -76,22 +76,22 @@ const RuleAction = ({ options, config, pipe }, ref) => {
   useEffect(() => {
     switch (actionTypeKey) {
       case "closeWhenMatched":
-        setActionTipMessage("🛠 匹配后关闭：条件匹配时，自动关闭扩展；（不会自动启用扩展）")
+        setActionTipMessage(`🛠 ${getLang("rule_action_close_when_match_desc")}`)
         break
       case "openWhenMatched":
-        setActionTipMessage("🛠 匹配后打开：条件匹配时，自动打开扩展；（不会自动关闭扩展）")
+        setActionTipMessage(`🛠 ${getLang("rule_action_open_when_matched_desc")}`)
         break
       case "closeOnlyWhenMatched":
-        setActionTipMessage("🛠 匹配才关闭：条件匹配时，自动关闭扩展；条件不匹配时，自动打开扩展。")
+        setActionTipMessage(`🛠 ${getLang("rule_action_close_only_when_matched_desc")}`)
         break
       case "openOnlyWhenMatched":
-        setActionTipMessage("🛠 匹配才打开：条件匹配时，自动打开扩展；条件不匹配时，自动关闭扩展；")
+        setActionTipMessage(`🛠 ${getLang("rule_action_open_only_when_matched_desc")}`)
         break
       case "custom":
-        setActionTipMessage("🛠 自定义启用或禁用扩展的时机")
+        setActionTipMessage(`🛠 ${getLang("rule_action_custom_desc")}`)
         break
       default:
-        setActionTipMessage("🛠 请选择动作类型")
+        setActionTipMessage(`🛠 ${getLang("rule_action_please_select_action")}`)
     }
   }, [actionTypeKey])
 
@@ -112,7 +112,7 @@ const RuleAction = ({ options, config, pipe }, ref) => {
     <EditorCommonStyle>
       <Style>
         <div className="editor-step-header">
-          <span className="title">3 动作</span>
+          <span className="title">3 {getLang("rule_action_title")}</span>
         </div>
 
         <Alert
@@ -122,7 +122,7 @@ const RuleAction = ({ options, config, pipe }, ref) => {
           showIcon
           action={
             <a href="https://ext.jgrass.cc/docs/rule" target="_blank" rel="noreferrer">
-              查看帮助
+              {getLang("rule_action_help")}
             </a>
           }
         />
@@ -149,10 +149,10 @@ const RuleAction = ({ options, config, pipe }, ref) => {
 
         <div className="action-label action-refresh-options">
           <Checkbox checked={refreshAfterEnable} onChange={onFreshAfterOpenChange}>
-            启用扩展之后，刷新当前页面
+            {getLang("rule_action_auto_reload_when_enable")}
           </Checkbox>
           <Checkbox checked={refreshAfterDisable} onChange={onFreshAfterCloseChange}>
-            禁用扩展之后，刷新当前页面
+            {getLang("rule_action_auto_reload_when_disable")}
           </Checkbox>
         </div>
       </Style>

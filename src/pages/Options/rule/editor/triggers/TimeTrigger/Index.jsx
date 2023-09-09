@@ -4,11 +4,13 @@ import { CloseOutlined } from "@ant-design/icons"
 import { Alert, Button, Tag, TimePicker, message } from "antd"
 import { styled } from "styled-components"
 
+import { getLang } from ".../utils/utils"
+
 const TimeTrigger = ({ options, config }, ref) => {
   useImperativeHandle(ref, () => ({
     getPeriodTriggerConfig: () => {
       if (periods.length === 0) {
-        throw new Error("请至少设置一个时间区间")
+        throw new Error(getLang("trigger_period_no_any"))
       }
       return {
         periods: periods
@@ -44,23 +46,23 @@ const TimeTrigger = ({ options, config }, ref) => {
 
   const onAdd = () => {
     if (periods.length > 10) {
-      message.error("最多设置10个时间区间")
+      message.error(getLang("trigger_period_max"))
       return
     }
 
     if (startTime === "" || endTime === "") {
-      message.error("请选择完整的时间区间")
+      message.error(getLang("trigger_period_no_complete"))
       return
     }
     if (startTime >= endTime) {
-      message.error("开始时间不能大于等于结束时间")
+      message.error(getLang("trigger_period_cannot_greater"))
       return
     }
 
     const newPeriods = [...periods, { start: startTime, end: endTime }]
     sortPeriods(newPeriods)
     if (checkPeriodCross(newPeriods)) {
-      message.error("时间区间存在交叉，请重新设置")
+      message.error(getLang("trigger_period_cannot_overlap"))
       return
     }
 
@@ -74,19 +76,21 @@ const TimeTrigger = ({ options, config }, ref) => {
   return (
     <Style>
       <Alert
-        message="由于浏览器限制，后台操作不能常驻，必须由事件触发。所以仅在浏览器有活动时，才能触发此条件的匹配，时机会不精确。"
+        message={getLang("trigger_period_action_desc")}
         type="warning"
         showIcon
         action={
           <a href="https://ext.jgrass.cc/docs/rule" target="_blank" rel="noreferrer">
-            详细说明
+            {getLang("trigger_url_match_detail_title")}
           </a>
         }
       />
 
       <div style={{ marginTop: 5 }}>
         <div className="match-period-setting">
-          <span className="match-period-setting-time-label">开始时间</span>
+          <span className="match-period-setting-time-label">
+            {getLang("trigger_period_start_time")}
+          </span>
           <TimePicker
             className="match-period-setting-time-picker"
             changeOnBlur
@@ -94,7 +98,9 @@ const TimeTrigger = ({ options, config }, ref) => {
             minuteStep={5}
             format="HH:mm"
           />
-          <span className="match-period-setting-time-label">结束时间</span>
+          <span className="match-period-setting-time-label">
+            {getLang("trigger_period_end_time")}
+          </span>
           <TimePicker
             className="match-period-setting-time-picker"
             changeOnBlur
@@ -102,7 +108,7 @@ const TimeTrigger = ({ options, config }, ref) => {
             minuteStep={5}
             format="HH:mm"
           />
-          <Button onClick={onAdd}>添加</Button>
+          <Button onClick={onAdd}>{getLang("add")}</Button>
         </div>
 
         {periods.map((period) => {

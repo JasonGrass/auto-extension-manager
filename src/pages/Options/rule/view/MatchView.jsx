@@ -3,6 +3,7 @@ import React, { memo } from "react"
 import { styled } from "styled-components"
 
 import { PlatformOs } from ".../pages/Options/rule/editor/triggers/OsTrigger/Index"
+import { getLang } from ".../utils/utils"
 
 /**
  * 匹配条件的显示
@@ -21,7 +22,12 @@ const MatchView = memo(({ config, options }) => {
     if (urlTrigger.config.matchUrl.length === 1) {
       tips.push(urlTrigger.config.matchUrl[0])
     } else {
-      tips.push(`${urlTrigger.config.matchUrl[0]} 等 ${urlTrigger.config.matchUrl.length} 条`)
+      const msg = getLang(
+        "rule_view_match_url_tip",
+        urlTrigger.config.matchUrl[0],
+        urlTrigger.config.matchUrl.length
+      )
+      tips.push(msg)
     }
   }
 

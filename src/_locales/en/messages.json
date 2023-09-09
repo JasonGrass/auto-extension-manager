@@ -17,6 +17,9 @@
   "save": {
     "message": "Save"
   },
+  "help": {
+    "message": "Help"
+  },
   "scene_title": {
     "message": "Profile"
   },
@@ -253,6 +256,204 @@
   },
   "rule_set_url_disable_all_not_match": {
     "message": "All Tab not Match (The extension will be disabled only if the URL pattern does not match any tab)"
+  },
+  "rule_set_target_no_any_target": {
+    "message": "No extension or extension group was selected as the target"
+  },
+  "rule_set_target_title": {
+    "message": "Target: Extension or Group"
+  },
+  "rule_set_target_select_extension_group": {
+    "message": "Selected Extension Groups"
+  },
+  "rule_set_target_select_extension": {
+    "message": "Selected Extensions"
+  },
+  "rule_set_target_no_selected_extension": {
+    "message": "No extension selected"
+  },
+  "rule_set_target_other_extension": {
+    "message": "Left extensions"
+  },
+  "rule_set_target_no_any_extension": {
+    "message": "No extension available"
+  },
+  "rule_trigger_url_name": {
+    "message": "URL"
+  },
+  "rule_trigger_scene_name": {
+    "message": "Profile"
+  },
+  "rule_trigger_os_name": {
+    "message": "Operating System"
+  },
+  "rule_trigger_period_name": {
+    "message": "Period"
+  },
+  "rule_set_match_at_least_one": {
+    "message": "[Matching Conditions] Please add at least one matching condition"
+  },
+  "rule_set_match_cannot_duplicate": {
+    "message": "Cannot add duplicate conditions $1"
+  },
+  "rule_set_match_title": {
+    "message": "Matching Conditions"
+  },
+  "rule_set_match_add": {
+    "message": "Add Matching Conditions"
+  },
+  "rule_set_match_all": {
+    "message": "Match all of the following conditions"
+  },
+  "rule_set_match_any": {
+    "message": "Match any of the following conditions"
+  },
+  "rule_match_url_tip": {
+    "message": "URL matching is calculated based on the currently open browser tab by default. Switching tabs will cause the URL matching to change. For more matching options, you can configure them in the customization settings. (If there are no URL matching conditions, you don't need to worry about this issue.)"
+  },
+  "rule_action_close_when_matched": {
+    "message": "Disable When Matched"
+  },
+  "rule_action_close_when_match_desc": {
+    "message": "Disable When Matched: Automatically disable the extension when the conditions are met. (Will not be automatically enabled.)"
+  },
+  "rule_action_open_when_matched": {
+    "message": "Enable When Matched"
+  },
+  "rule_action_open_when_matched_desc": {
+    "message": "Enable When Matched: Automatically enable the extension when the conditions are met. (Will not be automatically Disabled.)"
+  },
+  "rule_action_close_only_when_matched": {
+    "message": "Disable Only When Matched"
+  },
+  "rule_action_close_only_when_matched_desc": {
+    "message": "Disable Only When Matched: Automatically disable when the conditions are met. Automatically enable when not met."
+  },
+  "rule_action_open_only_when_matched": {
+    "message": "Enable Only When Matched"
+  },
+  "rule_action_open_only_when_matched_desc": {
+    "message": "Enable Only When Matched: Automatically enable when the conditions are met. Automatically disable when not met."
+  },
+  "rule_action_custom": {
+    "message": "Custom"
+  },
+  "rule_action_custom_desc": {
+    "message": "Customize when to enable or disable the extension."
+  },
+  "rule_action_no_any_action": {
+    "message": "No action has been set"
+  },
+  "rule_action_please_select_action": {
+    "message": "Select the action type."
+  },
+  "rule_action_title": {
+    "message": "Action"
+  },
+  "rule_action_help": {
+    "message": "Help"
+  },
+  "rule_action_auto_reload_when_enable": {
+    "message": "Reload the current tab after enabled"
+  },
+  "rule_action_auto_reload_when_disable": {
+    "message": "Reload the current tab after disabled"
+  },
+  "rule_action_delete_action": {
+    "message": "Delete"
+  },
+  "rule_view_match_url_tip": {
+    "message": "$1 and a total of $2"
+  },
+  "rule_edit_save_error_limit": {
+    "message": "Save failed, Exceeded the browser storage limit."
+  },
+  "rule_column_match": {
+    "message": "Match"
+  },
+  "rule_column_extensions": {
+    "message": "Extensions/Group"
+  },
+  "rule_column_action": {
+    "message": "Action"
+  },
+  "rule_column_operation": {
+    "message": "Operation"
+  },
+  "rule_add": {
+    "message": "Add"
+  },
+  "trigger_os_select_one": {
+    "message": "Select at least one operating system type."
+  },
+  "trigger_os_select_tip": {
+    "message": "Select the operating system(s) to be matched, can select multiple options."
+  },
+  "trigger_scene_no_any": {
+    "message": "No Profile Selected"
+  },
+  "trigger_scene_no_created": {
+    "message": "No Profile Created, Create First"
+  },
+  "trigger_scene_select_one": {
+    "message": "Select Profile to be Matched"
+  },
+  "trigger_scene_select_tip": {
+    "message": "Select Profile"
+  },
+  "trigger_url_no_any": {
+    "message": "[Matching Conditions] None URL Added"
+  },
+  "trigger_url_match_desc": {
+    "message": "The URL by default refers to the URL of the currently opened tab. More you can see detail."
+  },
+  "trigger_url_match_detail_title": {
+    "message": "Detail"
+  },
+  "trigger_url_match_method_title": {
+    "message": "Match Method:"
+  },
+  "trigger_url_wildcard": {
+    "message": "Wildcard"
+  },
+  "trigger_url_regex": {
+    "message": "Regex"
+  },
+  "trigger_url_use_full": {
+    "message": "Using the complete URL"
+  },
+  "trigger_url_use_full_desc": {
+    "message": "By default, the query parameters and anchor parts of the URL are not considered."
+  },
+  "trigger_url_add_pattern": {
+    "message": "Add URL Pattern"
+  },
+  "trigger_url_clear_empty": {
+    "message": "Clear Empty Items"
+  },
+  "trigger_period_no_any": {
+    "message": "At least one time interval"
+  },
+  "trigger_period_max": {
+    "message": "Set up to 10 time interval maximum"
+  },
+  "trigger_period_no_complete": {
+    "message": "No Start Time or End Time"
+  },
+  "trigger_period_cannot_greater": {
+    "message": "The start time cannot be greater than or equal to the end time"
+  },
+  "trigger_period_cannot_overlap": {
+    "message": "There is a time overlap in the intervals"
+  },
+  "trigger_period_action_desc": {
+    "message": "Due to browser restrictions, background operations cannot be persistent and must be triggered by events. Therefore, this condition can only be matched when the browser is active, and the timing may not be precise."
+  },
+  "trigger_period_start_time": {
+    "message": "Start Time"
+  },
+  "trigger_period_end_time": {
+    "message": "End Time"
   },
   "end": {
     "message": "end"

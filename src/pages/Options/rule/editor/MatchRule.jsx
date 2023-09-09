@@ -10,6 +10,7 @@ import {
 import { Button, Dropdown, Radio, Space, message } from "antd"
 import lodash from "lodash"
 
+import { getLang } from ".../utils/utils"
 import { ruleEmitBuilder } from "../emitter.js"
 import EditorCommonStyle from "./CommonStyle"
 import Style from "./MatchRuleStyle"
@@ -21,22 +22,22 @@ import TriggerWrapper from "./triggers/TriggerWrapper/Index"
 
 const triggerModes = [
   {
-    label: "URL 链接",
+    label: getLang("rule_trigger_url_name"),
     key: "urlTrigger",
     icon: <LinkOutlined />
   },
   {
-    label: "情景模式",
+    label: getLang("rule_trigger_scene_name"),
     key: "sceneTrigger",
     icon: <ThunderboltOutlined />
   },
   {
-    label: "操作系统类型",
+    label: getLang("rule_trigger_os_name"),
     key: "osTrigger",
     icon: <LaptopOutlined />
   },
   {
-    label: "时间区间",
+    label: getLang("rule_trigger_period_name"),
     key: "periodTrigger",
     icon: <ClockCircleOutlined />
   }
@@ -80,7 +81,7 @@ const MatchRule = ({ options, config }, ref) => {
       }
 
       if (matchConfig.triggers.length === 0) {
-        throw Error("[匹配条件] 至少添加一个匹配条件")
+        throw Error(getLang("rule_set_match_at_least_one"))
       }
 
       return matchConfig
@@ -137,7 +138,7 @@ const MatchRule = ({ options, config }, ref) => {
         return
       }
       if (selectTriggerKeys.find((k) => k === e.key)) {
-        message.warning(`不能重复添加条件：${trigger.label}`)
+        message.warning(getLang("rule_set_match_cannot_duplicate", trigger.label))
         return
       }
       setSelectTriggers([...selectTriggerKeys, trigger.key])
@@ -160,14 +161,14 @@ const MatchRule = ({ options, config }, ref) => {
     <EditorCommonStyle>
       <Style>
         <div className="editor-step-header">
-          <span className="title">1 匹配条件</span>
+          <span className="title">1 {getLang("rule_set_match_title")}</span>
         </div>
 
         <div className="trigger-operation-settings">
           <Dropdown menu={triggerModeMenuProps}>
             <Button>
               <Space>
-                添加匹配条件
+                {getLang("rule_set_match_add")}
                 <PlusCircleOutlined />
               </Space>
             </Button>
@@ -176,8 +177,8 @@ const MatchRule = ({ options, config }, ref) => {
           <span
             className={selectTriggerKeys.length > 1 ? "trigger-relationship" : "trigger-hidden"}>
             <Radio.Group onChange={onTriggerRelationshipChange} value={triggerRelationship}>
-              <Radio value="and">满足以下所有条件</Radio>
-              <Radio value="or">满足以下任一条件</Radio>
+              <Radio value="and">{getLang("rule_set_match_all")}</Radio>
+              <Radio value="or">{getLang("rule_set_match_any")}</Radio>
             </Radio.Group>
           </span>
         </div>
@@ -187,7 +188,7 @@ const MatchRule = ({ options, config }, ref) => {
             selectTriggerKeys.includes("urlTrigger") ? "trigger-visible" : "trigger-hidden"
           }>
           <TriggerWrapper
-            title="URL 匹配"
+            title={getLang("rule_trigger_url_name")}
             onClose={() => {
               onTriggerRemove("urlTrigger")
             }}>
@@ -200,7 +201,7 @@ const MatchRule = ({ options, config }, ref) => {
             selectTriggerKeys.includes("sceneTrigger") ? "trigger-visible" : "trigger-hidden"
           }>
           <TriggerWrapper
-            title="情景模式"
+            title={getLang("rule_trigger_scene_name")}
             onClose={() => {
               onTriggerRemove("sceneTrigger")
             }}>
@@ -213,7 +214,7 @@ const MatchRule = ({ options, config }, ref) => {
             selectTriggerKeys.includes("osTrigger") ? "trigger-visible" : "trigger-hidden"
           }>
           <TriggerWrapper
-            title="操作系统类型"
+            title={getLang("rule_trigger_os_name")}
             onClose={() => {
               onTriggerRemove("osTrigger")
             }}>
@@ -226,7 +227,7 @@ const MatchRule = ({ options, config }, ref) => {
             selectTriggerKeys.includes("periodTrigger") ? "trigger-visible" : "trigger-hidden"
           }>
           <TriggerWrapper
-            title="时间区间"
+            title={getLang("rule_trigger_period_name")}
             onClose={() => {
               onTriggerRemove("periodTrigger")
             }}>

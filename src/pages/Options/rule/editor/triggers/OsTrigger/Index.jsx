@@ -3,6 +3,8 @@ import React, { forwardRef, memo, useEffect, useImperativeHandle } from "react"
 import { Alert, Tag } from "antd"
 import { styled } from "styled-components"
 
+import { getLang } from ".../utils/utils"
+
 const { CheckableTag } = Tag
 
 // https://developer.chrome.com/docs/extensions/reference/runtime/#type-PlatformOs
@@ -41,7 +43,7 @@ const OperationSystemTrigger = ({ options, config }, ref) => {
   useImperativeHandle(ref, () => ({
     getOsTriggerConfig: () => {
       if (selectOsKeys.length === 0) {
-        throw new Error("请至少选择一个操作系统类型")
+        throw new Error(getLang("trigger_os_select_one"))
       }
 
       return {
@@ -67,7 +69,7 @@ const OperationSystemTrigger = ({ options, config }, ref) => {
 
   return (
     <Style>
-      <Alert message="选择需要匹配的操作系统，可以多选" type="info" showIcon />
+      <Alert message={getLang("trigger_os_select_tip")} type="info" showIcon />
       <div className="os-tags">
         {PlatformOs.map((os) => {
           return (

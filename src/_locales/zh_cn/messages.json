@@ -17,6 +17,9 @@
   "save": {
     "message": "保存"
   },
+  "help": {
+    "message": "帮助"
+  },
   "scene_title": {
     "message": "情景模式"
   },
@@ -253,6 +256,204 @@
   },
   "rule_set_url_disable_all_not_match": {
     "message": "所有标签不匹配（只有所有标签都不匹配，扩展才会被禁用）"
+  },
+  "rule_set_target_no_any_target": {
+    "message": "执行目标没有选择任何扩展或扩展组"
+  },
+  "rule_set_target_title": {
+    "message": "规则执行目标：扩展（组）"
+  },
+  "rule_set_target_select_extension_group": {
+    "message": "选择扩展组"
+  },
+  "rule_set_target_select_extension": {
+    "message": "选择扩展"
+  },
+  "rule_set_target_no_selected_extension": {
+    "message": "未选择任何扩展"
+  },
+  "rule_set_target_other_extension": {
+    "message": "其它扩展"
+  },
+  "rule_set_target_no_any_extension": {
+    "message": "无任何扩展"
+  },
+  "rule_trigger_url_name": {
+    "message": "URL 链接"
+  },
+  "rule_trigger_scene_name": {
+    "message": "情景模式"
+  },
+  "rule_trigger_os_name": {
+    "message": "操作系统类型"
+  },
+  "rule_trigger_period_name": {
+    "message": "时间区间"
+  },
+  "rule_set_match_at_least_one": {
+    "message": "[匹配条件] 至少添加一个匹配条件"
+  },
+  "rule_set_match_cannot_duplicate": {
+    "message": "不能重复添加条件 $1"
+  },
+  "rule_set_match_title": {
+    "message": "匹配条件"
+  },
+  "rule_set_match_add": {
+    "message": "添加匹配条件"
+  },
+  "rule_set_match_all": {
+    "message": "满足以下所有条件"
+  },
+  "rule_set_match_any": {
+    "message": "满足以下任一条件"
+  },
+  "rule_match_url_tip": {
+    "message": "默认按照当前打开的浏览器标签计算 URL 匹配。切换标签就会导致 URL 匹配发生变化。更多匹配方式，可在自定义中设置。（无 URL 匹配条件则无需关注此问题）"
+  },
+  "rule_action_close_when_matched": {
+    "message": "匹配后关闭"
+  },
+  "rule_action_close_when_match_desc": {
+    "message": "匹配后关闭：条件匹配时，自动关闭扩展；（不会自动启用扩展）"
+  },
+  "rule_action_open_when_matched": {
+    "message": "匹配后打开"
+  },
+  "rule_action_open_when_matched_desc": {
+    "message": "匹配后打开：条件匹配时，自动打开扩展；（不会自动关闭扩展）"
+  },
+  "rule_action_close_only_when_matched": {
+    "message": "匹配才关闭"
+  },
+  "rule_action_close_only_when_matched_desc": {
+    "message": "匹配才关闭：条件匹配时，自动关闭扩展；条件不匹配时，自动打开扩展。"
+  },
+  "rule_action_open_only_when_matched": {
+    "message": "匹配才打开"
+  },
+  "rule_action_open_only_when_matched_desc": {
+    "message": "匹配才打开：条件匹配时，自动打开扩展；条件不匹配时，自动关闭扩展；"
+  },
+  "rule_action_custom": {
+    "message": "自定义"
+  },
+  "rule_action_custom_desc": {
+    "message": "自定义启用或禁用扩展的时机"
+  },
+  "rule_action_no_any_action": {
+    "message": "没有设置任何动作类型"
+  },
+  "rule_action_please_select_action": {
+    "message": "请选择动作类型"
+  },
+  "rule_action_title": {
+    "message": "动作"
+  },
+  "rule_action_help": {
+    "message": "查看帮助"
+  },
+  "rule_action_auto_reload_when_enable": {
+    "message": "启用扩展之后，刷新当前页面"
+  },
+  "rule_action_auto_reload_when_disable": {
+    "message": "禁用扩展之后，刷新当前页面"
+  },
+  "rule_action_delete_action": {
+    "message": "删除规则"
+  },
+  "rule_view_match_url_tip": {
+    "message": "$1 等 $2 条"
+  },
+  "rule_edit_save_error_limit": {
+    "message": "保存失败，超过浏览器存储限制"
+  },
+  "rule_column_match": {
+    "message": "匹配"
+  },
+  "rule_column_extensions": {
+    "message": "扩展(组)"
+  },
+  "rule_column_action": {
+    "message": "动作"
+  },
+  "rule_column_operation": {
+    "message": "操作"
+  },
+  "rule_add": {
+    "message": "新增"
+  },
+  "trigger_os_select_one": {
+    "message": "请至少选择一个操作系统类型"
+  },
+  "trigger_os_select_tip": {
+    "message": "选择需要匹配的操作系统，可以多选"
+  },
+  "trigger_scene_no_any": {
+    "message": "没有选择任何情景模式"
+  },
+  "trigger_scene_no_created": {
+    "message": "没有创建任何情景模式，请先创建"
+  },
+  "trigger_scene_select_one": {
+    "message": "选择需要匹配的情景模式"
+  },
+  "trigger_scene_select_tip": {
+    "message": "选择情景模式"
+  },
+  "trigger_url_no_any": {
+    "message": "[匹配条件] 没有添加任何 URL"
+  },
+  "trigger_url_match_desc": {
+    "message": "URL 默认是指当前打开的那个标签中的 URL，具体匹配规则见详细说明"
+  },
+  "trigger_url_match_detail_title": {
+    "message": "详细说明"
+  },
+  "trigger_url_match_method_title": {
+    "message": "匹配方式："
+  },
+  "trigger_url_wildcard": {
+    "message": "通配符"
+  },
+  "trigger_url_regex": {
+    "message": "正则表达式"
+  },
+  "trigger_url_use_full": {
+    "message": "使用完整 URL 进行计算"
+  },
+  "trigger_url_use_full_desc": {
+    "message": "默认情况下，不考虑 URL 中的查询参数和锚点部分，详细说明见文档"
+  },
+  "trigger_url_add_pattern": {
+    "message": "添加 URL Pattern"
+  },
+  "trigger_url_clear_empty": {
+    "message": "清除空白项"
+  },
+  "trigger_period_no_any": {
+    "message": "请至少设置一个时间区间"
+  },
+  "trigger_period_max": {
+    "message": "最多设置10个时间区间"
+  },
+  "trigger_period_no_complete": {
+    "message": "请选择完整的时间区间"
+  },
+  "trigger_period_cannot_greater": {
+    "message": "开始时间不能大于等于结束时间"
+  },
+  "trigger_period_cannot_overlap": {
+    "message": "时间区间存在交叉，请重新设置"
+  },
+  "trigger_period_action_desc": {
+    "message": "由于浏览器限制，后台操作不能常驻，必须由事件触发。所以仅在浏览器有活动时，才能触发此条件的匹配，时机会不精确。"
+  },
+  "trigger_period_start_time": {
+    "message": "开始时间"
+  },
+  "trigger_period_end_time": {
+    "message": "结束时间"
   },
   "end": {
     "message": "end"

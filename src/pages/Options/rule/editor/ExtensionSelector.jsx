@@ -11,6 +11,7 @@ import { DownOutlined } from "@ant-design/icons"
 import { Button, Dropdown, Space, Tag } from "antd"
 
 import isMatch from ".../utils/searchHelper"
+import { getLang } from ".../utils/utils"
 import ExtensionItems from "../../components/ExtensionItems"
 import EditorCommonStyle from "./CommonStyle"
 import Style, { SearchStyle } from "./ExtensionSelectorStyle"
@@ -24,7 +25,7 @@ const ExtensionSelector = ({ options, config, extensions }, ref) => {
     // 获取配置
     getExtensionSelectConfig: () => {
       if (selectGroupIds.length === 0 && selectedExtensions.length === 0) {
-        throw Error("执行目标没有选择任何扩展或扩展组")
+        throw Error(getLang("rule_set_target_no_any_target"))
       }
 
       return {
@@ -123,7 +124,7 @@ const ExtensionSelector = ({ options, config, extensions }, ref) => {
     <EditorCommonStyle>
       <Style>
         <div className="editor-step-header">
-          <span className="title">2 规则执行目标：扩展（组）</span>
+          <span className="title">2 {getLang("rule_set_target_title")}</span>
 
           <SearchStyle>
             <input
@@ -135,7 +136,9 @@ const ExtensionSelector = ({ options, config, extensions }, ref) => {
         </div>
 
         <div className="group-match-mode-container">
-          <span className="select-group-label">选择扩展组</span>
+          <span className="select-group-label">
+            {getLang("rule_set_target_select_extension_group")}
+          </span>
           {groupList.map((group) => {
             return (
               <CheckableTag
@@ -149,17 +152,17 @@ const ExtensionSelector = ({ options, config, extensions }, ref) => {
         </div>
 
         <div className="extension-container">
-          <h3>选择扩展</h3>
+          <h3>{getLang("rule_set_target_select_extension")}</h3>
           <ExtensionItems
             items={selectedExtensions}
-            placeholder="未选择任何扩展"
+            placeholder={getLang("rule_set_target_no_selected_extension")}
             onClick={onSelectedExtensionClick}></ExtensionItems>
 
           <div className="unselected-extensions-container">
-            <h3>其它扩展</h3>
+            <h3>{getLang("rule_set_target_other_extension")}</h3>
             <ExtensionItems
               items={displayUnselectedExtensions}
-              placeholder="无任何扩展"
+              placeholder={getLang("rule_set_target_no_any_extension")}
               onClick={onUnselectedExtensionClick}></ExtensionItems>
           </div>
         </div>
