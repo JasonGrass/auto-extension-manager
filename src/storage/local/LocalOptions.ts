@@ -58,6 +58,18 @@ export class LocalOptions {
     await this.forage.setItem("activeGroupId", id ?? "")
   }
 
+  async getValue<T>(key: string): Promise<T | null> {
+    const value = await this.forage.getItem<T>(key)
+    if (value === null || value === undefined) {
+      return null
+    }
+    return value
+  }
+
+  async setValue<T>(key: string, value: T) {
+    await this.forage.setItem<T>(key, value)
+  }
+
   async getLastInitialTime(): Promise<number> {
     const time = await this.forage.getItem<number>("lastInitialExtensionTime")
     return time ?? 0

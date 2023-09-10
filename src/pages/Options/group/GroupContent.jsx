@@ -1,18 +1,21 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Input } from "antd"
+import { Button, Input, notification } from "antd"
 
 import { GroupOptions } from ".../storage/GroupOptions"
 import { ManageOptions } from ".../storage/index"
+import { LocalOptions } from ".../storage/local"
 import { isAppExtension } from ".../utils/extensionHelper"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
 import { isExtensionMatch } from ".../utils/searchHelper"
 import ExtensionItems from "../components/ExtensionItems"
-import { GroupContentStyle } from "./GroupContentStyle"
+import { AlreadyFixedTipStyle, GroupContentStyle } from "./GroupContentStyle"
 
 const { Search } = Input
 
 const GroupContent = memo(({ group, groupList, extensions, options }) => {
+  const [notificationApi, notificationContextHolder] = notification.useNotification()
+
   // 在分组中的扩展
   const [containExts, setContains] = useState([])
   // 没有在分组中的扩展
@@ -75,6 +78,7 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
 
   return (
     <GroupContentStyle>
+      {notificationContextHolder}
       <Search
         className="search"
         placeholder="search"
@@ -103,6 +107,7 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
         setContains(contain)
         setNoneGroupExts(none)
         save(contain)
+        showAlreadyFixedTip(item)
       }
     }
 
@@ -118,6 +123,59 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
 
       const fixedGroup = groupList.find((g) => g.id === "fixed")
       return fixedGroup?.extensions?.includes(item.id)
+    }
+
+    // 如果扩展已经在固定分组中，在将扩展添加到其它分组时，给个提示 issues #36
+    const showAlreadyFixedTip = async (item) => {
+      if (group.id === "fixed") {
+        return // 固定分组中的操作不管
+      }
+      if (!options.setting.isRaiseEnableWhenSwitchGroup) {
+        return // 切换分组时，不执行扩展的启用与禁用，则不用提示
+      }
+
+      const local = new LocalOptions()
+      const isShowAlreadyFixedTip = await local.getValue("isShowAlreadyFixedTip")
+      if (isShowAlreadyFixedTip === false) {
+        return
+      }
+
+      const textKnow = "知道了"
+
+      const onTipClick = (e) => {
+        if (e.target.innerText === textKnow) {
+          notificationApi.destroy("repeat-notification")
+        }
+      }
+
+      const onClosePrompt = async () => {
+        await local.setValue("isShowAlreadyFixedTip", false)
+        notificationApi.destroy("repeat-notification")
+      }
+
+      if (groupList.find((g) => g.id === "fixed")?.extensions?.includes(item.id)) {
+        // 扩展已经在固定分组中，切换分组时扩展将始终被激活
+        // The extension is already in a fixed group. When switching groups, the extension will always be activated.
+        notificationApi.info({
+          message: "可能是重复操作",
+          key: "repeat-notification",
+          duration: 6,
+          onClick: onTipClick,
+          description: (
+            <AlreadyFixedTipStyle>
+              <p>{item.name}</p>
+              <p>此扩展已经在固定分组中，切换分组时扩展将始终被激活</p>
+              <div>
+                <Button className="btn-already-fixed-tip">{textKnow}</Button>
+                <Button className="btn-already-fixed-tip" onClick={onClosePrompt}>
+                  不再提示
+                </Button>
+              </div>
+            </AlreadyFixedTipStyle>
+          ),
+          placement: "topRight"
+        })
+      }
     }
 
     return (
