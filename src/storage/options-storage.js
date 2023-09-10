@@ -132,7 +132,7 @@ export const SyncOptionsStorage = {
       await LargeSyncStorage.set(option)
     } catch (error) {
       console.error("保存配置失败", error)
-      if (error.message.includes("QUOTA_BYTES_PER_ITEM")) {
+      if (error.message.includes("QUOTA_BYTES_PER_ITEM") || error.message.includes("QUOTA_BYTES")) {
         tryShowErrorMessage("保存配置失败，超过浏览器存储限制")
       } else {
         tryShowErrorMessage(`保存配置失败，${error.message}`)
