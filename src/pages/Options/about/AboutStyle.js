@@ -54,7 +54,8 @@ export const AboutStyle = styled.div`
   }
 
   .footer-storage {
-    display: inline-flex;
+    /* display: inline-flex; */
+    display: none;
     align-items: center;
 
     margin-top: 20px;
