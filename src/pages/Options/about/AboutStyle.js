@@ -52,20 +52,4 @@ export const AboutStyle = styled.div`
       }
     }
   }
-
-  .footer-storage {
-    display: inline-flex;
-    align-items: center;
-
-    margin-top: 20px;
-    padding-top: 5px;
-    border-top: 1px solid #ccc;
-
-    .storage-detail-tip-icon {
-      margin-left: 5px;
-      &:hover {
-        color: #888;
-      }
-    }
-  }
 `

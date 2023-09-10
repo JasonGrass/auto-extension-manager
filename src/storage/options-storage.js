@@ -1,6 +1,8 @@
+import { message } from "antd"
 import OptionsSync from "webext-options-sync"
 
 import strCompress from "./utils/ConfigCompress"
+import largeSync from "./utils/LargeSyncStorage"
 
 const OptionsStorage = new OptionsSync({
   storageType: "sync",
@@ -18,12 +20,48 @@ const OptionsStorage = new OptionsSync({
   }
 })
 
+class ChromeSyncStorage {
+  /**
+   * 获取全部的配置数据
+   */
+  async getAll() {
+    const originSyncContent = await chrome.storage.sync.get(null)
+    if (originSyncContent.hasOwnProperty("options")) {
+      // 说明是之前用 OptionsSync 保存的数据
+      const oldData = await OptionsStorage.getAll()
+      await chrome.storage.sync.clear()
+      await this.set(oldData)
+      console.log("[ChromeSyncStorage] 检测到旧数据，已自动迁移")
+    }
+
+    return new Promise((resolve, reject) => {
+      largeSync.get(["setting", "groups", "scenes", "ruleConfig", "management"], (items) => {
+        resolve(items)
+      })
+    })
+  }
+
+  /**
+   * 设置配置项
+   */
+  async set(options) {
+    return new Promise((resolve, reject) => {
+      largeSync.set(options, () => {
+        resolve()
+      })
+    })
+  }
+}
+
+const LargeSyncStorage = new ChromeSyncStorage()
+
 export const SyncOptionsStorage = {
   /**
    * 获取全部配置
    */
   async getAll() {
-    const options = await OptionsStorage.getAll()
+    const options = await LargeSyncStorage.getAll()
+
     if (!options.setting) {
       options.setting = {}
     }
@@ -68,11 +106,12 @@ export const SyncOptionsStorage = {
   },
 
   /**
-   * 获取未经解压的原始存储数据，用于显示存储大小，普通业务请勿使用
+   * 输出 sync 存储使用总量
    */
-  async getOriginAll() {
-    const options = await OptionsStorage.getAll()
-    return options
+  async printUsage() {
+    const total = await chrome.storage.sync.getBytesInUse(null)
+    const use = (total / 1024).toFixed(2)
+    console.log(`Chrome Sync Storage Total Use: ${use}KB / 100KB`)
   },
 
   /**
@@ -88,16 +127,38 @@ export const SyncOptionsStorage = {
     if (option.ruleConfig) {
       option.ruleConfig = strCompress.compress(option.ruleConfig)
     }
-    await OptionsStorage.set(option)
+
+    try {
+      await LargeSyncStorage.set(option)
+    } catch (error) {
+      console.error("保存配置失败", error)
+      if (error.message.includes("QUOTA_BYTES_PER_ITEM") || error.message.includes("QUOTA_BYTES")) {
+        tryShowErrorMessage("保存配置失败，超过浏览器存储限制")
+      } else {
+        tryShowErrorMessage(`保存配置失败，${error.message}`)
+      }
+    }
   },
 
   /**
    * 覆盖式更新所有配置
    */
   async setAll(options) {
+    await chrome.storage.sync.clear()
     options.groups = strCompress.compress(options.groups)
     options.management = strCompress.compress(options.management)
     options.ruleConfig = strCompress.compress(options.ruleConfig)
-    await OptionsStorage.setAll(options)
+    await LargeSyncStorage.set(options)
+  }
+}
+
+function tryShowErrorMessage(text) {
+  try {
+    if (!window) {
+      return
+    }
+    message.error(text)
+  } catch (error) {
+    console.log("Cannot Show Message Now", error)
   }
 }

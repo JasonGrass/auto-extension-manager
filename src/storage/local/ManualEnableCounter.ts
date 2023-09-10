@@ -37,6 +37,11 @@ export class ManualEnableCounter {
    */
   async getOrder() {
     let keys = await this.forage.keys()
+
+    if (keys.length === 0) {
+      return []
+    }
+
     keys = keys.slice(0, MAX_COUNT - DELETE_COUNT_ONCE)
 
     const items = await Promise.all(keys.map((key) => this.forage.getItem<string>(key)))

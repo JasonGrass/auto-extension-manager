@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { QuestionCircleOutlined } from "@ant-design/icons"
-import { Button, Slider, Switch, Tooltip, message } from "antd"
+import { Button, Popconfirm, Slider, Switch, Tooltip, message } from "antd"
 import { fromJS } from "immutable"
 
 import storage from ".../storage"
@@ -103,6 +103,9 @@ function Settings() {
         type: "success",
         content: "导入完成"
       })
+      storage.options.getAll().then((options) => {
+        setSetting(options.setting)
+      })
     } else {
       messageApi.open({
         type: "error",
@@ -120,6 +123,14 @@ function Settings() {
   const onRestoreDefault = () => {
     storage.options.set({ setting: {} })
     setSetting({})
+  }
+
+  /**
+   * 清空所有配置
+   */
+  const onClearAllOptions = async () => {
+    await chrome.storage.sync.clear()
+    chrome.tabs.reload()
   }
 
   return (
@@ -302,7 +313,22 @@ function Settings() {
       <div className="import-export-container">
         <Button onClick={onImportConfig}>导入配置</Button>
         <Button onClick={onExportConfig}>导出配置</Button>
-        <Button onClick={onRestoreDefault}>恢复默认</Button>
+        <Tooltip placement="top" title="将通用设置重置为默认">
+          <Button onClick={onRestoreDefault}>恢复默认</Button>
+        </Tooltip>
+
+        <Popconfirm
+          title="删除所有配置"
+          description={`此操作将删除情景模式、分组、别名、规则等所有数据`}
+          onConfirm={onClearAllOptions}
+          onCancel={(e) => e.stopPropagation()}
+          okText="Yes"
+          cancelText="Cancel"
+          onClick={(e) => e.stopPropagation()}>
+          <Tooltip placement="right" title="清空所有的配置数据">
+            <Button danger>清空配置</Button>
+          </Tooltip>
+        </Popconfirm>
       </div>
     </SettingStyle>
   )
