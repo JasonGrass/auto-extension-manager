@@ -22,6 +22,12 @@ export const usePopupExtensions = (extensions, options) => {
 
     if (options.setting.isSortByFrequency) {
       manualEnableCounter.getOrder().then((orderExtIdList) => {
+        if (list1.length === 0 && list2.length === 0) {
+          // 初始化组件时，list 是空的。但奇怪的是，预期首先执行的 setItem1/2（设置空数组），实际执行在 setItem1/2(有数据) 之后。
+          // 这里对 Promise 微任务的执行是乱序的？
+          return
+        }
+
         setItems1(order(orderExtIdList, list1))
         setItems2(order(orderExtIdList, list2))
       })
@@ -35,8 +41,11 @@ export const usePopupExtensions = (extensions, options) => {
 }
 
 function order(orderExtIdList, list) {
+  if (orderExtIdList.length === 0) return list
+
   const result = []
   const orderedIdList = []
+
   for (const refer of orderExtIdList) {
     const item = list.find((i) => i.id === refer)
     if (item) {
