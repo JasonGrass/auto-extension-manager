@@ -27,13 +27,13 @@ const EditRule = memo((props) => {
         version: 2
       }
 
-      console.log("保存规则配置", newConfig)
+      // console.log("保存规则配置", newConfig)
 
       await onSave(newConfig)
     } catch (error) {
       console.error("保存规则配置", error)
       if (error.message.includes("QUOTA_BYTES_PER_ITEM")) {
-        message.error("保存失败，超过浏览器存储限制")
+        // message.error("保存失败，超过浏览器存储限制")
       } else {
         message.error(error.message)
       }

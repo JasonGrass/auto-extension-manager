@@ -1,3 +1,4 @@
+import { message } from "antd"
 import OptionsSync from "webext-options-sync"
 
 import strCompress from "./utils/ConfigCompress"
@@ -88,7 +89,17 @@ export const SyncOptionsStorage = {
     if (option.ruleConfig) {
       option.ruleConfig = strCompress.compress(option.ruleConfig)
     }
-    await OptionsStorage.set(option)
+
+    try {
+      await OptionsStorage.set(option)
+    } catch (error) {
+      console.error("保存配置失败", error)
+      if (error.message.includes("QUOTA_BYTES_PER_ITEM")) {
+        tryShowErrorMessage("保存配置失败，超过浏览器存储限制")
+      } else {
+        tryShowErrorMessage(`保存配置失败，${error.message}`)
+      }
+    }
   },
 
   /**
@@ -99,5 +110,16 @@ export const SyncOptionsStorage = {
     options.management = strCompress.compress(options.management)
     options.ruleConfig = strCompress.compress(options.ruleConfig)
     await OptionsStorage.setAll(options)
+  }
+}
+
+function tryShowErrorMessage(text) {
+  try {
+    if (!window) {
+      return
+    }
+    message.error(text)
+  } catch (error) {
+    console.log("Cannot Show Message Now", error)
   }
 }
