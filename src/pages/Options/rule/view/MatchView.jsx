@@ -53,9 +53,9 @@ const MatchView = memo(({ config, options }) => {
 
   let message = ""
   if (config.relationship === "and") {
-    message = tips.join(" && ")
+    message = tips.join(" & ")
   } else if (config.relationship === "or") {
-    message = tips.join(" || ")
+    message = tips.join(" | ")
   } else {
     return <span className="error-text">ERROR</span>
   }
