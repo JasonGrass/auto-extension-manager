@@ -1,11 +1,15 @@
-import React, { memo, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 
 import { CaretDownOutlined } from "@ant-design/icons"
 import { Dropdown } from "antd"
 import { styled } from "styled-components"
 
+import { LocalOptions } from ".../storage/local/LocalOptions"
+
+const localOptions = new LocalOptions()
+
 const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
-  const [group, setGroup] = useState(null)
+  const [selectedGroup, setSelectGroup] = useState(null)
 
   const raiseEnable = options.setting.isRaiseEnableWhenSwitchGroup
   const menuTitleAll = raiseEnable ? "未选择分组" : "全部"
@@ -26,15 +30,26 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
     configGroupMenu = configGroupMenu.filter((g) => g.key !== "fixed")
   }
 
-  const handleGroupMenuClick = (e) => {
-    const group = options.groups?.filter((g) => g.id === e.key)[0]
-    setGroup(group)
+  // 初始化
+  useEffect(() => {
+    localOptions.getActiveGroupId().then((groupId) => {
+      setSelectGroup(options.groups?.find((g) => g.id === groupId))
+    })
+  }, [options])
 
-    if (!group || group.key === "all") {
+  useEffect(() => {
+    if (!selectedGroup || selectedGroup.key === "all") {
       onGroupChanged(null)
     } else {
-      onGroupChanged(group)
+      onGroupChanged(selectedGroup)
     }
+  }, [selectedGroup, onGroupChanged])
+
+  // 手动切换分组
+  const handleGroupMenuClick = (e) => {
+    const group = options.groups?.find((g) => g.id === e.key)
+    setSelectGroup(group)
+    localOptions.setActiveGroupId(group?.id)
   }
 
   const groupMenu = {
@@ -52,7 +67,7 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
       <Dropdown menu={groupMenu} trigger={["hover"]} placement="bottom">
         <MenuStyle>
           <span className="content">
-            <span className="menu-item-text">{group?.name ?? menuTitleAll}</span>
+            <span className="menu-item-text">{selectedGroup?.name ?? menuTitleAll}</span>
             <CaretDownOutlined className="caret" />
           </span>
         </MenuStyle>
