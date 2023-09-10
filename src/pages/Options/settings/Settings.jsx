@@ -103,6 +103,9 @@ function Settings() {
         type: "success",
         content: "导入完成"
       })
+      storage.options.getAll().then((options) => {
+        setSetting(options.setting)
+      })
     } else {
       messageApi.open({
         type: "error",
