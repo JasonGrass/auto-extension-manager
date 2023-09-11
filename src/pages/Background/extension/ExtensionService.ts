@@ -22,7 +22,8 @@ export class ExtensionService {
     for (const item of list) {
       // const iconDataUrl = await getIconDataUrl(item)
       // 无法在 background 下获取 icon 数据
-      const ext = { ...item, icon: "", recordUpdateTime: now }
+      // 初始状态就是 install，表示已经安装了
+      const ext = { ...item, icon: "", state: "install", recordUpdateTime: now } as ExtensionRecord
       this.repo.set(ext)
     }
   }
