@@ -23,6 +23,12 @@
   "delete": {
     "message": "Delete"
   },
+  "got_it": {
+    "message": "Got it"
+  },
+  "no_more_prompts": {
+    "message": "No more prompts"
+  },
   "scene_title": {
     "message": "Profile"
   },
@@ -76,6 +82,12 @@
   },
   "group_delete_confirm": {
     "message": "Delete group \"$1\"?"
+  },
+  "group_may_redundant": {
+    "message": "Possibly a repeat operation"
+  },
+  "group_may_redundant_desc": {
+    "message": "This extension is already in a fixed group, the extension will always be activated when switching groups"
   },
   "enable_extension": {
     "message": "Enable"

@@ -23,6 +23,12 @@
   "delete": {
     "message": "删除"
   },
+  "got_it": {
+    "message": "知道了"
+  },
+  "no_more_prompts": {
+    "message": "不再提示"
+  },
   "scene_title": {
     "message": "情景模式"
   },
@@ -76,6 +82,12 @@
   },
   "group_delete_confirm": {
     "message": "确认删除分组 \"$1\""
+  },
+  "group_may_redundant": {
+    "message": "可能是重复操作"
+  },
+  "group_may_redundant_desc": {
+    "message": "此扩展已经在固定分组中，切换分组时扩展将始终被激活"
   },
   "enable_extension": {
     "message": "启用"

@@ -141,7 +141,7 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
         return
       }
 
-      const textKnow = "知道了"
+      const textKnow = getLang("got_it")
 
       const onTipClick = (e) => {
         if (e.target.innerText === textKnow) {
@@ -158,18 +158,18 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
         // 扩展已经在固定分组中，切换分组时扩展将始终被激活
         // The extension is already in a fixed group. When switching groups, the extension will always be activated.
         notificationApi.info({
-          message: "可能是重复操作",
+          message: getLang("group_may_redundant"),
           key: "repeat-notification",
           duration: 6,
           onClick: onTipClick,
           description: (
             <AlreadyFixedTipStyle>
               <p>{item.name}</p>
-              <p>此扩展已经在固定分组中，切换分组时扩展将始终被激活</p>
+              <p>{getLang("group_may_redundant_desc")}</p>
               <div>
                 <Button className="btn-already-fixed-tip">{textKnow}</Button>
                 <Button className="btn-already-fixed-tip" onClick={onClosePrompt}>
-                  不再提示
+                  {getLang("no_more_prompts")}
                 </Button>
               </div>
             </AlreadyFixedTipStyle>
