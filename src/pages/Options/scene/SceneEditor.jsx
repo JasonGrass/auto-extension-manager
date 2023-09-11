@@ -42,7 +42,7 @@ function SceneEditor({ editType, sceneInfo, editCallback }) {
 
   return (
     <ModalEditorWrapper title={getLang("scene_edit_title")}>
-      <Form labelCol={{ span: 2 }}>
+      <Form labelCol={{ span: 4 }}>
         <Form.Item label={getLang("scene_edit_name")}>
           <Input maxLength={50} value={name} onChange={(e) => onNameChanged(e)} />
         </Form.Item>
@@ -55,7 +55,7 @@ function SceneEditor({ editType, sceneInfo, editCallback }) {
             onChange={(e) => onDescChanged(e)}
           />
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 2, span: 6 }}>
+        <Form.Item wrapperCol={{ offset: 4, span: 4 }}>
           <div style={{ display: "flex" }}>
             <Button type="primary" onClick={(e) => onSummitClick(e)}>
               {editType === "new" ? getLang("add") : getLang("update")}
