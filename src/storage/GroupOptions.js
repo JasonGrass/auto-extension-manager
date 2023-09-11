@@ -7,14 +7,14 @@ export const GroupOptions = {
     const all = await SyncOptionsStorage.getAll()
     let groups = all.groups ? [...all.groups] : []
 
-    if (groups.filter((g) => g.id === "fixed").length < 1) {
-      const group = {
+    if (!groups.find((g) => g.id === "fixed")) {
+      const fixedGroup = {
         id: "fixed",
         name: "__fixed_group__",
         extensions: []
       }
-      groups.unshift(group)
-      this.addGroup(group)
+      groups.unshift(fixedGroup)
+      await this.addGroup(fixedGroup)
     }
 
     return groups
