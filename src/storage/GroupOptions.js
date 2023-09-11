@@ -10,7 +10,7 @@ export const GroupOptions = {
     if (groups.filter((g) => g.id === "fixed").length < 1) {
       const group = {
         id: "fixed",
-        name: "fixed group",
+        name: "__fixed_group__",
         extensions: []
       }
       groups.unshift(group)
@@ -24,15 +24,17 @@ export const GroupOptions = {
     const all = await SyncOptionsStorage.getAll()
     let groups = all.groups ? [...all.groups] : []
 
-    if (group.id === "fixed") {
-      // 内部操作，不检查 name
-      const exist = groups.find((g) => g.name === group.name)
-      if (exist) {
-        throw Error(`already exist same group named ${group.name}`)
-      }
+    const exist = groups.find((g) => g.name === group.name)
+    if (exist) {
+      throw Error(`[Add Group] Already exist same group named ${group.name}`)
     }
 
-    if (!group.id) {
+    if (group.id) {
+      const exist = groups.find((g) => g.id === group.id)
+      if (exist) {
+        throw Error(`[Add Group] Already exist same group id is ${group.id}`)
+      }
+    } else {
       group.id = nanoid()
     }
 
