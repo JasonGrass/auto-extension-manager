@@ -5,6 +5,7 @@ import { Button, Popconfirm, Slider, Switch, Tooltip, message } from "antd"
 import { fromJS } from "immutable"
 
 import storage from ".../storage"
+import { getLang } from ".../utils/utils"
 import Title from "../Title.jsx"
 import { exportConfig, importConfig } from "./ConfigFileBackup.ts"
 import { MAX_COLUMN_COUNT, MIN_COLUMN_COUNT } from "./SettingConst.js"
@@ -101,7 +102,7 @@ function Settings() {
     if (await importConfig()) {
       messageApi.open({
         type: "success",
-        content: "导入完成"
+        content: getLang("setting_import_finish")
       })
       storage.options.getAll().then((options) => {
         setSetting(options.setting)
@@ -109,10 +110,11 @@ function Settings() {
     } else {
       messageApi.open({
         type: "error",
-        content: "导入失败"
+        content: getLang("setting_import_fail")
       })
     }
   }
+
   const onExportConfig = () => {
     exportConfig()
   }
@@ -136,15 +138,16 @@ function Settings() {
   return (
     <SettingStyle>
       {contextHolder}
-      <Title title="通用设置"></Title>
+      <Title title={getLang("setting_title")}></Title>
 
-      <h2 className="setting-sub-title">Popup 显示偏好设置</h2>
+      <h2 className="setting-sub-title">{getLang("setting_popup_ui_setting")}</h2>
 
       <div className="container">
+        {/* 搜索框：默认显示（未开启时点击 🔍 显示） */}
         <div className="setting-item">
           <span>
-            搜索框：默认显示（未开启时点击 🔍 显示）
-            <Tooltip placement="top" title="也可以使用快捷键 'F' 打开搜索框">
+            {getLang("setting_ui_search_display")}
+            <Tooltip placement="top" title={getLang("setting_ui_search_display_tip")}>
               <QuestionCircleOutlined />
             </Tooltip>{" "}
           </span>
@@ -156,12 +159,11 @@ function Settings() {
             }></Switch>
         </div>
 
+        {/* 搜索框：支持跳转应用商店搜索 */}
         <div className="setting-item">
           <span>
-            搜索框：支持跳转应用商店搜索{" "}
-            <Tooltip
-              placement="top"
-              title="开启之后，可以跳转到浏览器应用商店搜索扩展（支持 Enter 快捷跳转）">
+            {getLang("setting_ui_search_jump")}
+            <Tooltip placement="top" title={getLang("setting_ui_search_jump_tip")}>
               <QuestionCircleOutlined />
             </Tooltip>{" "}
           </span>
@@ -173,12 +175,11 @@ function Settings() {
             }></Switch>
         </div>
 
+        {/* 显示 APP 类型的扩展 */}
         <div className="setting-item">
           <span>
-            显示 APP 类型的扩展{" "}
-            <Tooltip
-              placement="top"
-              title="将在 Popup 底部显示 APP 类型的扩展，点击图标，可以直接启动应用">
+            {getLang("setting_ui_show_app")}
+            <Tooltip placement="top" title={getLang("setting_ui_show_app_tip")}>
               <QuestionCircleOutlined />
             </Tooltip>{" "}
           </span>
@@ -188,12 +189,11 @@ function Settings() {
             onChange={(value) => onSettingChange(value, setIsShowApp, "isShowApp")}></Switch>
         </div>
 
+        {/* 显示固定分组中的扩展 */}
         <div className="setting-item">
           <span>
-            显示固定分组中的扩展{" "}
-            <Tooltip
-              placement="top"
-              title="固定分组中的扩展，通常为常驻扩展，如果不想在 Popup 列表中展示，可以关闭此选项">
+            {getLang("setting_ui_show_fixed_extension")}
+            <Tooltip placement="top" title={getLang("setting_ui_show_fixed_extension_tip")}>
               <QuestionCircleOutlined />
             </Tooltip>{" "}
           </span>
@@ -205,8 +205,9 @@ function Settings() {
             }></Switch>
         </div>
 
+        {/* 显示固定分组扩展右上角的小圆点 */}
         <div className="setting-item">
-          <span>显示固定分组扩展右上角的小圆点</span>
+          <span>{getLang("setting_ui_show_fixed_dot")}</span>
           <Switch
             size="small"
             checked={isShowDotOfFixedExtension}
@@ -215,8 +216,9 @@ function Settings() {
             }></Switch>
         </div>
 
+        {/* 列表视图下，始终显示快捷操作按钮（默认 hover 显示） */}
         <div className="setting-item">
-          <span>列表视图下，始终显示快捷操作按钮（默认 hover 显示）</span>
+          <span>{getLang("setting_list_view_show_button")}</span>
           <Switch
             size="small"
             checked={isShowItemOperationAlways}
@@ -225,10 +227,11 @@ function Settings() {
             }></Switch>
         </div>
 
+        {/* 网格视图下，显示扩展名称 */}
         <div className="setting-item">
           <span>
-            网格视图下，显示 APP 名称{" "}
-            <Tooltip placement="top" title="如果设置了扩展别名，将优先显示别名">
+            {getLang("setting_list_gird_show_name")}
+            <Tooltip placement="top" title={getLang("setting_list_gird_show_name_tip")}>
               <QuestionCircleOutlined />
             </Tooltip>{" "}
           </span>
@@ -240,8 +243,11 @@ function Settings() {
             }></Switch>
         </div>
 
+        {/* 网格视图下，扩展显示的列数 */}
         <div className="setting-item">
-          <span>网格视图下，扩展显示的列数（{columnCountInGirdView}）</span>
+          <span>
+            {getLang("setting_list_gird_show_column_number")} ({columnCountInGirdView})
+          </span>
           <Slider
             style={{ width: 100, margin: "0 10px 0 0" }}
             defaultValue={30}
@@ -254,9 +260,9 @@ function Settings() {
             step={1}
           />
         </div>
-
+        {/* 网格视图下，使用灰色样式显示被禁用的扩展 */}
         <div className="setting-item">
-          <span>网格视图下，使用灰色样式显示被禁用的扩展</span>
+          <span>{getLang("setting_list_gird_show_disable_gray")}</span>
           <Switch
             size="small"
             checked={isGaryStyleOfDisableInGridView}
@@ -269,10 +275,11 @@ function Settings() {
             }></Switch>
         </div>
 
+        {/* 排序：按照启用频率进行排序 */}
         <div className="setting-item">
           <span>
-            排序：按照启用频率进行排序{" "}
-            <Tooltip placement="top" title="默认按照名称排序">
+            {getLang("setting_list_sort_type")}
+            <Tooltip placement="top" title={getLang("setting_list_sort_type_tip")}>
               <QuestionCircleOutlined />
             </Tooltip>{" "}
           </span>
@@ -285,15 +292,14 @@ function Settings() {
         </div>
       </div>
 
-      <h2 className="setting-sub-title">Popup 功能偏好设置</h2>
+      <h2 className="setting-sub-title">{getLang("setting_popup_function_setting")}</h2>
 
+      {/* 切换分组时，启用当前分组扩展，禁用其它的扩展 */}
       <div className="container">
         <div className="setting-item">
           <span>
-            切换分组时，启用当前分组扩展，禁用其它的扩展{" "}
-            <Tooltip
-              placement="top"
-              title="打开此配置之后，在 Popup 中切换分组时，会禁用掉所有不是固定分组也不是当前分组中的扩展">
+            {getLang("setting_func_witch_group")}
+            <Tooltip placement="top" title={getLang("setting_func_witch_group_tip")}>
               <QuestionCircleOutlined />
             </Tooltip>{" "}
           </span>
@@ -311,22 +317,22 @@ function Settings() {
       </div>
 
       <div className="import-export-container">
-        <Button onClick={onImportConfig}>导入配置</Button>
-        <Button onClick={onExportConfig}>导出配置</Button>
-        <Tooltip placement="top" title="将通用设置重置为默认">
-          <Button onClick={onRestoreDefault}>恢复默认</Button>
+        <Button onClick={onImportConfig}>{getLang("setting_import_config")}</Button>
+        <Button onClick={onExportConfig}>{getLang("setting_export_config")}</Button>
+        <Tooltip placement="top" title={getLang("setting_restore_default_tip")}>
+          <Button onClick={onRestoreDefault}>{getLang("setting_restore_default")}</Button>
         </Tooltip>
 
         <Popconfirm
-          title="删除所有配置"
-          description={`此操作将删除情景模式、分组、别名、规则等所有数据`}
+          title={getLang("setting_clear_confirm_title")}
+          description={getLang("setting_clear_confirm_content")}
           onConfirm={onClearAllOptions}
           onCancel={(e) => e.stopPropagation()}
           okText="Yes"
           cancelText="Cancel"
           onClick={(e) => e.stopPropagation()}>
-          <Tooltip placement="right" title="清空所有的配置数据">
-            <Button danger>清空配置</Button>
+          <Tooltip placement="right" title={getLang("setting_clear_confirm_title")}>
+            <Button danger>{getLang("setting_clear_title")}</Button>
           </Tooltip>
         </Popconfirm>
       </div>

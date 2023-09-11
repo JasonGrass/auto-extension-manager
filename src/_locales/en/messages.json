@@ -476,6 +476,93 @@
   "scene_edit_desc": {
     "message": "Description"
   },
+  "setting_import_finish": {
+    "message": "Import Success"
+  },
+  "setting_import_fail": {
+    "message": "Import Fail"
+  },
+  "setting_popup_ui_setting": {
+    "message": "Popup Display Preferences"
+  },
+  "setting_popup_function_setting": {
+    "message": "Popup Function Preferences"
+  },
+  "setting_import_config": {
+    "message": "Import Config File"
+  },
+  "setting_export_config": {
+    "message": "Export Config File"
+  },
+  "setting_restore_default": {
+    "message": "Restore Default"
+  },
+  "setting_restore_default_tip": {
+    "message": "Reset preference settings to default"
+  },
+  "setting_clear_title": {
+    "message": "Clear Configuration"
+  },
+  "setting_clear_confirm_title": {
+    "message": "Delete All Configuration and Settings"
+  },
+  "setting_clear_confirm_content": {
+    "message": "This operation will delete all data including settings, profiles, groups, aliases, rules, etc."
+  },
+  "setting_ui_search_display": {
+    "message": "Search Box: Display by default (When not enabled, click 🔍 to display)"
+  },
+  "setting_ui_search_display_tip": {
+    "message": "You can also use the shortcut key 'F' to open the search box."
+  },
+  "setting_ui_search_jump": {
+    "message": "Search Box: Supports jumping to the app store for search"
+  },
+  "setting_ui_search_jump_tip": {
+    "message": "When enabled, you can jump to the extension store to search (Quick jump with Enter)"
+  },
+  "setting_ui_show_app": {
+    "message": "Display extensions of the APP type"
+  },
+  "setting_ui_show_app_tip": {
+    "message": "Display extensions of the APP type at the bottom of the Popup. Clicking on the icon will directly launch the application."
+  },
+  "setting_ui_show_fixed_extension": {
+    "message": "Display extensions of the fixed group"
+  },
+  "setting_ui_show_fixed_extension_tip": {
+    "message": "The extensions in the fixed group, are typically the resident extensions. If you don't want them to be displayed in the Popup list, you can disable this option."
+  },
+  "setting_ui_show_fixed_dot": {
+    "message": "Display a small dot in the upper right corner of the fixed group extensions"
+  },
+  "setting_list_view_show_button": {
+    "message": "List View: Always display the shortcut action buttons (default is hover to display)"
+  },
+  "setting_list_gird_show_name": {
+    "message": "Grid View: Display extension name"
+  },
+  "setting_list_gird_show_name_tip": {
+    "message": "If an alias for the extension is set, the alias will be displayed."
+  },
+  "setting_list_gird_show_column_number": {
+    "message": "Grid View: Column number "
+  },
+  "setting_list_gird_show_disable_gray": {
+    "message": "Grid View: Display disabled extensions in a grayed-out style"
+  },
+  "setting_list_sort_type": {
+    "message": "Order: Sort the extensions based on their activation frequency"
+  },
+  "setting_list_sort_type_tip": {
+    "message": "Alphabetically by default"
+  },
+  "setting_func_witch_group": {
+    "message": "When switching groups, enable the extensions in the current group and disable the rest"
+  },
+  "setting_func_witch_group_tip": {
+    "message": "After enabling, when switching groups in the Popup, all extensions that are not in the fixed groups or the current group will be disabled."
+  },
   "end": {
     "message": "end"
   }

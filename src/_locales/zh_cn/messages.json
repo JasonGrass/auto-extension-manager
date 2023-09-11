@@ -476,6 +476,93 @@
   "scene_edit_desc": {
     "message": "描述"
   },
+  "setting_import_finish": {
+    "message": "导入完成"
+  },
+  "setting_import_fail": {
+    "message": "导入失败"
+  },
+  "setting_popup_ui_setting": {
+    "message": "Popup 显示偏好设置"
+  },
+  "setting_popup_function_setting": {
+    "message": "Popup 功能偏好设置"
+  },
+  "setting_import_config": {
+    "message": "导入配置"
+  },
+  "setting_export_config": {
+    "message": "导出配置"
+  },
+  "setting_restore_default": {
+    "message": "恢复默认"
+  },
+  "setting_restore_default_tip": {
+    "message": "将通用设置重置为默认"
+  },
+  "setting_clear_title": {
+    "message": "清空配置"
+  },
+  "setting_clear_confirm_title": {
+    "message": "删除所有配置"
+  },
+  "setting_clear_confirm_content": {
+    "message": "此操作将删除情景模式、分组、别名、规则等所有数据"
+  },
+  "setting_ui_search_display": {
+    "message": "搜索框：默认显示（未开启时点击 🔍 显示）"
+  },
+  "setting_ui_search_display_tip": {
+    "message": "也可以使用快捷键 'F' 打开搜索框"
+  },
+  "setting_ui_search_jump": {
+    "message": "搜索框：支持跳转应用商店搜索"
+  },
+  "setting_ui_search_jump_tip": {
+    "message": "开启之后，可以跳转到浏览器应用商店搜索扩展（支持 Enter 快捷跳转）"
+  },
+  "setting_ui_show_app": {
+    "message": "显示 APP 类型的扩展"
+  },
+  "setting_ui_show_app_tip": {
+    "message": "将在 Popup 底部显示 APP 类型的扩展，点击图标，可以直接启动应用"
+  },
+  "setting_ui_show_fixed_extension": {
+    "message": "显示固定分组中的扩展"
+  },
+  "setting_ui_show_fixed_extension_tip": {
+    "message": "固定分组中的扩展，通常为常驻扩展，如果不想在 Popup 列表中展示，可以关闭此选项"
+  },
+  "setting_ui_show_fixed_dot": {
+    "message": "显示固定分组扩展右上角的小圆点"
+  },
+  "setting_list_view_show_button": {
+    "message": "列表视图下，始终显示快捷操作按钮（默认 hover 显示）"
+  },
+  "setting_list_gird_show_name": {
+    "message": "网格视图下，显示扩展名称"
+  },
+  "setting_list_gird_show_name_tip": {
+    "message": "如果设置了扩展别名，将优先显示别名"
+  },
+  "setting_list_gird_show_column_number": {
+    "message": "网格视图下，扩展显示的列数 "
+  },
+  "setting_list_gird_show_disable_gray": {
+    "message": "网格视图下，使用灰色样式显示被禁用的扩展"
+  },
+  "setting_list_sort_type": {
+    "message": "排序：按照启用频率进行排序"
+  },
+  "setting_list_sort_type_tip": {
+    "message": "默认按照名称排序"
+  },
+  "setting_func_witch_group": {
+    "message": "切换分组时，启用当前分组扩展，禁用其它的扩展"
+  },
+  "setting_func_witch_group_tip": {
+    "message": "打开此配置之后，在 Popup 中切换分组时，会禁用掉所有不是固定分组也不是当前分组中的扩展"
+  },
   "end": {
     "message": "end"
   }
