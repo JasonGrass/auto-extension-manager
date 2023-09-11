@@ -5,7 +5,7 @@ import { Popconfirm, Switch, message } from "antd"
 
 import { SceneOptions } from ".../storage/index"
 import { sendMessage } from ".../utils/messageHelper.js"
-import { isStringEmpty } from ".../utils/utils.js"
+import { getLang, isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
 import { SceneStyle } from "./IndexSceneStyle.js"
 import SceneEditor from "./SceneEditor.jsx"
@@ -75,12 +75,15 @@ function Scene() {
 
   return (
     <SceneStyle>
-      <Title title="情景模式"></Title>
+      <Title title={getLang("scene_title")}></Title>
       {contextHolder}
       {activeScene ? (
-        <h2 className="current-active-scene-title">当前激活的情景模式：{activeScene.name}</h2>
+        <h2 className="current-active-scene-title">
+          {getLang("scene_current_active")}
+          {activeScene.name}
+        </h2>
       ) : (
-        <h2 className="current-active-scene-title">当前未激活任何情景模式</h2>
+        <h2 className="current-active-scene-title">{getLang("scene_current_active_none")}</h2>
       )}
 
       <div className="scene-item-container">
@@ -90,7 +93,7 @@ function Scene() {
       </div>
 
       <div className="scene-item" style={{ display: "flex", alignItems: "center" }}>
-        <h3 style={{ flexGrow: 1, fontWeight: 700 }}>新增情景模式</h3>
+        <h3 style={{ flexGrow: 1, fontWeight: 700 }}>{getLang("scene_add_new")}</h3>
         <PlusCircleOutlined onClick={(e) => onNewSceneClick(e)} className="scene-item-add-icon" />
       </div>
 
@@ -144,8 +147,8 @@ function Scene() {
         <div className="scene-item-edit-icon">
           <EditFilled style={{ marginRight: 8 }} onClick={(e) => onEditClick(e, item)} />
           <Popconfirm
-            title="删除"
-            description={`确认删除"${item.name}"`}
+            title={getLang("delete")}
+            description={`Delete "${item.name}" ?`}
             onConfirm={(e) => onDeleteClick(e, item)}
             onCancel={(e) => e.stopPropagation()}
             okText="Yes"

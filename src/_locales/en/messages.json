@@ -20,6 +20,9 @@
   "help": {
     "message": "Help"
   },
+  "delete": {
+    "message": "Delete"
+  },
   "scene_title": {
     "message": "Profile"
   },
@@ -454,6 +457,24 @@
   },
   "trigger_period_end_time": {
     "message": "End Time"
+  },
+  "scene_current_active": {
+    "message": "Current Active Profile:"
+  },
+  "scene_current_active_none": {
+    "message": "No Profile is Activated"
+  },
+  "scene_add_new": {
+    "message": "Add Profile"
+  },
+  "scene_edit_title": {
+    "message": "Edit Profile"
+  },
+  "scene_edit_name": {
+    "message": "Name"
+  },
+  "scene_edit_desc": {
+    "message": "Description"
   },
   "end": {
     "message": "end"

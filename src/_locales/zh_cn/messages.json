@@ -20,6 +20,9 @@
   "help": {
     "message": "帮助"
   },
+  "delete": {
+    "message": "删除"
+  },
   "scene_title": {
     "message": "情景模式"
   },
@@ -454,6 +457,24 @@
   },
   "trigger_period_end_time": {
     "message": "结束时间"
+  },
+  "scene_current_active": {
+    "message": "当前激活的情景模式："
+  },
+  "scene_current_active_none": {
+    "message": "当前未激活任何情景模式"
+  },
+  "scene_add_new": {
+    "message": "新增情景模式"
+  },
+  "scene_edit_title": {
+    "message": "编辑情景模式"
+  },
+  "scene_edit_name": {
+    "message": "名称"
+  },
+  "scene_edit_desc": {
+    "message": "描述"
   },
   "end": {
     "message": "end"

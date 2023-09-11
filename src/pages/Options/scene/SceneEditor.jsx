@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import { Button, Form, Input } from "antd"
 
-import { isStringEmpty } from ".../utils/utils"
+import { getLang, isStringEmpty } from ".../utils/utils"
 import ModalEditorWrapper from "../utils/ModalEditorWrapper"
 
 const { TextArea } = Input
@@ -41,16 +41,12 @@ function SceneEditor({ editType, sceneInfo, editCallback }) {
   }
 
   return (
-    <ModalEditorWrapper title="编辑情景模式">
+    <ModalEditorWrapper title={getLang("scene_edit_title")}>
       <Form labelCol={{ span: 2 }}>
-        <Form.Item label="名称">
-          <Input
-            maxLength={50}
-            value={name}
-            onChange={(e) => onNameChanged(e)}
-          />
+        <Form.Item label={getLang("scene_edit_name")}>
+          <Input maxLength={50} value={name} onChange={(e) => onNameChanged(e)} />
         </Form.Item>
-        <Form.Item label="描述">
+        <Form.Item label={getLang("scene_edit_desc")}>
           <TextArea
             rows={2}
             showCount
@@ -62,13 +58,11 @@ function SceneEditor({ editType, sceneInfo, editCallback }) {
         <Form.Item wrapperCol={{ offset: 2, span: 6 }}>
           <div style={{ display: "flex" }}>
             <Button type="primary" onClick={(e) => onSummitClick(e)}>
-              {editType === "new" ? "添加" : "更新"}
+              {editType === "new" ? getLang("add") : getLang("update")}
             </Button>
 
-            <Button
-              style={{ marginLeft: 10 }}
-              onClick={(e) => onCancelClick(e)}>
-              取消
+            <Button style={{ marginLeft: 10 }} onClick={(e) => onCancelClick(e)}>
+              {getLang("cancel")}
             </Button>
           </div>
         </Form.Item>
