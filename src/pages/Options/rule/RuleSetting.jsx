@@ -4,6 +4,7 @@ import chromeP from "webext-polyfill-kinda"
 
 import storage, { ManageOptions, RuleConfigOptions } from ".../storage"
 import { appendAdditionInfo, filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
+import { getLang } from ".../utils/utils"
 import Title from "../Title.jsx"
 import { RuleSettingStyle } from "./RuleSettingStyle.js"
 import ViewRule from "./ViewRule.jsx"
@@ -63,7 +64,7 @@ function RuleSetting() {
 
   return (
     <RuleSettingStyle>
-      <Title title="规则设置"></Title>
+      <Title title={getLang("rule_title")}></Title>
 
       <ViewRule
         options={options}

@@ -5,6 +5,7 @@ import { Dropdown } from "antd"
 import { styled } from "styled-components"
 
 import { LocalOptions } from ".../storage/local/LocalOptions"
+import { getLang } from ".../utils/utils"
 
 const localOptions = new LocalOptions()
 
@@ -12,7 +13,7 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
   const [selectedGroup, setSelectGroup] = useState(null)
 
   const raiseEnable = options.setting.isRaiseEnableWhenSwitchGroup
-  const menuTitleAll = raiseEnable ? "未选择分组" : "全部"
+  const menuTitleAll = raiseEnable ? getLang("group_unselect") : getLang("group_select_all")
   const fixMenu = [
     {
       label: menuTitleAll,

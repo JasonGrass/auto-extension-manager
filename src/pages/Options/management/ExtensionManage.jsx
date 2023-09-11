@@ -5,6 +5,7 @@ import { Alert, Button, Checkbox, Form, Input, Table, Tooltip, message } from "a
 import { ManageOptions } from ".../storage"
 import { getIcon, sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
+import { getLang } from ".../utils/utils"
 import { ExtensionManageStyle } from "./ExtensionManageStyle"
 
 const { Search } = Input
@@ -12,16 +13,16 @@ const { Search } = Input
 const columns = [
   Table.EXPAND_COLUMN,
   {
-    title: "序号",
+    title: getLang("column_index"),
     dataIndex: "index",
     key: "index",
-    width: 60,
+    width: 80,
     render: (text, record, index) => {
       return <span className="column-index">{(index + 1).toString().padStart(2, "0")}</span>
     }
   },
   {
-    title: "扩展",
+    title: getLang("column_extension"),
     dataIndex: "name",
     key: "name",
     width: 320,
@@ -40,13 +41,13 @@ const columns = [
     }
   },
   {
-    title: "别名",
+    title: getLang("column_alias"),
     dataIndex: "alias",
     key: "alias",
     width: 320
   },
   {
-    title: "备注",
+    title: getLang("column_remark"),
     dataIndex: "remark",
     key: "remark"
   }
@@ -114,14 +115,14 @@ const ExtensionManage = memo(({ extensions, config }) => {
           checked={searchExistAlias}
           onChange={onExistAliasChange}
           className="search-checkbox">
-          存在别名
+          {getLang("alias_exist")}
         </Checkbox>
 
         <Checkbox
           checked={searchExistRemark}
           onChange={onExistRemarkChange}
           className="search-checkbox">
-          存在备注
+          {getLang("alias_remark_exist")}
         </Checkbox>
       </div>
 
@@ -173,11 +174,11 @@ const ExpandEditor = ({ record, reload }) => {
           wrapperCol={{
             span: 12
           }}
-          label="别名"
+          label={getLang("column_alias")}
           name="alias"
           rules={[
             {
-              message: "扩展别名长度最大50",
+              message: getLang("alias_max_length"),
               max: 50
             }
           ]}>
@@ -187,11 +188,11 @@ const ExpandEditor = ({ record, reload }) => {
           wrapperCol={{
             span: 20
           }}
-          label="备注"
+          label={getLang("column_remark")}
           name="remark"
           rules={[
             {
-              message: "备注长度最大为 100",
+              message: getLang("alias_remark_max_length"),
               max: 100
             }
           ]}>
@@ -202,7 +203,7 @@ const ExpandEditor = ({ record, reload }) => {
             offset: 1
           }}>
           <Button type="primary" htmlType="submit" style={{ width: 100 }}>
-            保存
+            {getLang("save")}
           </Button>
         </Form.Item>
       </Form>

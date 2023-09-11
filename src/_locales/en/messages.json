@@ -1,0 +1,569 @@
+{
+  "ext_name": {
+    "message": "Extension Manager"
+  },
+  "ext_desc": {
+    "message": "A simple way to manage your chrome extensions"
+  },
+  "add": {
+    "message": "Add"
+  },
+  "update": {
+    "message": "Update"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "help": {
+    "message": "Help"
+  },
+  "delete": {
+    "message": "Delete"
+  },
+  "scene_title": {
+    "message": "Profile"
+  },
+  "scene_cancel_all": {
+    "message": "Cancel all"
+  },
+  "group_title": {
+    "message": "Group"
+  },
+  "group_unselect": {
+    "message": "Unselect"
+  },
+  "group_select_all": {
+    "message": "All"
+  },
+  "group_include": {
+    "message": "Extensions in \"$1\""
+  },
+  "group_not_include": {
+    "message": "Not Contains"
+  },
+  "group_new": {
+    "message": "New Group"
+  },
+  "group_edit": {
+    "message": "Edit Group"
+  },
+  "group_name_cannot_empty": {
+    "message": "Group name cannot be empty"
+  },
+  "group_name": {
+    "message": "Name"
+  },
+  "group_desc": {
+    "message": "Description"
+  },
+  "group_fixed_name": {
+    "message": "Fixed Group"
+  },
+  "group_fixed_desc": {
+    "message": "This is a built-in group where extensions within this group will not be disabled when manually switching groups in the Popup. Typically, permanent extensions are placed in this group. Note: If a specific extension is explicitly configured to be disabled in a rule configuration, it will still be disabled even if it is in the fixed group."
+  },
+  "group_fixed_cannot_edit": {
+    "message": "The fixed group cannot be edited"
+  },
+  "group_fixed_cannot_delete": {
+    "message": "The fixed group cannot be deleted"
+  },
+  "group_delete_title": {
+    "message": "Delete"
+  },
+  "group_delete_confirm": {
+    "message": "Delete group \"$1\"?"
+  },
+  "enable_extension": {
+    "message": "Enable"
+  },
+  "disable_extension": {
+    "message": "Disable"
+  },
+  "remove_extension": {
+    "message": "Remove"
+  },
+  "remove_extension_confirm": {
+    "message": "Remove '$1' ?"
+  },
+  "app_not_enable": {
+    "message": "not enable"
+  },
+  "about_title": {
+    "message": "About"
+  },
+  "about_desc": {
+    "message": "A extension that can automatically open or close browser extension based on rules"
+  },
+  "about_feedback": {
+    "message": "Feedback"
+  },
+  "about_help": {
+    "message": "Help"
+  },
+  "about_version": {
+    "message": "version"
+  },
+  "about_storage_usage": {
+    "message": "Browser sync storage usage: Profile($1), Group($2), Alias($3), Rule($4)"
+  },
+  "column_index": {
+    "message": "Index"
+  },
+  "column_time": {
+    "message": "Time"
+  },
+  "column_event": {
+    "message": "Event"
+  },
+  "column_name": {
+    "message": "Name"
+  },
+  "column_version": {
+    "message": "Version"
+  },
+  "column_remark": {
+    "message": "Remark"
+  },
+  "column_extension": {
+    "message": "Extension"
+  },
+  "column_alias": {
+    "message": "Alias"
+  },
+  "history_absolute_time": {
+    "message": "Absolute Time"
+  },
+  "history_clean_record": {
+    "message": "Clear Record"
+  },
+  "history_cause": {
+    "message": "Because of"
+  },
+  "history_raise": {
+    "message": ""
+  },
+  "history_rule": {
+    "message": "Rule"
+  },
+  "history_switch_group": {
+    "message": "Switch Group"
+  },
+  "history_manage_extension": {
+    "message": "Manage This Extension"
+  },
+  "history_title": {
+    "message": "History"
+  },
+  "history_install": {
+    "message": "Install"
+  },
+  "history_uninstall": {
+    "message": "Uninstall"
+  },
+  "history_update": {
+    "message": "Updated"
+  },
+  "history_enable": {
+    "message": "Enable"
+  },
+  "history_disable": {
+    "message": "Disable"
+  },
+  "history_browser_update": {
+    "message": "Browser Updated"
+  },
+  "alias_exist": {
+    "message": "Has alias"
+  },
+  "alias_remark_exist": {
+    "message": "Has remark"
+  },
+  "alias_max_length": {
+    "message": "The maximum length of an alias is 50 characters"
+  },
+  "alias_remark_max_length": {
+    "message": "The maximum length of a remark is 100 characters"
+  },
+  "alias_title": {
+    "message": "Alias"
+  },
+  "setting_title": {
+    "message": "Settings"
+  },
+  "rule_title": {
+    "message": "Rules"
+  },
+  "rule_tip_no_set_time": {
+    "message": "[Action] Not set when enabling or disabling extensions"
+  },
+  "rule_tip_no_set_url_method_enable": {
+    "message": "[Action] (Enable Extension) Not set method for calculating URL matching"
+  },
+  "rule_tip_no_set_url_method_disable": {
+    "message": "[Action] (Disable Extension) Not set method for calculating URL matching"
+  },
+  "rule_set_time_of_enable": {
+    "message": "(Enable Extension) When enable the target extension"
+  },
+  "rule_set_time_of_disable": {
+    "message": "(Disable Extension) When disable the target extension"
+  },
+  "rule_set_when_enable_none": {
+    "message": "Do not enable automatically"
+  },
+  "rule_set_when_disable_none": {
+    "message": "Do not disable automatically"
+  },
+  "rule_set_when_match": {
+    "message": "When the conditions match"
+  },
+  "rule_set_when_not_match": {
+    "message": "When the conditions not match"
+  },
+  "rule_set_url_match_method_enable": {
+    "message": "(Enable Extension) Way of URL match"
+  },
+  "rule_set_url_not_match_method_enable": {
+    "message": "(Enable Extension) Way of URL does not match"
+  },
+  "rule_set_url_match_method_disable": {
+    "message": "(Disable Extension) Way of URL match"
+  },
+  "rule_set_url_not_match_method_disable": {
+    "message": "(Disable Extension) Way of URL not match"
+  },
+  "rule_set_url_enable_current_match": {
+    "message": "Current Tab Match (The extension will be enabled only if the URL pattern matches the current tab)"
+  },
+  "rule_set_url_enable_any_match": {
+    "message": "Any Tab Match (The extension will be enabled if the URL pattern matches any tab)"
+  },
+  "rule_set_url_enable_current_not_match": {
+    "message": "Current Tab not Match (The extension will be enabled if the URL pattern does not match the current tab)"
+  },
+  "rule_set_url_enable_all_not_match": {
+    "message": "All Tab not Match (The extension will be enabled only if the URL pattern does not match any tab)"
+  },
+  "rule_set_url_disable_current_match": {
+    "message": "Current Tab Match (The extension will be disabled only if the URL pattern matches the current tab)"
+  },
+  "rule_set_url_disable_any_match": {
+    "message": "Any Tab Match (The extension will be disabled if the URL pattern matches any tab)"
+  },
+  "rule_set_url_disable_current_not_match": {
+    "message": "Current Tab not Match (The extension will be disabled if the URL pattern does not match the current tab)"
+  },
+  "rule_set_url_disable_all_not_match": {
+    "message": "All Tab not Match (The extension will be disabled only if the URL pattern does not match any tab)"
+  },
+  "rule_set_target_no_any_target": {
+    "message": "No extension or extension group was selected as the target"
+  },
+  "rule_set_target_title": {
+    "message": "Target: Extension or Group"
+  },
+  "rule_set_target_select_extension_group": {
+    "message": "Selected Extension Groups"
+  },
+  "rule_set_target_select_extension": {
+    "message": "Selected Extensions"
+  },
+  "rule_set_target_no_selected_extension": {
+    "message": "No extension selected"
+  },
+  "rule_set_target_other_extension": {
+    "message": "Left extensions"
+  },
+  "rule_set_target_no_any_extension": {
+    "message": "No extension available"
+  },
+  "rule_trigger_url_name": {
+    "message": "URL"
+  },
+  "rule_trigger_scene_name": {
+    "message": "Profile"
+  },
+  "rule_trigger_os_name": {
+    "message": "Operating System"
+  },
+  "rule_trigger_period_name": {
+    "message": "Period"
+  },
+  "rule_set_match_at_least_one": {
+    "message": "[Matching Conditions] Please add at least one matching condition"
+  },
+  "rule_set_match_cannot_duplicate": {
+    "message": "Cannot add duplicate conditions $1"
+  },
+  "rule_set_match_title": {
+    "message": "Matching Conditions"
+  },
+  "rule_set_match_add": {
+    "message": "Add Matching Conditions"
+  },
+  "rule_set_match_all": {
+    "message": "Match all of the following conditions"
+  },
+  "rule_set_match_any": {
+    "message": "Match any of the following conditions"
+  },
+  "rule_match_url_tip": {
+    "message": "URL matching is calculated based on the currently open browser tab by default. Switching tabs will cause the URL matching to change. For more matching options, you can configure them in the customization settings. (If there are no URL matching conditions, you don't need to worry about this issue.)"
+  },
+  "rule_action_close_when_matched": {
+    "message": "Disable When Matched"
+  },
+  "rule_action_close_when_match_desc": {
+    "message": "Disable When Matched: Automatically disable the extension when the conditions are met. (Will not be automatically enabled.)"
+  },
+  "rule_action_open_when_matched": {
+    "message": "Enable When Matched"
+  },
+  "rule_action_open_when_matched_desc": {
+    "message": "Enable When Matched: Automatically enable the extension when the conditions are met. (Will not be automatically Disabled.)"
+  },
+  "rule_action_close_only_when_matched": {
+    "message": "Disable Only When Matched"
+  },
+  "rule_action_close_only_when_matched_desc": {
+    "message": "Disable Only When Matched: Automatically disable when the conditions are met. Automatically enable when not met."
+  },
+  "rule_action_open_only_when_matched": {
+    "message": "Enable Only When Matched"
+  },
+  "rule_action_open_only_when_matched_desc": {
+    "message": "Enable Only When Matched: Automatically enable when the conditions are met. Automatically disable when not met."
+  },
+  "rule_action_custom": {
+    "message": "Custom"
+  },
+  "rule_action_custom_desc": {
+    "message": "Customize when to enable or disable the extension."
+  },
+  "rule_action_no_any_action": {
+    "message": "No action has been set"
+  },
+  "rule_action_please_select_action": {
+    "message": "Select the action type."
+  },
+  "rule_action_title": {
+    "message": "Action"
+  },
+  "rule_action_help": {
+    "message": "Help"
+  },
+  "rule_action_auto_reload_when_enable": {
+    "message": "Reload the current tab after enabled"
+  },
+  "rule_action_auto_reload_when_disable": {
+    "message": "Reload the current tab after disabled"
+  },
+  "rule_action_delete_action": {
+    "message": "Delete"
+  },
+  "rule_view_match_url_tip": {
+    "message": "$1 and a total of $2"
+  },
+  "rule_edit_save_error_limit": {
+    "message": "Save failed, Exceeded the browser storage limit."
+  },
+  "rule_column_match": {
+    "message": "Match"
+  },
+  "rule_column_extensions": {
+    "message": "Extensions/Group"
+  },
+  "rule_column_action": {
+    "message": "Action"
+  },
+  "rule_column_operation": {
+    "message": "Operation"
+  },
+  "rule_add": {
+    "message": "Add"
+  },
+  "trigger_os_select_one": {
+    "message": "Select at least one operating system type."
+  },
+  "trigger_os_select_tip": {
+    "message": "Select the operating system(s) to be matched, can select multiple options."
+  },
+  "trigger_scene_no_any": {
+    "message": "No Profile Selected"
+  },
+  "trigger_scene_no_created": {
+    "message": "No Profile Created, Create First"
+  },
+  "trigger_scene_select_one": {
+    "message": "Select Profile to be Matched"
+  },
+  "trigger_scene_select_tip": {
+    "message": "Select Profile"
+  },
+  "trigger_url_no_any": {
+    "message": "[Matching Conditions] None URL Added"
+  },
+  "trigger_url_match_desc": {
+    "message": "The URL by default refers to the URL of the currently opened tab. More you can see detail."
+  },
+  "trigger_url_match_detail_title": {
+    "message": "Detail"
+  },
+  "trigger_url_match_method_title": {
+    "message": "Match Method:"
+  },
+  "trigger_url_wildcard": {
+    "message": "Wildcard"
+  },
+  "trigger_url_regex": {
+    "message": "Regex"
+  },
+  "trigger_url_use_full": {
+    "message": "Using the complete URL"
+  },
+  "trigger_url_use_full_desc": {
+    "message": "By default, the query parameters and anchor parts of the URL are not considered."
+  },
+  "trigger_url_add_pattern": {
+    "message": "Add URL Pattern"
+  },
+  "trigger_url_clear_empty": {
+    "message": "Clear Empty Items"
+  },
+  "trigger_period_no_any": {
+    "message": "At least one time interval"
+  },
+  "trigger_period_max": {
+    "message": "Set up to 10 time interval maximum"
+  },
+  "trigger_period_no_complete": {
+    "message": "No Start Time or End Time"
+  },
+  "trigger_period_cannot_greater": {
+    "message": "The start time cannot be greater than or equal to the end time"
+  },
+  "trigger_period_cannot_overlap": {
+    "message": "There is a time overlap in the intervals"
+  },
+  "trigger_period_action_desc": {
+    "message": "Due to browser restrictions, background operations cannot be persistent and must be triggered by events. Therefore, this condition can only be matched when the browser is active, and the timing may not be precise."
+  },
+  "trigger_period_start_time": {
+    "message": "Start Time"
+  },
+  "trigger_period_end_time": {
+    "message": "End Time"
+  },
+  "scene_current_active": {
+    "message": "Current Active Profile:"
+  },
+  "scene_current_active_none": {
+    "message": "No Profile is Activated"
+  },
+  "scene_add_new": {
+    "message": "Add Profile"
+  },
+  "scene_edit_title": {
+    "message": "Edit Profile"
+  },
+  "scene_edit_name": {
+    "message": "Name"
+  },
+  "scene_edit_desc": {
+    "message": "Description"
+  },
+  "setting_import_finish": {
+    "message": "Import Success"
+  },
+  "setting_import_fail": {
+    "message": "Import Fail"
+  },
+  "setting_popup_ui_setting": {
+    "message": "Popup Display Preferences"
+  },
+  "setting_popup_function_setting": {
+    "message": "Popup Function Preferences"
+  },
+  "setting_import_config": {
+    "message": "Import Config File"
+  },
+  "setting_export_config": {
+    "message": "Export Config File"
+  },
+  "setting_restore_default": {
+    "message": "Restore Default"
+  },
+  "setting_restore_default_tip": {
+    "message": "Reset preference settings to default"
+  },
+  "setting_clear_title": {
+    "message": "Clear Configuration"
+  },
+  "setting_clear_confirm_title": {
+    "message": "Delete All Configuration and Settings"
+  },
+  "setting_clear_confirm_content": {
+    "message": "This operation will delete all data including settings, profiles, groups, aliases, rules, etc."
+  },
+  "setting_ui_search_display": {
+    "message": "Search Box: Display by default (When not enabled, click 🔍 to display)"
+  },
+  "setting_ui_search_display_tip": {
+    "message": "You can also use the shortcut key 'F' to open the search box."
+  },
+  "setting_ui_search_jump": {
+    "message": "Search Box: Supports jumping to the app store for search"
+  },
+  "setting_ui_search_jump_tip": {
+    "message": "When enabled, you can jump to the extension store to search (Quick jump with Enter)"
+  },
+  "setting_ui_show_app": {
+    "message": "Display extensions of the APP type"
+  },
+  "setting_ui_show_app_tip": {
+    "message": "Display extensions of the APP type at the bottom of the Popup. Clicking on the icon will directly launch the application."
+  },
+  "setting_ui_show_fixed_extension": {
+    "message": "Display extensions of the fixed group"
+  },
+  "setting_ui_show_fixed_extension_tip": {
+    "message": "The extensions in the fixed group, are typically the resident extensions. If you don't want them to be displayed in the Popup list, you can disable this option."
+  },
+  "setting_ui_show_fixed_dot": {
+    "message": "Display a small dot in the upper right corner of the fixed group extensions"
+  },
+  "setting_list_view_show_button": {
+    "message": "List View: Always display the shortcut action buttons (default is hover to display)"
+  },
+  "setting_list_gird_show_name": {
+    "message": "Grid View: Display extension name"
+  },
+  "setting_list_gird_show_name_tip": {
+    "message": "If an alias for the extension is set, the alias will be displayed."
+  },
+  "setting_list_gird_show_column_number": {
+    "message": "Grid View: Column number "
+  },
+  "setting_list_gird_show_disable_gray": {
+    "message": "Grid View: Display disabled extensions in a grayed-out style"
+  },
+  "setting_list_sort_type": {
+    "message": "Order: Sort the extensions based on their activation frequency"
+  },
+  "setting_list_sort_type_tip": {
+    "message": "Alphabetically by default"
+  },
+  "setting_func_witch_group": {
+    "message": "When switching groups, enable the extensions in the current group and disable the rest"
+  },
+  "setting_func_witch_group_tip": {
+    "message": "After enabling, when switching groups in the Popup, all extensions that are not in the fixed groups or the current group will be disabled."
+  },
+  "end": {
+    "message": "end"
+  }
+}

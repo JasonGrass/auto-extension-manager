@@ -7,7 +7,7 @@ import chromeP from "webext-polyfill-kinda"
 
 import storage, { GroupOptions } from ".../storage/index"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper"
-import { isStringEmpty } from ".../utils/utils.js"
+import { getLang, isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
 import GroupContent from "./GroupContent.jsx"
 import GroupEditor from "./GroupEditor.jsx"
@@ -141,7 +141,7 @@ function GroupManagement() {
 
   return (
     <GroupStyle>
-      <Title title="分组管理"></Title>
+      <Title title={getLang("group_title")}></Title>
       {contextHolder}
       <div className="group-edit-box">
         <div className="left-box">

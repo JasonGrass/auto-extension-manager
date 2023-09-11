@@ -4,6 +4,8 @@ import { CopyOutlined, DeleteOutlined, FormOutlined } from "@ant-design/icons"
 import { Popconfirm, Switch } from "antd"
 import { styled } from "styled-components"
 
+import { getLang } from ".../utils/utils"
+
 const OperationView = memo((props) => {
   const { record, onEdit, onDuplicate, onDelete, onEnabled } = props
   return (
@@ -13,7 +15,7 @@ const OperationView = memo((props) => {
         <CopyOutlined onClick={() => onDuplicate?.(record)} />
 
         <Popconfirm
-          title="删除规则"
+          title={getLang("rule_action_delete_action")}
           description="Are you sure to delete this rule?"
           onConfirm={() => onDelete?.(record)}
           okText="Yes"

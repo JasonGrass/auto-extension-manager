@@ -4,13 +4,15 @@ import { ClearOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons"
 import { Alert, Button, Dropdown, Space } from "antd"
 import { styled } from "styled-components"
 
+import { getLang } from ".../utils/utils"
+
 const SceneTrigger = ({ options, config }, ref) => {
   const sceneList = options.scenes
 
   useImperativeHandle(ref, () => ({
     getSceneTriggerConfig: () => {
       if (!matchScene?.id) {
-        throw Error("没有选择任何情景模式")
+        throw Error(getLang("trigger_scene_no_any"))
       }
 
       return {
@@ -29,7 +31,7 @@ const SceneTrigger = ({ options, config }, ref) => {
   }, [options, sceneList, config])
 
   if (!sceneList || sceneList.length === 0) {
-    return <p>没有创建任何情景模式，请先创建</p>
+    return <p>{getLang("trigger_scene_no_created")}</p>
   }
 
   const sceneListMenuProps = {
@@ -46,13 +48,13 @@ const SceneTrigger = ({ options, config }, ref) => {
 
   return (
     <Style>
-      <Alert message="选择需要匹配的情景模式" type="info" showIcon />
+      <Alert message={getLang("trigger_scene_select_one")} type="info" showIcon />
 
       <div className="scene-select-dropdown">
         <Dropdown menu={sceneListMenuProps}>
           <Button>
             <Space>
-              {matchScene?.name ?? "选择情景模式"}
+              {matchScene?.name ?? getLang("trigger_scene_select_tip")}
               <DownOutlined />
             </Space>
           </Button>

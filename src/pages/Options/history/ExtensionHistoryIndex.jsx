@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react"
 
-import chromeP from "webext-polyfill-kinda"
-
 import { ManageOptions } from ".../storage"
+import { getLang } from ".../utils/utils"
 import { ExtensionIconBuilder } from "../../Background/extension/ExtensionIconBuilder"
 import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
 import { HistoryRepo } from "../../Background/history/HistoryRepo"
@@ -54,7 +53,7 @@ const ExtensionManageIndex = () => {
 
   return (
     <div>
-      <Title title="历史记录"></Title>
+      <Title title={getLang("history_title")}></Title>
       <ExtensionHistory records={historyRecords}></ExtensionHistory>
     </div>
   )

@@ -1,0 +1,569 @@
+{
+  "ext_name": {
+    "message": "扩展管理器（Extension Manager）"
+  },
+  "ext_desc": {
+    "message": "一个可以自由配置规则的扩展管理工具"
+  },
+  "add": {
+    "message": "添加"
+  },
+  "update": {
+    "message": "更新"
+  },
+  "cancel": {
+    "message": "取消"
+  },
+  "save": {
+    "message": "保存"
+  },
+  "help": {
+    "message": "帮助"
+  },
+  "delete": {
+    "message": "删除"
+  },
+  "scene_title": {
+    "message": "情景模式"
+  },
+  "scene_cancel_all": {
+    "message": "取消所有"
+  },
+  "group_title": {
+    "message": "分组管理"
+  },
+  "group_unselect": {
+    "message": "未选择分组"
+  },
+  "group_select_all": {
+    "message": "全部"
+  },
+  "group_include": {
+    "message": "「$1」中的扩展"
+  },
+  "group_not_include": {
+    "message": "不在此分组"
+  },
+  "group_new": {
+    "message": "新建分组"
+  },
+  "group_edit": {
+    "message": "编辑分组"
+  },
+  "group_name_cannot_empty": {
+    "message": "分组名称不能为空"
+  },
+  "group_name": {
+    "message": "分组名称"
+  },
+  "group_desc": {
+    "message": "分组描述"
+  },
+  "group_fixed_name": {
+    "message": "固定分组"
+  },
+  "group_fixed_desc": {
+    "message": "这是一个内置分组，此分组中的扩展，在 Popup 中手动切换分组时，不会被禁用。通常将常驻的扩展放在此分组中。注意：如果在规则配置中，明确配置关闭某个扩展，即使此扩展在固定分组中，禁用依旧有效。"
+  },
+  "group_fixed_cannot_edit": {
+    "message": "固定分组不能被编辑"
+  },
+  "group_fixed_cannot_delete": {
+    "message": "固定分组不能被删除"
+  },
+  "group_delete_title": {
+    "message": "删除分组"
+  },
+  "group_delete_confirm": {
+    "message": "确认删除分组 \"$1\""
+  },
+  "enable_extension": {
+    "message": "启用"
+  },
+  "disable_extension": {
+    "message": "禁用"
+  },
+  "remove_extension": {
+    "message": "移除扩展"
+  },
+  "remove_extension_confirm": {
+    "message": "确认要从浏览器中移除 $1"
+  },
+  "app_not_enable": {
+    "message": "未启用"
+  },
+  "about_title": {
+    "message": "关于"
+  },
+  "about_desc": {
+    "message": "一个可以根据规则自动打开或关闭浏览器扩展的工具"
+  },
+  "about_feedback": {
+    "message": "问题反馈"
+  },
+  "about_help": {
+    "message": "查看帮助"
+  },
+  "about_version": {
+    "message": "版本"
+  },
+  "about_storage_usage": {
+    "message": "浏览器同步存储空间使用情况：情景模式($1), 分组($2), 别名备注($3), 规则设置($4)"
+  },
+  "column_index": {
+    "message": "序号"
+  },
+  "column_time": {
+    "message": "时间"
+  },
+  "column_event": {
+    "message": "事件"
+  },
+  "column_name": {
+    "message": "名称"
+  },
+  "column_version": {
+    "message": "版本"
+  },
+  "column_remark": {
+    "message": "备注"
+  },
+  "column_extension": {
+    "message": "扩展"
+  },
+  "column_alias": {
+    "message": "别名"
+  },
+  "history_absolute_time": {
+    "message": "绝对时间"
+  },
+  "history_clean_record": {
+    "message": "清空记录"
+  },
+  "history_cause": {
+    "message": "由"
+  },
+  "history_raise": {
+    "message": "触发"
+  },
+  "history_rule": {
+    "message": "规则"
+  },
+  "history_switch_group": {
+    "message": "切换分组"
+  },
+  "history_manage_extension": {
+    "message": "管理扩展程序"
+  },
+  "history_title": {
+    "message": "历史记录"
+  },
+  "history_install": {
+    "message": "安装"
+  },
+  "history_uninstall": {
+    "message": "卸载"
+  },
+  "history_update": {
+    "message": "更新"
+  },
+  "history_enable": {
+    "message": "启用"
+  },
+  "history_disable": {
+    "message": "禁用"
+  },
+  "history_browser_update": {
+    "message": "浏览器更新"
+  },
+  "alias_exist": {
+    "message": "存在别名"
+  },
+  "alias_remark_exist": {
+    "message": "存在备注"
+  },
+  "alias_max_length": {
+    "message": "扩展别名长度最大 50"
+  },
+  "alias_remark_max_length": {
+    "message": "备注长度最大为 100"
+  },
+  "alias_title": {
+    "message": "扩展别名"
+  },
+  "setting_title": {
+    "message": "通用设置"
+  },
+  "rule_title": {
+    "message": "规则设置"
+  },
+  "rule_tip_no_set_time": {
+    "message": "[动作] 没有指定启用或禁用扩展的时机"
+  },
+  "rule_tip_no_set_url_method_enable": {
+    "message": "[动作] （启用插件）没有指定 URL 匹配的计算方式"
+  },
+  "rule_tip_no_set_url_method_disable": {
+    "message": "[动作] （禁用插件）没有指定 URL 匹配的计算方式"
+  },
+  "rule_set_time_of_enable": {
+    "message": "（启用插件）设置启用目标插件的时机"
+  },
+  "rule_set_time_of_disable": {
+    "message": "（禁用插件）设置禁用目标插件的时机"
+  },
+  "rule_set_when_enable_none": {
+    "message": "不自动启用"
+  },
+  "rule_set_when_disable_none": {
+    "message": "不自动禁用"
+  },
+  "rule_set_when_match": {
+    "message": "条件匹配时"
+  },
+  "rule_set_when_not_match": {
+    "message": "条件不匹配时"
+  },
+  "rule_set_url_match_method_enable": {
+    "message": "（启用插件）URL 匹配的计算方式"
+  },
+  "rule_set_url_not_match_method_enable": {
+    "message": "（启用插件）URL 不匹配的计算方式"
+  },
+  "rule_set_url_match_method_disable": {
+    "message": "（禁用插件）URL 匹配的计算方式"
+  },
+  "rule_set_url_not_match_method_disable": {
+    "message": "（禁用插件）URL 不匹配的计算方式"
+  },
+  "rule_set_url_enable_current_match": {
+    "message": "当前标签匹配（只有当前标签页匹配时，扩展才会被开启）"
+  },
+  "rule_set_url_enable_any_match": {
+    "message": "任一标签匹配（所有标签中任一标签页匹配时，扩展就会被开启）"
+  },
+  "rule_set_url_enable_current_not_match": {
+    "message": "当前标签不匹配（只要当前标签不匹配，扩展就会被开启）"
+  },
+  "rule_set_url_enable_all_not_match": {
+    "message": "所有标签不匹配（只有所有标签都不匹配，扩展才会被开启）"
+  },
+  "rule_set_url_disable_current_match": {
+    "message": "当前标签匹配（只有当前标签页匹配时，扩展才会被禁用）"
+  },
+  "rule_set_url_disable_any_match": {
+    "message": "任一标签匹配（所有标签中任一标签页匹配时，扩展就会被禁用）"
+  },
+  "rule_set_url_disable_current_not_match": {
+    "message": "当前标签不匹配（只要当前标签不匹配，扩展就会被禁用）"
+  },
+  "rule_set_url_disable_all_not_match": {
+    "message": "所有标签不匹配（只有所有标签都不匹配，扩展才会被禁用）"
+  },
+  "rule_set_target_no_any_target": {
+    "message": "执行目标没有选择任何扩展或扩展组"
+  },
+  "rule_set_target_title": {
+    "message": "规则执行目标：扩展（组）"
+  },
+  "rule_set_target_select_extension_group": {
+    "message": "选择扩展组"
+  },
+  "rule_set_target_select_extension": {
+    "message": "选择扩展"
+  },
+  "rule_set_target_no_selected_extension": {
+    "message": "未选择任何扩展"
+  },
+  "rule_set_target_other_extension": {
+    "message": "其它扩展"
+  },
+  "rule_set_target_no_any_extension": {
+    "message": "无任何扩展"
+  },
+  "rule_trigger_url_name": {
+    "message": "URL 链接"
+  },
+  "rule_trigger_scene_name": {
+    "message": "情景模式"
+  },
+  "rule_trigger_os_name": {
+    "message": "操作系统类型"
+  },
+  "rule_trigger_period_name": {
+    "message": "时间区间"
+  },
+  "rule_set_match_at_least_one": {
+    "message": "[匹配条件] 至少添加一个匹配条件"
+  },
+  "rule_set_match_cannot_duplicate": {
+    "message": "不能重复添加条件 $1"
+  },
+  "rule_set_match_title": {
+    "message": "匹配条件"
+  },
+  "rule_set_match_add": {
+    "message": "添加匹配条件"
+  },
+  "rule_set_match_all": {
+    "message": "满足以下所有条件"
+  },
+  "rule_set_match_any": {
+    "message": "满足以下任一条件"
+  },
+  "rule_match_url_tip": {
+    "message": "默认按照当前打开的浏览器标签计算 URL 匹配。切换标签就会导致 URL 匹配发生变化。更多匹配方式，可在自定义中设置。（无 URL 匹配条件则无需关注此问题）"
+  },
+  "rule_action_close_when_matched": {
+    "message": "匹配后关闭"
+  },
+  "rule_action_close_when_match_desc": {
+    "message": "匹配后关闭：条件匹配时，自动关闭扩展；（不会自动启用扩展）"
+  },
+  "rule_action_open_when_matched": {
+    "message": "匹配后打开"
+  },
+  "rule_action_open_when_matched_desc": {
+    "message": "匹配后打开：条件匹配时，自动打开扩展；（不会自动关闭扩展）"
+  },
+  "rule_action_close_only_when_matched": {
+    "message": "匹配才关闭"
+  },
+  "rule_action_close_only_when_matched_desc": {
+    "message": "匹配才关闭：条件匹配时，自动关闭扩展；条件不匹配时，自动打开扩展。"
+  },
+  "rule_action_open_only_when_matched": {
+    "message": "匹配才打开"
+  },
+  "rule_action_open_only_when_matched_desc": {
+    "message": "匹配才打开：条件匹配时，自动打开扩展；条件不匹配时，自动关闭扩展；"
+  },
+  "rule_action_custom": {
+    "message": "自定义"
+  },
+  "rule_action_custom_desc": {
+    "message": "自定义启用或禁用扩展的时机"
+  },
+  "rule_action_no_any_action": {
+    "message": "没有设置任何动作类型"
+  },
+  "rule_action_please_select_action": {
+    "message": "请选择动作类型"
+  },
+  "rule_action_title": {
+    "message": "动作"
+  },
+  "rule_action_help": {
+    "message": "查看帮助"
+  },
+  "rule_action_auto_reload_when_enable": {
+    "message": "启用扩展之后，刷新当前页面"
+  },
+  "rule_action_auto_reload_when_disable": {
+    "message": "禁用扩展之后，刷新当前页面"
+  },
+  "rule_action_delete_action": {
+    "message": "删除规则"
+  },
+  "rule_view_match_url_tip": {
+    "message": "$1 等 $2 条"
+  },
+  "rule_edit_save_error_limit": {
+    "message": "保存失败，超过浏览器存储限制"
+  },
+  "rule_column_match": {
+    "message": "匹配"
+  },
+  "rule_column_extensions": {
+    "message": "扩展(组)"
+  },
+  "rule_column_action": {
+    "message": "动作"
+  },
+  "rule_column_operation": {
+    "message": "操作"
+  },
+  "rule_add": {
+    "message": "新增"
+  },
+  "trigger_os_select_one": {
+    "message": "请至少选择一个操作系统类型"
+  },
+  "trigger_os_select_tip": {
+    "message": "选择需要匹配的操作系统，可以多选"
+  },
+  "trigger_scene_no_any": {
+    "message": "没有选择任何情景模式"
+  },
+  "trigger_scene_no_created": {
+    "message": "没有创建任何情景模式，请先创建"
+  },
+  "trigger_scene_select_one": {
+    "message": "选择需要匹配的情景模式"
+  },
+  "trigger_scene_select_tip": {
+    "message": "选择情景模式"
+  },
+  "trigger_url_no_any": {
+    "message": "[匹配条件] 没有添加任何 URL"
+  },
+  "trigger_url_match_desc": {
+    "message": "URL 默认是指当前打开的那个标签中的 URL，具体匹配规则见详细说明"
+  },
+  "trigger_url_match_detail_title": {
+    "message": "详细说明"
+  },
+  "trigger_url_match_method_title": {
+    "message": "匹配方式："
+  },
+  "trigger_url_wildcard": {
+    "message": "通配符"
+  },
+  "trigger_url_regex": {
+    "message": "正则表达式"
+  },
+  "trigger_url_use_full": {
+    "message": "使用完整 URL 进行计算"
+  },
+  "trigger_url_use_full_desc": {
+    "message": "默认情况下，不考虑 URL 中的查询参数和锚点部分，详细说明见文档"
+  },
+  "trigger_url_add_pattern": {
+    "message": "添加 URL Pattern"
+  },
+  "trigger_url_clear_empty": {
+    "message": "清除空白项"
+  },
+  "trigger_period_no_any": {
+    "message": "请至少设置一个时间区间"
+  },
+  "trigger_period_max": {
+    "message": "最多设置10个时间区间"
+  },
+  "trigger_period_no_complete": {
+    "message": "请选择完整的时间区间"
+  },
+  "trigger_period_cannot_greater": {
+    "message": "开始时间不能大于等于结束时间"
+  },
+  "trigger_period_cannot_overlap": {
+    "message": "时间区间存在交叉，请重新设置"
+  },
+  "trigger_period_action_desc": {
+    "message": "由于浏览器限制，后台操作不能常驻，必须由事件触发。所以仅在浏览器有活动时，才能触发此条件的匹配，时机会不精确。"
+  },
+  "trigger_period_start_time": {
+    "message": "开始时间"
+  },
+  "trigger_period_end_time": {
+    "message": "结束时间"
+  },
+  "scene_current_active": {
+    "message": "当前激活的情景模式："
+  },
+  "scene_current_active_none": {
+    "message": "当前未激活任何情景模式"
+  },
+  "scene_add_new": {
+    "message": "新增情景模式"
+  },
+  "scene_edit_title": {
+    "message": "编辑情景模式"
+  },
+  "scene_edit_name": {
+    "message": "名称"
+  },
+  "scene_edit_desc": {
+    "message": "描述"
+  },
+  "setting_import_finish": {
+    "message": "导入完成"
+  },
+  "setting_import_fail": {
+    "message": "导入失败"
+  },
+  "setting_popup_ui_setting": {
+    "message": "Popup 显示偏好设置"
+  },
+  "setting_popup_function_setting": {
+    "message": "Popup 功能偏好设置"
+  },
+  "setting_import_config": {
+    "message": "导入配置"
+  },
+  "setting_export_config": {
+    "message": "导出配置"
+  },
+  "setting_restore_default": {
+    "message": "恢复默认"
+  },
+  "setting_restore_default_tip": {
+    "message": "将通用设置重置为默认"
+  },
+  "setting_clear_title": {
+    "message": "清空配置"
+  },
+  "setting_clear_confirm_title": {
+    "message": "删除所有配置"
+  },
+  "setting_clear_confirm_content": {
+    "message": "此操作将删除情景模式、分组、别名、规则等所有数据"
+  },
+  "setting_ui_search_display": {
+    "message": "搜索框：默认显示（未开启时点击 🔍 显示）"
+  },
+  "setting_ui_search_display_tip": {
+    "message": "也可以使用快捷键 'F' 打开搜索框"
+  },
+  "setting_ui_search_jump": {
+    "message": "搜索框：支持跳转应用商店搜索"
+  },
+  "setting_ui_search_jump_tip": {
+    "message": "开启之后，可以跳转到浏览器应用商店搜索扩展（支持 Enter 快捷跳转）"
+  },
+  "setting_ui_show_app": {
+    "message": "显示 APP 类型的扩展"
+  },
+  "setting_ui_show_app_tip": {
+    "message": "将在 Popup 底部显示 APP 类型的扩展，点击图标，可以直接启动应用"
+  },
+  "setting_ui_show_fixed_extension": {
+    "message": "显示固定分组中的扩展"
+  },
+  "setting_ui_show_fixed_extension_tip": {
+    "message": "固定分组中的扩展，通常为常驻扩展，如果不想在 Popup 列表中展示，可以关闭此选项"
+  },
+  "setting_ui_show_fixed_dot": {
+    "message": "显示固定分组扩展右上角的小圆点"
+  },
+  "setting_list_view_show_button": {
+    "message": "列表视图下，始终显示快捷操作按钮（默认 hover 显示）"
+  },
+  "setting_list_gird_show_name": {
+    "message": "网格视图下，显示扩展名称"
+  },
+  "setting_list_gird_show_name_tip": {
+    "message": "如果设置了扩展别名，将优先显示别名"
+  },
+  "setting_list_gird_show_column_number": {
+    "message": "网格视图下，扩展显示的列数 "
+  },
+  "setting_list_gird_show_disable_gray": {
+    "message": "网格视图下，使用灰色样式显示被禁用的扩展"
+  },
+  "setting_list_sort_type": {
+    "message": "排序：按照启用频率进行排序"
+  },
+  "setting_list_sort_type_tip": {
+    "message": "默认按照名称排序"
+  },
+  "setting_func_witch_group": {
+    "message": "切换分组时，启用当前分组扩展，禁用其它的扩展"
+  },
+  "setting_func_witch_group_tip": {
+    "message": "打开此配置之后，在 Popup 中切换分组时，会禁用掉所有不是固定分组也不是当前分组中的扩展"
+  },
+  "end": {
+    "message": "end"
+  }
+}

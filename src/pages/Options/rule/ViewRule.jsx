@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 
 import { Button, Table, message } from "antd"
 
+import { getLang } from ".../utils/utils"
 import { sendMessage } from "../../../utils/messageHelper"
 import EditRule from "./EditRule"
 import Style from "./ViewRuleStyle"
@@ -129,7 +130,7 @@ const ViewRule = memo((props) => {
           }
         }}>
         <Column
-          title="序号"
+          title={getLang("column_index")}
           dataIndex="index"
           width={60}
           align="center"
@@ -141,14 +142,14 @@ const ViewRule = memo((props) => {
           }}
         />
         <Column
-          title="匹配"
+          title={getLang("rule_column_match")}
           dataIndex="match"
           render={(match, record) => {
             return <MatchView config={match} options={options}></MatchView>
           }}
         />
         <Column
-          title="扩展(组)"
+          title={getLang("rule_column_extensions")}
           dataIndex="target"
           render={(target, record) => {
             return <TargetView config={target} options={options} extensions={extensions} />
@@ -156,7 +157,7 @@ const ViewRule = memo((props) => {
         />
 
         <Column
-          title="动作"
+          title={getLang("rule_column_action")}
           dataIndex="action"
           width={200}
           render={(action, record) => {
@@ -165,7 +166,7 @@ const ViewRule = memo((props) => {
         />
 
         <Column
-          title="操作"
+          title={getLang("rule_column_operation")}
           dataIndex="id"
           width={400}
           render={(id, record) => {
@@ -185,7 +186,7 @@ const ViewRule = memo((props) => {
       <div className="button-group">
         {!editingConfig && (
           <Button type="primary" onClick={() => onAdd(null)}>
-            新增
+            {getLang("rule_add")}
           </Button>
         )}
 
@@ -195,7 +196,7 @@ const ViewRule = memo((props) => {
               url: "https://ext.jgrass.cc/docs/rule"
             })
           }}>
-          帮助
+          {getLang("help")}
         </Button>
       </div>
 

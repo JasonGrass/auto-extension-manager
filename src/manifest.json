@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "扩展管理器(Extension Manager)",
-  "description": "一个可以自由配置规则的扩展管理工具",
+  "name": "__MSG_ext_name__",
+  "description": "__MSG_ext_desc__",
   "homepage_url": "https://github.com/JasonGrass/auto-extension-manager",
   "icons": {
     "32": "icon-32.png",
@@ -26,6 +26,7 @@
       "128": "icon-128.png"
     }
   },
+  "default_locale": "en",
   "permissions": [
     "management",
     "storage",

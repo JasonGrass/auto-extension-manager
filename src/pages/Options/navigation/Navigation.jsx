@@ -10,6 +10,7 @@ import {
   ToolFilled
 } from "@ant-design/icons"
 
+import { getLang } from ".../utils/utils"
 import { NavigationStyle } from "./NavigationStyle"
 
 function Navigation() {
@@ -21,32 +22,32 @@ function Navigation() {
 
       <NavLink to="/setting" className="nav-item">
         <ToolFilled />
-        <span className="text">通用设置</span>
+        <span className="text">{getLang("setting_title")}</span>
       </NavLink>
 
       <NavLink to="/scene" className="nav-item">
         <ThunderboltFilled />
-        <span className="text">情景模式</span>
+        <span className="text">{getLang("scene_title")}</span>
       </NavLink>
 
       <NavLink to="/group" className="nav-item">
         <FolderOpenFilled />
-        <span className="text">分组管理</span>
+        <span className="text">{getLang("group_title")}</span>
       </NavLink>
 
       <NavLink to="/management" className="nav-item">
         <FormatPainterFilled />
-        <span className="text">扩展别名</span>
+        <span className="text">{getLang("alias_title")}</span>
       </NavLink>
 
       <NavLink to="/rule" className="nav-item">
         <FilterFilled />
-        <span className="text">规则设置</span>
+        <span className="text">{getLang("rule_title")}</span>
       </NavLink>
 
       <NavLink to="/history" className="nav-item">
         <ReconciliationFilled />
-        <span className="text">历史记录</span>
+        <span className="text">{getLang("history_title")}</span>
       </NavLink>
     </NavigationStyle>
   )

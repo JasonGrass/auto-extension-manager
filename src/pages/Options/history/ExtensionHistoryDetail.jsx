@@ -3,6 +3,8 @@ import React, { memo, useEffect, useState } from "react"
 import { Col, Result, Row } from "antd"
 import { styled } from "styled-components"
 
+import { getLang } from ".../utils/utils"
+
 const ExtensionHistoryDetail = memo(({ record }) => {
   const [manageUrl, setManageUrl] = useState("")
 
@@ -96,7 +98,7 @@ const ExtensionHistoryDetail = memo(({ record }) => {
         <Col span={2}></Col>
         <Col>
           <a href={manageUrl} onClick={onManageClick}>
-            管理扩展程序
+            {getLang("history_manage_extension")}
           </a>
         </Col>
       </Row>

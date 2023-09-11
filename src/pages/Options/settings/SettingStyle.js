@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const SettingStyle = styled.div`
   .container {
-    width: 600px;
+    width: 620px;
 
     background: linear-gradient(to right, #337ab7aa, #fff);
 
@@ -28,6 +28,11 @@ export const SettingStyle = styled.div`
     span {
       flex: 1 1 auto;
       font-size: 14px;
+    }
+
+    span.anticon {
+      padding-top: 1px;
+      margin-left: 4px;
     }
   }
 

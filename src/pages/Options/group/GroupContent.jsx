@@ -8,6 +8,7 @@ import { LocalOptions } from ".../storage/local"
 import { isAppExtension } from ".../utils/extensionHelper"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
 import { isExtensionMatch } from ".../utils/searchHelper"
+import { getLang } from ".../utils/utils"
 import ExtensionItems from "../components/ExtensionItems"
 import { AlreadyFixedTipStyle, GroupContentStyle } from "./GroupContentStyle"
 
@@ -85,9 +86,9 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
         onSearch={onSearch}
         onChange={(e) => onSearch(e.target.value)}
       />
-      <h3>「{group.name}」中的扩展</h3>
+      <h3> {getLang("group_include", group.name)}</h3>
       {buildExtContainer(shownContainExts, true)}
-      <h3>不在此分组</h3>
+      <h3>{getLang("group_not_include")}</h3>
       {buildExtContainer(shownNoneGroupExts, false)}
       <p className="desc">{group.desc}</p>
     </GroupContentStyle>

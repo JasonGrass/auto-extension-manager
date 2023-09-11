@@ -9,6 +9,8 @@ import {
 import { Alert, Button, Checkbox, Dropdown, Input, Radio, Space, Switch, Tooltip } from "antd"
 import { styled } from "styled-components"
 
+import { getLang } from ".../utils/utils"
+
 /*
 wildcard 通配符
 regex 正则表达式
@@ -26,7 +28,7 @@ const TabUrlTrigger = ({ options, config }, ref) => {
         .map((host) => host.trim())
 
       if (urls.length === 0) {
-        throw Error("[匹配条件] 没有添加任何 URL")
+        throw Error(getLang("trigger_url_no_any"))
       }
 
       return {
@@ -87,31 +89,29 @@ const TabUrlTrigger = ({ options, config }, ref) => {
   return (
     <Style>
       <Alert
-        message="URL 默认是指当前打开的那个标签中的 URL，具体匹配规则见详细说明"
+        message={getLang("trigger_url_match_desc")}
         type="info"
         showIcon
         action={
           <a href="https://ext.jgrass.cc/docs/rule" target="_blank" rel="noreferrer">
-            详细说明
+            {getLang("trigger_url_match_detail_title")}
           </a>
         }
       />
 
       <div className="match-method">
         <span>
-          <span>匹配方式：</span>
+          <span>{getLang("trigger_url_match_method_title")} </span>
           <Radio.Group onChange={onMatchMethodSwitchChanged} value={matchMethod}>
-            <Radio value="wildcard">通配符</Radio>
-            <Radio value="regex">正则表达式</Radio>
+            <Radio value="wildcard">{getLang("trigger_url_wildcard")}</Radio>
+            <Radio value="regex">{getLang("trigger_url_regex")}</Radio>
           </Radio.Group>
         </span>
         <span style={{ marginLeft: 80 }}>
           <Checkbox checked={useFullUrl} onChange={onFullUrlSettingChange}>
             <span>
-              使用完整 URL 进行计算{" "}
-              <Tooltip
-                placement="top"
-                title="默认情况下，不考虑 URL 中的查询参数和锚点部分，详细说明见文档">
+              {getLang("trigger_url_use_full")}{" "}
+              <Tooltip placement="top" title={getLang("trigger_url_use_full_desc")}>
                 <QuestionCircleOutlined />
               </Tooltip>{" "}
             </span>
@@ -125,7 +125,7 @@ const TabUrlTrigger = ({ options, config }, ref) => {
             key={index}
             value={host}
             onChange={(e) => onHostInputChanged(e, index)}
-            placeholder="e.g. *baidu.com* ; file://*.pdf ;"
+            placeholder="e.g. *feishu.cn* ; file://*.pdf ;"
           />
         ))}
       </div>
@@ -133,13 +133,13 @@ const TabUrlTrigger = ({ options, config }, ref) => {
       <div className="url-pattern-buttons">
         <Button onClick={onAppendPatternClick}>
           <Space>
-            添加 URL Pattern
+            {getLang("trigger_url_add_pattern")}
             <PlusOutlined />
           </Space>
         </Button>
         <Button onClick={onRemovePatternClick}>
           <Space>
-            清除空白项
+            {getLang("trigger_url_clear_empty")}
             <ClearOutlined />
           </Space>
         </Button>

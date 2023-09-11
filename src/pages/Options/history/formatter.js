@@ -1,6 +1,8 @@
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 
+import { getLang } from ".../utils/utils"
+
 dayjs.extend(relativeTime)
 
 export const formatTimeAbsolute = (timestamp) => {
@@ -14,17 +16,17 @@ export const formatTimeRelative = (timestamp) => {
 export const formatEventText = (event) => {
   switch (event) {
     case "install":
-      return "安装"
+      return getLang("history_install")
     case "uninstall":
-      return "卸载"
+      return getLang("history_uninstall")
     case "updated":
-      return "更新"
+      return getLang("history_update")
     case "enabled":
-      return "启用"
+      return getLang("history_enable")
     case "disabled":
-      return "禁用"
+      return getLang("history_disable")
     case "browser_updated":
-      return "浏览器更新"
+      return getLang("history_browser_update")
     default:
       return "UNKNOWN"
   }

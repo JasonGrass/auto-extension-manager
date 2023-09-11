@@ -11,6 +11,7 @@ import newGithubIssueUrl from "new-github-issue-url"
 
 import Icon from ".../assets/img/icon-128.png"
 import { SyncOptionsStorage } from ".../storage"
+import { getLang } from ".../utils/utils"
 import Title from "../Title.jsx"
 import { AboutStyle } from "./AboutStyle"
 
@@ -75,23 +76,25 @@ ${navigator.userAgent}`
 
   return (
     <AboutStyle>
-      <Title title="关于"></Title>
+      <Title title={getLang("about_title")}></Title>
 
       <div className="header-icon">
         <img src={Icon} alt="icon" />
         <div className="header-icon-text">
           <h3>Extension Manager</h3>
-          <span>一个可以根据规则自动打开或关闭浏览器扩展的工具</span>
+          <span>{getLang("about_desc")}</span>
         </div>
       </div>
 
       <div className="content-button">
-        <Button onClick={openIssue}>反馈问题</Button>
-        <Button onClick={openHelp}>查看帮助</Button>
+        <Button onClick={openIssue}>{getLang("about_feedback")}</Button>
+        <Button onClick={openHelp}>{getLang("about_help")}</Button>
       </div>
 
       <div className="footer">
-        <span className="version">版本 {version}</span>
+        <span className="version">
+          {getLang("about_version")} {version}
+        </span>
 
         <Space size={[0, 8]}>
           <Tag className="badges-tag" icon={<GithubOutlined />} onClick={openGithub}>
