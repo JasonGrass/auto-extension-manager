@@ -4,11 +4,17 @@ import { HashRouter } from "react-router-dom"
 
 import "antd/dist/reset.css"
 
+import { message } from "antd"
+
 import ".../utils/reset.css"
 import "./index.css"
 
+import { OptionStorageViewProvider } from ".../storage/options-storage"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Options from "./Options"
+
+const storageViewApi = OptionStorageViewProvider.getApi()
+storageViewApi.message = message
 
 const container = document.getElementById("app-container")
 const root = createRoot(container)

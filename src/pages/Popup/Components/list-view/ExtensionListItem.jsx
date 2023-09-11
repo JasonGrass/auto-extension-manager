@@ -1,6 +1,12 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { DeleteOutlined, HomeOutlined, PushpinOutlined, SettingOutlined } from "@ant-design/icons"
+import {
+  DeleteOutlined,
+  HomeOutlined,
+  LockOutlined,
+  SettingOutlined,
+  UnlockOutlined
+} from "@ant-design/icons"
 import { Button, Popconfirm, Switch } from "antd"
 import classNames from "classnames"
 
@@ -114,7 +120,11 @@ const ExtensionListItem = memo(({ item, options }) => {
             checked={itemEnable}
             onChange={(e) => onSwitchChange(e, item)}></Switch>
 
-          <Button type="text" icon={<PushpinOutlined />} onClick={() => setItemPined(!itemPined)} />
+          <Button
+            type="text"
+            icon={itemPined ? <LockOutlined /> : <UnlockOutlined />}
+            onClick={() => setItemPined(!itemPined)}
+          />
 
           <Button
             disabled={!existOptionPage}

@@ -30,3 +30,9 @@ export const GroupContentStyle = styled.div`
     background-color: #ddd;
   }
 `
+
+export const AlreadyFixedTipStyle = styled.div`
+  .btn-already-fixed-tip {
+    margin-right: 10px;
+  }
+`

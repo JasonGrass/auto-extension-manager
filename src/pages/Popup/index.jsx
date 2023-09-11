@@ -3,11 +3,13 @@ import { createRoot } from "react-dom/client"
 
 import "antd/dist/reset.css"
 
+import { message } from "antd"
 import chromeP from "webext-polyfill-kinda"
 
 import "./index.css"
 
 import { getPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
+import { OptionStorageViewProvider } from ".../storage/options-storage"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
 import { SyncOptionsStorage } from "../../storage/index"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
@@ -50,9 +52,8 @@ const prepare = async function () {
   }
 }
 
-// chromeP.management.getAll().then((all) => {
-//   root.render(<Popup initialExtensions={all} />)
-// })
+const storageViewApi = OptionStorageViewProvider.getApi()
+storageViewApi.message = message
 
 prepare().then((props) => {
   root.render(

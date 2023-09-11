@@ -1,6 +1,12 @@
 import React, { memo, useEffect, useRef, useState } from "react"
 
-import { DeleteOutlined, HomeOutlined, PushpinOutlined, SettingOutlined } from "@ant-design/icons"
+import {
+  DeleteOutlined,
+  HomeOutlined,
+  LockOutlined,
+  SettingOutlined,
+  UnlockOutlined
+} from "@ant-design/icons"
 import { Popconfirm, Space, message } from "antd"
 import classNames from "classnames"
 
@@ -151,7 +157,7 @@ const ExtensionGridItem = memo(({ item, options }) => {
         <h3 className="operation-menu-title">{item.name}</h3>
         <div className="operation-menu-items">
           <Space className="operation-menu-item" onClick={(e) => handlePinButtonClick(e, item)}>
-            <PushpinOutlined />
+            {itemPined ? <LockOutlined /> : <UnlockOutlined />}
           </Space>
 
           <Space

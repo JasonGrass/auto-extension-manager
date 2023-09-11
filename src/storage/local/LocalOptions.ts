@@ -46,6 +46,30 @@ export class LocalOptions {
     await this.forage.setItem("activeSceneId", id)
   }
 
+  async getActiveGroupId(): Promise<string | null> {
+    const id = await this.forage.getItem<string>("activeGroupId")
+    if (id === null || id === undefined) {
+      return null
+    }
+    return id
+  }
+
+  async setActiveGroupId(id: string) {
+    await this.forage.setItem("activeGroupId", id ?? "")
+  }
+
+  async getValue<T>(key: string): Promise<T | null> {
+    const value = await this.forage.getItem<T>(key)
+    if (value === null || value === undefined) {
+      return null
+    }
+    return value
+  }
+
+  async setValue<T>(key: string, value: T) {
+    await this.forage.setItem<T>(key, value)
+  }
+
   async getLastInitialTime(): Promise<number> {
     const time = await this.forage.getItem<number>("lastInitialExtensionTime")
     return time ?? 0

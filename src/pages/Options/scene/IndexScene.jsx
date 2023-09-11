@@ -27,7 +27,7 @@ function Scene() {
   const [messageApi, contextHolder] = message.useMessage()
   useEffect(() => {
     fetchScene()
-  })
+  }, [])
 
   async function fetchScene() {
     const all = await SceneOptions.getAll()

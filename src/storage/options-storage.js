@@ -1,4 +1,3 @@
-import { message } from "antd"
 import OptionsSync from "webext-options-sync"
 
 import strCompress from "./utils/ConfigCompress"
@@ -102,6 +101,7 @@ export const SyncOptionsStorage = {
     } else {
       options.ruleConfig = strCompress.decompress(options.ruleConfig)
     }
+
     return options
   },
 
@@ -152,12 +152,29 @@ export const SyncOptionsStorage = {
   }
 }
 
+class OptionStorageViewBuilder {
+  getApi() {
+    if (this.api) {
+      return this.api
+    } else {
+      this.api = {}
+      return this.api
+    }
+  }
+}
+
+// 让外部注入 message 的实现，因为在 background 下，不支持 UI，不能在这里写 UI 相关的代码，如引入 antd
+export const OptionStorageViewProvider = new OptionStorageViewBuilder()
+
 function tryShowErrorMessage(text) {
   try {
-    if (!window) {
+    if (typeof window === "undefined") {
       return
     }
-    message.error(text)
+    const api = OptionStorageViewProvider.getApi()
+    if (api.message) {
+      api.message.error(text)
+    }
   } catch (error) {
     console.log("Cannot Show Message Now", error)
   }
