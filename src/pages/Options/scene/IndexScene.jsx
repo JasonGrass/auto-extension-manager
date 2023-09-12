@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 
 import { DeleteFilled, EditFilled, PlusCircleOutlined } from "@ant-design/icons"
 import { Popconfirm, Switch, message } from "antd"
+import classNames from "classnames"
 
 import { SceneOptions } from ".../storage/index"
 import { sendMessage } from ".../utils/messageHelper.js"
@@ -20,14 +21,18 @@ import SceneEditor from "./SceneEditor.jsx"
 */
 
 function Scene() {
+  // 情景模式列表
   const [sceneList, setSceneList] = useState([])
+  // 正在编辑的情景模式
   const [itemEditInfo, setItemEditInfo] = useState({})
+  // 编辑状态：新建、更新、没有在编辑
   const [itemEditType, setItemEditType] = useState("")
+  // 当前激活的情景模式
   const [activeScene, setActiveScene] = useState(null)
+  // 当前选中的情景模式
+  const [selectedScene, setSelectedScene] = useState(null)
+
   const [messageApi, contextHolder] = message.useMessage()
-  useEffect(() => {
-    fetchScene()
-  }, [])
 
   async function fetchScene() {
     const all = await SceneOptions.getAll()
@@ -39,7 +44,17 @@ function Scene() {
     }
     setActiveScene(activeItem)
     setSceneList(all)
+
+    if (selectedScene && !all.find((i) => i.id === selectedScene.id)) {
+      setSelectedScene(null)
+    }
   }
+
+  // 初始化
+  useEffect(() => {
+    fetchScene()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const onNewSceneClick = (e) => {
     setItemEditInfo({})
@@ -86,16 +101,28 @@ function Scene() {
         <h2 className="current-active-scene-title">{getLang("scene_current_active_none")}</h2>
       )}
 
+      {/* 情景模式列表 */}
       <div className="scene-item-container">
         {sceneList.map((scene) => {
           return buildSceneItem(scene)
         })}
       </div>
 
-      <div className="scene-item" style={{ display: "flex", alignItems: "center" }}>
-        <h3 style={{ flexGrow: 1, fontWeight: 700 }}>{getLang("scene_add_new")}</h3>
-        <PlusCircleOutlined onClick={(e) => onNewSceneClick(e)} className="scene-item-add-icon" />
+      {/* 新建情景模式 */}
+      <div className="scene-item scene-item-new" onClick={(e) => onNewSceneClick(e)}>
+        <h3>{getLang("scene_add_new")}</h3>
+        <PlusCircleOutlined className="scene-item-add-icon" />
       </div>
+
+      {/* 详情展示 */}
+      {selectedScene && selectedScene.desc && (
+        <div className="scene-selected-detail">
+          <span>
+            <h3>{selectedScene.name}</h3>
+          </span>
+          <p>{selectedScene.desc}</p>
+        </div>
+      )}
 
       <div className="scene-edit-panel" style={{ display: itemEditType !== "" ? "block" : "none" }}>
         <SceneEditor
@@ -111,10 +138,16 @@ function Scene() {
       let scene = null
 
       if (e) {
+        if (activeScene) {
+          activeScene.isActive = false
+        }
+
+        i.isActive = true
         await SceneOptions.setActive(i.id)
         setActiveScene(i)
         scene = i
       } else {
+        i.isActive = false
         await SceneOptions.setActive("")
         setActiveScene(null)
       }
@@ -136,30 +169,41 @@ function Scene() {
       await fetchScene()
     }
 
-    return (
-      <div className="scene-item" key={item.id}>
-        <div className="scene-item-header">
-          <h3>{item.name}</h3>
-          <Switch checked={item.isActive} onChange={(e) => onActiveChange(e, item)} />
-        </div>
-        <p>{item.desc}</p>
+    const onSceneItemClick = () => {
+      setSelectedScene(item)
+    }
 
-        <div className="scene-item-edit-icon">
-          <EditFilled style={{ marginRight: 8 }} onClick={(e) => onEditClick(e, item)} />
-          <Popconfirm
-            title={getLang("delete")}
-            description={`Delete "${item.name}" ?`}
-            onConfirm={(e) => onDeleteClick(e, item)}
-            onCancel={(e) => e.stopPropagation()}
-            okText="Yes"
-            cancelText="Cancel"
-            onClick={(e) => e.stopPropagation()}>
-            <DeleteFilled />
-          </Popconfirm>
+    return (
+      <div
+        className={classNames([
+          "scene-item",
+          {
+            "scene-item-selected": item.id === selectedScene?.id
+          }
+        ])}
+        key={item.id}
+        onClick={onSceneItemClick}>
+        <div className="scene-item-edit-container">
+          <div className="scene-item-edit-icon">
+            <EditFilled style={{ marginRight: 8 }} onClick={(e) => onEditClick(e, item)} />
+            <Popconfirm
+              title={getLang("delete")}
+              description={`Delete "${item.name}" ?`}
+              onConfirm={(e) => onDeleteClick(e, item)}
+              onCancel={(e) => e.stopPropagation()}
+              okText="Yes"
+              cancelText="Cancel"
+              onClick={(e) => e.stopPropagation()}>
+              <DeleteFilled />
+            </Popconfirm>
+          </div>
         </div>
+
+        <h3>{item.name}</h3>
+        <Switch size="small" checked={item.isActive} onChange={(e) => onActiveChange(e, item)} />
       </div>
     )
   }
 }
 
-export default Scene
+export default memo(Scene)
