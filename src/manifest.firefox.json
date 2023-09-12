@@ -1,0 +1,49 @@
+{
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "extension-manager@ext.jgrass.cc",
+      "strict_min_version": "115.0"
+    }
+  },
+  "version": "0.1",
+  "manifest_version": 3,
+  "name": "__MSG_ext_name__",
+  "description": "__MSG_ext_desc__",
+  "homepage_url": "https://github.com/JasonGrass/auto-extension-manager",
+  "icons": {
+    "32": "icon-32.png",
+    "48": "icon-48.png",
+    "64": "icon-64.png",
+    "128": "icon-128.png"
+  },
+  "background": {
+    "scripts": [
+      "background.bundle.js"
+    ],
+    "type": "module"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "32": "icon-32.png",
+      "48": "icon-48.png",
+      "64": "icon-64.png",
+      "128": "icon-128.png"
+    }
+  },
+  "commands": {
+    "_execute_action": {
+      "description": "Open Extension Manager"
+    }
+  },
+  "default_locale": "en",
+  "permissions": [
+    "management",
+    "storage",
+    "tabs"
+  ]
+}
