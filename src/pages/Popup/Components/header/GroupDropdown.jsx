@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, useCallback, useEffect, useState } from "react"
 
 import { CaretDownOutlined } from "@ant-design/icons"
 import { Dropdown } from "antd"
@@ -31,6 +31,18 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
     configGroupMenu = configGroupMenu.filter((g) => g.key !== "fixed")
   }
 
+  // 执行此操作，将会根据配置，切换分组显示，或者执行扩展的启用与禁用
+  const raiseSelectedGroupChanged = useCallback(
+    (selectedGroup) => {
+      if (!selectedGroup || selectedGroup.key === "all") {
+        onGroupChanged(null)
+      } else {
+        onGroupChanged(selectedGroup)
+      }
+    },
+    [onGroupChanged]
+  )
+
   // 初始化
   useEffect(() => {
     localOptions.getActiveGroupId().then((groupId) => {
@@ -38,19 +50,26 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
     })
   }, [options])
 
+  // 切换分组没有启用禁用逻辑时的业务
   useEffect(() => {
-    if (!selectedGroup || selectedGroup.key === "all") {
-      onGroupChanged(null)
-    } else {
-      onGroupChanged(selectedGroup)
+    const isRaiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
+    if (!isRaiseEnableWhenSwitchGroup) {
+      raiseSelectedGroupChanged(selectedGroup)
     }
-  }, [selectedGroup, onGroupChanged])
+  }, [selectedGroup, options, raiseSelectedGroupChanged])
 
   // 手动切换分组
   const handleGroupMenuClick = (e) => {
     const group = options.groups?.find((g) => g.id === e.key)
     setSelectGroup(group)
     localOptions.setActiveGroupId(group?.id)
+
+    // 切换分组有启用禁用逻辑时的业务
+    const isRaiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
+    // 只有手动切换分组，才执行分组启用与禁用逻辑
+    if (isRaiseEnableWhenSwitchGroup) {
+      raiseSelectedGroupChanged(group)
+    }
   }
 
   const groupMenu = {
