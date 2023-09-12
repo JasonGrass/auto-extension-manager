@@ -17,6 +17,7 @@ import { AboutStyle } from "./AboutStyle"
 
 function About() {
   const [version, setVersion] = useState("UNKNOWN")
+  const [storageMessage, setStorageMessage] = useState("")
 
   useEffect(() => {
     chrome.management.getSelf((self) => {
@@ -25,7 +26,10 @@ function About() {
   }, [])
 
   useEffect(() => {
-    SyncOptionsStorage.printUsage()
+    SyncOptionsStorage.getUsage().then((usage) => {
+      const use = (usage / 1024).toFixed(2)
+      setStorageMessage(`Chrome Sync Storage Total Use: ${use}KB / 100KB`)
+    })
   }, [])
 
   const openIssue = () => {
@@ -74,6 +78,12 @@ ${navigator.userAgent}`
     })
   }
 
+  const openStorageExplainPage = () => {
+    chrome.tabs.create({
+      url: "https://ext.jgrass.cc/docs/storage"
+    })
+  }
+
   return (
     <AboutStyle>
       <Title title={getLang("about_title")}></Title>
@@ -107,6 +117,14 @@ ${navigator.userAgent}`
             Buy Me a Coffee
           </Tag>
         </Space>
+      </div>
+
+      <div className="footer-storage">
+        <span>{storageMessage}</span>
+        <QuestionCircleOutlined
+          className="storage-detail-tip-icon"
+          onClick={openStorageExplainPage}
+        />
       </div>
     </AboutStyle>
   )

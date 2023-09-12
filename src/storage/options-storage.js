@@ -108,10 +108,9 @@ export const SyncOptionsStorage = {
   /**
    * 输出 sync 存储使用总量
    */
-  async printUsage() {
+  async getUsage() {
     const total = await chrome.storage.sync.getBytesInUse(null)
-    const use = (total / 1024).toFixed(2)
-    console.log(`Chrome Sync Storage Total Use: ${use}KB / 100KB`)
+    return total
   },
 
   /**
