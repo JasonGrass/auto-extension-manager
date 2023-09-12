@@ -26,6 +26,11 @@
       "128": "icon-128.png"
     }
   },
+  "commands": {
+    "_execute_action": {
+      "description": "Open Extension Manager"
+    }
+  },
   "default_locale": "en",
   "permissions": [
     "management",
