@@ -28,7 +28,7 @@ function About() {
   useEffect(() => {
     SyncOptionsStorage.getUsage().then((usage) => {
       const use = (usage / 1024).toFixed(2)
-      setStorageMessage(`Chrome Sync Storage Total Use: ${use}KB / 100KB`)
+      setStorageMessage(`Sync Storage Total Use: ${use}KB / 100KB`)
     })
   }, [])
 
