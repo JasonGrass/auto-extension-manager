@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid"
 
+import { getLang } from ".../utils/utils"
 import { SyncOptionsStorage } from "./options-storage"
 
 export const GroupOptions = {
@@ -100,3 +101,20 @@ export const GroupOptions = {
 }
 
 export default GroupOptions
+
+export const formatGroups = (groups) => {
+  if (!groups) {
+    return []
+  }
+  return groups.map((g) => {
+    if (g.id === "fixed") {
+      g.name = getLang("group_fixed_name")
+    }
+
+    if (!g.extensions) {
+      g.extensions = []
+    }
+
+    return g
+  })
+}

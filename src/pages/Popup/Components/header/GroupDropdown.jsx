@@ -4,6 +4,7 @@ import { CaretDownOutlined } from "@ant-design/icons"
 import { Dropdown } from "antd"
 import { styled } from "styled-components"
 
+import { formatGroups } from ".../storage/GroupOptions"
 import { LocalOptions } from ".../storage/local/LocalOptions"
 import { getLang } from ".../utils/utils"
 
@@ -21,18 +22,8 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
     }
   ]
 
-  let configGroupMenu =
-    options.groups?.map((group) => {
-      let name = group.name
-      if (group.id === "fixed") {
-        name = getLang("group_fixed_name")
-      }
-
-      return {
-        label: name,
-        key: group.id
-      }
-    }) ?? []
+  // 分组切换菜单
+  let configGroupMenu = formatGroups(options.groups).map((g) => ({ label: g.name, key: g.id }))
 
   if (!(options.setting.isShowFixedExtension ?? true)) {
     configGroupMenu = configGroupMenu.filter((g) => g.key !== "fixed")

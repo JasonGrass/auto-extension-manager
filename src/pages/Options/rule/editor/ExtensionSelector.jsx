@@ -1,15 +1,8 @@
-import React, {
-  forwardRef,
-  memo,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useState
-} from "react"
+import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from "react"
 
-import { DownOutlined } from "@ant-design/icons"
-import { Button, Dropdown, Space, Tag } from "antd"
+import { Tag } from "antd"
 
+import { formatGroups } from ".../storage/GroupOptions"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
 import ExtensionItems from "../../components/ExtensionItems"
@@ -19,7 +12,7 @@ import Style, { SearchStyle } from "./ExtensionSelectorStyle"
 const { CheckableTag } = Tag
 
 const ExtensionSelector = ({ options, config, extensions }, ref) => {
-  const groupList = options.groups || []
+  const groupList = formatGroups(options.groups)
 
   useImperativeHandle(ref, () => ({
     // 获取配置
