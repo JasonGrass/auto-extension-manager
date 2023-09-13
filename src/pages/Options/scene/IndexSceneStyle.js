@@ -22,7 +22,7 @@ export const SceneStyle = styled.div`
     display: flex;
     align-items: center;
 
-    padding: 8px;
+    padding: 10px 14px;
     margin: 8px 12px 12px 0px;
 
     border: 1px solid #ccca;

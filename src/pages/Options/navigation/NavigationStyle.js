@@ -3,7 +3,7 @@ import styled from "styled-components"
 export const NavigationStyle = styled.div`
   margin-top: 10px;
   margin-left: 20px;
-  width: 280px;
+  width: 260px;
 
   a {
     text-decoration: none;
