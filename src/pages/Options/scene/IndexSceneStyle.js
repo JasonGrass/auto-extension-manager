@@ -117,8 +117,9 @@ export const SceneStyle = styled.div`
     align-content: center;
     justify-content: center;
 
+    max-width: 800px;
+
     margin: 20px 10px 0px 0px;
-    min-height: 60px;
     padding: 8px;
 
     border: 1px solid #ccca;

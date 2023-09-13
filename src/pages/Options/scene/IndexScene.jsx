@@ -45,8 +45,13 @@ function Scene() {
     setActiveScene(activeItem)
     setSceneList(all)
 
-    if (selectedScene && !all.find((i) => i.id === selectedScene.id)) {
-      setSelectedScene(null)
+    if (selectedScene) {
+      const one = all.find((i) => i.id === selectedScene.id)
+      if (!one) {
+        setSelectedScene(null)
+      } else {
+        setSelectedScene(one)
+      }
     }
   }
 
