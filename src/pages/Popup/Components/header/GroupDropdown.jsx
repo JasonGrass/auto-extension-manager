@@ -22,10 +22,17 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
   ]
 
   let configGroupMenu =
-    options.groups?.map((group) => ({
-      label: group.name,
-      key: group.id
-    })) ?? []
+    options.groups?.map((group) => {
+      let name = group.name
+      if (group.id === "fixed") {
+        name = getLang("group_fixed_name")
+      }
+
+      return {
+        label: name,
+        key: group.id
+      }
+    }) ?? []
 
   if (!(options.setting.isShowFixedExtension ?? true)) {
     configGroupMenu = configGroupMenu.filter((g) => g.key !== "fixed")
