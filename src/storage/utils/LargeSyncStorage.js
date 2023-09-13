@@ -15,8 +15,8 @@ function largeSync() {
   var chromeSync = chrome.storage.sync
 
   var keyPrefix = "LS",
-    maxBytes = chromeSync.QUOTA_BYTES,
-    maxBytesPerKey = chromeSync.QUOTA_BYTES_PER_ITEM,
+    maxBytes = chromeSync.QUOTA_BYTES ?? 102400,
+    maxBytesPerKey = chromeSync.QUOTA_BYTES_PER_ITEM ?? 8192,
     version = API_VERSION
 
   function split(obj, maxLength) {
