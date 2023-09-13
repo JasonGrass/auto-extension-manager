@@ -70,6 +70,16 @@ const ExtensionHistory = memo(({ records }) => {
       width: 60,
       render: (event, record, index) => {
         return <span className="column-event">{formatEventText(event)}</span>
+      },
+      filters: [
+        { text: formatEventText("install"), value: "install" },
+        { text: formatEventText("uninstall"), value: "uninstall" },
+        { text: formatEventText("updated"), value: "updated" },
+        { text: formatEventText("enabled"), value: "enabled" },
+        { text: formatEventText("disabled"), value: "disabled" }
+      ],
+      onFilter: (value, record) => {
+        return record.event === value
       }
     },
     {
