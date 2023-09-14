@@ -1,6 +1,6 @@
 {
   "name": "extension-manager",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "a chrome extension manager where you can add rules",
   "license": "MIT",
   "repository": {
@@ -14,6 +14,9 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.1.0",
+    "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/sortable": "^7.0.2",
+    "@dnd-kit/utilities": "^3.2.1",
     "@hello-pangea/dnd": "^16.3.0",
     "antd": "^5.5.0",
     "classnames": "^2.3.2",

@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { DeleteFilled, EditFilled, PlusCircleOutlined } from "@ant-design/icons"
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd"
 import { Popconfirm, Switch, message } from "antd"
 import classNames from "classnames"
 
@@ -11,6 +10,7 @@ import { getLang, isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
 import { SceneStyle } from "./IndexSceneStyle.js"
 import SceneEditor from "./SceneEditor.jsx"
+import SceneList from "./SceneList.jsx"
 
 /*
     {
@@ -96,12 +96,7 @@ function Scene() {
     }
   }
 
-  const handleDropEnd = async (droppedItem) => {
-    if (!droppedItem.destination) return
-
-    var updatedList = [...sceneList]
-    const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1)
-    updatedList.splice(droppedItem.destination.index, 0, reorderedItem)
+  const handleDropEnd = async (updatedList) => {
     setSceneList(updatedList)
 
     // 保存新的排序
@@ -122,49 +117,16 @@ function Scene() {
       )}
 
       {/* 情景模式列表 */}
-      <DragDropContext onDragEnd={handleDropEnd}>
-        <Droppable droppableId="scene-droppable" direction="vertical">
-          {(provided, snapshot) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className={classNames([
-                "scene-item-container",
-                { "scene-item-container-no-wrap": isDropping }
-              ])}>
-              {sceneList.map((scene, index) => (
-                <Draggable
-                  key={scene.id}
-                  draggableId={scene.id}
-                  index={index}
-                  isDragDisabled={!isDropping}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.dragHandleProps}
-                      {...provided.draggableProps}>
-                      {buildSceneItem(scene)}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <SceneList
+        originItems={sceneList}
+        childrenBuilder={buildSceneItem}
+        onDropFinish={handleDropEnd}></SceneList>
 
       <div className="scene-item-handler-container">
         {/* 新建情景模式 */}
         <div className="scene-item scene-item-new" onClick={(e) => onNewSceneClick(e)}>
           <h3>{getLang("scene_add_new")}</h3>
           <PlusCircleOutlined className="scene-item-add-icon" />
-        </div>
-
-        {/* 排序 */}
-        <div className="scene-item scene-item-order">
-          <h3>调整顺序</h3>
-          <Switch size="small" checked={isDropping} onChange={(e) => setIsDropping(e)} />
         </div>
       </div>
 
