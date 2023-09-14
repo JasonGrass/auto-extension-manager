@@ -12,9 +12,7 @@ export const SceneStyle = styled.div`
   .scene-item-container {
     max-width: 800px;
 
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 16px;
+    margin: 24px 0;
 
     user-select: none;
   }
@@ -24,12 +22,12 @@ export const SceneStyle = styled.div`
     display: flex;
     align-items: center;
 
-    padding: 10px 14px;
-    margin: 8px 12px 12px 0px;
+    padding: 4px 8px;
+    margin: 4px 4px 4px 0px;
 
-    border: 1px solid #ccca;
-    border-radius: 4px;
-    // box-shadow: 1px 1px 4px 0px #337ab788;
+    /* border: 1px solid #ccca;
+    border-radius: 4px; */
+    /* box-shadow: 1px 1px 4px 0px #337ab788; */
 
     /* &:hover {
       background-color: #337ab7cc;
@@ -63,12 +61,14 @@ export const SceneStyle = styled.div`
 
   .scene-item-edit-container {
     display: none;
+    justify-content: left;
+
     opacity: 0;
 
     width: 100%;
     position: absolute;
-    top: -30px;
-    left: 0;
+    top: -32px;
+    left: 6px;
     padding-bottom: 16px;
 
     animation: menu-edit-in 0.3s ease-out 0.2s forwards;
@@ -95,12 +95,13 @@ export const SceneStyle = styled.div`
   }
 
   .scene-item-selected {
-    background-color: #337ab788;
+    /* background-color: #337ab788; */
+    color: #337ab7;
+    font-weight: 900;
   }
 
   .scene-item-selected:hover .scene-item-edit-container {
     display: flex;
-    justify-content: right;
   }
 
   .scene-item-handler-container {
@@ -108,7 +109,12 @@ export const SceneStyle = styled.div`
   }
 
   .scene-item-new {
-    width: 160px;
+    width: 180px;
+    padding: 14px 16px;
+
+    border-radius: calc(4px / var(--scale-x, 1));
+    box-shadow: 0 0 0 calc(1px / var(--scale-x, 1)) rgba(63, 63, 68, 0.05),
+      0 1px calc(3px / var(--scale-x, 1)) 0 rgba(34, 33, 81, 0.15);
 
     .scene-item-add-icon {
       font-size: 16px;

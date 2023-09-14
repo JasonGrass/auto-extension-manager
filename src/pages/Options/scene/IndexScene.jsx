@@ -8,6 +8,7 @@ import { SceneOptions } from ".../storage/index"
 import { sendMessage } from ".../utils/messageHelper.js"
 import { getLang, isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
+import { SortableList } from "../components/SortableList/"
 import { SceneStyle } from "./IndexSceneStyle.js"
 import SceneEditor from "./SceneEditor.jsx"
 import SceneList from "./SceneList.jsx"
@@ -117,10 +118,18 @@ function Scene() {
       )}
 
       {/* 情景模式列表 */}
-      <SceneList
-        originItems={sceneList}
-        childrenBuilder={buildSceneItem}
-        onDropFinish={handleDropEnd}></SceneList>
+
+      <div className="scene-item-container">
+        <SortableList
+          items={sceneList}
+          onChange={setSceneList}
+          renderItem={(item) => (
+            <SortableList.Item id={item.id}>
+              {buildSceneItem(item)}
+              <SortableList.DragHandle />
+            </SortableList.Item>
+          )}></SortableList>
+      </div>
 
       <div className="scene-item-handler-container">
         {/* 新建情景模式 */}
