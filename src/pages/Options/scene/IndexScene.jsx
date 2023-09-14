@@ -11,7 +11,6 @@ import Title from "../Title.jsx"
 import { SortableList } from "../components/SortableList/"
 import { SceneStyle } from "./IndexSceneStyle.js"
 import SceneEditor from "./SceneEditor.jsx"
-import SceneList from "./SceneList.jsx"
 
 /*
     {
@@ -33,8 +32,6 @@ function Scene() {
   const [activeScene, setActiveScene] = useState(null)
   // 当前选中的情景模式
   const [selectedScene, setSelectedScene] = useState(null)
-
-  const [isDropping, setIsDropping] = useState(false)
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -122,7 +119,7 @@ function Scene() {
       <div className="scene-item-container">
         <SortableList
           items={sceneList}
-          onChange={setSceneList}
+          onChange={handleDropEnd}
           renderItem={(item) => (
             <SortableList.Item id={item.id}>
               {buildSceneItem(item)}
