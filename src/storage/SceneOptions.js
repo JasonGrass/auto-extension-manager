@@ -64,6 +64,23 @@ export const SceneOptions = {
     }
     const leftScenes = all.scenes.filter((item) => item.id !== id)
     await SyncOptionsStorage.set({ scenes: leftScenes })
+  },
+
+  async orderScenes(items) {
+    if (!items) {
+      return
+    }
+    const all = await this.getAll()
+    const newScenes = []
+
+    for (const item of items) {
+      const exist = all.find((s) => s.id === item.id)
+      if (exist) {
+        newScenes.push(exist)
+      }
+    }
+
+    await SyncOptionsStorage.set({ scenes: newScenes })
   }
 }
 

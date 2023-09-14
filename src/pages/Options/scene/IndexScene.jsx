@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { DeleteFilled, EditFilled, PlusCircleOutlined } from "@ant-design/icons"
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd"
 import { Popconfirm, Switch, message } from "antd"
 import classNames from "classnames"
 
@@ -93,6 +94,18 @@ function Scene() {
     }
   }
 
+  const handleDropEnd = async (droppedItem) => {
+    if (!droppedItem.destination) return
+
+    var updatedList = [...sceneList]
+    const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1)
+    updatedList.splice(droppedItem.destination.index, 0, reorderedItem)
+    setSceneList(updatedList)
+
+    // 保存新的排序
+    await SceneOptions.orderScenes(updatedList)
+  }
+
   return (
     <SceneStyle>
       <Title title={getLang("scene_title")}></Title>
@@ -107,11 +120,34 @@ function Scene() {
       )}
 
       {/* 情景模式列表 */}
-      <div className="scene-item-container">
-        {sceneList.map((scene) => {
-          return buildSceneItem(scene)
-        })}
-      </div>
+      <DragDropContext onDragEnd={handleDropEnd}>
+        <Droppable droppableId="scene-droppable">
+          {(provided, snapshot) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="scene-item-container">
+              {sceneList.map((scene, index) => (
+                <Draggable
+                  key={scene.id}
+                  draggableId={scene.id}
+                  index={index}
+                  isDragDisabled={false}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.dragHandleProps}
+                      {...provided.draggableProps}>
+                      {buildSceneItem(scene)}
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
 
       {/* 新建情景模式 */}
       <div className="scene-item scene-item-new" onClick={(e) => onNewSceneClick(e)}>

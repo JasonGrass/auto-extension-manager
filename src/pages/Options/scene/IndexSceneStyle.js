@@ -15,6 +15,8 @@ export const SceneStyle = styled.div`
     display: flex;
     flex-wrap: wrap;
     margin-top: 16px;
+
+    user-select: none;
   }
 
   .scene-item {

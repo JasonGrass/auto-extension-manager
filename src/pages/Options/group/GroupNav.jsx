@@ -90,8 +90,6 @@ function GroupNav({
   }
 
   const handleDrop = (droppedItem) => {
-    console.log(droppedItem)
-
     if (!droppedItem.destination) return
     if (droppedItem.droppableId === "fixed") {
       return
