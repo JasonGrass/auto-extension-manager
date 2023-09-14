@@ -19,6 +19,12 @@ export const SceneStyle = styled.div`
     user-select: none;
   }
 
+  .scene-item-container-no-wrap {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
   .scene-item {
     position: relative;
     display: flex;
@@ -103,6 +109,10 @@ export const SceneStyle = styled.div`
     justify-content: right;
   }
 
+  .scene-item-handler-container {
+    display: flex;
+  }
+
   .scene-item-new {
     width: 160px;
 
@@ -111,6 +121,10 @@ export const SceneStyle = styled.div`
       margin-right: 6px;
       color: #337ab7;
     }
+  }
+
+  .scene-item-order {
+    width: 160px;
   }
 
   .scene-selected-detail {

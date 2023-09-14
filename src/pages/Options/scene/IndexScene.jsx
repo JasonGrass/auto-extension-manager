@@ -33,6 +33,8 @@ function Scene() {
   // 当前选中的情景模式
   const [selectedScene, setSelectedScene] = useState(null)
 
+  const [isDropping, setIsDropping] = useState(false)
+
   const [messageApi, contextHolder] = message.useMessage()
 
   async function fetchScene() {
@@ -121,18 +123,21 @@ function Scene() {
 
       {/* 情景模式列表 */}
       <DragDropContext onDragEnd={handleDropEnd}>
-        <Droppable droppableId="scene-droppable">
+        <Droppable droppableId="scene-droppable" direction="vertical">
           {(provided, snapshot) => (
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="scene-item-container">
+              className={classNames([
+                "scene-item-container",
+                { "scene-item-container-no-wrap": isDropping }
+              ])}>
               {sceneList.map((scene, index) => (
                 <Draggable
                   key={scene.id}
                   draggableId={scene.id}
                   index={index}
-                  isDragDisabled={false}>
+                  isDragDisabled={!isDropping}>
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
@@ -149,10 +154,18 @@ function Scene() {
         </Droppable>
       </DragDropContext>
 
-      {/* 新建情景模式 */}
-      <div className="scene-item scene-item-new" onClick={(e) => onNewSceneClick(e)}>
-        <h3>{getLang("scene_add_new")}</h3>
-        <PlusCircleOutlined className="scene-item-add-icon" />
+      <div className="scene-item-handler-container">
+        {/* 新建情景模式 */}
+        <div className="scene-item scene-item-new" onClick={(e) => onNewSceneClick(e)}>
+          <h3>{getLang("scene_add_new")}</h3>
+          <PlusCircleOutlined className="scene-item-add-icon" />
+        </div>
+
+        {/* 排序 */}
+        <div className="scene-item scene-item-order">
+          <h3>调整顺序</h3>
+          <Switch size="small" checked={isDropping} onChange={(e) => setIsDropping(e)} />
+        </div>
       </div>
 
       {/* 详情展示 */}
