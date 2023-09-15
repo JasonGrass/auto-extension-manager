@@ -17,6 +17,18 @@ export const SceneStyle = styled.div`
     user-select: none;
   }
 
+  @media screen and (max-width: 1400px) {
+    .scene-item-container {
+      max-width: 800px;
+    }
+  }
+
+  @media screen and (max-width: 1000000px) {
+    .scene-item-container {
+      max-width: 60vw;
+    }
+  }
+
   .scene-item {
     position: relative;
     display: flex;
