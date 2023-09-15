@@ -33,9 +33,21 @@ const MatchView = memo(({ config, options }) => {
 
   const sceneTrigger = config.triggers.find((t) => t.trigger === "sceneTrigger")
   if (sceneTrigger) {
-    const scene = options.scenes?.find((s) => s.id === sceneTrigger.config.sceneId)
-    if (scene) {
-      tips.push(scene.name)
+    const sceneId = sceneTrigger.config.sceneId
+    const sceneIds = sceneTrigger.config.sceneIds
+
+    if (sceneIds && sceneIds.length > 0) {
+      let names = options.scenes?.filter((s) => sceneIds.includes(s.id)).map((s) => s.name) ?? []
+      if (names.length > 5) {
+        names = names.slice(0, 5)
+        names.push("...")
+      }
+      tips.push(names.join(", "))
+    } else {
+      const scene = options.scenes?.find((s) => s.id === sceneId)
+      if (scene) {
+        tips.push(scene.name)
+      }
     }
   }
 

@@ -73,7 +73,7 @@ declare namespace ruleV2 {
 
   export interface ISceneTriggerConfig {
     sceneId?: string
-    scendIds?: string[]
+    sceneIds?: string[]
   }
 
   export interface IOsTriggerConfig {

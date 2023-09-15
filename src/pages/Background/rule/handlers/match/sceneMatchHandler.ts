@@ -22,7 +22,7 @@ export default async function checkCurrentSceneMatch(
     return false
   }
 
-  if (config.scendIds?.includes(scene.id)) {
+  if (config.sceneIds?.includes(scene.id)) {
     return true
   }
 
