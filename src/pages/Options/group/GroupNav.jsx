@@ -54,8 +54,8 @@ function GroupNav({
 
   const onEditGroupClick = (e, group) => {
     e.stopPropagation()
-    if (group.id === "fixed") {
-      message.warning(getLang("group_fixed_cannot_edit"))
+    if (isSpecialGroup(group)) {
+      message.warning(getLang("group_inner_cannot_edit"))
       return
     }
     onGroupItemEdit?.(group)
@@ -87,8 +87,8 @@ function GroupNav({
   const onDeleteGroupClick = async (e, group) => {
     e.stopPropagation()
 
-    if (group.id === "fixed") {
-      message.warning(getLang("group_fixed_cannot_delete"))
+    if (isSpecialGroup(group)) {
+      message.warning(getLang("group_inner_cannot_delete"))
       return
     }
 
@@ -129,24 +129,27 @@ function GroupNav({
             { "selected-group-item": group.id === current?.id }
           ])}>
           <h3>{group.name}</h3>
-          <div className="tab-operation">
-            <EditFilled
-              onClick={(e) => onEditGroupClick(e, group)}
-              className="tab-operation-item"
-            />
 
-            <Popconfirm
-              className="tab-operation-item"
-              title={getLang("group_delete_title")}
-              description={getLang("group_delete_confirm", group.name)}
-              onConfirm={(e) => onDeleteGroupClick(e, group)}
-              onCancel={(e) => e.stopPropagation()}
-              okText="Yes"
-              cancelText="Cancel"
-              onClick={(e) => e.stopPropagation()}>
-              <DeleteFilled />
-            </Popconfirm>
-          </div>
+          {isSpecialGroup(group) || (
+            <div className="tab-operation">
+              <EditFilled
+                onClick={(e) => onEditGroupClick(e, group)}
+                className="tab-operation-item"
+              />
+
+              <Popconfirm
+                className="tab-operation-item"
+                title={getLang("group_delete_title")}
+                description={getLang("group_delete_confirm", group.name)}
+                onConfirm={(e) => onDeleteGroupClick(e, group)}
+                onCancel={(e) => e.stopPropagation()}
+                okText="Yes"
+                cancelText="Cancel"
+                onClick={(e) => e.stopPropagation()}>
+                <DeleteFilled />
+              </Popconfirm>
+            </div>
+          )}
         </div>
       </div>
     )

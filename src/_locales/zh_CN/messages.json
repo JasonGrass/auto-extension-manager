@@ -77,11 +77,11 @@
   "group_hidden_desc": {
     "message": "这是一个内置分组，此分组中的扩展，在 Popup 中不会显示。"
   },
-  "group_fixed_cannot_edit": {
-    "message": "固定分组不能被编辑"
+  "group_inner_cannot_edit": {
+    "message": "内置分组不能被编辑"
   },
-  "group_fixed_cannot_delete": {
-    "message": "固定分组不能被删除"
+  "group_inner_cannot_delete": {
+    "message": "内置分组不能被删除"
   },
   "group_delete_title": {
     "message": "删除分组"

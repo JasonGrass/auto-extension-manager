@@ -77,11 +77,11 @@
   "group_hidden_desc": {
     "message": "This is a built-in group where extensions within this group will not be displayed in the popup."
   },
-  "group_fixed_cannot_edit": {
-    "message": "The fixed group cannot be edited"
+  "group_inner_cannot_edit": {
+    "message": "The built-in group cannot be edited"
   },
-  "group_fixed_cannot_delete": {
-    "message": "The fixed group cannot be deleted"
+  "group_inner_cannot_delete": {
+    "message": "The built-in group cannot be deleted"
   },
   "group_delete_title": {
     "message": "Delete"
