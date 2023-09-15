@@ -8,7 +8,8 @@
     "url": "https://github.com/JasonGrass/auto-extension-manager"
   },
   "scripts": {
-    "build": "node utils/build.js",
+    "build": "node utils/build.chrome.js",
+    "build:edge": "node utils/build.edge.js",
     "start": "node utils/webserver.js",
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
   },

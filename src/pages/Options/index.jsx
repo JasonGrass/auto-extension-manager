@@ -10,6 +10,7 @@ import ".../utils/reset.css"
 import "./index.css"
 
 import { OptionStorageViewProvider } from ".../storage/options-storage"
+import { isEdgePackage, isEdgeRuntime } from ".../utils/channelHelper"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Options from "./Options"
 
@@ -27,3 +28,6 @@ root.render(
 )
 
 ExtensionIconBuilder.build()
+
+console.log(`Package: ${isEdgePackage() ? "Edge" : "Chrome"}`)
+console.log(`Runtime: ${isEdgeRuntime() ? "Edge" : "Chrome"}`)
