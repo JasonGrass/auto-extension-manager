@@ -81,7 +81,7 @@ export const filterExtensions = (extensions, filter) => {
   return extensions.filter(filter)
 }
 
-export const sortExtension = (extensions) => {
+export const sortExtension = (extensions, options) => {
   if (!extensions) {
     return []
   }
@@ -95,10 +95,20 @@ export const sortExtension = (extensions) => {
     list.push(ext)
   })
 
+  const getCompareValue = (ext) => {
+    if (!options || options.useAlias === true) {
+      return ext.__attach__?.alias ? ext.__attach__?.alias : ext.name
+    }
+    if (options.useAlias === false) {
+      return ext.name
+    }
+    return ext.name
+  }
+
   return list.sort((a, b) => {
     if (a.enabled === b.enabled) {
-      const aName = a.__attach__?.alias ? a.__attach__?.alias : a.name
-      const bName = b.__attach__?.alias ? b.__attach__?.alias : b.name
+      const aName = getCompareValue(a)
+      const bName = getCompareValue(b)
       return aName.localeCompare(bName) // Sort by name
     }
     return a.enabled < b.enabled ? 1 : -1 // Sort by state

@@ -273,7 +273,8 @@ function buildRecords(extensions, configs) {
     records.push(record)
   }
 
-  return sortExtension(records)
+  // 在别名设置页面，按照原始名称排序，不考虑别名
+  return sortExtension(records, { useAlias: false })
 }
 
 function search(records, searchText, existAlias, existRemark, noAlias, noRemark) {
