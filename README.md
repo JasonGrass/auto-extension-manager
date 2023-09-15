@@ -49,6 +49,8 @@ Edge 商店链接
 
 也可以直接通过 [issue](https://github.com/JasonGrass/auto-extension-manager/issues/new?body=%0A%0A%0A%0A---%0A%3C%21--+%E2%86%91%E8%AF%B7%E5%9C%A8%E6%AD%A4%E8%A1%8C%E4%B8%8A%E6%96%B9%E5%A1%AB%E5%86%99%E9%97%AE%E9%A2%98%2F%E5%BB%BA%E8%AE%AE%E8%AF%A6%E6%83%85%E2%86%91+--%3E%0AFrom+readme+%0A) 来提交反馈。
 
+在 [小众软件](https://meta.appinn.net/t/topic/46198) 上讨论。
+
 ## 🍉 一些相似的插件
 
 - [hankxdev/one-click-extensions-manager: a simple chrome extension to manage chrome extension](https://github.com/hankxdev/one-click-extensions-manager )  
