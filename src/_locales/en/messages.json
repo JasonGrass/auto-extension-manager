@@ -411,7 +411,7 @@
     "message": "No Profile Created, Create First"
   },
   "trigger_scene_select_one": {
-    "message": "Select Profile to be Matched"
+    "message": "Select Profile to be Matched, Can Select Multiple Profiles."
   },
   "trigger_scene_select_tip": {
     "message": "Select Profile"

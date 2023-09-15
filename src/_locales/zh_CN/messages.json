@@ -411,7 +411,7 @@
     "message": "没有创建任何情景模式，请先创建"
   },
   "trigger_scene_select_one": {
-    "message": "选择需要匹配的情景模式"
+    "message": "选择需要匹配的情景模式，可以多选"
   },
   "trigger_scene_select_tip": {
     "message": "选择情景模式"
