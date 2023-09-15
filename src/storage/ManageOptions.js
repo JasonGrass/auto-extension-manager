@@ -26,7 +26,28 @@ export const ManageOptions = {
       extConfigs.push({ extId, ...configs })
     }
 
-    all.extensions = extConfigs
+    all.extensions = extConfigs.filter((c) => !isEmptyConfig(c))
     await SyncOptionsStorage.set({ management: all })
   }
+}
+
+// 判断对扩展的额外配置（如别名，备注等）是否为空
+function isEmptyConfig(extensionConfig) {
+  if (!extensionConfig) {
+    return true
+  }
+
+  const config = { ...extensionConfig }
+  delete config.extId
+  delete config.update_time
+
+  // 还有值的配置
+  const valueConfigs = Object.keys(config)
+    .filter((key) => {
+      return config[key]
+    })
+    .filter(Boolean)
+
+  // 如果没有任何值了，则为一个空配置
+  return valueConfigs.length === 0
 }
