@@ -114,7 +114,7 @@
     "message": "About"
   },
   "about_desc": {
-    "message": "A extension that can automatically open or close browser extension based on rules"
+    "message": "A extension that can automatically enable or disable browser extension based on rules"
   },
   "about_feedback": {
     "message": "Feedback"
