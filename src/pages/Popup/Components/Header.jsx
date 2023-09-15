@@ -7,7 +7,7 @@ import { Space } from "antd"
 import EdgeIcon from ".../assets/img/Microsoft_Store.svg"
 import ChromeWebStoreIcon from ".../assets/img/chrome-web-store-icon.svg"
 import storage from ".../storage"
-import { isEdgeBrowser } from ".../utils/utils"
+import { isEdgePackage } from ".../utils/channelHelper"
 import MainIcon from "../../../assets/img/icon-64.png"
 import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
@@ -113,7 +113,7 @@ const Header = memo((props) => {
       return
     }
 
-    if (isEdgeBrowser()) {
+    if (isEdgePackage()) {
       chrome.tabs.create({
         url: `https://microsoftedge.microsoft.com/addons/search/${searchText.trim()}`
       })
@@ -133,7 +133,7 @@ const Header = memo((props) => {
       return null
     }
 
-    return isEdgeBrowser() ? (
+    return isEdgePackage() ? (
       <img
         src={EdgeIcon}
         className="store-icon edge-store-icon"

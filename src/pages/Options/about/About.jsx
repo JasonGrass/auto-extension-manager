@@ -11,6 +11,7 @@ import newGithubIssueUrl from "new-github-issue-url"
 
 import Icon from ".../assets/img/icon-128.png"
 import { SyncOptionsStorage } from ".../storage"
+import { isEdgePackage } from ".../utils/channelHelper.js"
 import { getLang } from ".../utils/utils"
 import Title from "../Title.jsx"
 import { AboutStyle } from "./AboutStyle"
@@ -60,7 +61,7 @@ ${navigator.userAgent}`
 
   const openRatePage = () => {
     chrome.management.getSelf((self) => {
-      if (window.navigator.userAgent.includes("Edg/")) {
+      if (isEdgePackage()) {
         chrome.tabs.create({
           url: `https://microsoftedge.microsoft.com/addons/detail/extension-manager/${self.id}`
         })

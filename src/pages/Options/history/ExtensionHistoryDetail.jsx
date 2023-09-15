@@ -3,6 +3,7 @@ import React, { memo, useEffect, useState } from "react"
 import { Col, Result, Row } from "antd"
 import { styled } from "styled-components"
 
+import { isEdgeRuntime } from ".../utils/channelHelper"
 import { getLang } from ".../utils/utils"
 
 const ExtensionHistoryDetail = memo(({ record }) => {
@@ -14,7 +15,7 @@ const ExtensionHistoryDetail = memo(({ record }) => {
     if (!ext) {
       return
     }
-    if (window.navigator.userAgent.includes("Edg/")) {
+    if (isEdgeRuntime()) {
       setManageUrl(`edge://extensions/?id=${ext.id}`)
     } else {
       setManageUrl(`chrome://extensions/?id=${ext.id}`)
