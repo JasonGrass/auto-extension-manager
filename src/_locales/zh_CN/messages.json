@@ -200,6 +200,12 @@
   "alias_remark_exist": {
     "message": "存在备注"
   },
+  "alias_empty": {
+    "message": "未设置别名"
+  },
+  "alias_remark_empty": {
+    "message": "未设置备注"
+  },
   "alias_max_length": {
     "message": "扩展别名长度最大 50"
   },

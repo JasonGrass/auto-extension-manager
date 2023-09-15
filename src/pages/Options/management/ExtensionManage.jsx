@@ -65,6 +65,10 @@ const ExtensionManage = memo(({ extensions, config }) => {
   const [searchExistAlias, setSearchExistAlias] = useState(false)
   // 搜索 存在备注
   const [searchExistRemark, setSearchExistRemark] = useState(false)
+  // 搜索 没有设置别名
+  const [searchNoAlias, setSearchNoAlias] = useState(false)
+  // 搜索 没有设置备注
+  const [searchNoRemark, setSearchNoRemark] = useState(false)
 
   // 初始化
   useEffect(() => {
@@ -75,8 +79,10 @@ const ExtensionManage = memo(({ extensions, config }) => {
 
   // 搜索
   useEffect(() => {
-    setShownData(search(data, searchWord, searchExistAlias, searchExistRemark))
-  }, [data, searchWord, searchExistAlias, searchExistRemark])
+    setShownData(
+      search(data, searchWord, searchExistAlias, searchExistRemark, searchNoAlias, searchNoRemark)
+    )
+  }, [data, searchWord, searchExistAlias, searchExistRemark, searchNoAlias, searchNoRemark])
 
   // 执行搜索
   const onSearch = (value) => {
@@ -93,12 +99,34 @@ const ExtensionManage = memo(({ extensions, config }) => {
 
   const onExistAliasChange = (e) => {
     const value = e.target.checked
+    if (value) {
+      setSearchNoAlias(false)
+    }
     setSearchExistAlias(value)
   }
 
   const onExistRemarkChange = (e) => {
     const value = e.target.checked
+    if (value) {
+      setSearchNoRemark(false)
+    }
     setSearchExistRemark(value)
+  }
+
+  const onNoAliasChange = (e) => {
+    const value = e.target.checked
+    if (value) {
+      setSearchExistAlias(false)
+    }
+    setSearchNoAlias(value)
+  }
+
+  const onNoRemarkChange = (e) => {
+    const value = e.target.checked
+    if (value) {
+      setSearchExistRemark(false)
+    }
+    setSearchNoRemark(value)
   }
 
   return (
@@ -123,6 +151,14 @@ const ExtensionManage = memo(({ extensions, config }) => {
           onChange={onExistRemarkChange}
           className="search-checkbox">
           {getLang("alias_remark_exist")}
+        </Checkbox>
+
+        <Checkbox checked={searchNoAlias} onChange={onNoAliasChange} className="search-checkbox">
+          {getLang("alias_empty")}
+        </Checkbox>
+
+        <Checkbox checked={searchNoRemark} onChange={onNoRemarkChange} className="search-checkbox">
+          {getLang("alias_remark_empty")}
         </Checkbox>
       </div>
 
@@ -240,8 +276,14 @@ function buildRecords(extensions, configs) {
   return sortExtension(records)
 }
 
-function search(records, searchText, existAlias, existRemark) {
-  if ((!searchText || searchText.trim() === "") && !existAlias && !existRemark) {
+function search(records, searchText, existAlias, existRemark, noAlias, noRemark) {
+  if (
+    (!searchText || searchText.trim() === "") &&
+    !existAlias &&
+    !existRemark &&
+    !noAlias &&
+    !noRemark
+  ) {
     return records
   }
 
@@ -266,6 +308,20 @@ function search(records, searchText, existAlias, existRemark) {
     .filter((record) => {
       if (existRemark) {
         return record.remark
+      } else {
+        return true
+      }
+    })
+    .filter((record) => {
+      if (noAlias) {
+        return !Boolean(record.alias)
+      } else {
+        return true
+      }
+    })
+    .filter((record) => {
+      if (noRemark) {
+        return !Boolean(record.remark)
       } else {
         return true
       }

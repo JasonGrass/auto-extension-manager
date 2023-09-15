@@ -200,6 +200,12 @@
   "alias_remark_exist": {
     "message": "Has remark"
   },
+  "alias_empty": {
+    "message": "No alias"
+  },
+  "alias_remark_empty": {
+    "message": "No remark"
+  },
   "alias_max_length": {
     "message": "The maximum length of an alias is 50 characters"
   },
