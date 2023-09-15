@@ -23,7 +23,9 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
   ]
 
   // 分组切换菜单
-  let configGroupMenu = formatGroups(options.groups).map((g) => ({ label: g.name, key: g.id }))
+  let configGroupMenu = formatGroups(options.groups)
+    .map((g) => ({ label: g.name, key: g.id }))
+    .filter((g) => g.key !== "hidden") // Popup 中不展示隐藏分组
 
   if (!(options.setting.isShowFixedExtension ?? true)) {
     configGroupMenu = configGroupMenu.filter((g) => g.key !== "fixed")

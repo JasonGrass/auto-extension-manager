@@ -18,6 +18,16 @@ export const GroupOptions = {
       await this.addGroup(fixedGroup)
     }
 
+    if (!groups.find((g) => g.id === "hidden")) {
+      const hiddenGroup = {
+        id: "hidden",
+        name: "__hidden_group__",
+        extensions: []
+      }
+      groups.unshift(hiddenGroup)
+      await this.addGroup(hiddenGroup)
+    }
+
     return groups
   },
 
@@ -84,10 +94,16 @@ export const GroupOptions = {
     }
     const newGroups = []
     const fixedGroup = all.groups.find((g) => g.id === "fixed")
-    newGroups.push(fixedGroup)
+    if (fixedGroup) {
+      newGroups.push(fixedGroup)
+    }
+    const hiddenGroup = all.groups.find((g) => g.id === "hidden")
+    if (hiddenGroup) {
+      newGroups.push(hiddenGroup)
+    }
 
     for (const item of items) {
-      if (item.id === "fixed") {
+      if (item.id === "fixed" || item.id === "hidden") {
         continue
       }
       const exist = all.groups.find((g) => g.id === item.id)
@@ -110,6 +126,9 @@ export const formatGroups = (groups) => {
     if (g.id === "fixed") {
       g.name = getLang("group_fixed_name")
     }
+    if (g.id === "hidden") {
+      g.name = getLang("group_hidden_name")
+    }
 
     if (!g.extensions) {
       g.extensions = []
@@ -117,4 +136,16 @@ export const formatGroups = (groups) => {
 
     return g
   })
+}
+
+export const isSpecialGroup = (group) => {
+  if (!group) {
+    return false
+  }
+
+  if (typeof group === "string") {
+    return group === "fixed" || group === "hidden"
+  }
+
+  return group.id === "fixed" || group.id === "hidden"
 }

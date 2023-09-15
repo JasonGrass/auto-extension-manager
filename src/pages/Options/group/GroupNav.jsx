@@ -5,7 +5,7 @@ import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd"
 import { Popconfirm, message } from "antd"
 import classNames from "classnames"
 
-import { GroupOptions } from ".../storage/index"
+import { GroupOptions, isSpecialGroup } from ".../storage/index"
 import { getLang } from "../../../utils/utils"
 import { GroupNavStyle } from "./GroupNavStyle"
 import { AddNewNavItem } from "./helpers"
@@ -20,14 +20,27 @@ function GroupNav({
 }) {
   const [groupItems, setGroupItems] = useState([])
 
+  // 初始化
   useEffect(() => {
     let showGroupItems = []
+
+    const hiddenGroup = groupInfo.find((g) => g.id === "hidden")
+    if (hiddenGroup) {
+      hiddenGroup.name = getLang("group_hidden_name")
+      hiddenGroup.desc = getLang("group_hidden_desc")
+    }
     const fixedGroup = groupInfo.find((g) => g.id === "fixed")
     if (fixedGroup) {
       fixedGroup.name = getLang("group_fixed_name")
       fixedGroup.desc = getLang("group_fixed_desc")
-      showGroupItems = [fixedGroup, ...groupInfo.filter((g) => g.id !== "fixed")]
     }
+
+    showGroupItems = [
+      fixedGroup,
+      hiddenGroup,
+      ...groupInfo.filter((g) => !isSpecialGroup(g))
+    ].filter(Boolean)
+
     setGroupItems(showGroupItems)
   }, [groupInfo])
 
@@ -150,7 +163,7 @@ function GroupNav({
                   key={group.id}
                   draggableId={group.id}
                   index={index}
-                  isDragDisabled={group.id === "fixed"}>
+                  isDragDisabled={group.id === "fixed" || group.id === "hidden"}>
                   {(provided, snapshot) => (
                     <div
                       className="item-container"

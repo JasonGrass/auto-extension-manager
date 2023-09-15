@@ -71,6 +71,12 @@
   "group_fixed_desc": {
     "message": "This is a built-in group where extensions within this group will not be disabled when manually switching groups in the Popup. Typically, permanent extensions are placed in this group. Note: If a specific extension is explicitly configured to be disabled in a rule configuration, it will still be disabled even if it is in the fixed group."
   },
+  "group_hidden_name": {
+    "message": "Hidden Group"
+  },
+  "group_hidden_desc": {
+    "message": "This is a built-in group where extensions within this group will not be displayed in the popup."
+  },
   "group_fixed_cannot_edit": {
     "message": "The fixed group cannot be edited"
   },

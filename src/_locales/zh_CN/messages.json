@@ -71,6 +71,12 @@
   "group_fixed_desc": {
     "message": "这是一个内置分组，此分组中的扩展，在 Popup 中手动切换分组时，不会被禁用。通常将常驻的扩展放在此分组中。注意：如果在规则配置中，明确配置关闭某个扩展，即使此扩展在固定分组中，禁用依旧有效。"
   },
+  "group_hidden_name": {
+    "message": "隐藏分组"
+  },
+  "group_hidden_desc": {
+    "message": "这是一个内置分组，此分组中的扩展，在 Popup 中不会显示。"
+  },
   "group_fixed_cannot_edit": {
     "message": "固定分组不能被编辑"
   },

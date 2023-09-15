@@ -17,8 +17,15 @@ export const usePopupExtensions = (extensions, options) => {
 
   useEffect(() => {
     const list = appendAdditionInfo(extensions, options)
-    const list1 = list.filter((i) => i.enabled)
-    const list2 = list.filter((i) => !i.enabled)
+    let list1 = list.filter((i) => i.enabled)
+    let list2 = list.filter((i) => !i.enabled)
+
+    // 不显示那些在隐藏分组中的扩展
+    const hiddenExtensions = options.groups?.find((g) => g.id === "hidden")?.extensions
+    if (hiddenExtensions) {
+      list1 = list1.filter((i) => !hiddenExtensions.includes(i.id))
+      list2 = list2.filter((i) => !hiddenExtensions.includes(i.id))
+    }
 
     if (options.setting.isSortByFrequency) {
       manualEnableCounter.getOrder().then((orderExtIdList) => {

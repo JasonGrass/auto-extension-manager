@@ -204,6 +204,7 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
         return g.extensions.includes(item.id)
       })
       .filter((g) => g.id !== "fixed")
+      .filter((g) => g.id !== "hidden")
       .filter((g) => g.id !== group.id)
       .map((g) => g.name)
 
