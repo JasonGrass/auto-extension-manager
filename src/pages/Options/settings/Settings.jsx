@@ -331,9 +331,7 @@ function Settings() {
           okText="Yes"
           cancelText="Cancel"
           onClick={(e) => e.stopPropagation()}>
-          <Tooltip placement="right" title={getLang("setting_clear_confirm_title")}>
-            <Button danger>{getLang("setting_clear_title")}</Button>
-          </Tooltip>
+          <Button danger>{getLang("setting_clear_title")}</Button>
         </Popconfirm>
       </div>
     </SettingStyle>
