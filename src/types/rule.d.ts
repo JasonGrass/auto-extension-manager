@@ -100,6 +100,7 @@ declare namespace ruleV2 {
     | "openOnlyWhenMatched"
     | "closeOnlyWhenMatched"
     | "custom"
+    | "none"
 
   export type TimeWhenEnable = "none" | "match" | "notMatch"
   export type TimeWhenDisable = "none" | "match" | "notMatch" | "closeWindow"
@@ -115,8 +116,9 @@ declare namespace ruleV2 {
 
   export interface IAction {
     actionType: ActionType
-    reloadAfterEnable: boolean
-    reloadAfterDisable: boolean
+    reloadAfterEnable?: boolean
+    reloadAfterDisable?: boolean
+    showOnTheTop?: boolean
     custom?: ICustomAction
   }
 

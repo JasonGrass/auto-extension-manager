@@ -102,6 +102,10 @@ function handle(
     return
   }
 
+  if (action.actionType === "none") {
+    return
+  }
+
   if (action.actionType === "custom") {
     handleAdvanceMode(matchResult, targetExtensions, action, ctx)
   } else {
@@ -164,10 +168,10 @@ async function handleAdvanceMode(
   const customRule = action.custom
   const tabInfo = ctx.tab
 
-  const open = (reload: boolean) => {
+  const open = (reload: boolean | undefined) => {
     openExtensions(targetExtensions, reload, tabInfo, ctx)
   }
-  const close = (reload: boolean) => {
+  const close = (reload: boolean | undefined) => {
     closeExtensions(targetExtensions, reload, tabInfo, ctx)
   }
 
@@ -245,7 +249,7 @@ async function handleAdvanceMode(
 
 async function closeExtensions(
   targetExtensions: string[],
-  reload: boolean,
+  reload: boolean | undefined,
   tabInfo: chrome.tabs.Tab | undefined,
   ctx: ProcessContext
 ) {
@@ -274,7 +278,7 @@ async function closeExtensions(
 
 async function openExtensions(
   targetExtensions: string[],
-  reload: boolean,
+  reload: boolean | undefined,
   tabInfo: chrome.tabs.Tab | undefined,
   ctx: ProcessContext
 ) {

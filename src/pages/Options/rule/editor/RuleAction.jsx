@@ -46,9 +46,14 @@ const RuleAction = ({ options, config, pipe }, ref) => {
       }
 
       const actionConfig = {
-        actionType: actionTypeKey,
-        reloadAfterEnable: refreshAfterEnable,
-        reloadAfterDisable: refreshAfterDisable
+        actionType: actionTypeKey
+      }
+
+      if (refreshAfterEnable) {
+        actionConfig.reloadAfterEnable = refreshAfterEnable
+      }
+      if (refreshAfterDisable) {
+        actionConfig.reloadAfterDisable = refreshAfterDisable
       }
 
       if (actionTypeKey === "custom") {
