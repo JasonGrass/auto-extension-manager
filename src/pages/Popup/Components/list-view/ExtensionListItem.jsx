@@ -97,7 +97,7 @@ const ExtensionListItem = memo(({ item, options }) => {
       onMouseLeave={(e) => onItemMouseOver(e)}
       className={classNames([
         "list-item-container",
-        { "is-enable": itemEnable, "not-enable": !itemEnable }
+        { "is-enable": itemEnable, "not-enable": !itemEnable, "item-is-top": item.__top__ }
       ])}>
       <div className="list-item-img-box">
         <img src={getIcon(item, 24)} alt="" />

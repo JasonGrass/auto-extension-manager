@@ -22,11 +22,7 @@ const ExtensionList = memo(({ extensions, options }) => {
     <Style>
       {items.map((item) => {
         return (
-          <li
-            key={item.id}
-            className={classNames({
-              "is-top": item.__top__
-            })}>
+          <li key={item.id}>
             <ExtensionListItem item={item} options={options}></ExtensionListItem>
           </li>
         )
@@ -45,9 +41,5 @@ const Style = styled.ul`
 
   li:last-child {
     border-bottom: none;
-  }
-
-  .is-top {
-    background-color: aliceblue;
   }
 `

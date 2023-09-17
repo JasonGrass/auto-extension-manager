@@ -68,3 +68,8 @@
 .list-item-container.is-enable {
   border-bottom: 1px solid #cccccc33;
 }
+
+.list-item-container.item-is-top {
+  color: #337ab7;
+  font-weight: bold;
+}
