@@ -33,9 +33,13 @@ const Style = styled.div`
     color: #777;
   }
 
+  .action-show-options {
+    margin: 16px 0 0 0;
+  }
+
   .action-refresh-options {
     display: flex;
-    margin: 20px 0;
+    margin: 5px 0 10px 0;
   }
 `
 

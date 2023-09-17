@@ -368,6 +368,15 @@
   "rule_action_custom_desc": {
     "message": "自定义启用或禁用扩展的时机"
   },
+  "rule_action_none": {
+    "message": "无"
+  },
+  "rule_action_none_desc": {
+    "message": "不自动启用与禁用扩展"
+  },
+  "rule_action_top_extension": {
+    "message": "在 Popup 中置顶显示扩展"
+  },
   "rule_action_no_any_action": {
     "message": "没有设置任何动作类型"
   },

@@ -1,5 +1,6 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 
+import { QuestionCircleOutlined } from "@ant-design/icons"
 import { Alert, Checkbox, Radio } from "antd"
 
 import { getLang } from ".../utils/utils"
@@ -29,6 +30,10 @@ const actionSelections = [
   {
     label: getLang("rule_action_custom"),
     key: "custom"
+  },
+  {
+    label: getLang("rule_action_none"),
+    key: "none"
   }
 ]
 
@@ -50,6 +55,10 @@ const RuleAction = ({ options, config, pipe }, ref) => {
         actionConfig.custom = customRef.current.getCustomRuleConfig()
       }
 
+      if (showOnTheTop) {
+        actionConfig.showOnTheTop = showOnTheTop
+      }
+
       return actionConfig
     }
   }))
@@ -59,7 +68,12 @@ const RuleAction = ({ options, config, pipe }, ref) => {
   const [actionTypeKey, setActionTypeKey] = useState("")
   const [actionTipMessage, setActionTipMessage] = useState("")
 
+  // 在 Popup 置顶显示
+  const [showOnTheTop, setShowOnTheTop] = useState(false)
+
+  // 启用之后刷新页面
   const [refreshAfterEnable, setRefreshAfterEnable] = useState(false)
+  // 禁用之后刷新页面
   const [refreshAfterDisable, setRefreshAfterDisable] = useState(false)
 
   // 根据配置初始化
@@ -90,22 +104,16 @@ const RuleAction = ({ options, config, pipe }, ref) => {
       case "custom":
         setActionTipMessage(`🛠 ${getLang("rule_action_custom_desc")}`)
         break
+      case "none":
+        setActionTipMessage(`🛠 ${getLang("rule_action_none_desc")}`)
+        break
       default:
         setActionTipMessage(`🛠 ${getLang("rule_action_please_select_action")}`)
     }
   }, [actionTypeKey])
 
-  const handleActionTypeClick = (e) => {
-    const key = e.target.value
-    setActionTypeKey(key)
-  }
-
-  const onFreshAfterOpenChange = (e) => {
-    setRefreshAfterEnable(e.target.checked)
-  }
-
-  const onFreshAfterCloseChange = (e) => {
-    setRefreshAfterDisable(e.target.checked)
+  const onClickTopTipBtn = (e) => {
+    e.preventDefault()
   }
 
   return (
@@ -127,7 +135,7 @@ const RuleAction = ({ options, config, pipe }, ref) => {
           }
         />
 
-        <Radio.Group onChange={handleActionTypeClick} value={actionTypeKey}>
+        <Radio.Group onChange={(e) => setActionTypeKey(e.target.value)} value={actionTypeKey}>
           {actionSelections.map((item) => {
             return (
               <Radio key={item.key} value={item.key}>
@@ -147,11 +155,25 @@ const RuleAction = ({ options, config, pipe }, ref) => {
             ref={customRef}></CustomRuleAction>
         )}
 
+        <Checkbox
+          className="action-label action-show-options"
+          checked={showOnTheTop}
+          onChange={(e) => setShowOnTheTop(e.target.checked)}>
+          <span>
+            {getLang("rule_action_top_extension")}{" "}
+            <QuestionCircleOutlined onClick={onClickTopTipBtn} />
+          </span>
+        </Checkbox>
+
         <div className="action-label action-refresh-options">
-          <Checkbox checked={refreshAfterEnable} onChange={onFreshAfterOpenChange}>
+          <Checkbox
+            checked={refreshAfterEnable}
+            onChange={(e) => setRefreshAfterEnable(e.target.checked)}>
             {getLang("rule_action_auto_reload_when_enable")}
           </Checkbox>
-          <Checkbox checked={refreshAfterDisable} onChange={onFreshAfterCloseChange}>
+          <Checkbox
+            checked={refreshAfterDisable}
+            onChange={(e) => setRefreshAfterDisable(e.target.checked)}>
             {getLang("rule_action_auto_reload_when_disable")}
           </Checkbox>
         </div>
