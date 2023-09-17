@@ -6,14 +6,30 @@ import { usePopupExtensions } from "../../utils/usePopupExtensions"
 import ExtensionGridItem from "./ExtensionGridItem"
 
 const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
-  const [items1, items2] = usePopupExtensions(extensions, options)
+  const [items0, items1, items2] = usePopupExtensions(extensions, options)
+
+  // 置顶分区下方的分割线是否显示
+  const dividerShow0 = items0.length > 0 && (items1.length > 0 || items2.length > 0)
 
   return (
     <Style>
       <ul>
+        {items0.map((item) => {
+          return (
+            <li key={item.id}>
+              <ExtensionGridItem item={item} options={options}></ExtensionGridItem>
+            </li>
+          )
+        })}
+        {new Array(10).fill("").map((_, index) => (
+          <i key={index}></i>
+        ))}
+      </ul>
+      {dividerShow0 && <div className="divider"></div>}
+      <ul>
         {items1.map((item) => {
           return (
-            <li key={item.id} className="grid-item-enable">
+            <li key={item.id}>
               <ExtensionGridItem item={item} options={options}></ExtensionGridItem>
             </li>
           )
@@ -26,7 +42,7 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
       <ul>
         {items2.map((item) => {
           return (
-            <li key={item.id} className="grid-item-disable">
+            <li key={item.id}>
               <ExtensionGridItem item={item} options={options}></ExtensionGridItem>
             </li>
           )
