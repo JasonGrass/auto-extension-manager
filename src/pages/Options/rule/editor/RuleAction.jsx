@@ -81,13 +81,14 @@ const RuleAction = ({ options, config, pipe }, ref) => {
   // 禁用之后刷新页面
   const [refreshAfterDisable, setRefreshAfterDisable] = useState(false)
 
-  // 根据配置初始化
+  // 初始化
   useEffect(() => {
     const actionConfig = config?.action
     if (!actionConfig) {
       return
     }
     setActionTypeKey(actionConfig.actionType)
+    setShowOnTheTop(actionConfig.showOnTheTop ?? false)
     setRefreshAfterEnable(actionConfig.reloadAfterEnable ?? false)
     setRefreshAfterDisable(actionConfig.reloadAfterDisable ?? false)
   }, [config])
