@@ -31,6 +31,8 @@ export class HistoryEventHandler {
       const self = await chromeP.management.getSelf()
       const record = HistoryRecord.buildPlain(self, "updated")
       await this.service.add(record)
+    } else if (info.reason === "chrome_update") {
+      // 浏览器更新，但是在 background 中无法知道当前的浏览器版本
     }
   }
 
