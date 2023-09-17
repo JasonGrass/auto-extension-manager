@@ -12,6 +12,12 @@ const createHistory = async (EM: IExtensionManager) => {
 
   createHistoryEventListener(EM, history.EventHandler)
 
+  // 处理缓存事件中，关心的事件
+  const args = EM.EventCache.get("onInstalled")
+  if (args) {
+    history.EventHandler.onSelfInstalled(args)
+  }
+
   return history
 }
 
