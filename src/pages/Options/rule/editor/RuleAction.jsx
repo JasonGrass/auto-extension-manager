@@ -120,6 +120,7 @@ const RuleAction = ({ options, config, pipe }, ref) => {
 
   const onClickTopTipBtn = (e) => {
     e.preventDefault()
+    chrome.tabs.create({ url: "https://ext.jgrass.cc/docs/advance" })
   }
 
   return (
