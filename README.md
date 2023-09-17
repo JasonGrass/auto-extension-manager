@@ -55,7 +55,7 @@ Edge 商店链接
 
 - 为什么没有 firefox 版本
 
-因为 firefox 没有提供启用和禁用扩展这个核心的 API，详见 #5
+因为 firefox 没有提供启用和禁用扩展这个核心的 API，详见 [#5](https://github.com/JasonGrass/auto-extension-manager/issues/5)
 
 - 为什么不能在扩展管理器中直接启动其它扩展，或者将其它扩展 Pin 到浏览器工具栏上
 
