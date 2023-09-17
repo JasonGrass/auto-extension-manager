@@ -94,3 +94,34 @@ export default async function isMatch(
 
   return result
 }
+
+export async function isMatchByCurrent(
+  activeScene: config.IScene | undefined,
+  rule: ruleV2.IRuleConfig,
+  tabInfo: chrome.tabs.Tab | undefined
+): Promise<boolean> {
+  if (!rule.match) {
+    return false
+  }
+
+  const isCurrentUrlMatch = await checkCurrentUrlMatch(tabInfo, rule)
+  const isCurrentSceneMatch = await checkCurrentSceneMatch(activeScene, rule)
+  const isCurrentOsMatch = await checkCurrentOsMatch(rule)
+  const isCurrentTimeMatch = await checkCurrentTimeMatch(rule)
+
+  const currentCheckList = [
+    isCurrentUrlMatch,
+    isCurrentSceneMatch,
+    isCurrentOsMatch,
+    isCurrentTimeMatch
+  ].filter((m) => m !== undefined)
+
+  const relationship = rule.match.relationship
+  if (relationship === "and") {
+    return currentCheckList.filter((m) => m === true).length === currentCheckList.length
+  } else if (relationship === "or") {
+    return currentCheckList.filter((m) => m === true).length > 0
+  }
+
+  return false
+}

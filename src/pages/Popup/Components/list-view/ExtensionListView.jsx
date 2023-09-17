@@ -12,10 +12,11 @@ import ExtensionListItem from "./ExtensionListItem"
 const ExtensionList = memo(({ extensions, options }) => {
   const [items, setItems] = useState([])
 
-  const [items1, items2] = usePopupExtensions(extensions, options)
+  const [items0, items1, items2] = usePopupExtensions(extensions, options)
   useEffect(() => {
-    setItems(items1.concat(items2))
-  }, [items1, items2])
+    items0.forEach((i) => (i.__top__ = true))
+    setItems(items0.concat(items1, items2))
+  }, [items0, items1, items2])
 
   return (
     <Style>
@@ -24,8 +25,7 @@ const ExtensionList = memo(({ extensions, options }) => {
           <li
             key={item.id}
             className={classNames({
-              "is-enable": item.enabled,
-              "not-enable": !item.enabled
+              "is-top": item.__top__
             })}>
             <ExtensionListItem item={item} options={options}></ExtensionListItem>
           </li>
@@ -45,5 +45,9 @@ const Style = styled.ul`
 
   li:last-child {
     border-bottom: none;
+  }
+
+  .is-top {
+    background-color: aliceblue;
   }
 `
