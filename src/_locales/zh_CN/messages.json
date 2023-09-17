@@ -377,6 +377,9 @@
   "rule_action_top_extension": {
     "message": "在 Popup 中置顶显示扩展"
   },
+  "rule_action_top_title": {
+    "message": "置顶显示"
+  },
   "rule_action_no_any_action": {
     "message": "没有设置任何动作类型"
   },

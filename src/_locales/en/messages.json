@@ -377,6 +377,9 @@
   "rule_action_top_extension": {
     "message": "Display extension at the top in the Popup"
   },
+  "rule_action_top_title": {
+    "message": "Pin to Top"
+  },
   "rule_action_no_any_action": {
     "message": "No action has been set"
   },
