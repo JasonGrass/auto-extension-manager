@@ -5,7 +5,7 @@ import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd"
 import { Popconfirm, message } from "antd"
 import classNames from "classnames"
 
-import { GroupOptions, isSpecialGroup } from ".../storage/index"
+import { storage } from ".../storage/sync"
 import { getLang } from "../../../utils/utils"
 import { GroupNavStyle } from "./GroupNavStyle"
 import { AddNewNavItem } from "./helpers"
@@ -38,7 +38,7 @@ function GroupNav({
     showGroupItems = [
       fixedGroup,
       hiddenGroup,
-      ...groupInfo.filter((g) => !isSpecialGroup(g))
+      ...groupInfo.filter((g) => !storage.helper.isSpecialGroup(g))
     ].filter(Boolean)
 
     setGroupItems(showGroupItems)
@@ -54,7 +54,7 @@ function GroupNav({
 
   const onEditGroupClick = (e, group) => {
     e.stopPropagation()
-    if (isSpecialGroup(group)) {
+    if (storage.helper.isSpecialGroup(group)) {
       message.warning(getLang("group_inner_cannot_edit"))
       return
     }
@@ -87,12 +87,12 @@ function GroupNav({
   const onDeleteGroupClick = async (e, group) => {
     e.stopPropagation()
 
-    if (isSpecialGroup(group)) {
+    if (storage.helper.isSpecialGroup(group)) {
       message.warning(getLang("group_inner_cannot_delete"))
       return
     }
 
-    await GroupOptions.deleteGroup(group.id)
+    await storage.group.deleteGroup(group.id)
     if (group.id === current?.id) {
       selectFirstGroupTab(group)
     }
@@ -130,7 +130,7 @@ function GroupNav({
           ])}>
           <h3>{group.name}</h3>
 
-          {isSpecialGroup(group) || (
+          {storage.helper.isSpecialGroup(group) || (
             <div className="tab-operation">
               <EditFilled
                 onClick={(e) => onEditGroupClick(e, group)}

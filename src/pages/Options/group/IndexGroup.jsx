@@ -5,7 +5,7 @@ import { message } from "antd"
 import classNames from "classnames"
 import chromeP from "webext-polyfill-kinda"
 
-import storage, { GroupOptions } from ".../storage/index"
+import storage from ".../storage/sync"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper"
 import { getLang, isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
@@ -34,7 +34,7 @@ function GroupManagement() {
   const [messageApi, contextHolder] = message.useMessage()
 
   async function updateByGroupConfigs() {
-    const groupList = await GroupOptions.getGroups()
+    const groupList = await storage.group.getGroups()
     setGroupListInfo(groupList)
   }
   // 初始化
@@ -47,7 +47,7 @@ function GroupManagement() {
       setExtensions(filterExtensions(exts, isExtExtension))
     })
 
-    GroupOptions.getGroups().then((groups) => {
+    storage.group.getGroups().then((groups) => {
       setGroupListInfo(groups)
     })
   }, [])
@@ -96,7 +96,7 @@ function GroupManagement() {
   }
 
   const onGroupOrdered = async (items) => {
-    await GroupOptions.orderGroups(items)
+    await storage.group.orderGroups(items)
     await updateByGroupConfigs()
   }
 

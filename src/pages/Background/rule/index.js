@@ -1,6 +1,6 @@
 import chromeP from "webext-polyfill-kinda"
 
-import { SyncOptionsStorage } from ".../storage"
+import { storage } from ".../storage/sync"
 import { onTabClosed, onTabUrlChange, onWindowClosed } from "../event/tabChangeEvent"
 import createRuleHandler from "./RuleHandler"
 
@@ -17,7 +17,7 @@ const createRule = async (EM) => {
   onWindowClosed(handler.onWindowClosed.bind(handler))
 
   // 初始化
-  const options = await SyncOptionsStorage.getAll()
+  const options = await storage.options.getAll()
 
   const activeSceneId = await EM.LocalOptions.getActiveSceneId()
 

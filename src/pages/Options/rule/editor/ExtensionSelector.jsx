@@ -2,7 +2,7 @@ import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } fro
 
 import { Tag } from "antd"
 
-import { formatGroups } from ".../storage/GroupOptions"
+import { storage } from ".../storage/sync"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
 import ExtensionItems from "../../components/ExtensionItems"
@@ -12,7 +12,7 @@ import Style, { SearchStyle } from "./ExtensionSelectorStyle"
 const { CheckableTag } = Tag
 
 const ExtensionSelector = ({ options, config, extensions }, ref) => {
-  const groupList = formatGroups(options.groups)
+  const groupList = storage.helper.formatGroups(options.groups)
 
   useImperativeHandle(ref, () => ({
     // 获取配置

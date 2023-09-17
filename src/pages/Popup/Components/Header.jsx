@@ -6,7 +6,7 @@ import { Space } from "antd"
 
 import EdgeIcon from ".../assets/img/Microsoft_Store.svg"
 import ChromeWebStoreIcon from ".../assets/img/chrome-web-store-icon.svg"
-import storage from ".../storage"
+import storage from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper"
 import MainIcon from "../../../assets/img/icon-64.png"
 import Style, { SearchStyle } from "./HeaderStyle"

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import { Button, Form, Input, message } from "antd"
 
-import { GroupOptions } from ".../storage/index"
+import { storage } from ".../storage/sync"
 import { getLang, isStringEmpty } from ".../utils/utils"
 import ModalEditorWrapper from "../utils/ModalEditorWrapper"
 import { AddNewNavItem } from "./helpers"
@@ -50,7 +50,7 @@ function GroupEditor({ editType, groupInfo, editCallback }) {
           name,
           desc
         }
-        await GroupOptions.addGroup(group)
+        await storage.group.addGroup(group)
         setGroupName("")
         setGroupDesc("")
         editCallback?.(editType, group)
@@ -58,7 +58,7 @@ function GroupEditor({ editType, groupInfo, editCallback }) {
         let info = groupInfo ?? {}
         info = { ...info }
         Object.assign(info, { name, desc })
-        await GroupOptions.update(info)
+        await storage.group.update(info)
         editCallback?.(editType, info)
       }
     } catch (error) {

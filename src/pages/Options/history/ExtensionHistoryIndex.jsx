@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 
-import { ManageOptions } from ".../storage"
+import { storage } from ".../storage/sync"
 import { getLang } from ".../utils/utils"
 import { ExtensionIconBuilder } from "../../Background/extension/ExtensionIconBuilder"
 import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
@@ -27,7 +27,7 @@ const ExtensionManageIndex = () => {
     // 填充 ICON 数据
     await ExtensionIconBuilder.fill(records)
     // 填充附加数据(别名与备注)
-    const attach = await ManageOptions.get()
+    const attach = await storage.management.get()
     const attachExtensionInfo = attach.extensions ?? []
     for (const attachItem of attachExtensionInfo) {
       records

@@ -1,7 +1,7 @@
 import OptionsSync from "webext-options-sync"
 
-import strCompress from "./utils/ConfigCompress"
-import largeSync from "./utils/LargeSyncStorage"
+import strCompress from "../utils/ConfigCompress"
+import largeSync from "../utils/LargeSyncStorage"
 
 const OptionsStorage = new OptionsSync({
   storageType: "sync",

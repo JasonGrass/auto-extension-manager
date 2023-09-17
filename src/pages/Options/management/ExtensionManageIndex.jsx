@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import chromeP from "webext-polyfill-kinda"
 
-import { ManageOptions } from ".../storage"
+import storage from ".../storage/sync"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import { getLang } from "../../../utils/utils.js"
 import Title from "../Title.jsx"
@@ -18,7 +18,7 @@ const ExtensionManageIndex = () => {
       setExtensions(list)
     })
 
-    ManageOptions.get().then((res) => {
+    storage.management.get().then((res) => {
       setManagementConfig(res)
     })
   }, [])

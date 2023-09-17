@@ -10,7 +10,7 @@ import { Button, Space, Tag } from "antd"
 import newGithubIssueUrl from "new-github-issue-url"
 
 import Icon from ".../assets/img/icon-128.png"
-import { SyncOptionsStorage } from ".../storage"
+import { storage } from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper.js"
 import { getLang } from ".../utils/utils"
 import Title from "../Title.jsx"
@@ -27,7 +27,7 @@ function About() {
   }, [])
 
   useEffect(() => {
-    SyncOptionsStorage.getUsage().then((usage) => {
+    storage.options.getUsage().then((usage) => {
       const use = (usage / 1024).toFixed(2)
       setStorageMessage(`Sync Storage Total Use: ${use}KB / 100KB`)
     })

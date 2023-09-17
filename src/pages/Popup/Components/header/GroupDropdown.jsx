@@ -4,8 +4,8 @@ import { CaretDownOutlined } from "@ant-design/icons"
 import { Dropdown } from "antd"
 import { styled } from "styled-components"
 
-import { formatGroups } from ".../storage/GroupOptions"
 import { LocalOptions } from ".../storage/local/LocalOptions"
+import { storage } from ".../storage/sync"
 import { getLang } from ".../utils/utils"
 
 const localOptions = new LocalOptions()
@@ -23,7 +23,8 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
   ]
 
   // 分组切换菜单
-  let configGroupMenu = formatGroups(options.groups)
+  let configGroupMenu = storage.helper
+    .formatGroups(options.groups)
     .map((g) => ({ label: g.name, key: g.id }))
     .filter((g) => g.key !== "hidden") // Popup 中不展示隐藏分组
 

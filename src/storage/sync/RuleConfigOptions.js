@@ -3,7 +3,6 @@ import { nanoid } from "nanoid"
 
 import ConvertRuleToV2 from ".../pages/Background/rule/RuleConverter"
 import { SyncOptionsStorage } from "./options-storage"
-import strCompress from "./utils/ConfigCompress"
 
 export const RuleConfigOptions = {
   async get() {

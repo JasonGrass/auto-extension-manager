@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid"
 
-import { LocalOptions } from "./local/LocalOptions"
+import { LocalOptions } from "../local/LocalOptions"
 import { SyncOptionsStorage } from "./options-storage"
 
 export const SceneOptions = {

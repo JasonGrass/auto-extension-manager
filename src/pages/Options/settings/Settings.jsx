@@ -4,7 +4,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons"
 import { Button, Popconfirm, Slider, Switch, Tooltip, message } from "antd"
 import { fromJS } from "immutable"
 
-import storage from ".../storage"
+import storage from ".../storage/sync"
 import { getLang } from ".../utils/utils"
 import Title from "../Title.jsx"
 import { exportConfig, importConfig } from "./ConfigFileBackup.ts"

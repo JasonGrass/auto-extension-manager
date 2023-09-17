@@ -9,12 +9,12 @@ import { message } from "antd"
 import ".../utils/reset.css"
 import "./index.css"
 
-import { OptionStorageViewProvider } from ".../storage/options-storage"
+import { storage } from ".../storage/sync"
 import { isEdgePackage, isEdgeRuntime } from ".../utils/channelHelper"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Options from "./Options"
 
-const storageViewApi = OptionStorageViewProvider.getApi()
+const storageViewApi = storage.helper.view.getApi()
 storageViewApi.message = message
 
 const container = document.getElementById("app-container")

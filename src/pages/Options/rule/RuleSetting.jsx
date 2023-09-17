@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import chromeP from "webext-polyfill-kinda"
 
-import storage, { ManageOptions, RuleConfigOptions } from ".../storage"
+import storage from ".../storage/sync"
 import { appendAdditionInfo, filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import { getLang } from ".../utils/utils"
 import Title from "../Title.jsx"
@@ -26,38 +26,38 @@ function RuleSetting() {
 
     chromeP.management.getAll().then((res) => {
       const list = filterExtensions(res, isExtExtension)
-      ManageOptions.get().then((options) => {
+      storage.management.get().then((options) => {
         appendAdditionInfo(list, options)
         setExtensions(list)
       })
     })
 
-    RuleConfigOptions.get().then((list) => {
+    storage.rule.get().then((list) => {
       setRuleConfigs(list)
     })
   }, [])
 
   const updateRuleConfig = () => {
-    RuleConfigOptions.get().then((list) => {
+    storage.rule.get().then((list) => {
       setRuleConfigs(list)
     })
   }
 
   const operation = {
     delete: async (id) => {
-      await RuleConfigOptions.deleteOne(id)
+      await storage.rule.deleteOne(id)
       updateRuleConfig()
     },
     add: async (record) => {
-      await RuleConfigOptions.addOne(record)
+      await storage.rule.addOne(record)
       updateRuleConfig()
     },
     update: async (record) => {
-      await RuleConfigOptions.update(record)
+      await storage.rule.update(record)
       updateRuleConfig()
     },
     duplicate: async (record) => {
-      await RuleConfigOptions.duplicate(record)
+      await storage.rule.duplicate(record)
       updateRuleConfig()
     }
   }

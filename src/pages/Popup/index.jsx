@@ -9,9 +9,8 @@ import chromeP from "webext-polyfill-kinda"
 import "./index.css"
 
 import { getPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
-import { OptionStorageViewProvider } from ".../storage/options-storage"
+import storage from ".../storage/sync"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
-import { SyncOptionsStorage } from "../../storage/index"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Popup from "./Components/Popup"
 
@@ -20,7 +19,7 @@ const root = createRoot(container)
 
 const prepare = async function () {
   let allExtensions = await chromeP.management.getAll()
-  const allOptions = await SyncOptionsStorage.getAll()
+  const allOptions = await storage.options.getAll()
 
   // 如果关闭了在 Popup 中显示固定分组中的扩展，则隐藏这些扩展
   if (!(allOptions.setting.isShowFixedExtension ?? true)) {
@@ -54,7 +53,7 @@ const prepare = async function () {
   }
 }
 
-const storageViewApi = OptionStorageViewProvider.getApi()
+const storageViewApi = storage.helper.view.getApi()
 storageViewApi.message = message
 
 prepare().then((props) => {

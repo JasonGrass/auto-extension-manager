@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from "react"
 
 import { Alert, Button, Checkbox, Form, Input, Table, Tooltip, message } from "antd"
 
-import { ManageOptions } from ".../storage"
+import storage from ".../storage/sync"
 import { getIcon, sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
@@ -91,7 +91,7 @@ const ExtensionManage = memo(({ extensions, config }) => {
 
   // 重新加载配置
   const reload = () => {
-    ManageOptions.get().then((res) => {
+    storage.management.get().then((res) => {
       var reloadData = buildRecords(extensions, res)
       setData(reloadData)
     })
@@ -184,7 +184,7 @@ const ExpandEditor = ({ record, reload }) => {
   const onFinish = async (values) => {
     const alias = values.alias?.trim() ?? ""
     const remark = values.remark?.trim() ?? ""
-    await ManageOptions.updateExtension(record.id, { alias, remark })
+    await storage.management.updateExtension(record.id, { alias, remark })
     message.success("update success")
     reload()
   }

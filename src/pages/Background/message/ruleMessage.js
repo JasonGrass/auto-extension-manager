@@ -1,4 +1,4 @@
-import storage, { SceneOptions } from ".../storage"
+import storage from ".../storage/sync"
 import logger from ".../utils/logger"
 
 export const createCurrentSceneChangedHandler = (handler) => {
@@ -10,9 +10,9 @@ export const createCurrentSceneChangedHandler = (handler) => {
     const { params } = ctx
     if (!params || !params.id || params.id === "" || params.id === "cancel") {
       // 取消了情景模式的设置
-      SceneOptions.setActive("")
+      storage.scene.setActive("")
     } else {
-      SceneOptions.setActive(params.id)
+      storage.scene.setActive(params.id)
     }
 
     // 2. run rules for current scene

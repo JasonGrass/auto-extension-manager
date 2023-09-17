@@ -2,9 +2,8 @@ import React, { memo, useEffect, useState } from "react"
 
 import { Button, Input, notification } from "antd"
 
-import { GroupOptions } from ".../storage/GroupOptions"
-import { ManageOptions } from ".../storage/index"
 import { LocalOptions } from ".../storage/local"
+import { storage } from ".../storage/sync"
 import { isAppExtension } from ".../utils/extensionHelper"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
 import { isExtensionMatch } from ".../utils/searchHelper"
@@ -41,7 +40,7 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
       .filter((ext) => !containsExtIds.includes(ext.id))
       .filter((ext) => !isAppExtension(ext))
 
-    ManageOptions.get().then((managementOptions) => {
+    storage.management.get().then((managementOptions) => {
       setContains(appendAdditionInfo(containsExts, managementOptions))
       setNoneGroupExts(appendAdditionInfo(noneGroupedExtensions, managementOptions))
       setShownContainExts(containsExts)
@@ -65,7 +64,7 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
   const save = async (contains) => {
     const duplicateGroup = { ...group }
     duplicateGroup.extensions = contains.map((ext) => ext.id)
-    GroupOptions.update(duplicateGroup)
+    storage.group.update(duplicateGroup)
   }
 
   // 搜索

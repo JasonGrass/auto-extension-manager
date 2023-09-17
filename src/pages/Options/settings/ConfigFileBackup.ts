@@ -1,4 +1,4 @@
-import storage from ".../storage"
+import storage from ".../storage/sync"
 import ConvertRuleToV2 from "../../Background/rule/RuleConverter"
 
 /**

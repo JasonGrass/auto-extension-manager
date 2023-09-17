@@ -4,7 +4,7 @@ import { DeleteFilled, EditFilled, PlusCircleOutlined } from "@ant-design/icons"
 import { Popconfirm, Switch, message } from "antd"
 import classNames from "classnames"
 
-import { SceneOptions } from ".../storage/index"
+import storage from ".../storage/sync"
 import { sendMessage } from ".../utils/messageHelper.js"
 import { getLang, isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
@@ -36,9 +36,9 @@ function Scene() {
   const [messageApi, contextHolder] = message.useMessage()
 
   async function fetchScene() {
-    const all = await SceneOptions.getAll()
+    const all = await storage.scene.getAll()
     all.forEach((i) => (i.isActive = false))
-    const activeId = await SceneOptions.getActive()
+    const activeId = await storage.scene.getActive()
     const activeItem = all.find((i) => i.id === activeId)
     if (activeItem) {
       activeItem.isActive = true
@@ -79,10 +79,10 @@ function Scene() {
       }
 
       if (editType === "new") {
-        await SceneOptions.addOne(info)
+        await storage.scene.addOne(info)
         await fetchScene()
       } else if (editType === "edit") {
-        await SceneOptions.update(info)
+        await storage.scene.update(info)
         await fetchScene()
       }
       setItemEditType("")
@@ -98,7 +98,7 @@ function Scene() {
     setSceneList(updatedList)
 
     // 保存新的排序
-    await SceneOptions.orderScenes(updatedList)
+    await storage.scene.orderScenes(updatedList)
   }
 
   return (
@@ -165,12 +165,12 @@ function Scene() {
         }
 
         i.isActive = true
-        await SceneOptions.setActive(i.id)
+        await storage.scene.setActive(i.id)
         setActiveScene(i)
         scene = i
       } else {
         i.isActive = false
-        await SceneOptions.setActive("")
+        await storage.scene.setActive("")
         setActiveScene(null)
       }
 
@@ -187,7 +187,7 @@ function Scene() {
     }
 
     const onDeleteClick = async (e, i) => {
-      await SceneOptions.deleteOne(i.id)
+      await storage.scene.deleteOne(i.id)
       await fetchScene()
     }
 
