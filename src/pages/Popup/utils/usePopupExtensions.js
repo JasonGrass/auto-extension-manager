@@ -22,6 +22,13 @@ export const usePopupExtensions = (extensions, options) => {
   const [items2, setItems2] = useState([]) // 禁用状态的扩展
 
   const build = async (extensions, options) => {
+    if (!extensions || extensions.length === 0) {
+      setItems0([])
+      setItems1([])
+      setItems2([])
+      return
+    }
+
     const [list0, list1, list2] = await buildShowItems(extensions, options)
     if (list0.length === 0 && list1.length === 0 && list2.length === 0) {
       return
