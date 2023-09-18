@@ -105,6 +105,11 @@ const Style = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .header-container {
     flex: 0 0 auto;

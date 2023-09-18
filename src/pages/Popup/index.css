@@ -10,6 +10,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   position: relative;
+  overflow: hidden;
 }
 
 code {
@@ -26,4 +27,13 @@ code {
 
 #app-container {
   height: 100%;
+  overflow: hidden;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+#app-container::-webkit-scrollbar {
+  display: none;
 }
