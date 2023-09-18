@@ -120,6 +120,12 @@ export const SceneStyle = styled.div`
     display: flex;
   }
 
+  .scene-item-name {
+    &:hover {
+      color: #337ab7;
+    }
+  }
+
   .scene-item-new {
     width: 180px;
     padding: 14px 16px;
@@ -127,6 +133,10 @@ export const SceneStyle = styled.div`
     border-radius: calc(4px / var(--scale-x, 1));
     box-shadow: 0 0 0 calc(1px / var(--scale-x, 1)) rgba(63, 63, 68, 0.05),
       0 1px calc(3px / var(--scale-x, 1)) 0 rgba(34, 33, 81, 0.15);
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
 
     .scene-item-add-icon {
       font-size: 16px;

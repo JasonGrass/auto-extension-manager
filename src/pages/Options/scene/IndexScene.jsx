@@ -221,7 +221,7 @@ function Scene() {
           </div>
         </div>
 
-        <h3>{item.name}</h3>
+        <h3 className="scene-item-name">{item.name}</h3>
         <Switch size="small" checked={item.isActive} onChange={(e) => onActiveChange(e, item)} />
       </div>
     )
