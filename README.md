@@ -71,8 +71,8 @@ Edge 商店链接
 - [二管家 - Chrome 应用商店](https://chrome.google.com/webstore/detail/nooboss/aajodjghehmlpahhboidcpfjcncmcklf )  
 除了插件管理之外，还有许多其它的功能。  
 
-- [扩展管理器（Extension Manager） - Chrome 应用商店](https://chrome.google.com/webstore/detail/extension-manager/gjldcdngmdknpinoemndlidpcabkggco )  
-一个界面和功能都很出色的扩展管理器，但作者近期没有维护了，有一些小功能问题。
+- [SimpleExtManager - Chrome 应用商店](https://chromewebstore.google.com/detail/simpleextmanager/kniehgiejgnnpgojkdhhjbgbllnfkfdk )  
+很出色的扩展管理器，不过很长时间没有更新了
 
 ---
 
