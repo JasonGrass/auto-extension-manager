@@ -6,7 +6,7 @@ import { Dropdown } from "antd"
 import { LocalOptions } from ".../storage/local"
 import { sendMessage } from ".../utils/messageHelper"
 import { getLang } from ".../utils/utils"
-import { MenuStyle } from "./GroupDropdown"
+import { MenuStyle } from "./MenuStyle"
 
 const SceneDropdown = memo(({ options, className }) => {
   const [scene, setScene] = useState(null)
@@ -55,7 +55,7 @@ const SceneDropdown = memo(({ options, className }) => {
 
   return (
     <div className={className}>
-      <Dropdown menu={sceneMenu} trigger={["hover"]} placement="bottom">
+      <Dropdown menu={sceneMenu} trigger={["hover"]} placement="bottomLeft">
         <MenuStyle>
           <span className="content">
             <span className="menu-item-text">{scene?.name ?? getLang("scene_title")}</span>

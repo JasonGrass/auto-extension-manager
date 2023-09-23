@@ -38,22 +38,41 @@ function IndexPopup({ originExtensions, options, params }) {
     setAllExtensionCount(list.length)
   }, [extensions])
 
-  // 是否在切换分组时，执行扩展的禁用与启用
-  const isRaiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
-
   // 分组切换
-  const onGroupChanged = async (group) => {
+  const onGroupChanged = async (args) => {
+    /*
+    args.action    true:开启了切换分组启用或禁用扩展的配置
+    args.select    所选的分组，为 null 表示没有选中任何分组（单选）
+    args.selectIds 所选分组集合，为 [] 表示没有选中任何分组（多选）
+    */
+
     // 如果开启了配置，切换分组意味着：执行扩展的启用与禁用，没有切换显示的功能
     // 如果开启了配置，并且当前组不为空，则执行扩展的启用与禁用
-    if (isRaiseEnableWhenSwitchGroup && group) {
-      const newExtensions = await handleExtensionOnOff(extensions, options, group)
+    if (args.action && args.select) {
+      const newExtensions = await handleExtensionOnOff(
+        extensions,
+        options,
+        [args.select],
+        args.select
+      )
       setExtensions(newExtensions)
     }
 
-    // 如果没有开启配置，切换分组意味着：切换分组显示，没有扩展启用与禁用功能
-    if (!isRaiseEnableWhenSwitchGroup) {
-      setIsShowAppExtension(!group) // 切换到特定分组时，不显示 APP
-      onSearchByGroupChange(group)
+    // 多选
+    if (args.action && args.selects) {
+      const newExtensions = await handleExtensionOnOff(
+        extensions,
+        options,
+        args.selects,
+        args.current
+      )
+      setExtensions(newExtensions)
+    }
+
+    if (!args.action) {
+      // 如果没有开启配置，切换分组意味着：切换分组显示，没有扩展启用与禁用功能
+      setIsShowAppExtension(!args.select) // 切换到特定分组时，不显示 APP
+      onSearchByGroupChange(args.select)
     }
   }
 
