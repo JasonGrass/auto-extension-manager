@@ -107,6 +107,9 @@ const Style = styled.div`
   height: 100%;
   overflow: hidden;
 
+  background-color: ${(props) => props.theme.bg};
+  color: ${(props) => props.theme.fg};
+
   &::-webkit-scrollbar {
     display: none;
   }

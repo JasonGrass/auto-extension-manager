@@ -27,8 +27,7 @@ export const ExtensionGridItemStyle = styled.div`
   .grid-display-item-title {
     max-width: 66px;
     margin-top: 4px;
-
-    color: #333;
+    color: ${(props) => props.theme.enable_text};
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -36,7 +35,7 @@ export const ExtensionGridItemStyle = styled.div`
   }
 
   .grid-display-item-title-gray {
-    color: #aaa;
+    color: ${(props) => props.theme.disable_text};
   }
 
   .item-pined-dot {

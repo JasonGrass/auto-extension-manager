@@ -81,7 +81,7 @@ const Style = styled.div`
 
   .divider {
     height: 1px;
-    background-color: #ccc;
+    background-color: ${(props) => props.theme.input_border};
     margin: 0px 10px 0px 10px;
   }
 `

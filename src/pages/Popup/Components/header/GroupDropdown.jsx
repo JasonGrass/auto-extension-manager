@@ -109,11 +109,11 @@ export const MenuStyle = styled.div`
 
   font-size: 14px;
   text-align: center;
-  background-color: #f5f5f5;
+  background-color: ${(props) => props.theme.btn_bg};
   border-radius: 4px;
 
   &:hover {
-    background-color: #23bfc588;
+    background-color: ${(props) => props.theme.btn_hover_bg};
   }
 
   .content {

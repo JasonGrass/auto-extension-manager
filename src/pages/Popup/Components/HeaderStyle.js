@@ -10,6 +10,9 @@ const Style = styled.div`
   background-color: #fff;
   box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
 
+  background-color: ${(props) => props.theme.bg};
+  color: ${(props) => props.theme.fg};
+
   .left,
   .right {
     display: flex;
@@ -77,7 +80,7 @@ const SearchStyle = styled.div`
     margin: -1px -1px 0px 0px;
 
     outline-style: none;
-    border: 1px solid #ccc;
+    border: 1px solid ${(props) => props.theme.input_border};
     border-radius: 1px;
 
     &:focus {
@@ -85,6 +88,9 @@ const SearchStyle = styled.div`
       outline: 0;
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(102, 175, 233, 0.6);
     }
+
+    background-color: ${(props) => props.theme.bg};
+    color: ${(props) => props.theme.fg};
   }
 
   .store-icon {
