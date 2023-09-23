@@ -86,6 +86,8 @@ export const sortExtension = (extensions, options) => {
     return []
   }
 
+  options = options || {}
+
   const list = []
   // distinct
   extensions.forEach((ext) => {
@@ -96,7 +98,7 @@ export const sortExtension = (extensions, options) => {
   })
 
   const getCompareValue = (ext) => {
-    if (!options || options.useAlias === true) {
+    if (!options.useAlias || options.useAlias === true) {
       return ext.__attach__?.alias ? ext.__attach__?.alias : ext.name
     }
     if (options.useAlias === false) {
@@ -106,12 +108,16 @@ export const sortExtension = (extensions, options) => {
   }
 
   return list.sort((a, b) => {
-    if (a.enabled === b.enabled) {
-      const aName = getCompareValue(a)
-      const bName = getCompareValue(b)
+    const aName = getCompareValue(a)
+    const bName = getCompareValue(b)
+    if (options.ignoreEnable) {
       return aName.localeCompare(bName) // Sort by name
+    } else {
+      if (a.enabled === b.enabled) {
+        return aName.localeCompare(bName) // Sort by name
+      }
+      return a.enabled < b.enabled ? 1 : -1 // Sort by state
     }
-    return a.enabled < b.enabled ? 1 : -1 // Sort by state
   })
 }
 

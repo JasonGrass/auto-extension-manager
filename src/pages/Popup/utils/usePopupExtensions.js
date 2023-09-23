@@ -53,12 +53,18 @@ export const usePopupExtensions = (extensions, options) => {
 }
 
 async function sortShowItems(options, list0, list1, list2) {
+  // 先按照名称排序执行一次
+  const list0_pre = sortExtension(list0, { ignoreEnable: true })
+  const list1_pre = sortExtension(list1)
+  const list2_pre = sortExtension(list2)
+
   if (!options.setting.isSortByFrequency) {
-    return [sortExtension(list0), sortExtension(list1), sortExtension(list2)]
+    return [list0_pre, list1_pre, list2_pre]
   }
 
+  // 如果有需要，再按照频率排序
   const refList = await manualEnableCounter.getOrder()
-  return [order(refList, list0), order(refList, list1), order(refList, list2)]
+  return [order(refList, list0_pre), order(refList, list1_pre), order(refList, list2_pre)]
 }
 
 async function buildShowItems(extensions, options) {
@@ -90,9 +96,7 @@ async function findTopExtensions(options) {
     lastFocusedWindow: true
   })
   const currentTab = tabs ? tabs[0] : undefined
-  if (!currentTab) {
-    return []
-  }
+
   if (!options.ruleConfig) {
     return []
   }
