@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
 
 import {
-  GiftOutlined,
   GithubOutlined,
   HeartOutlined,
-  QuestionCircleOutlined
+  QuestionCircleOutlined,
+  StarOutlined
 } from "@ant-design/icons"
 import { Button, Space, Tag } from "antd"
 import newGithubIssueUrl from "new-github-issue-url"
@@ -111,10 +111,10 @@ ${navigator.userAgent}`
           <Tag className="badges-tag" icon={<GithubOutlined />} onClick={openGithub}>
             Github
           </Tag>
-          <Tag className="badges-tag" icon={<HeartOutlined />} onClick={openRatePage}>
+          <Tag className="badges-tag" icon={<StarOutlined />} onClick={openRatePage}>
             Rate Me 5 Stars
           </Tag>
-          <Tag className="badges-tag" icon={<GiftOutlined />} onClick={openSponsorPage}>
+          <Tag className="badges-tag" icon={<HeartOutlined />} onClick={openSponsorPage}>
             Buy Me a Coffee
           </Tag>
         </Space>
