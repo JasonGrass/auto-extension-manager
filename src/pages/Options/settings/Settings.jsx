@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { QuestionCircleOutlined } from "@ant-design/icons"
-import { Button, Popconfirm, Slider, Switch, Tooltip, message } from "antd"
+import { Button, Popconfirm, Radio, Slider, Switch, Tooltip, message } from "antd"
 import { fromJS } from "immutable"
 
 import storage from ".../storage/sync"
@@ -36,6 +36,8 @@ function Settings() {
   const [isGaryStyleOfDisableInGridView, setIsGaryStyleOfDisableInGridView] = useState(false)
   // Popup 中，按照频率进行排序
   const [isSortByFrequency, setIsSortByFrequency] = useState(false)
+  // Popup 暗色模式
+  const [darkMode, setDarkMode] = useState("light")
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -61,6 +63,8 @@ function Settings() {
     setIsSupportSearchAppStore(supportSearchAppStore)
     const sortByFrequency = setting.isSortByFrequency ?? false
     setIsSortByFrequency(sortByFrequency)
+    const initDarkMode = setting.darkMode ?? "light"
+    setDarkMode(initDarkMode)
 
     // 网格视图下的列数
     let tempColumnInGirdView = Number(setting.columnCountInGirdView)
@@ -260,6 +264,7 @@ function Settings() {
             step={1}
           />
         </div>
+
         {/* 网格视图下，使用灰色样式显示被禁用的扩展 */}
         <div className="setting-item">
           <span>{getLang("setting_list_gird_show_disable_gray")}</span>
@@ -289,6 +294,21 @@ function Settings() {
             onChange={(value) =>
               onSettingChange(value, setIsSortByFrequency, "isSortByFrequency")
             }></Switch>
+        </div>
+
+        {/* 暗色模式 */}
+        <div className="setting-item">
+          <span>{getLang("setting_dark_mode_title")}</span>
+          <Radio.Group
+            size="small"
+            onChange={(e) => {
+              onSettingChange(e.target.value, setDarkMode, "darkMode")
+            }}
+            value={darkMode}>
+            <Radio value="light">{getLang("setting_dark_mode_light")}</Radio>
+            <Radio value="dark">{getLang("setting_dark_mode_dark")}</Radio>
+            <Radio value="system">{getLang("setting_dark_mode_system")}</Radio>
+          </Radio.Group>
         </div>
       </div>
 

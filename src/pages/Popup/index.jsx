@@ -58,8 +58,6 @@ const prepare = async function () {
 const storageViewApi = storage.helper.view.getApi()
 storageViewApi.message = message
 
-const isDarkMode = true
-
 const styled_light_theme = {
   bg: "#FFF",
   fg: "#222",
@@ -81,6 +79,11 @@ const styled_dark_theme = {
 }
 
 prepare().then((props) => {
+  let isDarkMode = props.options.setting.darkMode === "dark"
+  if (props.options.setting.darkMode === "system") {
+    isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+  }
+
   root.render(
     <ConfigProvider
       theme={{

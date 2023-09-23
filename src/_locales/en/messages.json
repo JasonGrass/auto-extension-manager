@@ -593,6 +593,18 @@
   "setting_list_sort_type_tip": {
     "message": "Alphabetically by default"
   },
+  "setting_dark_mode_title": {
+    "message": "Dark Mode"
+  },
+  "setting_dark_mode_light": {
+    "message": "Light"
+  },
+  "setting_dark_mode_dark": {
+    "message": "Dark"
+  },
+  "setting_dark_mode_system": {
+    "message": "System"
+  },
   "setting_func_witch_group": {
     "message": "When switching groups, enable the extensions in the current group and disable the rest"
   },
