@@ -30,6 +30,10 @@ const ExtensionGridItem = memo(({ item, options }) => {
   // 扩展是否在固定分组中
   const [itemPined, setItemPined] = useExtensionItemPin(item, options)
 
+  useEffect(() => {
+    setItemEnable(item.enabled)
+  }, [item])
+
   // 交互状态：鼠标是否 hover
   const [isMouseEnter, setIsMouseEnter] = useState(false)
   // UI 状态：菜单显示的位置
