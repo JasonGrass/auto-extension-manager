@@ -63,7 +63,7 @@ function Settings() {
     setIsSupportSearchAppStore(supportSearchAppStore)
     const sortByFrequency = setting.isSortByFrequency ?? false
     setIsSortByFrequency(sortByFrequency)
-    const initDarkMode = setting.darkMode ?? "light"
+    const initDarkMode = setting.darkMode ?? "system"
     setDarkMode(initDarkMode)
 
     // 网格视图下的列数

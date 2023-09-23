@@ -79,8 +79,9 @@ const styled_dark_theme = {
 }
 
 prepare().then((props) => {
-  let isDarkMode = props.options.setting.darkMode === "dark"
-  if (props.options.setting.darkMode === "system") {
+  const settingMode = props.options.setting.darkMode ?? "system" // 默认跟随系统
+  let isDarkMode = settingMode === "dark"
+  if (settingMode === "system") {
     isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
   }
 
