@@ -9,8 +9,8 @@ const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
 
   // 是否允许分组多选
   const raiseEnable = options.setting.isRaiseEnableWhenSwitchGroup
-  // const isMultiSelect = options.setting.isGroupAllowMultiSelect ?? false
-  const isMultiSelect = true
+  const supportMultiSelect = options.setting.isSupportMultiSelectGroup ?? false
+  const isMultiSelect = raiseEnable && supportMultiSelect
 
   return (
     <div className={className}>

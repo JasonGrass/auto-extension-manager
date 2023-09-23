@@ -611,6 +611,9 @@
   "setting_func_witch_group_tip": {
     "message": "After enabling, when switching groups in the Popup, all extensions that are not in the fixed groups or the current group will be disabled."
   },
+  "setting_func_group_allow_multi": {
+    "message": "↑ Supports selecting multiple groups"
+  },
   "end": {
     "message": "end"
   }

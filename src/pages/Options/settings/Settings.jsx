@@ -22,8 +22,6 @@ function Settings() {
   const [isShowSearchBar, setIsShowSearchBar] = useState(false)
   // 是否支持跳转到应用商店搜索
   const [isSupportSearchAppStore, setIsSupportSearchAppStore] = useState(false)
-  // 切换分组时，是否执行扩展启用与禁用
-  const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
   // 是否在 Popup 中，展示固定分组中的扩展
   const [isShowFixedExtension, setIsShowFixedExtension] = useState(true)
   // 是否显示固定分组扩展上面的小圆点
@@ -39,6 +37,11 @@ function Settings() {
   // Popup 暗色模式
   const [darkMode, setDarkMode] = useState("light")
 
+  // 切换分组时，是否执行扩展启用与禁用
+  const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
+  // 分组切换时，是否支持多选
+  const [isSupportMultiSelectGroup, setIsSupportMultiSelectGroup] = useState(false)
+
   const [messageApi, contextHolder] = message.useMessage()
 
   // 初始化
@@ -53,8 +56,6 @@ function Settings() {
     setIsShowItemOperationAlways(showItemOperationAlways)
     const showSearchBar = setting.isShowSearchBarDefault ?? false
     setIsShowSearchBar(showSearchBar)
-    const raiseEnableWhenSwitchGroup = setting.isRaiseEnableWhenSwitchGroup ?? false
-    setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
     const showFixedExtension = setting.isShowFixedExtension ?? true
     setIsShowFixedExtension(showFixedExtension)
     const showAppNameInGridView = setting.isShowAppNameInGirdView ?? false
@@ -65,6 +66,12 @@ function Settings() {
     setIsSortByFrequency(sortByFrequency)
     const initDarkMode = setting.darkMode ?? "system"
     setDarkMode(initDarkMode)
+
+    // 功能偏好
+    const raiseEnableWhenSwitchGroup = setting.isRaiseEnableWhenSwitchGroup ?? false
+    setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
+    const supportMultiSelectGroup = setting.isSupportMultiSelectGroup ?? false
+    setIsSupportMultiSelectGroup(supportMultiSelectGroup)
 
     // 网格视图下的列数
     let tempColumnInGirdView = Number(setting.columnCountInGirdView)
@@ -334,6 +341,18 @@ function Settings() {
               )
             }></Switch>
         </div>
+        {/* 支持分组多选 */}
+        {isRaiseEnableWhenSwitchGroup && (
+          <div className="setting-item">
+            <span>{getLang("setting_func_group_allow_multi")}</span>
+            <Switch
+              size="small"
+              checked={isSupportMultiSelectGroup}
+              onChange={(value) =>
+                onSettingChange(value, setIsSupportMultiSelectGroup, "isSupportMultiSelectGroup")
+              }></Switch>
+          </div>
+        )}
       </div>
 
       <div className="import-export-container">
