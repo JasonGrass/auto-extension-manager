@@ -1,6 +1,7 @@
 import chromeP from "webext-polyfill-kinda"
 
 import type { IExtensionManager } from ".../types/global"
+import { DelayCloseToken, getDelayCloser } from "./delayCloser"
 import isMatch, { IMatchResult } from "./handlers/matchHandler"
 import getTarget from "./handlers/targetHandler"
 
@@ -255,24 +256,41 @@ async function closeExtensions(
 ) {
   let worked = false
 
+  let delayToken: DelayCloseToken | undefined
   for (const extId of targetExtensions) {
     try {
       const info = await chromeP.management.get(extId)
       if (!info || !info.enabled) {
         continue
       }
-      console.log(`[Extension Manager] disable extension [${info.name}]`)
-      await chrome.management.setEnabled(extId, false)
-      ctx.EM?.History.EventHandler.onAutoDisabled(info, ctx.rule!)
+
+      const delayCloser = getDelayCloser()
+      delayToken = delayCloser.close(info, () => {
+        // 历史记录
+        ctx.EM?.History.EventHandler.onAutoDisabled(info, ctx.rule!)
+      })
+
       worked = true
     } catch (err) {
-      console.warn(`closeExtension fail (${extId}).`, err)
+      console.warn(`Disable Extension fail (${extId}).`, err)
     }
   }
 
   if (worked && reload && tabInfo && tabInfo.id) {
-    chrome.tabs.reload(tabInfo.id)
-    console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
+    const token = delayToken
+    const closureTabInfo = tabInfo
+    setTimeout(async () => {
+      if (token?.Available) {
+        try {
+          await chrome.tabs.reload(closureTabInfo.id!)
+          console.log(
+            `[Extension Manager] reload tab [${closureTabInfo.title}](${closureTabInfo.url})`
+          )
+        } catch (err) {
+          console.warn(`closeExtensions reload tab fail.`, tabInfo, err)
+        }
+      }
+    }, DelayCloseToken.DelayTime + 50)
   }
 }
 
@@ -286,16 +304,20 @@ async function openExtensions(
 
   for (const extId of targetExtensions) {
     try {
+      const delayCloser = getDelayCloser()
+      delayCloser.cancel(extId)
+
       const info = await chromeP.management.get(extId)
       if (!info || info.enabled) {
         continue
       }
+
       console.log(`[Extension Manager] enable extension [${info.name}]`)
       await chromeP.management.setEnabled(extId, true)
       ctx.EM?.History.EventHandler.onAutoEnabled(info, ctx.rule!)
       worked = true
     } catch (err) {
-      console.warn(`openExtension fail (${extId}).`, err)
+      console.warn(`Enable Extension fail (${extId}).`, err)
     }
   }
 
