@@ -131,7 +131,7 @@ const ExtensionGridItem = memo(({ item, options }) => {
             "grid-display-item-box",
             { "grid-item-disable": !itemEnable && grayStyleOfDisable }
           ])}>
-          <img src={getIcon(item, 48)} alt="icon" />
+          <img src={getIcon(item, 128)} alt="icon" />
           {isShowAppNameInGirdView && (
             <span
               className={classNames([

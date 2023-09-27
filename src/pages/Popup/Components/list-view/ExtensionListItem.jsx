@@ -100,7 +100,7 @@ const ExtensionListItem = memo(({ item, options }) => {
         { "is-enable": itemEnable, "not-enable": !itemEnable, "item-is-top": item.__top__ }
       ])}>
       <div className="list-item-img-box">
-        <img src={getIcon(item, 24)} alt="" />
+        <img src={getIcon(item, 128)} alt="" />
         {itemPined && isShowDotOfFixedExtension && <i className="list-item-fix-dot"></i>}
       </div>
 
