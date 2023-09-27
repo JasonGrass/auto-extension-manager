@@ -9,6 +9,7 @@ import { message } from "antd"
 import ".../utils/reset.css"
 import "./index.css"
 
+import { ExtensionChannelWorker } from ".../pages/Options/management/worker/ExtensionChannelWorker"
 import { storage } from ".../storage/sync"
 import { isEdgePackage, isEdgeRuntime } from ".../utils/channelHelper"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
@@ -28,6 +29,9 @@ root.render(
 )
 
 ExtensionIconBuilder.build()
+if (isEdgeRuntime()) {
+  ExtensionChannelWorker.build()
+}
 
 console.log(`Package: ${isEdgePackage() ? "Edge" : "Chrome"}`)
 console.log(`Runtime: ${isEdgeRuntime() ? "Edge" : "Chrome"}`)
