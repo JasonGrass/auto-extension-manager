@@ -1,8 +1,10 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { Alert, Button, Checkbox, Form, Input, Table, Tooltip, message } from "antd"
+import classNames from "classnames"
 
 import storage from ".../storage/sync"
+import { isEdgeRuntime } from ".../utils/channelHelper"
 import { getIcon, sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
@@ -25,7 +27,7 @@ const columns = [
     title: getLang("column_extension"),
     dataIndex: "name",
     key: "name",
-    width: 320,
+    width: 360,
     ellipsis: {
       showTitle: false
     },
@@ -34,7 +36,16 @@ const columns = [
         <Tooltip placement="topLeft" title={name}>
           <span className="column-name">
             <img src={record.icon} alt="" width={16} height={16} />
-            <span>{name}</span>
+            <span className="column-name-title">{name}</span>
+            {isEdgeRuntime() && record.channel && (
+              <span
+                className={classNames([
+                  "column-name-channel",
+                  `column-name-channel-${record.channel}`
+                ])}>
+                {record.channel}
+              </span>
+            )}
           </span>
         </Tooltip>
       )

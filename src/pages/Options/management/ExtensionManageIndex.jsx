@@ -7,17 +7,28 @@ import { filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import { getLang } from "../../../utils/utils.js"
 import Title from "../Title.jsx"
 import ExtensionManage from "./ExtensionManage.jsx"
+import { ExtensionChannelWorker } from "./worker/ExtensionChannelWorker"
+
+const ChannelWorker = new ExtensionChannelWorker()
 
 const ExtensionManageIndex = () => {
   const [extensions, setExtensions] = useState([])
   const [managementConfig, setManagementConfig] = useState({})
 
   useEffect(() => {
-    chromeP.management.getAll().then((res) => {
-      const list = filterExtensions(res, isExtExtension)
-      setExtensions(list)
-    })
+    const ready = async () => {
+      const exts = await chromeP.management.getAll()
+      const list = filterExtensions(exts, isExtExtension)
 
+      for (const ext of list) {
+        const channel = await ChannelWorker.getExtensionChannel(ext.id)
+        ext.channel = channel
+      }
+
+      setExtensions(list)
+    }
+
+    ready()
     storage.management.get().then((res) => {
       setManagementConfig(res)
     })
