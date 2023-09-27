@@ -98,7 +98,7 @@ export const sortExtension = (extensions, options) => {
   })
 
   const getCompareValue = (ext) => {
-    if (!options.useAlias || options.useAlias === true) {
+    if (options.useAlias === undefined || options.useAlias === true) {
       return ext.__attach__?.alias ? ext.__attach__?.alias : ext.name
     }
     if (options.useAlias === false) {
