@@ -37,7 +37,7 @@ const columns = [
           <span className="column-name">
             <img src={record.icon} alt="" width={16} height={16} />
             <span className="column-name-title">{name}</span>
-            {isEdgeRuntime() && record.channel && (
+            {((isEdgeRuntime() && record.channel) || record.channel === "Development") && (
               <span
                 className={classNames([
                   "column-name-channel",

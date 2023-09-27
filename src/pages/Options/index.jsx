@@ -29,9 +29,7 @@ root.render(
 )
 
 ExtensionIconBuilder.build()
-if (isEdgeRuntime()) {
-  ExtensionChannelWorker.build()
-}
+ExtensionChannelWorker.build()
 
 console.log(`Package: ${isEdgePackage() ? "Edge" : "Chrome"}`)
 console.log(`Runtime: ${isEdgeRuntime() ? "Edge" : "Chrome"}`)
