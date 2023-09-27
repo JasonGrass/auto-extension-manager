@@ -6,10 +6,8 @@ import { styled } from "styled-components"
 import { isEdgeRuntime } from ".../utils/channelHelper"
 import { getLang } from ".../utils/utils"
 
-const ExtensionHistoryDetail = memo(({ record }) => {
+const ExtensionExpandedDetails = memo(({ ext, showTitle, showVersion }) => {
   const [manageUrl, setManageUrl] = useState("")
-
-  const ext = record.__extension__
 
   useEffect(() => {
     if (!ext) {
@@ -44,12 +42,14 @@ const ExtensionHistoryDetail = memo(({ record }) => {
 
   return (
     <Style>
-      <Row>
-        <Col span={2}></Col>
-        <Col>
-          <span className="detail-main-title">{ext.name}</span>
-        </Col>
-      </Row>
+      {showTitle && (
+        <Row>
+          <Col span={2}></Col>
+          <Col>
+            <span className="detail-main-title">{ext.name}</span>
+          </Col>
+        </Row>
+      )}
 
       {/* <Row>
         <Col span={2}>
@@ -95,6 +95,17 @@ const ExtensionHistoryDetail = memo(({ record }) => {
         </Col>
       </Row>
 
+      {showVersion && (
+        <Row>
+          <Col span={2}>
+            <span className="detail-title">version:</span>
+          </Col>
+          <Col>
+            <span>{ext.version}</span>
+          </Col>
+        </Row>
+      )}
+
       <Row>
         <Col span={2}></Col>
         <Col>
@@ -107,7 +118,7 @@ const ExtensionHistoryDetail = memo(({ record }) => {
   )
 })
 
-export default ExtensionHistoryDetail
+export default ExtensionExpandedDetails
 
 const Style = styled.div`
   .ant-row {

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Alert, Button, Checkbox, Form, Input, Table, Tooltip, message } from "antd"
+import { Button, Checkbox, Form, Input, Table, Tooltip, message } from "antd"
 import classNames from "classnames"
 
 import storage from ".../storage/sync"
@@ -8,6 +8,7 @@ import { isEdgeRuntime } from ".../utils/channelHelper"
 import { getIcon, sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
+import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
 import { ExtensionManageStyle } from "./ExtensionManageStyle"
 
 const { Search } = Input
@@ -204,11 +205,11 @@ const ExpandEditor = ({ record, reload }) => {
     message.error(`update fail. ${errorInfo.errorFields[0]?.errors[0]}`)
   }
 
-  const info = `${record.description} (version: ${record.version})`
-
   return (
     <div>
-      <Alert message={info} type="info" style={{ marginBottom: 16 }} />
+      <div style={{ marginBottom: 16 }}>
+        <ExtensionExpandedDetails ext={record} showVersion></ExtensionExpandedDetails>
+      </div>
 
       <Form
         labelCol={{

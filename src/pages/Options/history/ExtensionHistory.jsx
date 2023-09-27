@@ -20,7 +20,7 @@ import { downloadIconDataUrl, getIcon } from "../../../utils/extensionHelper"
 import isMatch from "../../../utils/searchHelper"
 import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
 import { HistoryRepo } from "../../Background/history/HistoryRepo"
-import ExtensionHistoryDetail from "./ExtensionHistoryDetail"
+import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
 import Style from "./ExtensionHistoryStyle"
 import { formatEventText, formatTimeAbsolute, formatTimeRelative } from "./formatter"
 
@@ -203,7 +203,11 @@ const ExtensionHistory = memo(({ records }) => {
         columns={columns}
         expandable={{
           expandedRowRender: (record) => {
-            return <ExtensionHistoryDetail record={record}></ExtensionHistoryDetail>
+            return (
+              <ExtensionExpandedDetails
+                ext={record.__extension__}
+                showTitle></ExtensionExpandedDetails>
+            )
           },
           expandRowByClick: true
         }}
