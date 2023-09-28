@@ -1,4 +1,4 @@
-<img src="src/assets/img/icon-128.png" width="64"/>
+<img src="src/assets/img/design-devin/AEM-Logo-Light.svg" width="64"/>
 
 # Extension Manager
 
@@ -41,6 +41,17 @@ Edge 商店链接
 <https://microsoftedge.microsoft.com/addons/detail/pifijhmfdnkanlcnecpifkmjbfoopokf>
 
 > Edge 的审核比较慢，所以版本可能会落后于 Chrome 商店
+
+## 🍉 LOGO
+
+|                                 Light                                  |                                 Dark                                  |
+|:----------------------------------------------------------------------:|:---------------------------------------------------------------------:|
+| <img src="src/assets/img/design-devin/AEM-Logo-Light.svg" width="64"/> | <img src="src/assets/img/design-devin/AEM-Logo-Dark.svg" width="64"/> |
+
+感谢 [0xe8nicebot](https://github.com/0xe8nicebot) 为项目贡献 logo 设计。  
+关于作者：<https://devinwang.com/>，还有其创建的 AI 工具：[不管是现在还是未来，你的全能Ai小助手](https://chatboy.io/r/spi6jpul)
+
+> PS 之前的 logo 是使用 midjoueny 生成了，为了让老用户对新 logo 先有个感知（不然换了 logo 找不到扩展），先替换内部的 logo 显示，之后再替换扩展 logo。
 
 ## 🍉 帮助
 
