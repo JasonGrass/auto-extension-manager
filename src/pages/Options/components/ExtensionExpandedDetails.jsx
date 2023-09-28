@@ -6,7 +6,10 @@ import { styled } from "styled-components"
 import { isEdgeRuntime } from ".../utils/channelHelper"
 import { getLang } from ".../utils/utils"
 
-const ExtensionExpandedDetails = memo(({ ext, showTitle, showVersion }) => {
+/**
+ * 扩展的展开详情，在别名、历史记录表格行中展开，展示的更多信息
+ */
+const ExtensionExpandedDetails = memo(({ ext, showTitle }) => {
   const [manageUrl, setManageUrl] = useState("")
 
   useEffect(() => {
@@ -68,7 +71,7 @@ const ExtensionExpandedDetails = memo(({ ext, showTitle, showVersion }) => {
           <span>{ext.id}</span>
         </Col>
         <Col span={2}>
-          <span className="detail-title">Type:</span>
+          <span className="detail-title">type:</span>
         </Col>
         <Col span={6}>
           <span>{ext.type}</span>
@@ -94,17 +97,6 @@ const ExtensionExpandedDetails = memo(({ ext, showTitle, showVersion }) => {
           <span>{ext.description}</span>
         </Col>
       </Row>
-
-      {showVersion && (
-        <Row>
-          <Col span={2}>
-            <span className="detail-title">version:</span>
-          </Col>
-          <Col>
-            <span>{ext.version}</span>
-          </Col>
-        </Row>
-      )}
 
       <Row>
         <Col span={2}></Col>

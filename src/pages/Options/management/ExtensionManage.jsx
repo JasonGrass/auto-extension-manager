@@ -208,7 +208,7 @@ const ExpandEditor = ({ record, reload }) => {
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
-        <ExtensionExpandedDetails ext={record} showVersion></ExtensionExpandedDetails>
+        <ExtensionExpandedDetails ext={record}></ExtensionExpandedDetails>
       </div>
 
       <Form
