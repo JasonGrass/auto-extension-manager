@@ -44,9 +44,9 @@ Edge 商店链接
 
 ## 🍉 LOGO
 
-|                                 Light                                  |                                 Dark                                  |
-|:----------------------------------------------------------------------:|:---------------------------------------------------------------------:|
-| <img src="src/assets/img/design-devin/AEM-Logo-Light.svg" width="64"/> | <img src="src/assets/img/design-devin/AEM-Logo-Dark.svg" width="64"/> |
+|                         Old                         |                               New-Light                                |                               New-Dark                                |
+|:---------------------------------------------------:|:----------------------------------------------------------------------:|:---------------------------------------------------------------------:|
+| <img src="src/assets/img/icon-128.png" width="64"/> | <img src="src/assets/img/design-devin/AEM-Logo-Light.svg" width="64"/> | <img src="src/assets/img/design-devin/AEM-Logo-Dark.svg" width="64"/> |
 
 感谢 [0xe8nicebot](https://github.com/0xe8nicebot) 为项目贡献 logo 设计。  
 关于作者：<https://devinwang.com/>，还有其创建的 AI 工具：[不管是现在还是未来，你的全能Ai小助手](https://chatboy.io/r/spi6jpul)
