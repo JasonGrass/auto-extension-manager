@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import chromeP from "webext-polyfill-kinda"
 
@@ -10,6 +10,8 @@ import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
 const manualEnableCounter = new ManualEnableCounter()
 const localOptions = new LocalOptions()
 
+const EMPTY_ITEMS = { top: [], enabled: [], disabled: [] }
+
 /**
  * 根据浏览器 extension 和配置信息，对 popup 显示的扩展列表进行预处理
  * 1 附加别名等额外的信息
@@ -17,15 +19,13 @@ const localOptions = new LocalOptions()
  * 返回启用的扩展列表和禁用的扩展列表
  */
 export const usePopupExtensions = (extensions, options) => {
-  const [items0, setItems0] = useState([]) // 置顶的扩展
-  const [items1, setItems1] = useState([]) // 开启状态的扩展
-  const [items2, setItems2] = useState([]) // 禁用状态的扩展
+  // 置顶的扩展 开启状态的扩展 禁用状态的扩展
+
+  const [items, setItems] = useState(EMPTY_ITEMS)
 
   const build = async (extensions, options) => {
     if (!extensions || extensions.length === 0) {
-      setItems0([])
-      setItems1([])
-      setItems2([])
+      setItems(EMPTY_ITEMS)
       return
     }
 
@@ -40,16 +40,14 @@ export const usePopupExtensions = (extensions, options) => {
       list2
     )
 
-    setItems0(topExtensions)
-    setItems1(enableExtensions)
-    setItems2(disableExtensions)
+    setItems({ top: topExtensions, enabled: enableExtensions, disabled: disableExtensions })
   }
 
   useEffect(() => {
     build(extensions, options)
   }, [extensions, options])
 
-  return [items0, items1, items2]
+  return [items]
 }
 
 async function sortShowItems(options, list0, list1, list2) {

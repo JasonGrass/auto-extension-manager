@@ -8,6 +8,7 @@ module.exports = {
   bracketSpacing: true,
   bracketSameLine: true,
   importOrder: [
+    "wdyr",
     "^react(.*)",
     "antd/(.*)",
     "<THIRD_PARTY_MODULES>",

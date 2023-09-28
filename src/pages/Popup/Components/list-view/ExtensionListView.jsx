@@ -10,17 +10,24 @@ import ExtensionListItem from "./ExtensionListItem"
  * 普通扩展的列表展示
  */
 const ExtensionList = memo(({ extensions, options }) => {
-  const [items, setItems] = useState([])
+  const [showItems, setItems] = useState([])
 
-  const [items0, items1, items2] = usePopupExtensions(extensions, options)
+  const [items] = usePopupExtensions(extensions, options)
+
   useEffect(() => {
+    const items0 = items.top
+    const items1 = items.enabled
+    const items2 = items.disabled
+
     items0.forEach((i) => (i.__top__ = true))
-    setItems(items0.concat(items1, items2))
-  }, [items0, items1, items2])
+    const result = items0.concat(items1, items2)
+
+    setItems(result)
+  }, [items])
 
   return (
     <Style>
-      {items.map((item) => {
+      {showItems.map((item) => {
         return (
           <li key={item.id}>
             <ExtensionListItem item={item} options={options}></ExtensionListItem>

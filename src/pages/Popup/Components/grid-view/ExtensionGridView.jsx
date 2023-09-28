@@ -6,7 +6,11 @@ import { usePopupExtensions } from "../../utils/usePopupExtensions"
 import ExtensionGridItem from "./ExtensionGridItem"
 
 const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
-  const [items0, items1, items2] = usePopupExtensions(extensions, options)
+  const [items] = usePopupExtensions(extensions, options)
+
+  const items0 = items.top
+  const items1 = items.enabled
+  const items2 = items.disabled
 
   // 置顶分区下方的分割线是否显示
   const dividerShow0 = items0.length > 0 && (items1.length > 0 || items2.length > 0)
