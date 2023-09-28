@@ -87,6 +87,8 @@ prepare().then((props) => {
     isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
   }
 
+  props.params.isDarkMode = isDarkMode
+
   root.render(
     <ConfigProvider
       theme={{

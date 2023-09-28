@@ -95,7 +95,8 @@ function IndexPopup({ originExtensions, options, params }) {
           options={options}
           onGroupChanged={onGroupChanged}
           onLayoutChanged={onLayoutChanged}
-          onSearch={onSearchByTextChange}></Header>
+          onSearch={onSearchByTextChange}
+          isDarkMode={params.isDarkMode}></Header>
       </div>
 
       <div

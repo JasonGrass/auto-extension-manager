@@ -9,7 +9,7 @@ import {
 import { Button, Space, Tag } from "antd"
 import newGithubIssueUrl from "new-github-issue-url"
 
-import Icon from ".../assets/img/icon-128.png"
+import LightIcon from ".../assets/img/design-devin/AEM-Logo-Light.svg"
 import { storage } from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper.js"
 import { getLang } from ".../utils/utils"
@@ -90,7 +90,7 @@ ${navigator.userAgent}`
       <Title title={getLang("about_title")}></Title>
 
       <div className="header-icon">
-        <img src={Icon} alt="icon" />
+        <img src={LightIcon} alt="icon" />
         <div className="header-icon-text">
           <h3>Extension Manager</h3>
           <span>{getLang("about_desc")}</span>

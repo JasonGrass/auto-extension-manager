@@ -14,7 +14,7 @@ export const AboutStyle = styled.div`
     }
 
     .header-icon-text {
-      margin-left: 8px;
+      margin-left: 20px;
       h3 {
         font-size: 18px;
         margin-bottom: 4px;

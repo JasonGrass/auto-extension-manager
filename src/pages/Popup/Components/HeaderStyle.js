@@ -23,12 +23,10 @@ const Style = styled.div`
     flex-grow: 1;
 
     img {
-      position: relative;
-      bottom: 6px;
-      right: 22px;
-      width: 64px;
-      height: 64px;
-      margin-right: -18px;
+      margin-left: 8px;
+      margin-right: 12px;
+      width: 24px;
+      height: 24px;
     }
   }
 

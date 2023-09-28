@@ -1,20 +1,29 @@
 import React, { memo, useEffect, useRef, useState } from "react"
 
-import { LayoutOutlined, SearchOutlined, SettingOutlined } from "@ant-design/icons"
+import { SearchOutlined, SettingOutlined } from "@ant-design/icons"
 import Icon from "@ant-design/icons/lib/components/Icon"
 import { Space } from "antd"
 
 import EdgeIcon from ".../assets/img/Microsoft_Store.svg"
 import ChromeWebStoreIcon from ".../assets/img/chrome-web-store-icon.svg"
+import DarkIcon from ".../assets/img/design-devin/AEM-Logo-Dark.svg"
+import LightIcon from ".../assets/img/design-devin/AEM-Logo-Light.svg"
 import storage from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper"
-import MainIcon from "../../../assets/img/icon-64.png"
 import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
 import SceneDropdown from "./header/SceneDropdown"
 
 const Header = memo((props) => {
-  const { activeCount, totalCount, options, onGroupChanged, onLayoutChanged, onSearch } = props
+  const {
+    activeCount,
+    totalCount,
+    options,
+    onGroupChanged,
+    onLayoutChanged,
+    onSearch,
+    isDarkMode
+  } = props
 
   // 是否显示操作菜单，用于控制延迟渲染
   const [isShowOperations, setIsShowOperations] = useState(false)
@@ -154,7 +163,7 @@ const Header = memo((props) => {
     <>
       <Style>
         <div className="left">
-          <img src={MainIcon} alt="" />
+          <img src={isDarkMode ? DarkIcon : LightIcon} alt="" />
           <h2>
             {activeCount}/{totalCount}
           </h2>
