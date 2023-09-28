@@ -12,6 +12,8 @@ import ExtensionHistory from "./ExtensionHistory.jsx"
 const ExtensionManageIndex = () => {
   // 历史记录
   const [historyRecords, setHistoryRecords] = useState([])
+  // 表格的 loading 显示
+  const [loading, setLoading] = useState(true)
 
   const init = async () => {
     // 读取历史记录
@@ -45,6 +47,7 @@ const ExtensionManageIndex = () => {
     }
 
     setHistoryRecords(records)
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -54,7 +57,7 @@ const ExtensionManageIndex = () => {
   return (
     <div>
       <Title title={getLang("history_title")}></Title>
-      <ExtensionHistory records={historyRecords}></ExtensionHistory>
+      <ExtensionHistory records={historyRecords} loading={loading}></ExtensionHistory>
     </div>
   )
 }

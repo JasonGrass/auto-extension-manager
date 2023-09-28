@@ -26,7 +26,8 @@ import { formatEventText, formatTimeAbsolute, formatTimeRelative } from "./forma
 
 const { Search } = Input
 
-const ExtensionHistory = memo(({ records }) => {
+const ExtensionHistory = memo(({ records, loading }) => {
+  // 时间的显示方式，绝对时间 OR 相对时间
   const [timeShowWay, setTimeShowWay] = useState("relative") //absolute relative
   // 搜索词
   const [searchWord, setSearchWord] = useState("")
@@ -34,6 +35,7 @@ const ExtensionHistory = memo(({ records }) => {
   // 显示的记录
   const [shownRecords, setShownRecords] = useState(records)
 
+  // 仅显示当前扩展相关的记录
   const solo = (e, record) => {
     e.stopPropagation()
     setSearchWord(record.extensionId)
@@ -201,6 +203,7 @@ const ExtensionHistory = memo(({ records }) => {
         pagination={{ pageSize: 100, showSizeChanger: false }}
         scroll={{ y: "calc(100vh - 260px)" }}
         columns={columns}
+        loading={loading}
         expandable={{
           expandedRowRender: (record) => {
             return (
