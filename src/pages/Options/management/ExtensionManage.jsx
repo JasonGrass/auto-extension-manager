@@ -212,6 +212,7 @@ const ExpandEditor = ({ record, reload }) => {
       </div>
 
       <Form
+        autoComplete="off"
         labelCol={{
           span: 1
         }}

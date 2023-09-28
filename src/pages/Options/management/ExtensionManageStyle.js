@@ -64,6 +64,11 @@ export const ExtensionManageStyle = styled.div`
   }
 
   .ant-table-expanded-row .ant-table-cell {
-    padding-bottom: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .ant-form-item {
+    margin-bottom: 8px;
   }
 `
