@@ -7,7 +7,7 @@ const Style = styled.div`
   height: 42px;
   padding: 0px 5px;
   margin-bottom: 2px;
-  background-color: #fff;
+
   box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
 
   background-color: ${(props) => props.theme.bg};
