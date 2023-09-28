@@ -29,7 +29,7 @@ function About() {
   useEffect(() => {
     storage.options.getUsage().then((usage) => {
       const use = (usage / 1024).toFixed(2)
-      setStorageMessage(`Sync Storage Total Use: ${use}KB / 100KB`)
+      setStorageMessage(`Synchronized Storage Space Usage: ${use}KB / 100KB`)
     })
   }, [])
 
