@@ -4,20 +4,25 @@ import { downloadImageDataUrl } from "./utils"
 export const getIcon = function (extension, size = 16) {
   const { icons } = extension
 
+  // 由大到小排列
+  const sortIcons = icons ? icons.sort((a, b) => a.size - b.size) : undefined
+
   // Get retina size if necessary
   size *= window.devicePixelRatio
 
-  if (icons) {
+  if (sortIcons) {
     // Get a large icon closest to the desired size
-    for (const icon of icons.reverse()) {
+    for (const icon of sortIcons.reverse()) {
       if (icon.size >= size) {
+        // 返回满足要求的，最小尺寸的图像
         return icon.url
       }
     }
   }
 
-  if (icons) {
-    return icons.reverse()[0]?.url ?? defaultPuzzleIcon
+  if (sortIcons) {
+    // 如果没有找到，则返回最大的那个
+    return sortIcons[0]?.url ?? defaultPuzzleIcon
   }
 
   return defaultPuzzleIcon
