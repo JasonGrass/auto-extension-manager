@@ -56,7 +56,7 @@ const ExtensionHistory = memo(({ records, loading }) => {
       title: getLang("column_time"),
       dataIndex: "timestamp",
       key: "time",
-      width: 150,
+      width: 130,
       render: (timestamp, record, index) => {
         if (timeShowWay === "absolute") {
           return <span className="column-time">{formatTimeAbsolute(timestamp)}</span>
@@ -69,7 +69,7 @@ const ExtensionHistory = memo(({ records, loading }) => {
       title: getLang("column_event"),
       dataIndex: "event",
       key: "event",
-      width: 60,
+      width: 80,
       render: (event, record, index) => {
         return <span className="column-event">{formatEventText(event)}</span>
       },
