@@ -214,7 +214,7 @@ const ExpandEditor = ({ record, reload }) => {
       <Form
         autoComplete="off"
         labelCol={{
-          span: 1
+          span: 2
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
