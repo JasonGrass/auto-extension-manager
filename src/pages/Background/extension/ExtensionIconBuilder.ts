@@ -26,21 +26,25 @@ export class ExtensionIconBuilder {
   public static async fill(records: HistoryRecord[]) {
     let useFallbackMethod = false
     for (const record of records) {
+      // 已经存在 icon
       if (record.icon) continue
 
       const repo = new ExtensionRepo()
       const extension = await repo.get(record.extensionId)
       if (extension && extension.icon) {
+        // 缓存的 extension 数据中，有 icon (base64 编码)
         record.icon = extension.icon // 绝大多数情况下，这里能获取到数据
         continue
       }
 
       useFallbackMethod = true
-      const icon = await downloadIconDataUrl(record.id)
+      // 尝试下载 icon
+      const icon = await downloadIconDataUrl(extension)
       if (icon) {
         record.icon = icon
         continue
       }
+      // 使用文本生成 icon
       record.icon = await buildTextIcon(record.name)
     }
 

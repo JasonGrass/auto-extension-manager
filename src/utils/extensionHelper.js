@@ -29,7 +29,7 @@ export const getIcon = function (extension, size = 16) {
 }
 
 /**
- * 下载 ICON 并将其转换成 dataUrl，如果失败，则返回空字符串
+ * 下载 ICON 并将其转换成 dataUrl，如果失败，则返回空字符串; 仅支持在 DOM 下调用
  */
 export const downloadIconDataUrl = async function (appInfo) {
   let iconUrl = undefined
