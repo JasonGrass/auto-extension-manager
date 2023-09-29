@@ -18,6 +18,8 @@ const TimeTrigger = ({ options, config }, ref) => {
     }
   }))
 
+  const [messageApi, contextHolder] = message.useMessage()
+
   // 所有已经添加的时间段
   const [periods, setPeriods] = useState([])
   // 当前选择的时间段
@@ -46,23 +48,23 @@ const TimeTrigger = ({ options, config }, ref) => {
 
   const onAdd = () => {
     if (periods.length > 10) {
-      message.error(getLang("trigger_period_max"))
+      messageApi.error(getLang("trigger_period_max"))
       return
     }
 
     if (startTime === "" || endTime === "") {
-      message.error(getLang("trigger_period_no_complete"))
+      messageApi.error(getLang("trigger_period_no_complete"))
       return
     }
     if (startTime >= endTime) {
-      message.error(getLang("trigger_period_cannot_greater"))
+      messageApi.error(getLang("trigger_period_cannot_greater"))
       return
     }
 
     const newPeriods = [...periods, { start: startTime, end: endTime }]
     sortPeriods(newPeriods)
     if (checkPeriodCross(newPeriods)) {
-      message.error(getLang("trigger_period_cannot_overlap"))
+      messageApi.error(getLang("trigger_period_cannot_overlap"))
       return
     }
 
@@ -75,6 +77,7 @@ const TimeTrigger = ({ options, config }, ref) => {
 
   return (
     <Style>
+      {contextHolder}
       <Alert
         message={getLang("trigger_period_action_desc")}
         type="warning"

@@ -12,6 +12,8 @@ import { AppListStyle } from "./AppListStyle.js"
  * APP 应用类型的扩展
  */
 const AppList = memo(({ items }) => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   if (!items || items.length === 0) return null
 
   const onIconClick = async (e, item) => {
@@ -20,18 +22,19 @@ const AppList = memo(({ items }) => {
         await chromeP.management.launchApp(item.id)
       } catch (err) {
         console.error(err)
-        message.warning(err.message)
+        messageApi.warning(err.message)
         if (err.message.indexOf("is deprecated") > -1) {
-          message.info("use `chrome://apps` for more info")
+          messageApi.info("use `chrome://apps` for more info")
         }
       }
     } else {
-      message.info(`${item.shortName} ${getLang("app_not_enable")}`)
+      messageApi.info(`${item.shortName} ${getLang("app_not_enable")}`)
     }
   }
 
   return (
     <AppListStyle>
+      {contextHolder}
       <ul>
         {items.map((item) => {
           return (

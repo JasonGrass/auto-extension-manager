@@ -18,6 +18,8 @@ function GroupNav({
   onGroupItemEdit,
   onGroupOrdered
 }) {
+  const [messageApi, contextHolder] = message.useMessage()
+
   const [groupItems, setGroupItems] = useState([])
 
   // 初始化
@@ -55,7 +57,7 @@ function GroupNav({
   const onEditGroupClick = (e, group) => {
     e.stopPropagation()
     if (storage.helper.isSpecialGroup(group)) {
-      message.warning(getLang("group_inner_cannot_edit"))
+      messageApi.warning(getLang("group_inner_cannot_edit"))
       return
     }
     onGroupItemEdit?.(group)
@@ -88,7 +90,7 @@ function GroupNav({
     e.stopPropagation()
 
     if (storage.helper.isSpecialGroup(group)) {
-      message.warning(getLang("group_inner_cannot_delete"))
+      messageApi.warning(getLang("group_inner_cannot_delete"))
       return
     }
 
@@ -99,7 +101,7 @@ function GroupNav({
 
     onGroupItemDeleted?.(group)
 
-    message.info(`delete ${group.name}`)
+    messageApi.info(`delete ${group.name}`)
   }
 
   const handleDrop = (droppedItem) => {
@@ -157,6 +159,7 @@ function GroupNav({
 
   return (
     <GroupNavStyle>
+      {contextHolder}
       <DragDropContext onDragEnd={handleDrop}>
         <Droppable droppableId="group-droppable">
           {(provided, snapshot) => (

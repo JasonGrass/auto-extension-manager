@@ -17,6 +17,8 @@ const { Map } = require("immutable")
 const { Column } = Table
 
 const ViewRule = memo((props) => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   const { options, configs, extensions, operation } = props
 
   const location = useLocation()
@@ -70,7 +72,7 @@ const ViewRule = memo((props) => {
       if (error.message.includes("QUOTA_BYTES_PER_ITEM")) {
         // message.error("复制失败，超过浏览器存储限制")
       } else {
-        message.error(error.message)
+        messageApi.error(error.message)
       }
     }
   }
@@ -117,6 +119,7 @@ const ViewRule = memo((props) => {
 
   return (
     <Style>
+      {contextHolder}
       <Table
         dataSource={records}
         rowKey="id"

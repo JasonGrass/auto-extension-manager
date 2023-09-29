@@ -9,6 +9,8 @@ import MatchRule from "./editor/MatchRule"
 import RuleAction from "./editor/RuleAction"
 
 const EditRule = memo((props) => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   const { options, config, extensions, onSave, onCancel } = props
   const matchRuleRef = useRef(null)
   const selectorRef = useRef(null)
@@ -37,7 +39,7 @@ const EditRule = memo((props) => {
         // message.error(getLang("rule_edit_save_error_limit"))
         // message.error("保存失败，超过浏览器存储限制")
       } else {
-        message.error(error.message)
+        messageApi.error(error.message)
       }
     }
   }
@@ -57,6 +59,7 @@ const EditRule = memo((props) => {
 
   return (
     <Style>
+      {contextHolder}
       {/* 1 匹配条件 */}
       <MatchRule options={options} config={config} ref={matchRuleRef} />
 

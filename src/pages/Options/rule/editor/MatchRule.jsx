@@ -91,6 +91,7 @@ const MatchRule = ({ options, config }, ref) => {
     }
   }))
 
+  const [messageApi, messageContextHolder] = message.useMessage()
   const urlTriggerRef = useRef()
   const sceneTriggerRef = useRef()
   const osTriggerRef = useRef()
@@ -138,7 +139,7 @@ const MatchRule = ({ options, config }, ref) => {
         return
       }
       if (selectTriggerKeys.find((k) => k === e.key)) {
-        message.warning(getLang("rule_set_match_cannot_duplicate", trigger.label))
+        messageApi.warning(getLang("rule_set_match_cannot_duplicate", trigger.label))
         return
       }
       setSelectTriggers([...selectTriggerKeys, trigger.key])
@@ -160,6 +161,7 @@ const MatchRule = ({ options, config }, ref) => {
   return (
     <EditorCommonStyle>
       <Style>
+        {messageContextHolder}
         <div className="editor-step-header">
           <span className="title">1 {getLang("rule_set_match_title")}</span>
         </div>

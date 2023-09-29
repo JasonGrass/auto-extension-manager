@@ -66,6 +66,8 @@ const columns = [
 ]
 
 const ExtensionManage = memo(({ extensions, config }) => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   // 全部数据
   const [data, setData] = useState([])
   // 展示的数据
@@ -143,6 +145,7 @@ const ExtensionManage = memo(({ extensions, config }) => {
 
   return (
     <ExtensionManageStyle>
+      {contextHolder}
       <div className="extension-manage-tools">
         <Search
           className="search"
@@ -181,7 +184,7 @@ const ExtensionManage = memo(({ extensions, config }) => {
         columns={columns}
         expandable={{
           expandedRowRender: (record) => (
-            <ExpandEditor record={record} reload={reload}></ExpandEditor>
+            <ExpandEditor record={record} reload={reload} messageApi={messageApi}></ExpandEditor>
           ),
           expandRowByClick: true
         }}
@@ -191,18 +194,18 @@ const ExtensionManage = memo(({ extensions, config }) => {
   )
 })
 
-const ExpandEditor = ({ record, reload }) => {
+const ExpandEditor = ({ record, reload, messageApi }) => {
   const initValue = record
   const onFinish = async (values) => {
     const alias = values.alias?.trim() ?? ""
     const remark = values.remark?.trim() ?? ""
     await storage.management.updateExtension(record.id, { alias, remark })
-    message.success("update success")
+    messageApi.success("update success")
     reload()
   }
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo)
-    message.error(`update fail. ${errorInfo.errorFields[0]?.errors[0]}`)
+    messageApi.error(`update fail. ${errorInfo.errorFields[0]?.errors[0]}`)
   }
 
   return (

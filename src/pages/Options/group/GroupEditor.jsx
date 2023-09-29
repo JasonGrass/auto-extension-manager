@@ -10,6 +10,8 @@ import { AddNewNavItem } from "./helpers"
 const { TextArea } = Input
 
 function GroupEditor({ editType, groupInfo, editCallback }) {
+  const [messageApi, contextHolder] = message.useMessage()
+
   const [name, setGroupName] = useState("")
   const [desc, setGroupDesc] = useState("")
 
@@ -40,7 +42,7 @@ function GroupEditor({ editType, groupInfo, editCallback }) {
 
   const onSummitClick = async (e) => {
     if (isStringEmpty(name)) {
-      message.warning(getLang("group_name_cannot_empty"))
+      messageApi.warning(getLang("group_name_cannot_empty"))
       return
     }
 
@@ -62,7 +64,7 @@ function GroupEditor({ editType, groupInfo, editCallback }) {
         editCallback?.(editType, info)
       }
     } catch (error) {
-      message.error(error.message)
+      messageApi.error(error.message)
     }
   }
 
@@ -76,6 +78,7 @@ function GroupEditor({ editType, groupInfo, editCallback }) {
 
   return (
     <ModalEditorWrapper title={title}>
+      {contextHolder}
       <Form labelCol={{ span: 4 }}>
         <Form.Item label={getLang("group_name")}>
           <Input maxLength={50} value={name} onChange={(e) => onNameChanged(e)} />

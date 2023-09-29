@@ -20,6 +20,8 @@ import { ExtensionGridItemStyle } from "./ExtensionGridItemStyle"
 const manualEnableCounter = new ManualEnableCounter()
 
 const ExtensionGridItem = memo(({ item, options }) => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   // 扩展存在设置页面
   const existOptionPage = !isStringEmpty(item.optionsUrl)
   // 扩展存在 Home 页面
@@ -110,11 +112,11 @@ const ExtensionGridItem = memo(({ item, options }) => {
     if (itemEnable) {
       chrome.management.setEnabled(item.id, false)
       setItemEnable(false)
-      message.info(`${getLang("disable_extension")} ${item.name}`)
+      messageApi.info(`${getLang("disable_extension")} ${item.name}`)
     } else {
       chrome.management.setEnabled(item.id, true)
       setItemEnable(true)
-      message.info(`${getLang("enable_extension")} ${item.name}`)
+      messageApi.info(`${getLang("enable_extension")} ${item.name}`)
       manualEnableCounter.count(item.id)
     }
   }
@@ -124,6 +126,7 @@ const ExtensionGridItem = memo(({ item, options }) => {
       ref={containerRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
+      {contextHolder}
       {/* 扩展显示 */}
       <div className={classNames(["grid-display-item"])} onClick={onItemClick}>
         <div
