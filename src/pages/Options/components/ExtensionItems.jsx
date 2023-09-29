@@ -34,15 +34,13 @@ const ExtensionItems = memo(({ items, placeholder, onClick, options, showFixedPi
                 key={item.id}
                 className={classNames({
                   "not-enable": !item.enabled
-                })}
-                onClick={(e) => onClick(e, item)}>
+                })}>
                 <Tooltip placement="top" title={item.name}>
-                  <div className="ext-item">
+                  <div className="ext-item" onClick={(e) => onClick(e, item)}>
                     <div>
                       <img src={getIcon(item, 128)} alt="" />
                       {showFixedPin?.(item) && <i className="ext-item-fixed-dot"></i>}
                     </div>
-
                     <span>{showName}</span>
                   </div>
                 </Tooltip>
