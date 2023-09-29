@@ -40,7 +40,7 @@ const SceneTrigger = ({ options, config }, ref) => {
   }, [config])
 
   if (!sceneList || sceneList.length === 0) {
-    return <p>{getLang("trigger_scene_no_created")}</p>
+    return <p style={{ marginTop: 12 }}>{getLang("trigger_scene_no_created")}</p>
   }
 
   const handleSceneSelect = (id, checked) => {
