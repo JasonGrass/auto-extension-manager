@@ -35,7 +35,7 @@ function Settings() {
   // Popup 中，按照频率进行排序
   const [isSortByFrequency, setIsSortByFrequency] = useState(false)
   // Popup 暗色模式
-  const [darkMode, setDarkMode] = useState("light")
+  const [darkMode, setDarkMode] = useState("system")
 
   // 切换分组时，是否执行扩展启用与禁用
   const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
