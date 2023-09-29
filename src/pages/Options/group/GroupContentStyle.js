@@ -7,8 +7,7 @@ export const GroupContentStyle = styled.div`
   }
 
   .desc {
-    margin-left: 10px;
-    margin-top: 20px;
+    margin: 20px 36px 0 10px;
     padding-left: 5px;
 
     color: #888;

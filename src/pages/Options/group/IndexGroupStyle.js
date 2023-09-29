@@ -20,11 +20,6 @@ export const GroupStyle = styled.div`
     margin-left: 10px;
   }
 
-  .right-box .desc {
-    font-size: 14px;
-    word-break: break-all;
-  }
-
   .right-box h3 {
     margin-bottom: 10px;
     padding-bottom: 5px;
