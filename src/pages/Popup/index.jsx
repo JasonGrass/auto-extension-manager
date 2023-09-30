@@ -67,7 +67,7 @@ const styled_light_theme = {
   enable_text: "#333",
   disable_text: "#aaa",
   btn_bg: "#f5f5f5",
-  btn_hover_bg: "#23bfc588"
+  btn_hover_bg: "#dfdfdf"
 }
 
 const styled_dark_theme = {
