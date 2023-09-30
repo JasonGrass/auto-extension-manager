@@ -38,6 +38,8 @@ const ExtensionGridItem = memo(({ item, options, onItemMove }) => {
 
   // 交互状态：鼠标是否 hover
   const [isMouseEnter, setIsMouseEnter] = useState(false)
+  // 交互状态：菜单是否显示
+  const [isMenuShow, setIsMenuShow] = useState(false)
   // UI 状态：菜单显示的位置
   const [isMenuOnRight, setIsMenuOnRight] = useState(true)
 
@@ -67,12 +69,22 @@ const ExtensionGridItem = memo(({ item, options, onItemMove }) => {
     checkMenuPosition()
   }, [isMouseEnter])
 
-  const handleMouseEnter = () => {
+  const handleItemMouseEnter = () => {
     setIsMouseEnter(true)
   }
 
-  const handleMouseLeave = () => {
-    setIsMouseEnter(false)
+  const handleItemMouseLeave = () => {
+    setTimeout(() => {
+      setIsMouseEnter(false)
+    }, 60) // 鼠标从 item 移动到 menu 上，需要一点时间
+  }
+
+  const handleMenuMouseEnter = () => {
+    setIsMenuShow(true)
+  }
+
+  const handleMenuMouseLeave = () => {
+    setIsMenuShow(false)
   }
 
   /**
@@ -128,11 +140,16 @@ const ExtensionGridItem = memo(({ item, options, onItemMove }) => {
   return (
     <ExtensionGridItemStyle
       ref={containerRef}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}>
+      onMouseEnter={handleItemMouseEnter}
+      onMouseLeave={handleItemMouseLeave}>
       {contextHolder}
       {/* 扩展显示 */}
-      <div className={classNames(["grid-display-item"])} onClick={onItemClick}>
+      <div
+        className={classNames([
+          "grid-display-item",
+          { "grid-display-item-scale": isMouseEnter || isMenuShow }
+        ])}
+        onClick={onItemClick}>
         <div
           className={classNames([
             "grid-display-item-box",
@@ -161,10 +178,12 @@ const ExtensionGridItem = memo(({ item, options, onItemMove }) => {
           {
             "menu-right": isMenuOnRight,
             "menu-left": !isMenuOnRight,
-            "menu-on": isMouseEnter,
+            "menu-on": isMouseEnter || isMenuShow,
             "operation-menu-disable": !itemEnable
           }
         ])}
+        onMouseEnter={handleMenuMouseEnter}
+        onMouseLeave={handleMenuMouseLeave}
         ref={menuRef}>
         <h3 className="operation-menu-title">{item.name}</h3>
         <div className="operation-menu-items">

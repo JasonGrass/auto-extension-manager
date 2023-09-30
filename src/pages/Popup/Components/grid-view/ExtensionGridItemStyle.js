@@ -12,10 +12,10 @@ export const ExtensionGridItemStyle = styled.div`
     position: relative;
 
     transition: transform 0.3s ease;
+  }
 
-    &:hover {
-      transform: scale(1.2);
-    }
+  .grid-display-item-scale {
+    transform: scale(1.2);
   }
 
   .grid-display-item-box {
@@ -57,7 +57,7 @@ export const ExtensionGridItemStyle = styled.div`
   .operation-menu {
     display: none;
     position: absolute;
-    width: 140px;
+    width: 160px;
     height: 70px;
 
     z-index: 1000;
@@ -74,7 +74,7 @@ export const ExtensionGridItemStyle = styled.div`
   }
 
   .operation-menu-title {
-    padding: 8px 5px;
+    padding: 8px 12px;
     color: #fff;
     text-align: center;
 
@@ -92,6 +92,7 @@ export const ExtensionGridItemStyle = styled.div`
     justify-content: space-around;
 
     margin-top: 5px;
+    padding: 2px 6px;
 
     font-size: 22px;
     color: #fff;
@@ -104,7 +105,7 @@ export const ExtensionGridItemStyle = styled.div`
   @keyframes menu-right-in {
     0% {
       opacity: 0;
-      transform: translateX(10%);
+      transform: translateX(-5%);
     }
 
     100% {
@@ -116,7 +117,7 @@ export const ExtensionGridItemStyle = styled.div`
   @keyframes menu-left-in {
     0% {
       opacity: 0;
-      transform: translateX(-10%);
+      transform: translateX(5%);
     }
 
     100% {
@@ -128,17 +129,17 @@ export const ExtensionGridItemStyle = styled.div`
   .menu-right {
     opacity: 0;
     top: -10px;
-    left: 48px;
+    left: 58px;
 
-    animation: menu-right-in 0.3s ease-out 0.15s forwards;
+    animation: menu-right-in 0.2s ease-out 0.3s forwards;
   }
 
   .menu-left {
     opacity: 0;
     top: -10px;
-    right: 48px;
+    right: 58px;
 
-    animation: menu-left-in 0.3s ease-out 0.15s forwards;
+    animation: menu-left-in 0.2s ease-out 0.3s forwards;
   }
 
   .operation-menu-item-disabled {
