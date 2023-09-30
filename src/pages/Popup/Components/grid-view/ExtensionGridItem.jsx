@@ -19,7 +19,7 @@ import { ExtensionGridItemStyle } from "./ExtensionGridItemStyle"
 
 const manualEnableCounter = new ManualEnableCounter()
 
-const ExtensionGridItem = memo(({ item, options }) => {
+const ExtensionGridItem = memo(({ item, options, onItemMove }) => {
   const [messageApi, contextHolder] = message.useMessage()
 
   // 扩展存在设置页面
@@ -112,10 +112,14 @@ const ExtensionGridItem = memo(({ item, options }) => {
     if (itemEnable) {
       chrome.management.setEnabled(item.id, false)
       setItemEnable(false)
+      item.enabled = false
+      onItemMove?.(item)
       messageApi.info(`${getLang("disable_extension")} ${item.name}`)
     } else {
       chrome.management.setEnabled(item.id, true)
       setItemEnable(true)
+      item.enabled = true
+      onItemMove?.(item)
       messageApi.info(`${getLang("enable_extension")} ${item.name}`)
       manualEnableCounter.count(item.id)
     }

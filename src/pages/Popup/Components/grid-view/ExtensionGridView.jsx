@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { memo, useCallback, useState } from "react"
 
 import { styled } from "styled-components"
 
@@ -6,11 +6,17 @@ import { usePopupExtensions } from "../../utils/usePopupExtensions"
 import ExtensionGridItem from "./ExtensionGridItem"
 
 const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
-  const [items] = usePopupExtensions(extensions, options)
+  const [moved, setMoved] = useState("") // 没有业务意思，就是一个依赖值，值发生变化，则重新执行 usePopupExtensions
+
+  const [items] = usePopupExtensions(extensions, options, moved)
 
   const items0 = items.top
   const items1 = items.enabled
   const items2 = items.disabled
+
+  const onItemMove = useCallback((item) => {
+    setMoved(Date.now().toString())
+  }, [])
 
   // 置顶分区下方的分割线是否显示
   const dividerShow0 = items0.length > 0 && (items1.length > 0 || items2.length > 0)
@@ -34,7 +40,10 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
         {items1.map((item) => {
           return (
             <li key={item.id}>
-              <ExtensionGridItem item={item} options={options}></ExtensionGridItem>
+              <ExtensionGridItem
+                item={item}
+                options={options}
+                onItemMove={onItemMove}></ExtensionGridItem>
             </li>
           )
         })}
@@ -47,7 +56,10 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
         {items2.map((item) => {
           return (
             <li key={item.id}>
-              <ExtensionGridItem item={item} options={options}></ExtensionGridItem>
+              <ExtensionGridItem
+                item={item}
+                options={options}
+                onItemMove={onItemMove}></ExtensionGridItem>
             </li>
           )
         })}

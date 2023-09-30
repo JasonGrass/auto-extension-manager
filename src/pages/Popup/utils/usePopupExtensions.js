@@ -18,7 +18,7 @@ const EMPTY_ITEMS = { top: [], enabled: [], disabled: [] }
  * 2 根据配置进行排序
  * 返回启用的扩展列表和禁用的扩展列表
  */
-export const usePopupExtensions = (extensions, options) => {
+export const usePopupExtensions = (extensions, options, moved) => {
   // 置顶的扩展 开启状态的扩展 禁用状态的扩展
 
   const [items, setItems] = useState(EMPTY_ITEMS)
@@ -45,7 +45,7 @@ export const usePopupExtensions = (extensions, options) => {
 
   useEffect(() => {
     build(extensions, options)
-  }, [extensions, options])
+  }, [extensions, options, moved])
 
   return [items]
 }
