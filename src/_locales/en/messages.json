@@ -566,6 +566,9 @@
   "setting_ui_search_jump_tip": {
     "message": "When enabled, you can jump to the extension store to search (Quick jump with Enter)"
   },
+  "setting_ui_search_source": {
+    "message": "Search source"
+  },
   "setting_ui_show_app": {
     "message": "Display extensions of the APP type"
   },

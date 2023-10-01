@@ -566,6 +566,9 @@
   "setting_ui_search_jump_tip": {
     "message": "开启之后，可以跳转到浏览器应用商店搜索扩展（支持 Enter 快捷跳转）"
   },
+  "setting_ui_search_source": {
+    "message": "扩展搜索源"
+  },
   "setting_ui_show_app": {
     "message": "显示 APP 类型的扩展"
   },

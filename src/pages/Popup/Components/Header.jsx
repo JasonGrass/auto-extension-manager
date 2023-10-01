@@ -122,12 +122,21 @@ const Header = memo((props) => {
       return
     }
 
-    if (isEdgePackage()) {
+    const source = options.setting.extensionSearchSource
+    if (source === "crxsoso") {
       chrome.tabs.create({
-        url: `https://microsoftedge.microsoft.com/addons/search/${searchText.trim()}`
+        url: `https://www.crxsoso.com/search?keyword=${searchText.trim()}`
       })
-    } else {
-      chrome.tabs.create({ url: `https://chromewebstore.google.com/search/${searchText.trim()}` })
+    }
+    // 默认搜索
+    else {
+      if (isEdgePackage()) {
+        chrome.tabs.create({
+          url: `https://microsoftedge.microsoft.com/addons/search/${searchText.trim()}`
+        })
+      } else {
+        chrome.tabs.create({ url: `https://chromewebstore.google.com/search/${searchText.trim()}` })
+      }
     }
   }
 

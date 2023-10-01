@@ -29,7 +29,7 @@ function Settings() {
   // 选项变化时调用，用于保存配置
   const onSettingChange = useCallback((value, settingHandler, optionKey) => {
     // 更新 UI 上选项的值（受控组件）
-    settingHandler(value)
+    settingHandler?.(value)
     storage.options.getAll().then((options) => {
       // 将新配置，合并到已经存在的 setting中，然后更新到 storage 中
       const setting = fromJS(options.setting).set(optionKey, value).toJS()
