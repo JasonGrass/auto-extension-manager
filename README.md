@@ -42,6 +42,8 @@ Edge 商店链接
 
 > Edge 的审核比较慢，所以版本可能会落后于 Chrome 商店
 
+如果无法访问 Chrome 商店可以使用 [crxsoso.com](https://www.crxsoso.com/webstore/detail/efajbgpnlnobnkgdcgcnclngeolnmggp) 进行离线安装。
+
 ## 🍉 LOGO
 
 |                         Old                         |                               New-Light                                |                               New-Dark                                |
