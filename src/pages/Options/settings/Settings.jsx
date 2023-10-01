@@ -11,14 +11,10 @@ import { exportConfig, importConfig } from "./ConfigFileBackup.ts"
 import { SettingStyle } from "./SettingStyle.js"
 import ContentViewSetting from "./components/ContentViewSetting.jsx"
 import SearchSetting from "./components/SearchSetting.jsx"
+import ViewOtherSetting from "./components/ViewOtherSetting.jsx"
 
 function Settings() {
   const [setting, setSetting] = useState({})
-
-  // Popup 中，按照频率进行排序
-  const [isSortByFrequency, setIsSortByFrequency] = useState(false)
-  // Popup 暗色模式
-  const [darkMode, setDarkMode] = useState("system")
 
   // 切换分组时，是否执行扩展启用与禁用
   const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
@@ -29,11 +25,6 @@ function Settings() {
 
   // 初始化
   useEffect(() => {
-    const sortByFrequency = setting.isSortByFrequency ?? false
-    setIsSortByFrequency(sortByFrequency)
-    const initDarkMode = setting.darkMode ?? "system"
-    setDarkMode(initDarkMode)
-
     // 功能偏好
     const raiseEnableWhenSwitchGroup = setting.isRaiseEnableWhenSwitchGroup ?? false
     setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
@@ -110,36 +101,7 @@ function Settings() {
           setting={setting}
           onSettingChange={onSettingChange}></ContentViewSetting>
 
-        {/* 排序：按照启用频率进行排序 */}
-        <div className="setting-item">
-          <span>
-            {getLang("setting_list_sort_type")}
-            <Tooltip placement="top" title={getLang("setting_list_sort_type_tip")}>
-              <QuestionCircleOutlined />
-            </Tooltip>{" "}
-          </span>
-          <Switch
-            size="small"
-            checked={isSortByFrequency}
-            onChange={(value) =>
-              onSettingChange(value, setIsSortByFrequency, "isSortByFrequency")
-            }></Switch>
-        </div>
-
-        {/* 暗色模式 */}
-        <div className="setting-item">
-          <span>{getLang("setting_dark_mode_title")}</span>
-          <Radio.Group
-            size="small"
-            onChange={(e) => {
-              onSettingChange(e.target.value, setDarkMode, "darkMode")
-            }}
-            value={darkMode}>
-            <Radio value="light">{getLang("setting_dark_mode_light")}</Radio>
-            <Radio value="dark">{getLang("setting_dark_mode_dark")}</Radio>
-            <Radio value="system">{getLang("setting_dark_mode_system")}</Radio>
-          </Radio.Group>
-        </div>
+        <ViewOtherSetting setting={setting} onSettingChange={onSettingChange}></ViewOtherSetting>
       </div>
 
       <h2 className="setting-sub-title">{getLang("setting_popup_function_setting")}</h2>
