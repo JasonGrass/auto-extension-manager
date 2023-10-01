@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, useCallback, useEffect, useState } from "react"
 
 import { QuestionCircleOutlined } from "@ant-design/icons"
 import { Button, Popconfirm, Radio, Slider, Switch, Tooltip, message } from "antd"
@@ -10,18 +10,16 @@ import Title from "../Title.jsx"
 import { exportConfig, importConfig } from "./ConfigFileBackup.ts"
 import { MAX_COLUMN_COUNT, MIN_COLUMN_COUNT } from "./SettingConst.js"
 import { SettingStyle } from "./SettingStyle.js"
+import SearchSetting from "./components/SearchSetting.jsx"
 
 function Settings() {
-  const [setting, setSetting] = useState(null)
+  const [setting, setSetting] = useState({})
 
   // 是否显示 APP
   const [isShowApp, setIsShowApp] = useState(false)
   // 是否总是显示扩展操作按钮
   const [isShowItemOperationAlways, setIsShowItemOperationAlways] = useState(false)
-  // 是否总是显示搜索栏
-  const [isShowSearchBar, setIsShowSearchBar] = useState(false)
-  // 是否支持跳转到应用商店搜索
-  const [isSupportSearchAppStore, setIsSupportSearchAppStore] = useState(false)
+
   // 是否在 Popup 中，展示固定分组中的扩展
   const [isShowFixedExtension, setIsShowFixedExtension] = useState(true)
   // 是否显示固定分组扩展上面的小圆点
@@ -46,22 +44,16 @@ function Settings() {
 
   // 初始化
   useEffect(() => {
-    if (setting == null) {
-      return
-    }
-
     const showApp = setting.isShowApp ?? false
     setIsShowApp(showApp)
     const showItemOperationAlways = setting.isShowItemOperationAlways ?? false
     setIsShowItemOperationAlways(showItemOperationAlways)
-    const showSearchBar = setting.isShowSearchBarDefault ?? false
-    setIsShowSearchBar(showSearchBar)
+
     const showFixedExtension = setting.isShowFixedExtension ?? true
     setIsShowFixedExtension(showFixedExtension)
     const showAppNameInGridView = setting.isShowAppNameInGirdView ?? false
     setIsShowAppNameInGirdView(showAppNameInGridView)
-    const supportSearchAppStore = setting.isSupportSearchAppStore ?? false
-    setIsSupportSearchAppStore(supportSearchAppStore)
+
     const sortByFrequency = setting.isSortByFrequency ?? false
     setIsSortByFrequency(sortByFrequency)
     const initDarkMode = setting.darkMode ?? "system"
@@ -100,14 +92,16 @@ function Settings() {
     })
   }, [])
 
-  const onSettingChange = (value, settingHandler, optionKey) => {
+  // 选项变化时调用，用于保存配置
+  const onSettingChange = useCallback((value, settingHandler, optionKey) => {
+    // 更新 UI 上选项的值（受控组件）
     settingHandler(value)
     storage.options.getAll().then((options) => {
       // 将新配置，合并到已经存在的 setting中，然后更新到 storage 中
       const setting = fromJS(options.setting).set(optionKey, value).toJS()
       storage.options.set({ setting: setting })
     })
-  }
+  }, [])
 
   const onImportConfig = async () => {
     if (await importConfig()) {
@@ -154,37 +148,7 @@ function Settings() {
       <h2 className="setting-sub-title">{getLang("setting_popup_ui_setting")}</h2>
 
       <div className="container">
-        {/* 搜索框：默认显示（未开启时点击 🔍 显示） */}
-        <div className="setting-item">
-          <span>
-            {getLang("setting_ui_search_display")}
-            <Tooltip placement="top" title={getLang("setting_ui_search_display_tip")}>
-              <QuestionCircleOutlined />
-            </Tooltip>{" "}
-          </span>
-          <Switch
-            size="small"
-            checked={isShowSearchBar}
-            onChange={(value) =>
-              onSettingChange(value, setIsShowSearchBar, "isShowSearchBarDefault")
-            }></Switch>
-        </div>
-
-        {/* 搜索框：支持跳转应用商店搜索 */}
-        <div className="setting-item">
-          <span>
-            {getLang("setting_ui_search_jump")}
-            <Tooltip placement="top" title={getLang("setting_ui_search_jump_tip")}>
-              <QuestionCircleOutlined />
-            </Tooltip>{" "}
-          </span>
-          <Switch
-            size="small"
-            checked={isSupportSearchAppStore}
-            onChange={(value) =>
-              onSettingChange(value, setIsSupportSearchAppStore, "isSupportSearchAppStore")
-            }></Switch>
-        </div>
+        <SearchSetting setting={setting} onSettingChange={onSettingChange}></SearchSetting>
 
         {/* 显示 APP 类型的扩展 */}
         <div className="setting-item">
