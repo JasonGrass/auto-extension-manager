@@ -39,7 +39,12 @@ export const AboutStyle = styled.div`
 
     .version {
       font-size: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+    }
+
+    .version-update {
+      width: 500px;
+      margin-bottom: 12px;
     }
 
     .ant-tag-has-color {

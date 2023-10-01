@@ -14,6 +14,7 @@ import { storage } from ".../storage/sync"
 import { isEdgePackage, isEdgeRuntime } from ".../utils/channelHelper"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Options from "./Options"
+import { checkLatestVersion } from "./utils/LatestVersionChecker"
 
 const storageViewApi = storage.helper.view.getApi()
 storageViewApi.message = message
@@ -30,6 +31,7 @@ root.render(
 
 ExtensionIconBuilder.build()
 ExtensionChannelWorker.build()
+checkLatestVersion()
 
 console.log(`Package: ${isEdgePackage() ? "Edge" : "Chrome"}`)
 console.log(`Runtime: ${isEdgeRuntime() ? "Edge" : "Chrome"}`)

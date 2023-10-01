@@ -6,10 +6,11 @@ import {
   QuestionCircleOutlined,
   StarOutlined
 } from "@ant-design/icons"
-import { Button, Space, Tag } from "antd"
+import { Alert, Button, Space, Tag } from "antd"
 import newGithubIssueUrl from "new-github-issue-url"
 
 import LightIcon from ".../assets/img/design-devin/AEM-Logo-Light.svg"
+import { compareVersion } from ".../pages/Options/utils/LatestVersionChecker.js"
 import { storage } from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper.js"
 import { getLang } from ".../utils/utils"
@@ -18,6 +19,7 @@ import { AboutStyle } from "./AboutStyle"
 
 function About() {
   const [version, setVersion] = useState("UNKNOWN")
+  const [latestVersion, setLatestVersion] = useState("")
   const [storageMessage, setStorageMessage] = useState("")
 
   useEffect(() => {
@@ -32,6 +34,17 @@ function About() {
       setStorageMessage(`Cloud Storage Usage: ${use}KB / 100KB`)
     })
   }, [])
+
+  useEffect(() => {
+    compareVersion(version).then((result) => {
+      if (!result) {
+        return
+      }
+      if (result.needUpdate) {
+        setLatestVersion(result.latestVersion)
+      }
+    })
+  }, [version])
 
   const openIssue = () => {
     const url = newGithubIssueUrl({
@@ -85,6 +98,12 @@ ${navigator.userAgent}`
     })
   }
 
+  const openUpgradeHelpPage = () => {
+    chrome.tabs.create({
+      url: "https://github.com/JasonGrass/auto-extension-manager/wiki/Extension-Upgrade-Help"
+    })
+  }
+
   return (
     <AboutStyle>
       <Title title={getLang("about_title")}></Title>
@@ -106,6 +125,21 @@ ${navigator.userAgent}`
         <span className="version">
           {getLang("about_version")} {version}
         </span>
+
+        {latestVersion && (
+          <div className="version-update">
+            <Alert
+              message={getLang("about_version_update_tip")}
+              type="warning"
+              showIcon
+              action={
+                <Button size="small" type="text" onClick={openUpgradeHelpPage}>
+                  Help
+                </Button>
+              }
+            />
+          </div>
+        )}
 
         <Space size={[0, 8]}>
           <Tag className="badges-tag" icon={<GithubOutlined />} onClick={openGithub}>

@@ -125,6 +125,9 @@
   "about_version": {
     "message": "版本"
   },
+  "about_version_update_tip": {
+    "message": "版本过低，建议升级"
+  },
   "about_storage_usage": {
     "message": "浏览器同步存储空间使用情况：情景模式($1), 分组($2), 别名备注($3), 规则设置($4)"
   },
