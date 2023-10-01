@@ -521,6 +521,15 @@
   "setting_popup_ui_setting": {
     "message": "Popup Display Preferences"
   },
+  "setting_popup_setting_search": {
+    "message": "Search"
+  },
+  "setting_popup_setting_display": {
+    "message": "Content Display"
+  },
+  "setting_popup_setting_other": {
+    "message": "Other"
+  },
   "setting_popup_function_setting": {
     "message": "Popup Function Preferences"
   },

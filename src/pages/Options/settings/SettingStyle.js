@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const SettingStyle = styled.div`
   .container {
-    width: 620px;
+    width: 660px;
 
     background: linear-gradient(to right, #337ab7aa, #fff);
 
@@ -15,6 +15,22 @@ export const SettingStyle = styled.div`
     font-size: 18px;
     font-weight: bold;
     color: #333;
+  }
+
+  .setting-space-title {
+    margin: 12px 0px 4px 0px;
+
+    &::before {
+      content: "--";
+      color: #777;
+      padding: 0 8px;
+    }
+
+    &::after {
+      content: "--";
+      color: #777;
+      padding: 0 8px;
+    }
   }
 
   .setting-item {

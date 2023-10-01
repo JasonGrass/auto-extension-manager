@@ -521,6 +521,15 @@
   "setting_popup_ui_setting": {
     "message": "Popup 显示偏好设置"
   },
+  "setting_popup_setting_search": {
+    "message": "搜索"
+  },
+  "setting_popup_setting_display": {
+    "message": "显示内容"
+  },
+  "setting_popup_setting_other": {
+    "message": "其它"
+  },
   "setting_popup_function_setting": {
     "message": "Popup 功能偏好设置"
   },

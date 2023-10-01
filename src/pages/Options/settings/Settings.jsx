@@ -81,13 +81,23 @@ function Settings() {
 
       <h2 className="setting-sub-title">{getLang("setting_popup_ui_setting")}</h2>
 
+      {/* 搜索 */}
+      <h3 className="setting-space-title">{getLang("setting_popup_setting_search")}</h3>
       <div className="container">
         <SearchSetting setting={setting} onSettingChange={onSettingChange}></SearchSetting>
+      </div>
 
+      {/* 内容显示 */}
+      <h3 className="setting-space-title">{getLang("setting_popup_setting_display")}</h3>
+      <div className="container">
         <ContentViewSetting
           setting={setting}
           onSettingChange={onSettingChange}></ContentViewSetting>
+      </div>
 
+      {/* 其它 */}
+      <h3 className="setting-space-title">{getLang("setting_popup_setting_other")}</h3>
+      <div className="container">
         <ViewOtherSetting setting={setting} onSettingChange={onSettingChange}></ViewOtherSetting>
       </div>
 
