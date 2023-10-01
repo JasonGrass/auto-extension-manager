@@ -59,6 +59,20 @@ const SearchSetting = memo(({ setting, onSettingChange }) => {
     onClick: handleSourceMenuClick
   }
 
+  const handleSourceClick = () => {
+    if (extensionSearchSource.key === "crxsoso") {
+      chrome.tabs.create({
+        url: `https://www.crxsoso.com`
+      })
+    } else if (extensionSearchSource.key === "default") {
+      chrome.tabs.create({
+        url: isEdgePackage()
+          ? "https://microsoftedge.microsoft.com/addons"
+          : "https://chromewebstore.google.com"
+      })
+    }
+  }
+
   return (
     <Style>
       {/* 搜索框：默认显示（未开启时点击 🔍 显示） */}
@@ -98,7 +112,10 @@ const SearchSetting = memo(({ setting, onSettingChange }) => {
         <div className="setting-item setting-item-search-source">
           <span>{getLang("setting_ui_search_source")}</span>
 
-          <Dropdown.Button className="search-source-dropdown" menu={searchSourceMenuProps}>
+          <Dropdown.Button
+            className="search-source-dropdown"
+            menu={searchSourceMenuProps}
+            onClick={handleSourceClick}>
             {extensionSearchSource.label}
           </Dropdown.Button>
         </div>
@@ -110,7 +127,12 @@ const SearchSetting = memo(({ setting, onSettingChange }) => {
 export default SearchSetting
 
 const Style = styled.div`
+  .setting-item-search-source {
+    padding: 0px;
+  }
+
   .search-source-dropdown {
     width: auto;
+    padding: 0px;
   }
 `
