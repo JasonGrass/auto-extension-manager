@@ -10,27 +10,14 @@ import Title from "../Title.jsx"
 import { exportConfig, importConfig } from "./ConfigFileBackup.ts"
 import { SettingStyle } from "./SettingStyle.js"
 import ContentViewSetting from "./components/ContentViewSetting.jsx"
+import FunctionSetting from "./components/FunctionSetting.jsx"
 import SearchSetting from "./components/SearchSetting.jsx"
 import ViewOtherSetting from "./components/ViewOtherSetting.jsx"
 
 function Settings() {
   const [setting, setSetting] = useState({})
 
-  // 切换分组时，是否执行扩展启用与禁用
-  const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
-  // 分组切换时，是否支持多选
-  const [isSupportMultiSelectGroup, setIsSupportMultiSelectGroup] = useState(false)
-
   const [messageApi, contextHolder] = message.useMessage()
-
-  // 初始化
-  useEffect(() => {
-    // 功能偏好
-    const raiseEnableWhenSwitchGroup = setting.isRaiseEnableWhenSwitchGroup ?? false
-    setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
-    const supportMultiSelectGroup = setting.isSupportMultiSelectGroup ?? false
-    setIsSupportMultiSelectGroup(supportMultiSelectGroup)
-  }, [setting])
 
   // 初始化，从配置中读取设置
   useEffect(() => {
@@ -106,38 +93,8 @@ function Settings() {
 
       <h2 className="setting-sub-title">{getLang("setting_popup_function_setting")}</h2>
 
-      {/* 切换分组时，启用当前分组扩展，禁用其它的扩展 */}
       <div className="container">
-        <div className="setting-item">
-          <span>
-            {getLang("setting_func_witch_group")}
-            <Tooltip placement="top" title={getLang("setting_func_witch_group_tip")}>
-              <QuestionCircleOutlined />
-            </Tooltip>{" "}
-          </span>
-          <Switch
-            size="small"
-            checked={isRaiseEnableWhenSwitchGroup}
-            onChange={(value) =>
-              onSettingChange(
-                value,
-                setIsRaiseEnableWhenSwitchGroup,
-                "isRaiseEnableWhenSwitchGroup"
-              )
-            }></Switch>
-        </div>
-        {/* 支持分组多选 */}
-        {isRaiseEnableWhenSwitchGroup && (
-          <div className="setting-item">
-            <span>{getLang("setting_func_group_allow_multi")}</span>
-            <Switch
-              size="small"
-              checked={isSupportMultiSelectGroup}
-              onChange={(value) =>
-                onSettingChange(value, setIsSupportMultiSelectGroup, "isSupportMultiSelectGroup")
-              }></Switch>
-          </div>
-        )}
+        <FunctionSetting setting={setting} onSettingChange={onSettingChange}></FunctionSetting>
       </div>
 
       <div className="import-export-container">
