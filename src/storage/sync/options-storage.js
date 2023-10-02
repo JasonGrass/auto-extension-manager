@@ -1,3 +1,4 @@
+import localforage from "localforage"
 import OptionsSync from "webext-options-sync"
 
 import strCompress from "../utils/ConfigCompress"
@@ -129,6 +130,7 @@ export const SyncOptionsStorage = {
 
     try {
       await LargeSyncStorage.set(option)
+      await updateCache()
     } catch (error) {
       console.error("保存配置失败", error)
       if (error.message.includes("QUOTA_BYTES_PER_ITEM") || error.message.includes("QUOTA_BYTES")) {
@@ -148,6 +150,7 @@ export const SyncOptionsStorage = {
     options.management = strCompress.compress(options.management)
     options.ruleConfig = strCompress.compress(options.ruleConfig)
     await LargeSyncStorage.set(options)
+    await updateCache()
   }
 }
 
@@ -177,4 +180,20 @@ function tryShowErrorMessage(text) {
   } catch (error) {
     console.log("Cannot Show Message Now", error)
   }
+}
+
+/**
+ * 更新本地的 options 缓存
+ */
+async function updateCache() {
+  const forage = localforage.createInstance({
+    driver: localforage.LOCALSTORAGE,
+    name: "TempCache",
+    version: 1.0,
+    storeName: "options"
+  })
+
+  const allOptions = await SyncOptionsStorage.getAll()
+  await forage.setItem("all_options", allOptions)
+  console.log("update cache options after updating options")
 }
