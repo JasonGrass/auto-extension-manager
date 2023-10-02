@@ -46,12 +46,12 @@ const Header = memo((props) => {
   }, [isShowSearch])
 
   // layout 变更时，保存配置
-  useEffect(() => {
+  const saveLayout = (layout) => {
     storage.options.getAll().then((options) => {
       const setting = { ...options.setting, layout: layout }
       storage.options.set({ setting: setting })
     })
-  }, [layout])
+  }
 
   const onSearchClick = () => {
     const show = !isShowSearch
@@ -65,9 +65,11 @@ const Header = memo((props) => {
     if (!layout || layout === "list") {
       setLayout("grid")
       onLayoutChanged("grid")
+      saveLayout("grid")
     } else {
       setLayout("list")
       onLayoutChanged("list")
+      saveLayout("list")
     }
   }
 
