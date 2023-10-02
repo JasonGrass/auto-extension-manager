@@ -17,7 +17,7 @@ export class ExtensionIconBuilder {
     setTimeout(() => {
       const builder = new ExtensionIconBuilder()
       builder.exec(force)
-    }, 1000)
+    }, 3000) // 延迟执行，不与渲染线程抢资源
   }
 
   /**
