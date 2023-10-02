@@ -10,7 +10,7 @@ import { Alert, Button, Space, Tag } from "antd"
 import newGithubIssueUrl from "new-github-issue-url"
 
 import LightIcon from ".../assets/img/design-devin/AEM-Logo-Light.svg"
-import { compareVersion } from ".../pages/Options/utils/LatestVersionChecker.js"
+import { closeAlertTemp, compareVersion } from ".../pages/Options/utils/LatestVersionChecker.js"
 import { storage } from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper.js"
 import { getLang } from ".../utils/utils"
@@ -104,6 +104,10 @@ ${navigator.userAgent}`
     })
   }
 
+  const onUpgradeAlertClose = () => {
+    closeAlertTemp()
+  }
+
   return (
     <AboutStyle>
       <Title title={getLang("about_title")}></Title>
@@ -132,6 +136,8 @@ ${navigator.userAgent}`
               message={getLang("about_version_update_tip")}
               type="warning"
               showIcon
+              closable
+              onClose={onUpgradeAlertClose}
               action={
                 <Button size="small" type="text" onClick={openUpgradeHelpPage}>
                   Help

@@ -49,8 +49,13 @@ export const compareVersion = async (currentVersion) => {
     storeName: "localCache"
   })
 
-  const latestVersion = await forage.getItem("latest_version")
+  const disableTime = await forage.getItem("latest_version_disable_alert")
+  if (disableTime && Date.now() - disableTime < 48 * 60 * 60 * 1000) {
+    // 如果 48 小时内关闭过提示，则不再提示
+    return null
+  }
 
+  const latestVersion = await forage.getItem("latest_version")
   if (!latestVersion) {
     return null
   }
@@ -102,4 +107,18 @@ export const compareVersion = async (currentVersion) => {
     latestVersion,
     needUpdate: true
   }
+}
+
+/**
+ * 临时取消提示
+ */
+export const closeAlertTemp = async () => {
+  const forage = localforage.createInstance({
+    driver: localforage.LOCALSTORAGE,
+    name: "ExtensionManager",
+    version: 1.0,
+    storeName: "localCache"
+  })
+
+  forage.setItem("latest_version_disable_alert", Date.now())
 }
