@@ -12,6 +12,7 @@ import { ThemeProvider } from "styled-components"
 import "./index.css"
 
 import storage from ".../storage/sync"
+import analytics from ".../utils/googleAnalyze"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Popup from "./Components/Popup"
 import { prepare } from "./prepare"
@@ -69,3 +70,12 @@ prepare().then((props) => {
 })
 
 ExtensionIconBuilder.build()
+
+// Fire a page view event on load
+if (document.readyState === "complete") {
+  analytics.fireEvent("page_view_popup")
+} else {
+  window.addEventListener("load", () => {
+    analytics.fireEvent("page_view_popup")
+  })
+}

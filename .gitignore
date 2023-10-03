@@ -24,3 +24,4 @@
 secrets.*.js
 
 /.vscode/chrome
+src/utils/secret.js
