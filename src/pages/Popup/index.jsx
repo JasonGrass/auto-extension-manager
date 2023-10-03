@@ -12,6 +12,7 @@ import { ThemeProvider } from "styled-components"
 import "./index.css"
 
 import storage from ".../storage/sync"
+import { isEdgePackage, isEdgeRuntime } from ".../utils/channelHelper"
 import analytics from ".../utils/googleAnalyze"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Popup from "./Components/Popup"
@@ -67,15 +68,30 @@ prepare().then((props) => {
       </ThemeProvider>
     </ConfigProvider>
   )
+
+  fireEvent(props)
 })
 
 ExtensionIconBuilder.build()
 
-// Fire a page view event on load
-if (document.readyState === "complete") {
-  analytics.fireEvent("page_view_popup")
-} else {
-  window.addEventListener("load", () => {
-    analytics.fireEvent("page_view_popup")
-  })
+function fireEvent(props) {
+  const firePopupOpen = () => {
+    const version = chrome.runtime.getManifest().version
+
+    analytics.fireEvent("page_view_popup", {
+      browser: isEdgeRuntime() ? "edge" : "chrome",
+      package: isEdgePackage() ? "edge" : "chrome",
+      version: version,
+      layout: props.options.setting.layout,
+      action: props.options.setting.isRaiseEnableWhenSwitchGroup ? "raise" : "normal"
+    })
+  }
+  // Fire a page view event on load
+  if (document.readyState === "complete") {
+    firePopupOpen()
+  } else {
+    window.addEventListener("load", firePopupOpen, {
+      once: true
+    })
+  }
 }

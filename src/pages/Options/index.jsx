@@ -12,6 +12,7 @@ import "./index.css"
 import { ExtensionChannelWorker } from ".../pages/Options/management/worker/ExtensionChannelWorker"
 import { storage } from ".../storage/sync"
 import { isEdgePackage, isEdgeRuntime } from ".../utils/channelHelper"
+import analytics from ".../utils/googleAnalyze"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Options from "./Options"
 import { checkLatestVersion } from "./utils/LatestVersionChecker"
@@ -35,3 +36,12 @@ checkLatestVersion()
 
 console.log(`Package: ${isEdgePackage() ? "Edge" : "Chrome"}`)
 console.log(`Runtime: ${isEdgeRuntime() ? "Edge" : "Chrome"}`)
+
+// Fire a page view event on load
+if (document.readyState === "complete") {
+  analytics.fireEvent("page_view_options")
+} else {
+  window.addEventListener("load", () => {
+    analytics.fireEvent("page_view_options")
+  })
+}
