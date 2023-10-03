@@ -6,7 +6,7 @@ import { usePopupExtensions } from "../../utils/usePopupExtensions"
 import ExtensionGridItem from "./ExtensionGridItem"
 
 const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
-  const [moved, setMoved] = useState("") // 没有业务意思，就是一个依赖值，值发生变化，则重新执行 usePopupExtensions
+  const [moved, setMoved] = useState("") // 没有业务意义，就是一个依赖值，值发生变化，则重新执行 usePopupExtensions
 
   const [items] = usePopupExtensions(extensions, options, moved)
 
