@@ -9,13 +9,17 @@ import { MAX_COLUMN_COUNT, MIN_COLUMN_COUNT } from "../SettingConst.js"
 const ContentViewSetting = memo(({ setting, onSettingChange }) => {
   // 是否显示 APP
   const [isShowApp, setIsShowApp] = useState(false)
-  // 是否总是显示扩展操作按钮
-  const [isShowItemOperationAlways, setIsShowItemOperationAlways] = useState(false)
 
   // 是否在 Popup 中，展示固定分组中的扩展
   const [isShowFixedExtension, setIsShowFixedExtension] = useState(true)
   // 是否显示固定分组扩展上面的小圆点
   const [isShowDotOfFixedExtension, setIsShowDotOfFixedExtension] = useState(true)
+
+  // 是否按分组显示
+  const [isDisplayByGroup, setIsDisplayByGroup] = useState(false)
+
+  // 列表视图下，是否总是显示扩展操作按钮
+  const [isShowItemOperationAlways, setIsShowItemOperationAlways] = useState(false)
   // 网格视图下，显示 APP 名称
   const [isShowAppNameInGirdView, setIsShowAppNameInGirdView] = useState(false)
   // 网格视图下，每行显示的扩展个数
@@ -26,6 +30,9 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
   useEffect(() => {
     const showApp = setting.isShowApp ?? false
     setIsShowApp(showApp)
+
+    const displayByGroup = setting.isDisplayByGroup ?? false
+    setIsDisplayByGroup(displayByGroup)
 
     const showItemOperationAlways = setting.isShowItemOperationAlways ?? false
     setIsShowItemOperationAlways(showItemOperationAlways)
@@ -96,6 +103,17 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
           checked={isShowDotOfFixedExtension}
           onChange={(value) =>
             onSettingChange(value, setIsShowDotOfFixedExtension, "isShowDotOfFixedExtension")
+          }></Switch>
+      </div>
+
+      {/* 是否按分组来展示扩展 */}
+      <div className="setting-item">
+        <span>{getLang("setting_ui_show_by_group")}</span>
+        <Switch
+          size="small"
+          checked={isDisplayByGroup}
+          onChange={(value) =>
+            onSettingChange(value, setIsDisplayByGroup, "isDisplayByGroup")
           }></Switch>
       </div>
 

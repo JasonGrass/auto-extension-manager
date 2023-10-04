@@ -587,6 +587,9 @@
   "setting_ui_show_fixed_dot": {
     "message": "显示固定分组扩展右上角的小圆点"
   },
+  "setting_ui_show_by_group": {
+    "message": "按分组显示扩展"
+  },
   "setting_list_view_show_button": {
     "message": "列表视图下，始终显示快捷操作按钮（默认 hover 显示）"
   },

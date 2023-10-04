@@ -587,6 +587,9 @@
   "setting_ui_show_fixed_dot": {
     "message": "Display a small dot in the upper right corner of the fixed group extensions"
   },
+  "setting_ui_show_by_group": {
+    "message": "Display extensions by group"
+  },
   "setting_list_view_show_button": {
     "message": "List View: Always display the shortcut action buttons (default is hover to display)"
   },
