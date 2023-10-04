@@ -87,6 +87,8 @@ async function buildShowItems(extensions, options) {
       groupName = getLang("group_fixed_name")
     }
 
+    appendGroupInfo(extArray, g)
+
     return {
       id: g.id,
       name: groupName,
@@ -111,4 +113,20 @@ async function sortShowItems(options, list) {
   // 如果有需要，再按照频率排序
   const refList = await manualEnableCounter.getOrder()
   return order(refList, list_pre)
+}
+
+function appendGroupInfo(extensions, group) {
+  if (!group) {
+    return
+  }
+  if (group.id === "fixed" || group.id === "hidden") {
+    return
+  }
+
+  for (const extension of extensions) {
+    if (!extension.__attach__) {
+      extension.__attach__ = {}
+    }
+    extension.__attach__.groupName = group.name
+  }
 }

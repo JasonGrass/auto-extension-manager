@@ -41,7 +41,8 @@ export const useSearchController = (extensions) => {
               ext.shortName,
               ext.description,
               ext.__attach__?.alias,
-              ext.__attach__?.remark
+              ext.__attach__?.remark,
+              ext.__attach__?.groupName
             ],
             search
           )
