@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState } from "react"
 
+import classNames from "classnames"
 import styled from "styled-components"
 
 import { usePopupExtensionsByGroup } from "../../utils/usePopupExtensionsByGroup"
@@ -17,13 +18,14 @@ const ExtensionGridViewByGroup = memo(({ extensions, options, isShowBottomDivide
 
   return (
     <GridViewSpaceStyle>
-      {groups.map((group) => {
+      {groups.map((group, index) => {
         return (
           <ExtensionGridSpace
             group={group}
             options={options}
             key={group.id}
-            onItemMove={onItemMove}></ExtensionGridSpace>
+            onItemMove={onItemMove}
+            groupIndex={index}></ExtensionGridSpace>
         )
       })}
       {isShowBottomDivider && <div className="divider"></div>}
@@ -33,10 +35,14 @@ const ExtensionGridViewByGroup = memo(({ extensions, options, isShowBottomDivide
 
 export default ExtensionGridViewByGroup
 
-const ExtensionGridSpace = memo(({ group, options, onItemMove }) => {
+const ExtensionGridSpace = memo(({ group, options, onItemMove, groupIndex }) => {
   return (
     <GridSpaceByGroupStyle>
-      {group.name && <span className="group-name">{group.name}</span>}
+      {group.name && (
+        <span className={classNames(["group-name", { "group-name-top": groupIndex === 0 }])}>
+          {group.name}
+        </span>
+      )}
       <ul>
         {group.extensions.map((item) => (
           <li key={item.id}>
@@ -78,5 +84,9 @@ const GridSpaceByGroupStyle = styled.div`
       flex: 1 1;
       margin: auto 0 auto 8px;
     }
+  }
+
+  .group-name-top {
+    margin-top: 6px;
   }
 `
