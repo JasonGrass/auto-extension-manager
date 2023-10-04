@@ -83,6 +83,7 @@ function fireEvent(props) {
       package: isEdgePackage() ? "edge" : "chrome",
       version: version,
       layout: props.options.setting.layout,
+      display: props.options.setting.isDisplayByGroup ? "byGroup" : "byEnabled",
       action: props.options.setting.isRaiseEnableWhenSwitchGroup ? "raise" : "normal"
     })
   }
