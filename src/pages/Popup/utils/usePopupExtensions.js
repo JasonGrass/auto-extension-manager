@@ -100,9 +100,11 @@ export async function findTopExtensions(options) {
   }
 
   // 挑选所有配置了 showOnTheTop 的规则
-  const rules = options.ruleConfig.filter((rule) => {
-    return rule.action.showOnTheTop
-  })
+  const rules = options.ruleConfig
+    .filter((rule) => {
+      return rule.action.showOnTheTop
+    })
+    .filter((rule) => rule.enable)
 
   if (rules.length < 1) {
     return []
