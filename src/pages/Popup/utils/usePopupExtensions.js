@@ -88,7 +88,7 @@ async function buildShowItems(extensions, options) {
 }
 
 // 找出那些应该置顶显示的扩展
-async function findTopExtensions(options) {
+export async function findTopExtensions(options) {
   const tabs = await chromeP.tabs.query({
     active: true,
     lastFocusedWindow: true
@@ -145,7 +145,7 @@ async function findTopExtensions(options) {
   return Array.from(new Set(ids))
 }
 
-function order(orderExtIdList, list) {
+export function order(orderExtIdList, list) {
   if (orderExtIdList.length === 0) return list
 
   const result = []

@@ -11,6 +11,7 @@ import { useShowAppController } from "../hooks/useShowAppController"
 import AppList from "./AppList"
 import Header from "./Header"
 import ExtensionGrid from "./grid-view/ExtensionGridView.jsx"
+import ExtensionGridViewByGroup from "./grid-view/ExtensionGridViewByGroup.jsx"
 import ExtensionList from "./list-view/ExtensionListView"
 
 function IndexPopup({ originExtensions, options, params }) {
@@ -86,6 +87,31 @@ function IndexPopup({ originExtensions, options, params }) {
     )
   }
 
+  const getExtensionDisplay = () => {
+    if (!layout || layout === "list") {
+      return <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
+    } else {
+      // 展示样式（是否按分组展示）
+      if (options.setting.isDisplayByGroup) {
+        return (
+          <ExtensionGridViewByGroup
+            extensions={pluginExtensions}
+            options={options}
+            isShowBottomDivider={
+              isShowAppExtension && appExtensions.length > 0
+            }></ExtensionGridViewByGroup>
+        )
+      } else {
+        return (
+          <ExtensionGrid
+            extensions={pluginExtensions}
+            options={options}
+            isShowBottomDivider={isShowAppExtension && appExtensions.length > 0}></ExtensionGrid>
+        )
+      }
+    }
+  }
+
   return (
     <Style>
       <div className="header-container">
@@ -104,15 +130,7 @@ function IndexPopup({ originExtensions, options, params }) {
           "extension-container",
           { "extension-container-grid": layout === "grid" }
         ])}>
-        {!layout || layout === "list" ? (
-          <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
-        ) : (
-          <ExtensionGrid
-            extensions={pluginExtensions}
-            options={options}
-            isShowBottomDivider={isShowAppExtension && appExtensions.length > 0}></ExtensionGrid>
-        )}
-
+        {getExtensionDisplay()}
         {isShowAppExtension && <AppList items={appExtensions}></AppList>}
       </div>
     </Style>

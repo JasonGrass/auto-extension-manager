@@ -19,7 +19,7 @@ import { ExtensionGridItemStyle } from "./ExtensionGridItemStyle"
 
 const manualEnableCounter = new ManualEnableCounter()
 
-const ExtensionGridItem = memo(({ item, options, onItemMove }) => {
+const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
   const [messageApi, contextHolder] = message.useMessage()
 
   // 扩展存在设置页面
@@ -28,13 +28,13 @@ const ExtensionGridItem = memo(({ item, options, onItemMove }) => {
   const existHomePage = !isStringEmpty(item.homepageUrl)
 
   // 扩展是否可用
-  const [itemEnable, setItemEnable] = useState(item.enabled)
+  const [itemEnable, setItemEnable] = useState(enabled ?? item.enabled)
   // 扩展是否在固定分组中
   const [itemPined, setItemPined] = useExtensionItemPin(item, options)
 
   useEffect(() => {
     setItemEnable(item.enabled)
-  }, [item])
+  }, [item, enabled])
 
   // 交互状态：鼠标是否 hover
   const [isMouseEnter, setIsMouseEnter] = useState(false)

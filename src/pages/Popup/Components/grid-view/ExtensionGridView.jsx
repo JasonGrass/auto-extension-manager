@@ -22,7 +22,7 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
   const dividerShow0 = items0.length > 0 && (items1.length > 0 || items2.length > 0)
 
   return (
-    <Style>
+    <GridViewSpaceStyle>
       <ul>
         {items0.map((item) => {
           return (
@@ -68,7 +68,7 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
         ))}
       </ul>
       {isShowBottomDivider && <div className="divider"></div>}
-    </Style>
+    </GridViewSpaceStyle>
   )
 })
 
@@ -77,12 +77,13 @@ export default ExtensionGrid
 const imgSize = "46px"
 const imgMargin = "16px"
 
-const Style = styled.div`
+export const GridViewSpaceStyle = styled.div`
   ul {
     display: flex;
     justify-content: space-between;
     align-content: flex-start;
     flex-wrap: wrap;
+    margin-bottom: 0px;
 
     li {
       width: ${imgSize};
