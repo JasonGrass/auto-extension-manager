@@ -55,6 +55,10 @@ export const GroupOptions = {
       groups.push(group)
     }
 
+    if (group.id === "fixed" || group.id === "hidden") {
+      group.desc = undefined
+    }
+
     await SyncOptionsStorage.set({ groups })
   },
 
@@ -72,6 +76,10 @@ export const GroupOptions = {
       .find((item) => item.name === info.name)
     if (existSameName) {
       throw Error(`already exist same group named ${info.name}`)
+    }
+
+    if (info.id === "fixed" || info.id === "hidden") {
+      info.desc = undefined
     }
 
     Object.assign(exist, info)
