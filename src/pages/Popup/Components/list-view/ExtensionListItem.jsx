@@ -37,12 +37,12 @@ const handleHomeButtonClick = (e, item) => {
 /**
  * 扩展列表项
  */
-const ExtensionListItem = memo(({ item, options }) => {
+const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged }) => {
   const [isHover, setIsHover] = useState(false)
   const [isInteractive, setIsInteractive] = useState(false)
   const [isShowOperationButton, setIsShowOperationButton] = useState(false)
 
-  const [itemEnable, setItemEnable] = useState(item.enabled)
+  const [itemEnable, setItemEnable] = useState(enabled ?? item.enabled)
   const existOptionPage = !isStringEmpty(item.optionsUrl)
   const existHomePage = !isStringEmpty(item.homepageUrl)
 
@@ -54,19 +54,21 @@ const ExtensionListItem = memo(({ item, options }) => {
   // 在切换分组可以控制扩展的开启或关闭时，这里需要主动更新 enabled，否则 UI 显示会有问题
   useEffect(() => {
     setItemEnable(item.enabled)
-  }, [item])
+  }, [item, enabled])
 
   useEffect(() => {
     const showButtonAlways = options.setting?.isShowItemOperationAlways ?? false
     setIsShowOperationButton(showButtonAlways)
   }, [options])
 
-  const onSwitchChange = (checked, item) => {
-    chrome.management.setEnabled(item.id, checked)
+  const onSwitchChange = async (checked, item) => {
+    await chrome.management.setEnabled(item.id, checked)
     setItemEnable(checked)
+    item.enabled = checked
     if (checked) {
       manualEnableCounter.count(item.id)
     }
+    onItemEnableChanged?.(item)
   }
 
   const onItemMouseOver = (e) => {

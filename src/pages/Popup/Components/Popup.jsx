@@ -13,6 +13,7 @@ import Header from "./Header"
 import ExtensionGrid from "./grid-view/ExtensionGridView.jsx"
 import ExtensionGridViewByGroup from "./grid-view/ExtensionGridViewByGroup.jsx"
 import ExtensionList from "./list-view/ExtensionListView"
+import ExtensionListViewByGroup from "./list-view/ExtensionListViewByGroup.jsx"
 
 function IndexPopup({ originExtensions, options, params }) {
   const [extensions, setExtensions] = useState(originExtensions)
@@ -89,7 +90,15 @@ function IndexPopup({ originExtensions, options, params }) {
 
   const getExtensionDisplay = () => {
     if (!layout || layout === "list") {
-      return <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
+      if (options.setting.isDisplayByGroup) {
+        return (
+          <ExtensionListViewByGroup
+            extensions={pluginExtensions}
+            options={options}></ExtensionListViewByGroup>
+        )
+      } else {
+        return <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
+      }
     } else {
       // 展示样式（是否按分组展示）
       if (options.setting.isDisplayByGroup) {
