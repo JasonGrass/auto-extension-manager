@@ -7,7 +7,7 @@ import {
   SettingOutlined,
   UnlockOutlined
 } from "@ant-design/icons"
-import { Button, Popconfirm, Switch } from "antd"
+import { Button, Popconfirm, Switch, message } from "antd"
 import classNames from "classnames"
 
 import "./ExtensionListItem.css"
@@ -21,23 +21,11 @@ import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
 const manualEnableCounter = new ManualEnableCounter()
 
 /**
- * 打开扩展设置页面
- */
-const handleSettingButtonClick = (e, item) => {
-  chrome.tabs.create({ url: item.optionsUrl })
-}
-
-/**
- * 打开扩展主页
- */
-const handleHomeButtonClick = (e, item) => {
-  chrome.tabs.create({ url: item.homepageUrl })
-}
-
-/**
  * 扩展列表项
  */
 const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged }) => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   const [isHover, setIsHover] = useState(false)
   const [isInteractive, setIsInteractive] = useState(false)
   const [isShowOperationButton, setIsShowOperationButton] = useState(false)
@@ -90,6 +78,24 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
     setIsHover(false)
   }
 
+  /**
+   * 打开扩展设置页面
+   */
+  const handleSettingButtonClick = (e, item) => {
+    if (!item.enabled) {
+      messageApi.info(getLang("extension_not_enable"))
+      return
+    }
+    chrome.tabs.create({ url: item.optionsUrl })
+  }
+
+  /**
+   * 打开扩展主页
+   */
+  const handleHomeButtonClick = (e, item) => {
+    chrome.tabs.create({ url: item.homepageUrl })
+  }
+
   // 如果存在别名，则显示别名
   const showName = item.__attach__?.alias ? item.__attach__?.alias : item.name
 
@@ -101,6 +107,8 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
         "list-item-container",
         { "is-enable": itemEnable, "not-enable": !itemEnable, "item-is-top": item.__top__ }
       ])}>
+      {contextHolder}
+
       <div className="list-item-img-box">
         <img src={getIcon(item, 128)} alt="" />
         {itemPined && isShowDotOfFixedExtension && <i className="list-item-fix-dot"></i>}

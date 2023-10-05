@@ -110,6 +110,9 @@
   "remove_extension_confirm": {
     "message": "Remove '$1' ?"
   },
+  "extension_not_enable": {
+    "message": "Extension not enabled"
+  },
   "app_not_enable": {
     "message": "not enable"
   },

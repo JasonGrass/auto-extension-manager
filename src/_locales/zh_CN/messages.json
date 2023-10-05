@@ -110,6 +110,9 @@
   "remove_extension_confirm": {
     "message": "确认要从浏览器中移除 $1"
   },
+  "extension_not_enable": {
+    "message": "扩展未启用"
+  },
   "app_not_enable": {
     "message": "未启用"
   },

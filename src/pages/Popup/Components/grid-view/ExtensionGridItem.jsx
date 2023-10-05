@@ -92,6 +92,10 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
    */
   const handleSettingButtonClick = (e, item) => {
     if (existOptionPage) {
+      if (!item.enabled) {
+        messageApi.info(getLang("extension_not_enable"))
+        return
+      }
       chrome.tabs.create({ url: item.optionsUrl })
     }
   }
