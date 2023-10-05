@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Button, Input, notification } from "antd"
+import { Button, Checkbox, Input, notification } from "antd"
 
 import { LocalOptions } from ".../storage/local"
 import { storage } from ".../storage/sync"
@@ -27,6 +27,13 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
   const [shownNoneGroupExts, setShownNoneGroupExts] = useState([])
   // 搜索词
   const [searchWord, setSearchWord] = useState("")
+
+  // 未分组扩展中，不显示固定分组的扩展
+  const [hiddenFixedGroupInNoneGroup, setHiddenFixedGroupInNoneGroup] = useState(false)
+  // 未分组扩展中，不显示隐藏分组的扩展
+  const [hiddenHiddenGroupInNoneGroup, setHiddenHiddenGroupInNoneGroup] = useState(false)
+  // 未分组扩展中，不显示其它分组的扩展
+  const [hiddenOtherGroupInNoneGroup, setHiddenOtherGroupInNoneGroup] = useState(false)
 
   // 初始化
   useEffect(() => {
@@ -85,9 +92,30 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
         onSearch={onSearch}
         onChange={(e) => onSearch(e.target.value)}
       />
-      <h3> {getLang("group_include", group.name)}</h3>
+      <h3 className="group-name-title group-include-title">
+        {getLang("group_include", group.name)}
+      </h3>
       {buildExtContainer(shownContainExts, true)}
-      <h3>{getLang("group_not_include")}</h3>
+
+      <div className="group-not-include-header">
+        <h3 className="group-name-title group-not-include-title">{getLang("group_not_include")}</h3>
+        <Checkbox
+          checked={hiddenFixedGroupInNoneGroup}
+          onChange={(e) => setHiddenFixedGroupInNoneGroup(e.target.checked)}>
+          不显示「固定分组」中的扩展
+        </Checkbox>
+        <Checkbox
+          checked={hiddenHiddenGroupInNoneGroup}
+          onChange={(e) => setHiddenHiddenGroupInNoneGroup(e.target.checked)}>
+          不显示「隐藏分组」中的扩展
+        </Checkbox>
+        <Checkbox
+          checked={hiddenOtherGroupInNoneGroup}
+          onChange={(e) => setHiddenOtherGroupInNoneGroup(e.target.checked)}>
+          不显示「其它分组」中的扩展
+        </Checkbox>
+      </div>
+
       {buildExtContainer(shownNoneGroupExts, false)}
       <p className="desc">{group.desc}</p>
     </GroupContentStyle>

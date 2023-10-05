@@ -20,16 +20,6 @@ export const GroupStyle = styled.div`
     margin-left: 10px;
   }
 
-  .right-box h3 {
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-
-    font-size: 18px;
-    font-weight: 700;
-
-    border-bottom: 1px solid #eee;
-  }
-
   .view-hidden {
     display: none;
   }
