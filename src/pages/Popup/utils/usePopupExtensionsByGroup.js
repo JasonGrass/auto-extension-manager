@@ -44,18 +44,17 @@ async function buildShowItems(extensions, options) {
 
   // 筛选置顶的扩展
   const topExtensions = await findTopExtensions(options)
-  let list0 = list.filter((i) => topExtensions.includes(i.id))
+  let listTop = list.filter((i) => topExtensions.includes(i.id))
 
   // 不显示那些在隐藏分组中的扩展
   const hiddenExtensions = options.groups?.find((g) => g.id === "hidden")?.extensions || []
-  list0 = list0.filter((i) => !hiddenExtensions.includes(i.id))
 
   const shownGroups = []
-  if (list0.length > 0) {
+  if (listTop.length > 0) {
     shownGroups.push({
       id: "__v_top__",
       name: "",
-      extensions: await sortShowItems(options, list0)
+      extensions: await sortShowItems(options, listTop)
     })
   }
 

@@ -79,7 +79,6 @@ async function buildShowItems(extensions, options) {
   // 不显示那些在隐藏分组中的扩展
   const hiddenExtensions = options.groups?.find((g) => g.id === "hidden")?.extensions
   if (hiddenExtensions) {
-    list0 = list0.filter((i) => !hiddenExtensions.includes(i.id))
     list1 = list1.filter((i) => !hiddenExtensions.includes(i.id))
     list2 = list2.filter((i) => !hiddenExtensions.includes(i.id))
   }
