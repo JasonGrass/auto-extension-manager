@@ -77,6 +77,9 @@
   "group_hidden_desc": {
     "message": "This is a built-in group where extensions within this group will not be displayed in the popup."
   },
+  "group_no_group_name": {
+    "message": "No Group Assigned"
+  },
   "group_inner_cannot_edit": {
     "message": "The built-in group cannot be edited"
   },

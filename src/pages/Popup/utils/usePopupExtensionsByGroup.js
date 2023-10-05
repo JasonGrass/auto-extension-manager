@@ -98,7 +98,19 @@ async function buildShowItems(extensions, options) {
   let groups = await Promise.all(asyncGroups)
   groups = groups.filter(Boolean)
 
-  return [...shownGroups, ...groups]
+  // 没有任何分组的扩展
+  const groupedExtensionIds = Array.from(new Set(groupArray.map((g) => g.extensions).flat()))
+  const noneGroupExtensions = list
+    .filter((i) => !groupedExtensionIds.includes(i.id))
+    .filter((i) => !hiddenExtensions.includes(i.id))
+  const sortedNoneGroupExtensions = await sortShowItems(options, noneGroupExtensions)
+  const noneGroupExtensionsGroup = {
+    id: "__no_group__",
+    name: getLang("group_no_group_name"),
+    extensions: sortedNoneGroupExtensions
+  }
+
+  return [...shownGroups, ...groups, noneGroupExtensionsGroup]
 }
 
 async function sortShowItems(options, list) {
