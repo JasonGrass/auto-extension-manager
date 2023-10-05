@@ -27,3 +27,19 @@ export const isEdgePackage = () => {
     return false
   }
 }
+
+export const isDevRuntime = () => {
+  const development = "development"
+  const production = "production"
+  try {
+    // 编译时会被替换
+    const env = RUNTIME_ENV
+    if (env === "development") {
+      return true
+    } else {
+      return false
+    }
+  } catch (err) {
+    return false
+  }
+}
