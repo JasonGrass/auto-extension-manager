@@ -80,8 +80,7 @@ export const compareVersion = async (currentVersion) => {
   latest = Number(latest.map((v) => v.toString().padStart(4, "0")).join(""))
 
   if (current > latest) {
-    // 理论上不可能
-    console.warn("当前版本大于最新的版本", current, "  ", latest)
+    console.warn("当前版本大于缓存记录的最新的版本", current, "  ", latest)
     return null
   }
 
