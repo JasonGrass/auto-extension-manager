@@ -139,17 +139,17 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
         <Checkbox
           checked={hiddenFixedGroupInNoneGroup}
           onChange={(e) => setHiddenFixedGroupInNoneGroup(e.target.checked)}>
-          不显示「固定分组」中的扩展
+          {getLang("group_not_include_hidden_fixed")}
         </Checkbox>
         <Checkbox
           checked={hiddenHiddenGroupInNoneGroup}
           onChange={(e) => setHiddenHiddenGroupInNoneGroup(e.target.checked)}>
-          不显示「隐藏分组」中的扩展
+          {getLang("group_not_include_hidden_hidden")}
         </Checkbox>
         <Checkbox
           checked={hiddenOtherGroupInNoneGroup}
           onChange={(e) => setHiddenOtherGroupInNoneGroup(e.target.checked)}>
-          不显示其它分组中的扩展
+          {getLang("group_not_include_hidden_other")}
         </Checkbox>
       </div>
 

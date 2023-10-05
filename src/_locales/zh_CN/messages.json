@@ -50,6 +50,15 @@
   "group_not_include": {
     "message": "不在此分组"
   },
+  "group_not_include_hidden_fixed": {
+    "message": "不显示「固定分组」中的扩展"
+  },
+  "group_not_include_hidden_hidden": {
+    "message": "不显示「隐藏分组」中的扩展"
+  },
+  "group_not_include_hidden_other": {
+    "message": "不显示其它分组中的扩展"
+  },
   "group_new": {
     "message": "新建分组"
   },
