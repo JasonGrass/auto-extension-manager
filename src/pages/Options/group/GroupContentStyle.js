@@ -32,35 +32,10 @@ export const GroupContentStyle = styled.div`
   .group-name-title {
     font-size: 18px;
     font-weight: 700;
-  }
 
-  .group-include-title {
     margin-bottom: 10px;
     padding-bottom: 5px;
 
     border-bottom: 1px solid #eee;
-  }
-
-  .group-not-include-title {
-  }
-
-  .group-not-include-header {
-    display: flex;
-    align-items: baseline;
-
-    margin-top: 24px;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #eee;
-
-    & > * {
-      margin-right: 16px;
-    }
-  }
-`
-
-export const AlreadyFixedTipStyle = styled.div`
-  .btn-already-fixed-tip {
-    margin-right: 10px;
   }
 `

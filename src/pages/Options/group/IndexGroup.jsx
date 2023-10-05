@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
+import { Checkbox } from "antd"
 import { message } from "antd"
 import classNames from "classnames"
 import chromeP from "webext-polyfill-kinda"
@@ -14,6 +15,7 @@ import GroupEditor from "./GroupEditor.jsx"
 import GroupNav from "./GroupNav.jsx"
 import { GroupStyle } from "./IndexGroupStyle.js"
 import { AddNewNavItem } from "./helpers.js"
+import useGroupItems from "./hooks/useGroupItems.js"
 
 function GroupManagement() {
   const location = useLocation()
@@ -33,10 +35,29 @@ function GroupManagement() {
 
   const [messageApi, contextHolder] = message.useMessage()
 
+  // 未分组扩展中，不显示固定分组的扩展
+  const [hiddenFixedGroupInNoneGroup, setHiddenFixedGroupInNoneGroup] = useState(false)
+  // 未分组扩展中，不显示隐藏分组的扩展
+  const [hiddenHiddenGroupInNoneGroup, setHiddenHiddenGroupInNoneGroup] = useState(false)
+  // 未分组扩展中，不显示其它分组的扩展
+  const [hiddenOtherGroupInNoneGroup, setHiddenOtherGroupInNoneGroup] = useState(false)
+
+  const [containExts, noneGroupExts, onItemClick] = useGroupItems(
+    selectedGroup,
+    groupListInfo,
+    extensions,
+    {
+      hiddenFixedGroupInNoneGroup,
+      hiddenHiddenGroupInNoneGroup,
+      hiddenOtherGroupInNoneGroup
+    }
+  )
+
   async function updateByGroupConfigs() {
     const groupList = await storage.group.getGroups()
     setGroupListInfo(groupList)
   }
+
   // 初始化
   useEffect(() => {
     storage.options.getAll().then((o) => {
@@ -160,12 +181,33 @@ function GroupManagement() {
               "view-hidden":
                 isStringEmpty(selectedGroup?.id) || selectedGroup.id === AddNewNavItem.id
             })}>
-            <GroupContent
-              group={selectedGroup}
-              groupList={groupListInfo}
-              extensions={extensions}
-              options={options}
-            />
+            {selectedGroup && (
+              <GroupContent
+                containExts={containExts}
+                noneGroupExts={noneGroupExts}
+                group={selectedGroup}
+                groupList={groupListInfo}
+                options={options}
+                onItemClick={onItemClick}>
+                <div className="group-not-include-filter">
+                  <Checkbox
+                    checked={hiddenFixedGroupInNoneGroup}
+                    onChange={(e) => setHiddenFixedGroupInNoneGroup(e.target.checked)}>
+                    {getLang("group_not_include_hidden_fixed")}
+                  </Checkbox>
+                  <Checkbox
+                    checked={hiddenHiddenGroupInNoneGroup}
+                    onChange={(e) => setHiddenHiddenGroupInNoneGroup(e.target.checked)}>
+                    {getLang("group_not_include_hidden_hidden")}
+                  </Checkbox>
+                  <Checkbox
+                    checked={hiddenOtherGroupInNoneGroup}
+                    onChange={(e) => setHiddenOtherGroupInNoneGroup(e.target.checked)}>
+                    {getLang("group_not_include_hidden_other")}
+                  </Checkbox>
+                </div>
+              </GroupContent>
+            )}
           </div>
 
           <div

@@ -32,4 +32,19 @@ export const GroupStyle = styled.div`
     right: 0px;
     height: calc(100% - 60px);
   }
+
+  .group-not-include-filter {
+    display: flex;
+    align-items: center;
+
+    margin: 0 20px 0 0;
+    padding: 5px 0 5px 5px;
+
+    border-radius: 4px;
+    border: 1px solid #eee;
+
+    & > * {
+      margin-right: 16px;
+    }
+  }
 `
