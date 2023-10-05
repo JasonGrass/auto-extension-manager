@@ -48,6 +48,7 @@ export const GroupContentStyle = styled.div`
     display: flex;
     align-items: baseline;
 
+    margin-top: 24px;
     margin-bottom: 10px;
     padding-bottom: 5px;
     border-bottom: 1px solid #eee;

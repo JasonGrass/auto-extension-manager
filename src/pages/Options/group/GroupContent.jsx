@@ -47,6 +47,18 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
       .filter((ext) => !containsExtIds.includes(ext.id))
       .filter((ext) => !isAppExtension(ext))
 
+    // 为每个扩展附加其所在分组的信息
+    const extMap = new Map(extensions.map((ext) => [ext.id, ext]))
+    for (const group of groupList ?? []) {
+      for (const extId of group.extensions ?? []) {
+        const ext = extMap.get(extId)
+        if (ext) {
+          ext.__group_ids__ = ext.__group_ids__ ?? []
+          ext.__group_ids__ = [...ext.__group_ids__, group.id]
+        }
+      }
+    }
+
     storage.management.get().then((managementOptions) => {
       setContains(appendAdditionInfo(containsExts, managementOptions))
       setNoneGroupExts(appendAdditionInfo(noneGroupedExtensions, managementOptions))
@@ -57,15 +69,40 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
 
   // 搜索
   useEffect(() => {
+    // 过滤 [不在此分组] 中的扩展
+    const filterNoneGroupExts = (exts) => {
+      return exts
+        .filter((e) => {
+          return !hiddenFixedGroupInNoneGroup || !e.__group_ids__?.includes("fixed")
+        })
+        .filter((e) => {
+          return !hiddenHiddenGroupInNoneGroup || !e.__group_ids__?.includes("hidden")
+        })
+        .filter((e) => {
+          let groupIds = e.__group_ids__ ?? []
+          groupIds = groupIds.filter((id) => id !== "fixed").filter((id) => id !== "hidden")
+          return !hiddenOtherGroupInNoneGroup || !groupIds.length > 0
+        })
+    }
+
     if (!searchWord || searchWord.trim() === "") {
       setShownContainExts(containExts)
-      setShownNoneGroupExts(noneGroupExts)
+      setShownNoneGroupExts(filterNoneGroupExts(noneGroupExts))
       return
     }
 
-    setShownContainExts(containExts.filter((ext) => isExtensionMatch(ext, searchWord)))
-    setShownNoneGroupExts(noneGroupExts.filter((ext) => isExtensionMatch(ext, searchWord)))
-  }, [searchWord, containExts, noneGroupExts])
+    const shownContainExts = containExts.filter((ext) => isExtensionMatch(ext, searchWord))
+    const shownNoneGroupExts = noneGroupExts.filter((ext) => isExtensionMatch(ext, searchWord))
+    setShownContainExts(shownContainExts)
+    setShownNoneGroupExts(filterNoneGroupExts(shownNoneGroupExts))
+  }, [
+    searchWord,
+    containExts,
+    noneGroupExts,
+    hiddenFixedGroupInNoneGroup,
+    hiddenHiddenGroupInNoneGroup,
+    hiddenOtherGroupInNoneGroup
+  ])
 
   // 保存分组中的扩展记录
   const save = async (contains) => {
@@ -112,7 +149,7 @@ const GroupContent = memo(({ group, groupList, extensions, options }) => {
         <Checkbox
           checked={hiddenOtherGroupInNoneGroup}
           onChange={(e) => setHiddenOtherGroupInNoneGroup(e.target.checked)}>
-          不显示「其它分组」中的扩展
+          不显示其它分组中的扩展
         </Checkbox>
       </div>
 
