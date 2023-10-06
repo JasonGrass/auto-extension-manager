@@ -620,6 +620,9 @@
   "setting_list_gird_show_disable_gray": {
     "message": "网格视图下，使用灰色样式显示被禁用的扩展"
   },
+  "setting_list_gird_show_menu_right_click": {
+    "message": "网格视图下，点击鼠标右键显示操作菜单"
+  },
   "setting_list_sort_type": {
     "message": "排序：按照启用频率进行排序"
   },

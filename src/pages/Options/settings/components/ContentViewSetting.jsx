@@ -26,6 +26,8 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
   const [columnCountInGirdView, setColumnCountInGirdView] = useState(6)
   // 网格视图下，禁用扩展使用灰色样式
   const [isGaryStyleOfDisableInGridView, setIsGaryStyleOfDisableInGridView] = useState(false)
+  // 网格视图下，使用鼠标右键弹出菜单（而不是 hover）
+  const [isMenuDisplayByRightClick, setIsMenuDisplayByRightClick] = useState(false)
 
   useEffect(() => {
     const showApp = setting.isShowApp ?? false
@@ -174,6 +176,17 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
               setIsGaryStyleOfDisableInGridView,
               "isGaryStyleOfDisableInGridView"
             )
+          }></Switch>
+      </div>
+
+      {/* 网格视图下，使用鼠标右键弹出菜单（而不是 hover）*/}
+      <div className="setting-item">
+        <span>{getLang("setting_list_gird_show_menu_right_click")}</span>
+        <Switch
+          size="small"
+          checked={isMenuDisplayByRightClick}
+          onChange={(value) =>
+            onSettingChange(value, setIsMenuDisplayByRightClick, "isMenuDisplayByRightClick")
           }></Switch>
       </div>
     </div>

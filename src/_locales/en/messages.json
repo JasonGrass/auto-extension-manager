@@ -620,6 +620,9 @@
   "setting_list_gird_show_disable_gray": {
     "message": "Grid View: Display disabled extensions in a grayed-out style"
   },
+  "setting_list_gird_show_menu_right_click": {
+    "message": "Grid View: Display the operation menu by mouse right-click"
+  },
   "setting_list_sort_type": {
     "message": "Order: Sort the extensions based on their activation frequency"
   },
