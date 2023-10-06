@@ -46,9 +46,9 @@ Edge Web Store
 
 ## 🍉 LOGO
 
-|                         Old                         |                               New-Light                                |                               New-Dark                                |
-|:---------------------------------------------------:|:----------------------------------------------------------------------:|:---------------------------------------------------------------------:|
-| <img src="src/assets/img/icon-128.png" width="64"/> | <img src="src/assets/img/design-devin/AEM-Logo-Light.svg" width="64"/> | <img src="src/assets/img/design-devin/AEM-Logo-Dark.svg" width="64"/> |
+|                           Old                           |                               New-Light                                |                               New-Dark                                |
+|:-------------------------------------------------------:|:----------------------------------------------------------------------:|:---------------------------------------------------------------------:|
+| <img src="src/assets/img/old/icon-128.png" width="64"/> | <img src="src/assets/img/design-devin/AEM-Logo-Light.svg" width="64"/> | <img src="src/assets/img/design-devin/AEM-Logo-Dark.svg" width="64"/> |
 
 Thank [0xe8nicebot](https://github.com/0xe8nicebot) for contributing to the project by designing the logo.
 About author：<https://devinwang.com/>，There is the AI tool he created.：[不管是现在还是未来，你的全能Ai小助手](https://chatboy.io/r/spi6jpul)
