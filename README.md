@@ -4,6 +4,8 @@
 
 [![release](https://img.shields.io/github/v/release/JasonGrass/auto-extension-manager)](https://github.com/JasonGrass/auto-extension-manager/releases)
 
+[English](./README.en.md)
+
 ## 🍉 功能介绍
 
 Extension Manager 是一个用于浏览器扩展管理的扩展。
