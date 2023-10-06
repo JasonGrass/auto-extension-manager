@@ -263,6 +263,13 @@ async function closeExtensions(
       if (!info || !info.enabled) {
         continue
       }
+      // 检查在所有打开的页面中，是否有目标扩展的设置页面，如果存在，则暂时不关闭扩展
+      const settingTab = ctx.tabs?.find((tab) => {
+        return tab.url?.includes(`/${extId}/`)
+      })
+      if (settingTab) {
+        continue
+      }
 
       const delayCloser = getDelayCloser()
       delayToken = delayCloser.close(info, () => {
