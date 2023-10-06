@@ -11,6 +11,7 @@ import { Popconfirm, Space, message } from "antd"
 import classNames from "classnames"
 
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
+import { isDevRuntime } from ".../utils/channelHelper"
 import { getIcon } from ".../utils/extensionHelper.js"
 import { getLang } from ".../utils/utils"
 import { isStringEmpty } from ".../utils/utils.js"
@@ -100,6 +101,10 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
   }
 
   const handleContextMenu = (e) => {
+    if (isDevRuntime()) {
+      // dev 下，不阻止右键菜单
+      return
+    }
     e.preventDefault()
   }
 
