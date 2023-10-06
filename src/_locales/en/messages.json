@@ -51,13 +51,13 @@
     "message": "Not Contains"
   },
   "group_not_include_hidden_fixed": {
-    "message": "Hidden extensions in \"Fixed Group\""
+    "message": "Hide extensions in \"Fixed Group\""
   },
   "group_not_include_hidden_hidden": {
-    "message": "Hidden extensions in \"Hidden Group\""
+    "message": "Hide extensions in \"Hidden Group\""
   },
   "group_not_include_hidden_other": {
-    "message": "Hidden extensions in other group"
+    "message": "Hide extensions in other group"
   },
   "group_new": {
     "message": "New Group"
