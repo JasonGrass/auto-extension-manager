@@ -55,8 +55,6 @@ Edge 商店链接
 感谢 [0xe8nicebot](https://github.com/0xe8nicebot) 为项目贡献 logo 设计。  
 关于作者：<https://devinwang.com/>，还有其创建的 AI 工具：[不管是现在还是未来，你的全能Ai小助手](https://chatboy.io/r/spi6jpul)
 
-> PS 之前的 logo 是使用 midjoueny 生成了，为了让老用户对新 logo 先有个感知（不然换了 logo 找不到扩展），先替换内部的 logo 显示，之后再替换扩展 logo。
-
 ## 🍉 帮助
 
 说明文档： <https://ext.jgrass.cc/docs/intro>  
