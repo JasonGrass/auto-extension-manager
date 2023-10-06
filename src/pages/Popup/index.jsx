@@ -84,7 +84,8 @@ function fireEvent(props) {
       version: version,
       layout: props.options.setting.layout,
       display: props.options.setting.isDisplayByGroup ? "byGroup" : "byEnabled",
-      action: props.options.setting.isRaiseEnableWhenSwitchGroup ? "raise" : "normal"
+      action: props.options.setting.isRaiseEnableWhenSwitchGroup ? "raise" : "normal",
+      menuDisplay: props.options.setting.isMenuDisplayByRightClick ? "rightClick" : "hover"
     })
   }
   // Fire a page view event on load
