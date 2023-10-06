@@ -38,6 +38,8 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
 
   // 交互状态：鼠标是否 hover
   const [isMouseEnter, setIsMouseEnter] = useState(false)
+  // 交互状态：鼠标右键是否点击
+  const [isMouseRightClick, setIsMouseRightClick] = useState(false)
   // 交互状态：菜单是否显示
   const [isMenuShow, setIsMenuShow] = useState(false)
   // UI 状态：菜单显示的位置
@@ -49,6 +51,8 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
   const grayStyleOfDisable = options.setting.isGaryStyleOfDisableInGridView ?? false
   // 固定分组扩展的小圆点
   const isShowDotOfFixedExtension = options.setting.isShowDotOfFixedExtension ?? true
+  // 菜单显示的方式，false: hover 显示，true: 鼠标右键点击显示
+  const menuDisplayByRightClick = options.setting.isMenuDisplayByRightClick ?? false
 
   const containerRef = useRef(null)
   const menuRef = useRef(null)
@@ -67,7 +71,7 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
 
   useEffect(() => {
     checkMenuPosition()
-  }, [isMouseEnter])
+  }, [isMouseEnter, isMouseRightClick])
 
   const handleItemMouseEnter = () => {
     setIsMouseEnter(true)
@@ -76,6 +80,7 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
   const handleItemMouseLeave = () => {
     setTimeout(() => {
       setIsMouseEnter(false)
+      setIsMouseRightClick(false)
     }, 60) // 鼠标从 item 移动到 menu 上，需要一点时间
   }
 
@@ -85,7 +90,25 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
 
   const handleMenuMouseLeave = () => {
     setIsMenuShow(false)
+    setIsMouseRightClick(false)
   }
+
+  const handleItemMouseClick = (e) => {
+    if (e.button === 2) {
+      setIsMouseRightClick(true)
+    }
+  }
+
+  const handleContextMenu = (e) => {
+    e.preventDefault()
+  }
+
+  useEffect(() => {
+    document.addEventListener("contextmenu", handleContextMenu)
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu)
+    }
+  }, [])
 
   /**
    * 打开扩展设置页面
@@ -145,7 +168,9 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
     <ExtensionGridItemStyle
       ref={containerRef}
       onMouseEnter={handleItemMouseEnter}
-      onMouseLeave={handleItemMouseLeave}>
+      onMouseLeave={handleItemMouseLeave}
+      onMouseUpCapture={handleItemMouseClick}
+      animation_delay={menuDisplayByRightClick ? 0 : 0.3}>
       {contextHolder}
       {/* 扩展显示 */}
       <div
@@ -182,7 +207,7 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
           {
             "menu-right": isMenuOnRight,
             "menu-left": !isMenuOnRight,
-            "menu-on": isMouseEnter || isMenuShow,
+            "menu-on": (menuDisplayByRightClick ? isMouseRightClick : isMouseEnter) || isMenuShow,
             "operation-menu-disable": !itemEnable
           }
         ])}

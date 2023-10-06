@@ -131,7 +131,7 @@ export const ExtensionGridItemStyle = styled.div`
     top: -10px;
     left: 58px;
 
-    animation: menu-right-in 0.2s ease-out 0.3s forwards;
+    animation: menu-right-in 0.2s ease-out ${(props) => props.animation_delay}s forwards;
   }
 
   .menu-left {
@@ -139,7 +139,7 @@ export const ExtensionGridItemStyle = styled.div`
     top: -10px;
     right: 58px;
 
-    animation: menu-left-in 0.2s ease-out 0.3s forwards;
+    animation: menu-left-in 0.2s ease-out ${(props) => props.animation_delay}s forwards;
   }
 
   .operation-menu-item-disabled {
