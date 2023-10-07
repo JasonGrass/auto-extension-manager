@@ -22,7 +22,7 @@ const ExtensionSelector = ({ options, config, extensions }, ref) => {
       }
 
       return {
-        groups: selectGroupIds.filter((id) => groupList.find((g) => (g.id = id))),
+        groups: selectGroupIds.filter((id) => groupList.find((g) => g.id === id)),
         extensions: selectedExtensions.map((e) => e.id)
       }
     }
