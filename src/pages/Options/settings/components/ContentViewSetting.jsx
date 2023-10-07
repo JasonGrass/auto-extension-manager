@@ -63,6 +63,10 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
     // 固定分组扩展的小圆点
     const dotOfFixedExtension = setting.isShowDotOfFixedExtension ?? true
     setIsShowDotOfFixedExtension(dotOfFixedExtension)
+
+    // 网格视图下，使用鼠标右键弹出菜单
+    const menuDisplayByRightClick = setting.isMenuDisplayByRightClick ?? false
+    setIsMenuDisplayByRightClick(menuDisplayByRightClick)
   }, [setting])
 
   return (
