@@ -81,4 +81,4 @@ ref: <https://chromium.googlesource.com/chromium/src/+/HEAD/extensions/docs/exte
 
 ---
 
-[❤️ Buy me a coffee](https://ext.jgrass.cc/separate/buy-me-a-coffee)
+[<img src="src/assets/img/buymeacoffee.svg" width="128"/>](https://www.buymeacoffee.com/jgrass/extension-manager)
