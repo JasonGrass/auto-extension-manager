@@ -1,4 +1,4 @@
-<img src="src/assets/img/design-devin/Light.svg" width="64"/>
+<img src="src/assets/img/design-devin/Light-128.png" width="64"/>
 
 # Extension Manager
 
