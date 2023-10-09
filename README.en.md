@@ -2,7 +2,10 @@
 
 # Extension Manager
 
-[![release](https://img.shields.io/github/v/release/JasonGrass/auto-extension-manager)](https://github.com/JasonGrass/auto-extension-manager/releases)
+[![release](https://img.shields.io/github/v/release/JasonGrass/auto-extension-manager?style=for-the-badge)](https://github.com/JasonGrass/auto-extension-manager/releases)
+[![chrome-web-store](https://img.shields.io/chrome-web-store/v/efajbgpnlnobnkgdcgcnclngeolnmggp?style=for-the-badge)](https://chrome.google.com/webstore/detail/extension-manager/efajbgpnlnobnkgdcgcnclngeolnmggp)
+[![users](https://img.shields.io/chrome-web-store/users/efajbgpnlnobnkgdcgcnclngeolnmggp.svg?style=for-the-badge)](https://chrome.google.com/webstore/detail/extension-manager/efajbgpnlnobnkgdcgcnclngeolnmggp)
+[![stars](https://img.shields.io/chrome-web-store/stars/efajbgpnlnobnkgdcgcnclngeolnmggp?style=for-the-badge)](https://chrome.google.com/webstore/detail/extension-manager/efajbgpnlnobnkgdcgcnclngeolnmggp)
 
 [中文](./README.md)
 
