@@ -9,7 +9,7 @@ import {
 import { Alert, Button, Space, Tag } from "antd"
 import newGithubIssueUrl from "new-github-issue-url"
 
-import LightIcon from ".../assets/img/design-devin/AEM-Logo-Light.svg"
+import LightIcon from ".../assets/img/design-devin/Light.svg"
 import { closeAlertTemp, compareVersion } from ".../pages/Options/utils/LatestVersionChecker.js"
 import { storage } from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper.js"
