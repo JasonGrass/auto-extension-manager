@@ -79,6 +79,10 @@ You can open <chrome://apps> to see the details.
 
 ref: <https://chromium.googlesource.com/chromium/src/+/HEAD/extensions/docs/extension_and_app_types.md>
 
+## 🍉 Other
+
+This project is built based on [lxieyang/chrome-extension-boilerplate-react](https://github.com/lxieyang/chrome-extension-boilerplate-react )
+
 ---
 
 [<img src="src/assets/img/buymeacoffee.svg" width="128"/>](https://www.buymeacoffee.com/jgrass/extension-manager)

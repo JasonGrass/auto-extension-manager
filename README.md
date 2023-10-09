@@ -83,6 +83,10 @@ APP 类型的扩展正在被废弃，PWA 应用不在浏览器扩展的框架内
 
 参考链接：<https://chromium.googlesource.com/chromium/src/+/HEAD/extensions/docs/extension_and_app_types.md>
 
+## 🍉 其它
+
+本项目基于 [lxieyang/chrome-extension-boilerplate-react](https://github.com/lxieyang/chrome-extension-boilerplate-react ) 构建
+
 ---
 
 [<img src="src/assets/img/buymeacoffee.svg" width="128"/>](https://www.buymeacoffee.com/jgrass/extension-manager)
