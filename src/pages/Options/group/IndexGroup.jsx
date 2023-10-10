@@ -89,9 +89,16 @@ function GroupManagement() {
       // 切换分组之后，就删除 URL 参数中的 ID
       searchParams.delete("id")
       navigate(`?${searchParams.toString()}`, { replace: true })
+    } else {
+      messageApi.warning(`Group ${paramGroupId} not found`)
+      setTimeout(() => {
+        searchParams.delete("id")
+        navigate(`?${searchParams.toString()}`, { replace: true })
+      }, 2000)
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupListInfo, paramGroupId])
+  }, [groupListInfo, paramGroupId, messageApi])
 
   // 更新分组数据
   useEffect(() => {
