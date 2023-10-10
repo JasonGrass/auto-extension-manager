@@ -35,6 +35,12 @@ function RuleSetting() {
 
     storage.rule.get().then((list) => {
       setRuleConfigs(list)
+
+      analytics.fireEvent("rule_setting_open", {
+        totalCount: list.length,
+        enableCount: list.filter((r) => r.enable).length,
+        disableCount: list.filter((r) => !r.enable).length
+      })
     })
   }, [])
 
@@ -49,7 +55,7 @@ function RuleSetting() {
       await storage.rule.deleteOne(id)
       updateRuleConfig()
 
-      analytics.fireEvent("rule-delete", {
+      analytics.fireEvent("rule_delete", {
         total_count: ruleConfigs.length - 1
       })
     },
@@ -57,7 +63,7 @@ function RuleSetting() {
       await storage.rule.addOne(record)
       updateRuleConfig()
 
-      analytics.fireEvent("rule-add", {
+      analytics.fireEvent("rule_add", {
         total_count: ruleConfigs.length + 1
       })
     },
@@ -65,7 +71,7 @@ function RuleSetting() {
       await storage.rule.update(record)
       updateRuleConfig()
 
-      analytics.fireEvent("rule-update", {
+      analytics.fireEvent("rule_update", {
         total_count: ruleConfigs.length
       })
     },
@@ -73,7 +79,7 @@ function RuleSetting() {
       await storage.rule.duplicate(record)
       updateRuleConfig()
 
-      analytics.fireEvent("rule-duplicate", {
+      analytics.fireEvent("rule_duplicate", {
         total_count: ruleConfigs.length + 1
       })
     }
