@@ -88,4 +88,4 @@ This project is built based on [lxieyang/chrome-extension-boilerplate-react](htt
 
 ---
 
-[<img src="src/assets/img/buymeacoffee.svg" width="128"/>](https://www.buymeacoffee.com/jgrass/extension-manager?utm_source=readmeen)
+[<img src="src/assets/img/buymeacoffee.svg" width="128" alt="buy me a coffee"/>](https://www.buymeacoffee.com/jgrass/extension-manager?utm_source=readmeen)

@@ -1,4 +1,4 @@
-<img src="src/assets/img/design-devin/Light-128.png" width="64"/>
+<img src="src/assets/img/design-devin/Light-128.png" width="64" alt="logo"/>
 
 # Extension Manager
 
@@ -92,4 +92,4 @@ APP 类型的扩展正在被废弃，PWA 应用不在浏览器扩展的框架内
 
 ---
 
-[<img src="src/assets/img/buymeacoffee.svg" width="128"/>](https://www.buymeacoffee.com/jgrass/extension-manager?utm_source=readmecn)
+[<img src="src/assets/img/buymeacoffee.svg" width="128" alt="buy me a coffee"/>](https://www.buymeacoffee.com/jgrass/extension-manager?utm_source=readmecn)
