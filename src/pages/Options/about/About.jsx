@@ -88,7 +88,7 @@ ${navigator.userAgent}`
 
   const openSponsorPage = () => {
     chrome.tabs.create({
-      url: "https://www.buymeacoffee.com/jgrass/extension-manager"
+      url: "https://www.buymeacoffee.com/jgrass/extension-manager?utm_source=extension"
     })
   }
 
