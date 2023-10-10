@@ -62,7 +62,7 @@ export class ExtensionIconBuilder {
   }
 
   public async exec(force: boolean = false) {
-    // 因为是好性能的操作，不必每次都执行。
+    // 因为是耗性能的操作，不必每次都执行。
     const isAnyNewInstalled = await this.localOptions.getNeedBuildExtensionIcon()
     if (!force && !isAnyNewInstalled) {
       return
@@ -74,7 +74,12 @@ export class ExtensionIconBuilder {
 
     for (const key of keys) {
       const extension = await this.repo.get(key)
-      if (!extension || extension.icon) {
+      if (!extension) {
+        continue
+      }
+
+      if (extension.icon && !extension.needUpdateIcon) {
+        // 如果不是新安装或者扩展有更新，在 extension.icon 存在的情况下，不需要重新构建 ICON
         continue
       }
 

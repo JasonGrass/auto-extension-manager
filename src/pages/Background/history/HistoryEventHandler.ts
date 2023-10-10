@@ -103,21 +103,25 @@ export class HistoryEventRaiser {
       time = { updateDate: Date.now() }
     }
 
-    // 更新记录
+    // 更新旧缓存
     if (old) {
       this.EM.Extension.service.setExtension({
         ...old,
         ...info,
         state: "install",
         recordUpdateTime: Date.now(),
-        ...time
+        ...time,
+        needUpdateIcon: true
       })
-    } else {
+    }
+    // 添加新缓存
+    else {
       this.EM.Extension.service.setExtension({
         ...info,
         state: "install",
         recordUpdateTime: Date.now(),
-        ...time
+        ...time,
+        needUpdateIcon: true
       })
     }
 
