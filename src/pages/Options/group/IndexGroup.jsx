@@ -8,6 +8,7 @@ import chromeP from "webext-polyfill-kinda"
 
 import storage from ".../storage/sync"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper"
+import analytics from ".../utils/googleAnalyze.js"
 import { getLang, isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
 import GroupContent from "./GroupContent.jsx"
@@ -70,6 +71,10 @@ function GroupManagement() {
 
     storage.group.getGroups().then((groups) => {
       setGroupListInfo(groups)
+
+      analytics.fireEvent("group_setting_open", {
+        totalCount: groups.length
+      })
     })
   }, [])
 

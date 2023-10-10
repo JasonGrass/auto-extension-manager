@@ -5,6 +5,7 @@ import { Popconfirm, Switch, message } from "antd"
 import classNames from "classnames"
 
 import storage from ".../storage/sync"
+import analytics from ".../utils/googleAnalyze.js"
 import { sendMessage } from ".../utils/messageHelper.js"
 import { getLang, isStringEmpty } from ".../utils/utils.js"
 import Title from "../Title.jsx"
@@ -54,11 +55,17 @@ function Scene() {
         setSelectedScene(one)
       }
     }
+
+    return all
   }
 
   // 初始化
   useEffect(() => {
-    fetchScene()
+    fetchScene().then((list) => {
+      analytics.fireEvent("scene_setting_open", {
+        totalCount: list.length
+      })
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

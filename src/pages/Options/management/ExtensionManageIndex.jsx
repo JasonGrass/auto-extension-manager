@@ -4,6 +4,7 @@ import chromeP from "webext-polyfill-kinda"
 
 import storage from ".../storage/sync"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
+import analytics from ".../utils/googleAnalyze.js"
 import { getLang } from "../../../utils/utils.js"
 import Title from "../Title.jsx"
 import ExtensionManage from "./ExtensionManage.jsx"
@@ -31,6 +32,10 @@ const ExtensionManageIndex = () => {
     ready()
     storage.management.get().then((res) => {
       setManagementConfig(res)
+
+      analytics.fireEvent("alias_setting_open", {
+        totalCount: res.extensions.length
+      })
     })
   }, [])
 
