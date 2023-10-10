@@ -38,6 +38,7 @@ const ViewRule = memo((props) => {
     }
   }, [configs])
 
+  // 处理 URL 从的参数 id，如果存在，则高亮显示这条规则
   useEffect(() => {
     if (!paramRuleId) {
       return
@@ -51,6 +52,16 @@ const ViewRule = memo((props) => {
     }, 3000)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paramRuleId])
+
+  // 如果有 selectedRuleId 但没有找到，则给出提示
+  useEffect(() => {
+    if (!selectedRuleId || records === undefined || records.length === 0) {
+      return
+    }
+    if (!records.find((c) => c.id === selectedRuleId)) {
+      messageApi.warning(`Rule ${selectedRuleId} not found`)
+    }
+  }, [records, selectedRuleId, messageApi])
 
   const onAdd = () => {
     setEditingConfig({})
