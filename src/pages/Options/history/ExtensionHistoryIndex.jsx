@@ -60,10 +60,12 @@ const ExtensionManageIndex = () => {
       hiddenExtIds = await forage.getItem("hidden_ext_ids")
       if (!hiddenExtIds) {
         await forage.setItem("hidden_ext_ids", [])
+        hiddenExtIds = []
       }
     } catch (error) {
       console.warn("read hidden_ext_ids fail.", error)
       await forage.setItem("hidden_ext_ids", [])
+      hiddenExtIds = []
     }
 
     const shownRecords = records.filter((item) => !hiddenExtIds.includes(item.extensionId))
