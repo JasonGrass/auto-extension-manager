@@ -2,6 +2,7 @@ import chromeP from "webext-polyfill-kinda"
 
 import type { IExtensionManager } from ".../types/global"
 import logger from ".../utils/logger"
+import { ExtensionRecord } from "../extension/ExtensionRecord"
 import { HistoryService } from "./HistoryService"
 import { HistoryRecord } from "./Record"
 
@@ -27,10 +28,14 @@ export class HistoryEventHandler {
       const self = await chromeP.management.getSelf()
       const record = HistoryRecord.buildPlain(self, "install")
       await this.service.add(record)
+
+      this._output.updateExtensionCacheAfterInstall(self, null, true)
     } else if (info.reason === "update") {
       const self = await chromeP.management.getSelf()
       const record = HistoryRecord.buildPlain(self, "updated")
       await this.service.add(record)
+
+      this._output.updateExtensionCacheAfterInstall(self, null, false)
     } else if (info.reason === "chrome_update") {
       // 浏览器更新，但是在 background 中无法知道当前的浏览器版本
     }
@@ -94,18 +99,39 @@ export class HistoryEventRaiser {
   public async onInstalled(info: chrome.management.ExtensionInfo) {
     const old = await this.EM.Extension.service.getExtension(info.id)
 
-    let time = {}
+    let isInstall = false
     if (!old || !old.state || old.state === "uninstall") {
-      this.service.add(HistoryRecord.buildPlain(info, "install"))
+      isInstall = true
+      await this.service.add(HistoryRecord.buildPlain(info, "install"))
+    } else {
+      await this.service.add(HistoryRecord.buildPlain(info, "updated"))
+    }
+
+    await this.updateExtensionCacheAfterInstall(info, old, isInstall)
+  }
+
+  /**
+   * 在安装或更新扩展之后，更新扩展信息的本地缓存
+   */
+  public async updateExtensionCacheAfterInstall(
+    info: chrome.management.ExtensionInfo,
+    old: ExtensionRecord | null,
+    isInstall: boolean
+  ) {
+    if (!old) {
+      old = await this.EM.Extension.service.getExtension(info.id)
+    }
+
+    let time = {}
+    if (isInstall) {
       time = { installDate: Date.now() }
     } else {
-      this.service.add(HistoryRecord.buildPlain(info, "updated"))
       time = { updateDate: Date.now() }
     }
 
     // 更新旧缓存
     if (old) {
-      this.EM.Extension.service.setExtension({
+      await this.EM.Extension.service.setExtension({
         ...old,
         ...info,
         state: "install",
@@ -116,7 +142,7 @@ export class HistoryEventRaiser {
     }
     // 添加新缓存
     else {
-      this.EM.Extension.service.setExtension({
+      await this.EM.Extension.service.setExtension({
         ...info,
         state: "install",
         recordUpdateTime: Date.now(),
@@ -124,7 +150,6 @@ export class HistoryEventRaiser {
         needUpdateIcon: true
       })
     }
-
     this.EM.LocalOptions.setNeedBuildExtensionIcon(true)
   }
 
