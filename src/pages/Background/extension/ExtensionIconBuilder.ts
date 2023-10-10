@@ -89,7 +89,13 @@ export class ExtensionIconBuilder {
         if (!dataUri) {
           continue
         }
-        const info = { ...extension, ...chromeExt, icon: dataUri, recordUpdateTime: Date.now() }
+        const info = {
+          ...extension,
+          ...chromeExt,
+          icon: dataUri,
+          recordUpdateTime: Date.now(),
+          needUpdateIcon: false
+        }
         this.repo.set(info)
       } catch (error) {
         // ignore
