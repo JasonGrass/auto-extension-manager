@@ -176,6 +176,9 @@
   "history_clean_record": {
     "message": "Clear Record"
   },
+  "history_hidden_record": {
+    "message": "Hidden Records"
+  },
   "history_cause": {
     "message": "Because of"
   },

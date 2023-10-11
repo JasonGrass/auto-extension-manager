@@ -176,6 +176,9 @@
   "history_clean_record": {
     "message": "清空记录"
   },
+  "history_hidden_record": {
+    "message": "隐藏的记录"
+  },
   "history_cause": {
     "message": "由"
   },

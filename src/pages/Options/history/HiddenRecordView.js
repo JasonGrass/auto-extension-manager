@@ -4,6 +4,8 @@ import { CloseCircleOutlined } from "@ant-design/icons"
 import { Dropdown, Space } from "antd"
 import { styled } from "styled-components"
 
+import { getLang } from ".../utils/utils"
+
 const HiddenRecordView = memo(({ records, hiddenExtensionIds, recover }) => {
   const [items, setItems] = useState([])
 
@@ -54,7 +56,7 @@ const HiddenRecordView = memo(({ records, hiddenExtensionIds, recover }) => {
   return (
     <div>
       <Dropdown.Button menu={multiMenu()} trigger={["hover"]} placement="bottomLeft">
-        隐藏的记录
+        {getLang("history_hidden_record")}
       </Dropdown.Button>
     </div>
   )
