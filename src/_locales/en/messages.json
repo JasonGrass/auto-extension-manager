@@ -215,6 +215,9 @@
   "history_browser_update": {
     "message": "Browser Updated"
   },
+  "management_show_operation": {
+    "message": "Show operating menu"
+  },
   "alias_exist": {
     "message": "Has alias"
   },

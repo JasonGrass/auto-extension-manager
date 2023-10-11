@@ -34,4 +34,8 @@ export const ExtensionManageStyle = styled.div`
   .ant-form-item {
     margin-bottom: 8px;
   }
+
+  .column-hidden {
+    display: none;
+  }
 `

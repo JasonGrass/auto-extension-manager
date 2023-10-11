@@ -215,6 +215,9 @@
   "history_browser_update": {
     "message": "浏览器更新"
   },
+  "management_show_operation": {
+    "message": "显示操作菜单"
+  },
   "alias_exist": {
     "message": "存在别名"
   },

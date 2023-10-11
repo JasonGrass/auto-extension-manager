@@ -2,6 +2,7 @@ import React, { memo, useEffect, useState } from "react"
 
 import { Button, Checkbox, Form, Input, Table, message } from "antd"
 import classNames from "classnames"
+import localforage from "localforage"
 
 import storage from ".../storage/sync"
 import { getIcon, sortExtension } from ".../utils/extensionHelper"
@@ -13,6 +14,13 @@ import ExtensionNameItem from "./ExtensionNameItem"
 import ExtensionOperationItem from "./ExtensionOperationItem"
 
 const { Search } = Input
+
+const forage = localforage.createInstance({
+  driver: localforage.LOCALSTORAGE,
+  name: "LocalOptions",
+  version: 1.0,
+  storeName: "management"
+})
 
 const ExtensionManage = memo(({ extensions, config }) => {
   const [messageApi, contextHolder] = message.useMessage()
@@ -32,6 +40,8 @@ const ExtensionManage = memo(({ extensions, config }) => {
   const [searchNoAlias, setSearchNoAlias] = useState(false)
   // 搜索 没有设置备注
   const [searchNoRemark, setSearchNoRemark] = useState(false)
+  // 操作
+  const [showOperation, setShowOperation] = useState(false)
 
   // 初始化
   useEffect(() => {
@@ -39,6 +49,14 @@ const ExtensionManage = memo(({ extensions, config }) => {
     setData(initData)
     setShownData(initData)
   }, [extensions, config])
+
+  useEffect(() => {
+    const init = async () => {
+      const show = await forage.getItem("showOperationColumn")
+      setShowOperation(show ?? false)
+    }
+    init()
+  }, [])
 
   // 搜索
   useEffect(() => {
@@ -119,6 +137,7 @@ const ExtensionManage = memo(({ extensions, config }) => {
       title: getLang("rule_column_operation"),
       key: "operation",
       width: 180,
+      className: showOperation ? "" : "column-hidden",
       render: (_, record, index) => {
         return <ExtensionOperationItem record={record}></ExtensionOperationItem>
       }
@@ -146,6 +165,16 @@ const ExtensionManage = memo(({ extensions, config }) => {
           onSearch={onSearch}
           onChange={(e) => onSearch(e.target.value)}
         />
+
+        <Checkbox
+          checked={showOperation}
+          onChange={(e) => {
+            setShowOperation(e.target.checked)
+            forage.setItem("showOperationColumn", e.target.checked)
+          }}
+          className="search-checkbox">
+          {getLang("management_show_operation")}
+        </Checkbox>
 
         <Checkbox
           checked={searchExistAlias}
