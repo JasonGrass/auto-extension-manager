@@ -245,7 +245,7 @@ const ExpandEditor = ({ record, reload, messageApi }) => {
         </Form.Item>
         <Form.Item
           wrapperCol={{
-            offset: 1
+            offset: 2
           }}>
           <Button type="primary" htmlType="submit" style={{ width: 100 }}>
             {getLang("save")}
