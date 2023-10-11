@@ -1,653 +1,659 @@
 {
-   "about_desc": {
-      "message": "ルールに基づいてブラウザの拡張機能を自動的に有効または無効にする拡張機能"
-   },
-   "about_feedback": {
-      "message": "フィードバック"
-   },
-   "about_help": {
-      "message": "ヘルプ"
-   },
-   "about_storage_usage": {
-      "message": "ブラウザ同期ストレージの使用 プロファイル($1), グループ($2), 別名($3), ルール($4)"
-   },
-   "about_title": {
-      "message": "概要"
-   },
-   "about_version": {
-      "message": "バージョン"
-   },
-   "about_version_update_tip": {
-      "message": "バージョンが低すぎます。"
-   },
-   "add": {
-      "message": "追加"
-   },
-   "alias_empty": {
-      "message": "別名なし"
-   },
-   "alias_exist": {
-      "message": "別名あり"
-   },
-   "alias_max_length": {
-      "message": "別名の最大文字数は50文字です。"
-   },
-   "alias_remark_empty": {
-      "message": "コメントなし"
-   },
-   "alias_remark_exist": {
-      "message": "コメントあり"
-   },
-   "alias_remark_max_length": {
-      "message": "コメントの最大文字数は100文字です。"
-   },
-   "alias_title": {
-      "message": "別名"
-   },
-   "app_not_enable": {
-      "message": "無効"
-   },
-   "cancel": {
-      "message": "キャンセル"
-   },
-   "column_alias": {
-      "message": "別名"
-   },
-   "column_event": {
-      "message": "イベント"
-   },
-   "column_extension": {
-      "message": "拡張機能"
-   },
-   "column_index": {
-      "message": "引数"
-   },
-   "column_name": {
-      "message": "イベント名"
-   },
-   "column_remark": {
-      "message": "コメント"
-   },
-   "column_time": {
-      "message": "時間"
-   },
-   "column_version": {
-      "message": "バージョン"
-   },
-   "delete": {
-      "message": "削除"
-   },
-   "disable_extension": {
-      "message": "無効化"
-   },
-   "enable_extension": {
-      "message": "有効化"
-   },
-   "end": {
-      "message": "終了"
-   },
-   "ext_desc": {
-      "message": "Chrome 拡張機能を管理する簡単な方法"
-   },
-   "ext_name": {
-      "message": "拡張機能マネージャー"
-   },
-   "extension_not_enable": {
-      "message": "拡張機能が有効になっていません"
-   },
-   "got_it": {
-      "message": "取得"
-   },
-   "group_delete_confirm": {
-      "message": "グループ\"$1\"を削除しますか？"
-   },
-   "group_delete_title": {
-      "message": "削除"
-   },
-   "group_desc": {
-      "message": "説明"
-   },
-   "group_edit": {
-      "message": "グループの編集"
-   },
-   "group_fixed_desc": {
-      "message": "これは固定のグループであり、ポップアップでグループを手動で切り替えても、このグループ内の拡張機能は無効になりません。通常、永続的な拡張機能はこのグループに配置されます。注: 特定の拡張機能がルールで無効になるように設定されている場合、それが固定グループに含まれている場合でも、無効になります。"
-   },
-   "group_fixed_name": {
-      "message": "固定グループ"
-   },
-   "group_hidden_desc": {
-      "message": "これはビルドイングループで、このグループ内の拡張機能はポップアップに表示されません。"
-   },
-   "group_hidden_name": {
-      "message": "非表示グループ"
-   },
-   "group_include": {
-      "message": "\"$1\"の拡張機能"
-   },
-   "group_inner_cannot_delete": {
-      "message": "ビルドイングループは削除できません。"
-   },
-   "group_inner_cannot_edit": {
-      "message": "ビルドイングループは編集できません。"
-   },
-   "group_may_redundant": {
-      "message": "反復操作の可能性"
-   },
-   "group_may_redundant_desc": {
-      "message": "この拡張機能はすでに固定グループにあり、グループを切り替えると拡張機能は常にアクティブになります。"
-   },
-   "group_name": {
-      "message": "グループ名"
-   },
-   "group_name_cannot_empty": {
-      "message": "グループ名を空にすることはできません。"
-   },
-   "group_new": {
-      "message": "新しいグループ"
-   },
-   "group_no_group_name": {
-      "message": "グループなし"
-   },
-   "group_not_include": {
-      "message": "含まれていない"
-   },
-   "group_not_include_hidden_fixed": {
-      "message": "\"固定グループ\"の拡張機能を隠す"
-   },
-   "group_not_include_hidden_hidden": {
-      "message": "\"非表示グループ\"の拡張機能を隠す"
-   },
-   "group_not_include_hidden_other": {
-      "message": "他のグループの拡張機能を隠す"
-   },
-   "group_select_all": {
-      "message": "すべて"
-   },
-   "group_title": {
-      "message": "グループ"
-   },
-   "group_unselect": {
-      "message": "選択解除"
-   },
-   "help": {
-      "message": "ヘルプ"
-   },
-   "history_browser_update": {
-      "message": "ブラウザの更新"
-   },
-   "history_cause": {
-      "message": "理由:"
-   },
-   "history_clean_record": {
-      "message": "記録の消去"
-   },
-   "history_disable": {
-      "message": "無効化"
-   },
-   "history_enable": {
-      "message": "有効化"
-   },
-   "history_install": {
-      "message": "インストール"
-   },
-   "history_manage_extension": {
-      "message": "この拡張機能の詳細ページを開く"
-   },
-   "history_raise": {
-      "message": ""
-   },
-   "history_rule": {
-      "message": "ルール"
-   },
-   "history_switch_group": {
-      "message": "スイッチグループ"
-   },
-   "history_title": {
-      "message": "履歴"
-   },
-   "history_uninstall": {
-      "message": "アンインストール"
-   },
-   "history_update": {
-      "message": "更新"
-   },
-   "no_more_prompts": {
-      "message": "プロンプトを表示しない"
-   },
-   "remove_extension": {
-      "message": "削除"
-   },
-   "remove_extension_confirm": {
-      "message": "'$1'を削除しますか？"
-   },
-   "rule_action_auto_reload_when_disable": {
-      "message": "無効化後に現在のタブを再読み込み"
-   },
-   "rule_action_auto_reload_when_enable": {
-      "message": "有効化後に現在のタブを再読み込み"
-   },
-   "rule_action_close_only_when_matched": {
-      "message": "一致した場合のみ無効にする"
-   },
-   "rule_action_close_only_when_matched_desc": {
-      "message": "一致した場合のみ無効にする:条件を満たすと自動的に無効にする。条件を満たさない場合は自動的に有効にする。"
-   },
-   "rule_action_close_when_match_desc": {
-      "message": "一致した場合に無効にする:条件を満たすと自動的に拡張機能を無効にする。(自動的には有効になりません)。"
-   },
-   "rule_action_close_when_matched": {
-      "message": "一致した場合に無効にする"
-   },
-   "rule_action_custom": {
-      "message": "カスタム"
-   },
-   "rule_action_custom_desc": {
-      "message": "拡張機能を有効または無効にするタイミングをカスタマイズします。"
-   },
-   "rule_action_delete_action": {
-      "message": "削除"
-   },
-   "rule_action_help": {
-      "message": "ヘルプ"
-   },
-   "rule_action_no_any_action": {
-      "message": "アクションが設定されていない"
-   },
-   "rule_action_none": {
-      "message": "なし"
-   },
-   "rule_action_none_desc": {
-      "message": "拡張機能を自動的に有効/無効にしない"
-   },
-   "rule_action_open_only_when_matched": {
-      "message": "一致した場合のみ有効にする"
-   },
-   "rule_action_open_only_when_matched_desc": {
-      "message": "一致した場合のみ有効にする:条件を満たすと自動的に有効にする。条件を満たさない場合は自動的に無効にする。"
-   },
-   "rule_action_open_when_matched": {
-      "message": "一致した場合に有効にする"
-   },
-   "rule_action_open_when_matched_desc": {
-      "message": "一致した場合に有効にする:条件を満たすと自動的に拡張機能を有効にする。(自動的には無効になりません)。"
-   },
-   "rule_action_please_select_action": {
-      "message": "アクションタイプを選択します。"
-   },
-   "rule_action_title": {
-      "message": "アクション"
-   },
-   "rule_action_top_extension": {
-      "message": "ポップアップの上部に拡張機能を表示する"
-   },
-   "rule_action_top_title": {
-      "message": "トップに固定する"
-   },
-   "rule_add": {
-      "message": "追加"
-   },
-   "rule_column_action": {
-      "message": "アクション"
-   },
-   "rule_column_extensions": {
-      "message": "拡張機能/グループ"
-   },
-   "rule_column_match": {
-      "message": "一致"
-   },
-   "rule_column_operation": {
-      "message": "操作"
-   },
-   "rule_edit_save_error_limit": {
-      "message": "保存に失敗しました。ブラウザのストレージ制限を超えました。"
-   },
-   "rule_match_url_tip": {
-      "message": "URLマッチングは、デフォルトでは現在開いているブラウザのタブに基づいて計算されます。タブを切り替えると、URLマッチングが変更されます。その他のマッチングオプションについては、カスタマイズ設定で設定できます。(URLマッチングの条件がない場合は、この問題を心配する必要はありません)。"
-   },
-   "rule_set_match_add": {
-      "message": "マッチング条件の追加"
-   },
-   "rule_set_match_all": {
-      "message": "以下の条件をすべて満たす"
-   },
-   "rule_set_match_any": {
-      "message": "以下の条件のいずれかと一致する"
-   },
-   "rule_set_match_at_least_one": {
-      "message": "[一致する条件] 少なくとも1つの一致する条件を追加してください。"
-   },
-   "rule_set_match_cannot_duplicate": {
-      "message": "重複した条件は追加できません $1"
-   },
-   "rule_set_match_title": {
-      "message": "マッチング条件"
-   },
-   "rule_set_target_no_any_extension": {
-      "message": "拡張機能が存在しません"
-   },
-   "rule_set_target_no_any_target": {
-      "message": "対象として拡張機能または拡張機能グループが選択されていない"
-   },
-   "rule_set_target_no_selected_extension": {
-      "message": "拡張機能が選択されていない"
-   },
-   "rule_set_target_other_extension": {
-      "message": "左の拡張機能"
-   },
-   "rule_set_target_select_extension": {
-      "message": "選択された拡張機能"
-   },
-   "rule_set_target_select_extension_group": {
-      "message": "選択された拡張機能グループ"
-   },
-   "rule_set_target_title": {
-      "message": "対象: 拡張機能またはグループ"
-   },
-   "rule_set_time_of_disable": {
-      "message": "(拡張機能を無効にする) 対象の拡張機能を無効にします。"
-   },
-   "rule_set_time_of_enable": {
-      "message": "(拡張機能を有効にする) 対象の拡張機能を有効にします。"
-   },
-   "rule_set_url_disable_all_not_match": {
-      "message": "すべてのタブに一致しない (URLパターンがどのタブにも一致しない場合にのみ拡張機能が無効になります)"
-   },
-   "rule_set_url_disable_any_match": {
-      "message": "すべてのタブに一致 (URLパターンがどのタブにも一致する場合、拡張機能が無効になります)"
-   },
-   "rule_set_url_disable_current_match": {
-      "message": "現在のタブに一致 (URLパターンが現在のタブに一致する場合のみ拡張機能が無効になります)"
-   },
-   "rule_set_url_disable_current_not_match": {
-      "message": "現在のタブに一致しない (URLパターンが現在のタブに一致しない場合、拡張機能が無効になります)"
-   },
-   "rule_set_url_enable_all_not_match": {
-      "message": "すべてのタブに一致しない (URLパターンがどのタブにも一致しない場合にのみ拡張機能が有効になります)"
-   },
-   "rule_set_url_enable_any_match": {
-      "message": "すべてのタブに一致 (URLパターンがどのタブにも一致する場合、拡張機能が有効になります)"
-   },
-   "rule_set_url_enable_current_match": {
-      "message": "現在のタブに一致 (URLパターンが現在のタブに一致する場合のみ拡張機能が有効になります)"
-   },
-   "rule_set_url_enable_current_not_match": {
-      "message": "現在のタブに一致しない (URLパターンが現在のタブに一致しない場合、拡張機能が有効になります)"
-   },
-   "rule_set_url_match_method_disable": {
-      "message": "(拡張機能を無効にする) URL の一致方法"
-   },
-   "rule_set_url_match_method_enable": {
-      "message": "(拡張機能を有効にする) URLの一致方法"
-   },
-   "rule_set_url_not_match_method_disable": {
-      "message": "(拡張機能を無効にする) URLが一致しない方法"
-   },
-   "rule_set_url_not_match_method_enable": {
-      "message": "(拡張機能を有効にする) URLが一致しない方法"
-   },
-   "rule_set_when_disable_none": {
-      "message": "自動的に無効にしない"
-   },
-   "rule_set_when_enable_none": {
-      "message": "自動的に有効にしない"
-   },
-   "rule_set_when_match": {
-      "message": "条件が一致する場合"
-   },
-   "rule_set_when_not_match": {
-      "message": "条件が一致しない場合"
-   },
-   "rule_tip_no_set_time": {
-      "message": "[動作】 拡張機能の有効・無効を設定しない"
-   },
-   "rule_tip_no_set_url_method_disable": {
-      "message": "[動作] (拡張機能を無効にする) URL マッチングの計算方法を設定しない"
-   },
-   "rule_tip_no_set_url_method_enable": {
-      "message": "[動作] (拡張機能を有効にする) URL マッチングの計算方法を設定しない"
-   },
-   "rule_title": {
-      "message": "ルール"
-   },
-   "rule_trigger_os_name": {
-      "message": "オペレーティングシステム"
-   },
-   "rule_trigger_period_name": {
-      "message": "期間"
-   },
-   "rule_trigger_scene_name": {
-      "message": "プロファイル"
-   },
-   "rule_trigger_url_name": {
-      "message": "URL"
-   },
-   "rule_view_match_url_tip": {
-      "message": "$1と合計$2個のURL"
-   },
-   "save": {
-      "message": "セーブ"
-   },
-   "scene_add_new": {
-      "message": "プロファイルを追加"
-   },
-   "scene_cancel_all": {
-      "message": "すべてキャンセル"
-   },
-   "scene_current_active": {
-      "message": "現在アクティブなプロファイル"
-   },
-   "scene_current_active_none": {
-      "message": "アクティブなプロファイルはありません"
-   },
-   "scene_edit_desc": {
-      "message": "プロファイルの説明"
-   },
-   "scene_edit_name": {
-      "message": "プロファイル名"
-   },
-   "scene_edit_title": {
-      "message": "プロファイルの編集"
-   },
-   "scene_title": {
-      "message": "プロファイル"
-   },
-   "setting_clear_confirm_content": {
-      "message": "この操作は、設定、プロファイル、グループ、別名、ルールなどを含むすべてのデータを削除します。"
-   },
-   "setting_clear_confirm_title": {
-      "message": "すべての構成と設定を削除する"
-   },
-   "setting_clear_title": {
-      "message": "設定の消去"
-   },
-   "setting_dark_mode_dark": {
-      "message": "ダーク"
-   },
-   "setting_dark_mode_light": {
-      "message": "ライト"
-   },
-   "setting_dark_mode_system": {
-      "message": "システム"
-   },
-   "setting_dark_mode_title": {
-      "message": "ダークモード"
-   },
-   "setting_export_config": {
-      "message": "設定ファイルのエクスポート"
-   },
-   "setting_func_group_allow_multi": {
-      "message": "↑ 複数のグループを選択可能"
-   },
-   "setting_func_witch_group": {
-      "message": "グループ切り替え時、現在のグループ内の拡張機能を有効にし、それ以外を無効にします。"
-   },
-   "setting_func_witch_group_tip": {
-      "message": "有効化後、ポップアップでグループ切り替え時、固定グループまたは現在のグループにない拡張機能はすべて無効になります。"
-   },
-   "setting_import_config": {
-      "message": "設定ファイルのインポート"
-   },
-   "setting_import_fail": {
-      "message": "インポート失敗"
-   },
-   "setting_import_finish": {
-      "message": "インポート成功"
-   },
-   "setting_list_gird_show_column_number": {
-      "message": "グリッド表示: 列番号 "
-   },
-   "setting_list_gird_show_disable_gray": {
-      "message": "グリッド表示: 無効な拡張機能をグレーアウト表示"
-   },
-   "setting_list_gird_show_menu_right_click": {
-      "message": "グリッド表示: マウスの右クリックで操作メニューを表示"
-   },
-   "setting_list_gird_show_name": {
-      "message": "グリッド表示: 拡張機能名の表示"
-   },
-   "setting_list_gird_show_name_tip": {
-      "message": "拡張機能の別名が設定されている場合は、別名が表示されます。"
-   },
-   "setting_list_sort_type": {
-      "message": "並び替え:起動頻度に基づいて拡張機能を並べ替えます。"
-   },
-   "setting_list_sort_type_tip": {
-      "message": "デフォルトではアルファベット順"
-   },
-   "setting_list_view_show_button": {
-      "message": "リスト表示: ショートカットアクションボタンを常に表示する（デフォルトはホバーで表示）"
-   },
-   "setting_popup_function_setting": {
-      "message": "ポップアップ機能の設定"
-   },
-   "setting_popup_setting_display": {
-      "message": "コンテンツ表示"
-   },
-   "setting_popup_setting_other": {
-      "message": "その他"
-   },
-   "setting_popup_setting_search": {
-      "message": "検索"
-   },
-   "setting_popup_ui_setting": {
-      "message": "ポップアップ表示設定"
-   },
-   "setting_restore_default": {
-      "message": "デフォルトに戻す"
-   },
-   "setting_restore_default_tip": {
-      "message": "環境設定をデフォルトに戻す"
-   },
-   "setting_title": {
-      "message": "設定"
-   },
-   "setting_ui_search_display": {
-      "message": "検索ボックス:デフォルトで表示 (有効になっていない場合は、🔍をクリックして表示)"
-   },
-   "setting_ui_search_display_tip": {
-      "message": "ショートカットキー 'F' でも検索ボックスを開くことができます。"
-   },
-   "setting_ui_search_jump": {
-      "message": "検索ボックス:Chromeウェブストア検索をサポート"
-   },
-   "setting_ui_search_jump_tip": {
-      "message": "有効にすると、Chromeウェブストアにジャンプして検索できます。（Enterキーでクイックジャンプ）"
-   },
-   "setting_ui_search_source": {
-      "message": "検索ソース"
-   },
-   "setting_ui_show_app": {
-      "message": "アプリタイプの拡張機能を表示する"
-   },
-   "setting_ui_show_app_tip": {
-      "message": "ポップアップの下部にアプリタイプの拡張機能を表示します。アイコンをクリックすると直接アプリケーションが起動します。"
-   },
-   "setting_ui_show_by_group": {
-      "message": "グループごとの拡張機能表示"
-   },
-   "setting_ui_show_fixed_dot": {
-      "message": "固定グループ拡張機能の右上に小さな点を表示します。"
-   },
-   "setting_ui_show_fixed_extension": {
-      "message": "固定グループの拡張機能を表示する"
-   },
-   "setting_ui_show_fixed_extension_tip": {
-      "message": "固定グループの拡張機能とは常駐拡張機能です。ポップアップリストに表示させたくない場合は、このオプションを無効にします。"
-   },
-   "trigger_os_select_one": {
-      "message": "オペレーティングシステムの種類を1つ以上選択します。"
-   },
-   "trigger_os_select_tip": {
-      "message": "一致させるオペレーティングシステムを選択します。"
-   },
-   "trigger_period_action_desc": {
-      "message": "ブラウザの制限により、バックグラウンド操作は永続化できず、イベントによってトリガーされなければならない。したがって、この条件はブラウザがアクティブなときにしか一致せず、タイミングは正確ではないかもしれません。"
-   },
-   "trigger_period_cannot_greater": {
-      "message": "開始時刻は終了時刻以上にすることはできません"
-   },
-   "trigger_period_cannot_overlap": {
-      "message": "インターバルに時間の重複がある"
-   },
-   "trigger_period_end_time": {
-      "message": "終了時間"
-   },
-   "trigger_period_max": {
-      "message": "最大10個のインターバルを設定できます"
-   },
-   "trigger_period_no_any": {
-      "message": "少なくとも1つのインターバルが必要"
-   },
-   "trigger_period_no_complete": {
-      "message": "開始時刻または終了時刻がありません"
-   },
-   "trigger_period_start_time": {
-      "message": "開始時間"
-   },
-   "trigger_scene_no_any": {
-      "message": "プロファイルが選択されていない"
-   },
-   "trigger_scene_no_created": {
-      "message": "プロファイルが作成されていません。"
-   },
-   "trigger_scene_select_one": {
-      "message": "照合するプロファイル。複数のプロファイルを選択できます。"
-   },
-   "trigger_scene_select_tip": {
-      "message": "プロファイルを選択"
-   },
-   "trigger_url_add_pattern": {
-      "message": "URLパターンを追加"
-   },
-   "trigger_url_clear_empty": {
-      "message": "空の項目を削除"
-   },
-   "trigger_url_match_desc": {
-      "message": "デフォルトのURLは現在開いているタブのURLです。詳細はこちらをご覧ください。"
-   },
-   "trigger_url_match_detail_title": {
-      "message": "詳細"
-   },
-   "trigger_url_match_method_title": {
-      "message": "照合方法:"
-   },
-   "trigger_url_no_any": {
-      "message": "[マッチング条件] なし URL追加"
-   },
-   "trigger_url_regex": {
-      "message": "正規表現"
-   },
-   "trigger_url_use_full": {
-      "message": "完全なURLの使用"
-   },
-   "trigger_url_use_full_desc": {
-      "message": "デフォルトでは、URLのクエリパラメータとアンカー部分は考慮されません。"
-   },
-   "trigger_url_wildcard": {
-      "message": "ワイルドカード"
-   },
-   "update": {
-      "message": "更新"
-   }
+  "ext_name": {
+    "message": "拡張機能マネージャー"
+  },
+  "ext_desc": {
+    "message": "Chrome 拡張機能を管理する簡単な方法"
+  },
+  "add": {
+    "message": "追加"
+  },
+  "update": {
+    "message": "更新"
+  },
+  "cancel": {
+    "message": "キャンセル"
+  },
+  "save": {
+    "message": "セーブ"
+  },
+  "help": {
+    "message": "ヘルプ"
+  },
+  "delete": {
+    "message": "削除"
+  },
+  "got_it": {
+    "message": "取得"
+  },
+  "no_more_prompts": {
+    "message": "プロンプトを表示しない"
+  },
+  "scene_title": {
+    "message": "プロファイル"
+  },
+  "scene_cancel_all": {
+    "message": "すべてキャンセル"
+  },
+  "group_title": {
+    "message": "グループ"
+  },
+  "group_unselect": {
+    "message": "選択解除"
+  },
+  "group_select_all": {
+    "message": "すべて"
+  },
+  "group_include": {
+    "message": "\"$1\"の拡張機能"
+  },
+  "group_not_include": {
+    "message": "含まれていない"
+  },
+  "group_not_include_hidden_fixed": {
+    "message": "\"固定グループ\"の拡張機能を隠す"
+  },
+  "group_not_include_hidden_hidden": {
+    "message": "\"非表示グループ\"の拡張機能を隠す"
+  },
+  "group_not_include_hidden_other": {
+    "message": "他のグループの拡張機能を隠す"
+  },
+  "group_new": {
+    "message": "新しいグループ"
+  },
+  "group_edit": {
+    "message": "グループの編集"
+  },
+  "group_name_cannot_empty": {
+    "message": "グループ名を空にすることはできません。"
+  },
+  "group_name": {
+    "message": "グループ名"
+  },
+  "group_desc": {
+    "message": "説明"
+  },
+  "group_fixed_name": {
+    "message": "固定グループ"
+  },
+  "group_fixed_desc": {
+    "message": "これは固定のグループであり、ポップアップでグループを手動で切り替えても、このグループ内の拡張機能は無効になりません。通常、永続的な拡張機能はこのグループに配置されます。注: 特定の拡張機能がルールで無効になるように設定されている場合、それが固定グループに含まれている場合でも、無効になります。"
+  },
+  "group_hidden_name": {
+    "message": "非表示グループ"
+  },
+  "group_hidden_desc": {
+    "message": "これはビルドイングループで、このグループ内の拡張機能はポップアップに表示されません。"
+  },
+  "group_no_group_name": {
+    "message": "グループなし"
+  },
+  "group_inner_cannot_edit": {
+    "message": "ビルドイングループは編集できません。"
+  },
+  "group_inner_cannot_delete": {
+    "message": "ビルドイングループは削除できません。"
+  },
+  "group_delete_title": {
+    "message": "削除"
+  },
+  "group_delete_confirm": {
+    "message": "グループ\"$1\"を削除しますか？"
+  },
+  "group_may_redundant": {
+    "message": "反復操作の可能性"
+  },
+  "group_may_redundant_desc": {
+    "message": "この拡張機能はすでに固定グループにあり、グループを切り替えると拡張機能は常にアクティブになります。"
+  },
+  "enable_extension": {
+    "message": "有効化"
+  },
+  "disable_extension": {
+    "message": "無効化"
+  },
+  "remove_extension": {
+    "message": "削除"
+  },
+  "remove_extension_confirm": {
+    "message": "'$1'を削除しますか？"
+  },
+  "extension_not_enable": {
+    "message": "拡張機能が有効になっていません"
+  },
+  "app_not_enable": {
+    "message": "無効"
+  },
+  "about_title": {
+    "message": "概要"
+  },
+  "about_desc": {
+    "message": "ルールに基づいてブラウザの拡張機能を自動的に有効または無効にする拡張機能"
+  },
+  "about_feedback": {
+    "message": "フィードバック"
+  },
+  "about_help": {
+    "message": "ヘルプ"
+  },
+  "about_version": {
+    "message": "バージョン"
+  },
+  "about_version_update_tip": {
+    "message": "バージョンが低すぎます。"
+  },
+  "about_storage_usage": {
+    "message": "ブラウザ同期ストレージの使用 プロファイル($1), グループ($2), 別名($3), ルール($4)"
+  },
+  "column_index": {
+    "message": "引数"
+  },
+  "column_time": {
+    "message": "時間"
+  },
+  "column_event": {
+    "message": "イベント"
+  },
+  "column_name": {
+    "message": "イベント名"
+  },
+  "column_version": {
+    "message": "バージョン"
+  },
+  "column_remark": {
+    "message": "コメント"
+  },
+  "column_extension": {
+    "message": "拡張機能"
+  },
+  "column_alias": {
+    "message": "別名"
+  },
+  "history_absolute_time": {
+    "message": "絶対時間"
+  },
+  "history_clean_record": {
+    "message": "記録の消去"
+  },
+  "history_hidden_record": {
+    "message": "Hidden Records"
+  },
+  "history_cause": {
+    "message": "理由:"
+  },
+  "history_raise": {
+    "message": ""
+  },
+  "history_rule": {
+    "message": "ルール"
+  },
+  "history_switch_group": {
+    "message": "スイッチグループ"
+  },
+  "history_manage_extension": {
+    "message": "この拡張機能の詳細ページを開く"
+  },
+  "history_title": {
+    "message": "履歴"
+  },
+  "history_install": {
+    "message": "インストール"
+  },
+  "history_uninstall": {
+    "message": "アンインストール"
+  },
+  "history_update": {
+    "message": "更新"
+  },
+  "history_enable": {
+    "message": "有効化"
+  },
+  "history_disable": {
+    "message": "無効化"
+  },
+  "history_browser_update": {
+    "message": "ブラウザの更新"
+  },
+  "alias_exist": {
+    "message": "別名あり"
+  },
+  "alias_remark_exist": {
+    "message": "コメントあり"
+  },
+  "alias_empty": {
+    "message": "別名なし"
+  },
+  "alias_remark_empty": {
+    "message": "コメントなし"
+  },
+  "alias_max_length": {
+    "message": "別名の最大文字数は50文字です。"
+  },
+  "alias_remark_max_length": {
+    "message": "コメントの最大文字数は100文字です。"
+  },
+  "alias_title": {
+    "message": "別名"
+  },
+  "setting_title": {
+    "message": "設定"
+  },
+  "rule_title": {
+    "message": "ルール"
+  },
+  "rule_tip_no_set_time": {
+    "message": "[動作】 拡張機能の有効・無効を設定しない"
+  },
+  "rule_tip_no_set_url_method_enable": {
+    "message": "[動作] (拡張機能を有効にする) URL マッチングの計算方法を設定しない"
+  },
+  "rule_tip_no_set_url_method_disable": {
+    "message": "[動作] (拡張機能を無効にする) URL マッチングの計算方法を設定しない"
+  },
+  "rule_set_time_of_enable": {
+    "message": "(拡張機能を有効にする) 対象の拡張機能を有効にします。"
+  },
+  "rule_set_time_of_disable": {
+    "message": "(拡張機能を無効にする) 対象の拡張機能を無効にします。"
+  },
+  "rule_set_when_enable_none": {
+    "message": "自動的に有効にしない"
+  },
+  "rule_set_when_disable_none": {
+    "message": "自動的に無効にしない"
+  },
+  "rule_set_when_match": {
+    "message": "条件が一致する場合"
+  },
+  "rule_set_when_not_match": {
+    "message": "条件が一致しない場合"
+  },
+  "rule_set_url_match_method_enable": {
+    "message": "(拡張機能を有効にする) URLの一致方法"
+  },
+  "rule_set_url_not_match_method_enable": {
+    "message": "(拡張機能を有効にする) URLが一致しない方法"
+  },
+  "rule_set_url_match_method_disable": {
+    "message": "(拡張機能を無効にする) URL の一致方法"
+  },
+  "rule_set_url_not_match_method_disable": {
+    "message": "(拡張機能を無効にする) URLが一致しない方法"
+  },
+  "rule_set_url_enable_current_match": {
+    "message": "現在のタブに一致 (URLパターンが現在のタブに一致する場合のみ拡張機能が有効になります)"
+  },
+  "rule_set_url_enable_any_match": {
+    "message": "すべてのタブに一致 (URLパターンがどのタブにも一致する場合、拡張機能が有効になります)"
+  },
+  "rule_set_url_enable_current_not_match": {
+    "message": "現在のタブに一致しない (URLパターンが現在のタブに一致しない場合、拡張機能が有効になります)"
+  },
+  "rule_set_url_enable_all_not_match": {
+    "message": "すべてのタブに一致しない (URLパターンがどのタブにも一致しない場合にのみ拡張機能が有効になります)"
+  },
+  "rule_set_url_disable_current_match": {
+    "message": "現在のタブに一致 (URLパターンが現在のタブに一致する場合のみ拡張機能が無効になります)"
+  },
+  "rule_set_url_disable_any_match": {
+    "message": "すべてのタブに一致 (URLパターンがどのタブにも一致する場合、拡張機能が無効になります)"
+  },
+  "rule_set_url_disable_current_not_match": {
+    "message": "現在のタブに一致しない (URLパターンが現在のタブに一致しない場合、拡張機能が無効になります)"
+  },
+  "rule_set_url_disable_all_not_match": {
+    "message": "すべてのタブに一致しない (URLパターンがどのタブにも一致しない場合にのみ拡張機能が無効になります)"
+  },
+  "rule_set_target_no_any_target": {
+    "message": "対象として拡張機能または拡張機能グループが選択されていない"
+  },
+  "rule_set_target_title": {
+    "message": "対象: 拡張機能またはグループ"
+  },
+  "rule_set_target_select_extension_group": {
+    "message": "選択された拡張機能グループ"
+  },
+  "rule_set_target_select_extension": {
+    "message": "選択された拡張機能"
+  },
+  "rule_set_target_no_selected_extension": {
+    "message": "拡張機能が選択されていない"
+  },
+  "rule_set_target_other_extension": {
+    "message": "左の拡張機能"
+  },
+  "rule_set_target_no_any_extension": {
+    "message": "拡張機能が存在しません"
+  },
+  "rule_trigger_url_name": {
+    "message": "URL"
+  },
+  "rule_trigger_scene_name": {
+    "message": "プロファイル"
+  },
+  "rule_trigger_os_name": {
+    "message": "オペレーティングシステム"
+  },
+  "rule_trigger_period_name": {
+    "message": "期間"
+  },
+  "rule_set_match_at_least_one": {
+    "message": "[一致する条件] 少なくとも1つの一致する条件を追加してください。"
+  },
+  "rule_set_match_cannot_duplicate": {
+    "message": "重複した条件は追加できません $1"
+  },
+  "rule_set_match_title": {
+    "message": "マッチング条件"
+  },
+  "rule_set_match_add": {
+    "message": "マッチング条件の追加"
+  },
+  "rule_set_match_all": {
+    "message": "以下の条件をすべて満たす"
+  },
+  "rule_set_match_any": {
+    "message": "以下の条件のいずれかと一致する"
+  },
+  "rule_match_url_tip": {
+    "message": "URLマッチングは、デフォルトでは現在開いているブラウザのタブに基づいて計算されます。タブを切り替えると、URLマッチングが変更されます。その他のマッチングオプションについては、カスタマイズ設定で設定できます。(URLマッチングの条件がない場合は、この問題を心配する必要はありません)。"
+  },
+  "rule_action_close_when_matched": {
+    "message": "一致した場合に無効にする"
+  },
+  "rule_action_close_when_match_desc": {
+    "message": "一致した場合に無効にする:条件を満たすと自動的に拡張機能を無効にする。(自動的には有効になりません)。"
+  },
+  "rule_action_open_only_when_matched": {
+    "message": "一致した場合のみ有効にする"
+  },
+  "rule_action_open_only_when_matched_desc": {
+    "message": "一致した場合のみ有効にする:条件を満たすと自動的に有効にする。条件を満たさない場合は自動的に無効にする。"
+  },
+  "rule_action_close_only_when_matched": {
+    "message": "一致した場合のみ無効にする"
+  },
+  "rule_action_close_only_when_matched_desc": {
+    "message": "一致した場合のみ無効にする:条件を満たすと自動的に無効にする。条件を満たさない場合は自動的に有効にする。"
+  },
+  "rule_action_open_when_matched": {
+    "message": "一致した場合に有効にする"
+  },
+  "rule_action_open_when_matched_desc": {
+    "message": "一致した場合に有効にする:条件を満たすと自動的に拡張機能を有効にする。(自動的には無効になりません)。"
+  },
+  "rule_action_custom": {
+    "message": "カスタム"
+  },
+  "rule_action_custom_desc": {
+    "message": "拡張機能を有効または無効にするタイミングをカスタマイズします。"
+  },
+  "rule_action_none": {
+    "message": "なし"
+  },
+  "rule_action_none_desc": {
+    "message": "拡張機能を自動的に有効/無効にしない"
+  },
+  "rule_action_top_extension": {
+    "message": "ポップアップの上部に拡張機能を表示する"
+  },
+  "rule_action_top_title": {
+    "message": "トップに固定する"
+  },
+  "rule_action_no_any_action": {
+    "message": "アクションが設定されていない"
+  },
+  "rule_action_please_select_action": {
+    "message": "アクションタイプを選択します。"
+  },
+  "rule_action_title": {
+    "message": "アクション"
+  },
+  "rule_action_help": {
+    "message": "ヘルプ"
+  },
+  "rule_action_auto_reload_when_enable": {
+    "message": "有効化後に現在のタブを再読み込み"
+  },
+  "rule_action_auto_reload_when_disable": {
+    "message": "無効化後に現在のタブを再読み込み"
+  },
+  "rule_action_delete_action": {
+    "message": "削除"
+  },
+  "rule_view_match_url_tip": {
+    "message": "$1と合計$2個のURL"
+  },
+  "rule_edit_save_error_limit": {
+    "message": "保存に失敗しました。ブラウザのストレージ制限を超えました。"
+  },
+  "rule_column_match": {
+    "message": "一致"
+  },
+  "rule_column_extensions": {
+    "message": "拡張機能/グループ"
+  },
+  "rule_column_action": {
+    "message": "アクション"
+  },
+  "rule_column_operation": {
+    "message": "操作"
+  },
+  "rule_add": {
+    "message": "追加"
+  },
+  "trigger_os_select_one": {
+    "message": "オペレーティングシステムの種類を1つ以上選択します。"
+  },
+  "trigger_os_select_tip": {
+    "message": "一致させるオペレーティングシステムを選択します。"
+  },
+  "trigger_scene_no_any": {
+    "message": "プロファイルが選択されていない"
+  },
+  "trigger_scene_no_created": {
+    "message": "プロファイルが作成されていません。"
+  },
+  "trigger_scene_select_one": {
+    "message": "照合するプロファイル。複数のプロファイルを選択できます。"
+  },
+  "trigger_scene_select_tip": {
+    "message": "プロファイルを選択"
+  },
+  "trigger_url_no_any": {
+    "message": "[マッチング条件] なし URL追加"
+  },
+  "trigger_url_match_desc": {
+    "message": "デフォルトのURLは現在開いているタブのURLです。詳細はこちらをご覧ください。"
+  },
+  "trigger_url_match_detail_title": {
+    "message": "詳細"
+  },
+  "trigger_url_match_method_title": {
+    "message": "照合方法:"
+  },
+  "trigger_url_wildcard": {
+    "message": "ワイルドカード"
+  },
+  "trigger_url_regex": {
+    "message": "正規表現"
+  },
+  "trigger_url_use_full": {
+    "message": "完全なURLの使用"
+  },
+  "trigger_url_use_full_desc": {
+    "message": "デフォルトでは、URLのクエリパラメータとアンカー部分は考慮されません。"
+  },
+  "trigger_url_add_pattern": {
+    "message": "URLパターンを追加"
+  },
+  "trigger_url_clear_empty": {
+    "message": "空の項目を削除"
+  },
+  "trigger_period_no_any": {
+    "message": "少なくとも1つのインターバルが必要"
+  },
+  "trigger_period_max": {
+    "message": "最大10個のインターバルを設定できます"
+  },
+  "trigger_period_no_complete": {
+    "message": "開始時刻または終了時刻がありません"
+  },
+  "trigger_period_cannot_greater": {
+    "message": "開始時刻は終了時刻以上にすることはできません"
+  },
+  "trigger_period_cannot_overlap": {
+    "message": "インターバルに時間の重複がある"
+  },
+  "trigger_period_action_desc": {
+    "message": "ブラウザの制限により、バックグラウンド操作は永続化できず、イベントによってトリガーされなければならない。したがって、この条件はブラウザがアクティブなときにしか一致せず、タイミングは正確ではないかもしれません。"
+  },
+  "trigger_period_start_time": {
+    "message": "開始時間"
+  },
+  "trigger_period_end_time": {
+    "message": "終了時間"
+  },
+  "scene_current_active": {
+    "message": "現在アクティブなプロファイル"
+  },
+  "scene_current_active_none": {
+    "message": "アクティブなプロファイルはありません"
+  },
+  "scene_add_new": {
+    "message": "プロファイルを追加"
+  },
+  "scene_edit_title": {
+    "message": "プロファイルの編集"
+  },
+  "scene_edit_name": {
+    "message": "プロファイル名"
+  },
+  "scene_edit_desc": {
+    "message": "プロファイルの説明"
+  },
+  "setting_import_finish": {
+    "message": "インポート成功"
+  },
+  "setting_import_fail": {
+    "message": "インポート失敗"
+  },
+  "setting_popup_ui_setting": {
+    "message": "ポップアップ表示設定"
+  },
+  "setting_popup_setting_search": {
+    "message": "検索"
+  },
+  "setting_popup_setting_display": {
+    "message": "コンテンツ表示"
+  },
+  "setting_popup_setting_other": {
+    "message": "その他"
+  },
+  "setting_popup_function_setting": {
+    "message": "ポップアップ機能の設定"
+  },
+  "setting_import_config": {
+    "message": "設定ファイルのインポート"
+  },
+  "setting_export_config": {
+    "message": "設定ファイルのエクスポート"
+  },
+  "setting_restore_default": {
+    "message": "デフォルトに戻す"
+  },
+  "setting_restore_default_tip": {
+    "message": "環境設定をデフォルトに戻す"
+  },
+  "setting_clear_title": {
+    "message": "設定の消去"
+  },
+  "setting_clear_confirm_title": {
+    "message": "すべての構成と設定を削除する"
+  },
+  "setting_clear_confirm_content": {
+    "message": "この操作は、設定、プロファイル、グループ、別名、ルールなどを含むすべてのデータを削除します。"
+  },
+  "setting_ui_search_display": {
+    "message": "検索ボックス:デフォルトで表示 (有効になっていない場合は、🔍をクリックして表示)"
+  },
+  "setting_ui_search_display_tip": {
+    "message": "ショートカットキー 'F' でも検索ボックスを開くことができます。"
+  },
+  "setting_ui_search_jump": {
+    "message": "検索ボックス:Chromeウェブストア検索をサポート"
+  },
+  "setting_ui_search_jump_tip": {
+    "message": "有効にすると、Chromeウェブストアにジャンプして検索できます。（Enterキーでクイックジャンプ）"
+  },
+  "setting_ui_search_source": {
+    "message": "検索ソース"
+  },
+  "setting_ui_show_app": {
+    "message": "アプリタイプの拡張機能を表示する"
+  },
+  "setting_ui_show_app_tip": {
+    "message": "ポップアップの下部にアプリタイプの拡張機能を表示します。アイコンをクリックすると直接アプリケーションが起動します。"
+  },
+  "setting_ui_show_fixed_extension": {
+    "message": "固定グループの拡張機能を表示する"
+  },
+  "setting_ui_show_fixed_extension_tip": {
+    "message": "固定グループの拡張機能とは常駐拡張機能です。ポップアップリストに表示させたくない場合は、このオプションを無効にします。"
+  },
+  "setting_ui_show_fixed_dot": {
+    "message": "固定グループ拡張機能の右上に小さな点を表示します。"
+  },
+  "setting_ui_show_by_group": {
+    "message": "グループごとの拡張機能表示"
+  },
+  "setting_list_view_show_button": {
+    "message": "リスト表示: ショートカットアクションボタンを常に表示する（デフォルトはホバーで表示）"
+  },
+  "setting_list_gird_show_name": {
+    "message": "グリッド表示: 拡張機能名の表示"
+  },
+  "setting_list_gird_show_name_tip": {
+    "message": "拡張機能の別名が設定されている場合は、別名が表示されます。"
+  },
+  "setting_list_gird_show_column_number": {
+    "message": "グリッド表示: 列番号 "
+  },
+  "setting_list_gird_show_disable_gray": {
+    "message": "グリッド表示: 無効な拡張機能をグレーアウト表示"
+  },
+  "setting_list_gird_show_menu_right_click": {
+    "message": "グリッド表示: マウスの右クリックで操作メニューを表示"
+  },
+  "setting_list_sort_type": {
+    "message": "並び替え:起動頻度に基づいて拡張機能を並べ替えます。"
+  },
+  "setting_list_sort_type_tip": {
+    "message": "デフォルトではアルファベット順"
+  },
+  "setting_dark_mode_title": {
+    "message": "ダークモード"
+  },
+  "setting_dark_mode_light": {
+    "message": "ライト"
+  },
+  "setting_dark_mode_dark": {
+    "message": "ダーク"
+  },
+  "setting_dark_mode_system": {
+    "message": "システム"
+  },
+  "setting_func_witch_group": {
+    "message": "グループ切り替え時、現在のグループ内の拡張機能を有効にし、それ以外を無効にします。"
+  },
+  "setting_func_witch_group_tip": {
+    "message": "有効化後、ポップアップでグループ切り替え時、固定グループまたは現在のグループにない拡張機能はすべて無効になります。"
+  },
+  "setting_func_group_allow_multi": {
+    "message": "↑ 複数のグループを選択可能"
+  },
+  "end": {
+    "message": "終了"
+  }
 }
