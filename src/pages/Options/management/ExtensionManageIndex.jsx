@@ -39,6 +39,16 @@ const ExtensionManageIndex = () => {
     })
   }, [])
 
+  useEffect(() => {
+    const handler = (id) => {
+      setExtensions((prev) => prev.filter((ext) => ext.id !== id))
+    }
+    chrome.management.onUninstalled.addListener(handler)
+    return () => {
+      chrome.management.onUninstalled.removeListener(handler)
+    }
+  }, [])
+
   return (
     <div>
       <Title title={getLang("alias_title")}></Title>
