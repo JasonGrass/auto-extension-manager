@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react"
 
-import localforage from "localforage"
-
 import { storage } from ".../storage/sync"
 import { getLang } from ".../utils/utils"
 import { ExtensionIconBuilder } from "../../Background/extension/ExtensionIconBuilder"
@@ -10,6 +8,7 @@ import { HistoryRepo } from "../../Background/history/HistoryRepo"
 import { HistoryService } from "../../Background/history/HistoryService"
 import Title from "../Title.jsx"
 import ExtensionHistory from "./ExtensionHistory.jsx"
+import { getHiddenExtIds } from "./hiddenRecordHelper"
 
 const ExtensionManageIndex = () => {
   // 历史记录
@@ -48,26 +47,7 @@ const ExtensionManageIndex = () => {
       record.__extension__ = cache
     }
 
-    const forage = localforage.createInstance({
-      driver: localforage.LOCALSTORAGE,
-      name: "LocalOptions",
-      version: 1.0,
-      storeName: "history"
-    })
-
-    let hiddenExtIds = []
-    try {
-      hiddenExtIds = await forage.getItem("hidden_ext_ids")
-      if (!hiddenExtIds) {
-        await forage.setItem("hidden_ext_ids", [])
-        hiddenExtIds = []
-      }
-    } catch (error) {
-      console.warn("read hidden_ext_ids fail.", error)
-      await forage.setItem("hidden_ext_ids", [])
-      hiddenExtIds = []
-    }
-
+    const hiddenExtIds = await getHiddenExtIds()
     const shownRecords = records.filter((item) => !hiddenExtIds.includes(item.extensionId))
 
     setHistoryRecords(shownRecords)

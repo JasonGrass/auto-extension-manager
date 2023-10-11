@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { EyeOutlined } from "@ant-design/icons"
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons"
 import {
   Alert,
   Button,
@@ -23,6 +23,7 @@ import { HistoryRepo } from "../../Background/history/HistoryRepo"
 import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
 import Style from "./ExtensionHistoryStyle"
 import { formatEventText, formatTimeAbsolute, formatTimeRelative } from "./formatter"
+import { addHiddenExtId } from "./hiddenRecordHelper"
 
 const { Search } = Input
 
@@ -35,10 +36,19 @@ const ExtensionHistory = memo(({ records, loading }) => {
   // 显示的记录
   const [shownRecords, setShownRecords] = useState(records)
 
+  const [hiddenExtIds, setHiddenExtIds] = useState([])
+
   // 仅显示当前扩展相关的记录
   const solo = (e, record) => {
     e.stopPropagation()
     setSearchWord(record.extensionId)
+  }
+
+  // 隐藏指定扩展的显示
+  const hide = async (e, record) => {
+    e.stopPropagation()
+    await addHiddenExtId(record.extensionId)
+    setHiddenExtIds((prev) => [...prev, record.extensionId])
   }
 
   const columns = [
@@ -108,6 +118,9 @@ const ExtensionHistory = memo(({ records, loading }) => {
               <Space onClick={(e) => solo(e, record)}>
                 <EyeOutlined />
               </Space>
+              <Space onClick={(e) => hide(e, record)}>
+                <EyeInvisibleOutlined />
+              </Space>
             </div>
           </span>
         )
@@ -133,8 +146,17 @@ const ExtensionHistory = memo(({ records, loading }) => {
 
   // 执行搜索
   useEffect(() => {
-    setShownRecords(search(records, searchWord))
-  }, [records, searchWord])
+    if (hiddenExtIds.length === 0) {
+      setShownRecords(search(records, searchWord))
+    } else {
+      setShownRecords(
+        search(
+          records.filter((r) => !hiddenExtIds.includes(r.extensionId)),
+          searchWord
+        )
+      )
+    }
+  }, [records, searchWord, hiddenExtIds])
 
   const onSearch = (value) => {
     setSearchWord(value)

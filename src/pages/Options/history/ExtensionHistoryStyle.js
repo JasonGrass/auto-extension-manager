@@ -64,6 +64,10 @@ const Style = styled.div`
     font-size: 16px;
     color: #337ab7;
 
+    & > .ant-space:nth-child(1) {
+      margin-right: 12px;
+    }
+
     :hover {
       color: #9e1068;
     }
