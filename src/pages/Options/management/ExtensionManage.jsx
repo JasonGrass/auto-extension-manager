@@ -9,6 +9,7 @@ import { getIcon, sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
 import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
+import ExtensionChannelLabel from "./ExtensionChannelLabel"
 import { ExtensionManageStyle } from "./ExtensionManageStyle"
 
 const { Search } = Input
@@ -38,15 +39,7 @@ const columns = [
           <span className="column-name">
             <img src={record.icon} alt="" width={16} height={16} />
             <span className="column-name-title">{name}</span>
-            {((isEdgeRuntime() && record.channel) || record.channel === "Development") && (
-              <span
-                className={classNames([
-                  "column-name-channel",
-                  `column-name-channel-${record.channel}`
-                ])}>
-                {record.channel}
-              </span>
-            )}
+            <ExtensionChannelLabel channel={record.channel}></ExtensionChannelLabel>
           </span>
         </Tooltip>
       )

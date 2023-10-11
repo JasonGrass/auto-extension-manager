@@ -22,6 +22,7 @@ import isMatch from "../../../utils/searchHelper"
 import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
 import { HistoryRepo } from "../../Background/history/HistoryRepo"
 import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
+import ExtensionChannelLabel from "../management/ExtensionChannelLabel"
 import Style from "./ExtensionHistoryStyle"
 import HiddenRecordView from "./HiddenRecordView"
 import { formatEventText, formatTimeAbsolute, formatTimeRelative } from "./formatter"
@@ -127,6 +128,8 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
             <div className="column-name-title">
               <img src={record.icon} alt="" width={16} height={16} />
               <span>{showName}</span>
+              <ExtensionChannelLabel
+                channel={record.__extension__?.channel}></ExtensionChannelLabel>
             </div>
             <div className="column-name-solo">
               <Space onClick={(e) => solo(e, record)}>

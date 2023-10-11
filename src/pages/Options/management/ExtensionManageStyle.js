@@ -39,28 +39,6 @@ export const ExtensionManageStyle = styled.div`
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
-    .column-name-channel {
-      position: relative;
-      left: 5px;
-
-      padding: 1px 5px;
-      font-size: 12px;
-      border-radius: 5px;
-      background-color: #73d13d33;
-    }
-
-    .column-name-channel-Edge {
-      background-color: #40a9ff33;
-    }
-
-    .column-name-channel-Chrome {
-      background-color: #ffa94033;
-    }
-
-    .column-name-channel-Development {
-      background-color: #ff4d4f33;
-    }
   }
 
   .ant-table-expanded-row .ant-table-cell {
