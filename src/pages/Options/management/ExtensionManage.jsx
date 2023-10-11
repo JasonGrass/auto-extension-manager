@@ -8,8 +8,9 @@ import { getIcon, sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
 import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
-import ExtensionItem from "./ExtensionItem"
 import { ExtensionManageStyle } from "./ExtensionManageStyle"
+import ExtensionNameItem from "./ExtensionNameItem"
+import ExtensionOperationItem from "./ExtensionOperationItem"
 
 const { Search } = Input
 
@@ -106,12 +107,20 @@ const ExtensionManage = memo(({ extensions, config }) => {
       title: getLang("column_extension"),
       dataIndex: "name",
       key: "name",
-      width: 420,
+      width: 380,
       ellipsis: {
         showTitle: false
       },
       render: (name, record, index) => {
-        return <ExtensionItem name={name} record={record}></ExtensionItem>
+        return <ExtensionNameItem name={name} record={record}></ExtensionNameItem>
+      }
+    },
+    {
+      title: getLang("rule_column_operation"),
+      key: "operation",
+      width: 180,
+      render: (_, record, index) => {
+        return <ExtensionOperationItem record={record}></ExtensionOperationItem>
       }
     },
     {
