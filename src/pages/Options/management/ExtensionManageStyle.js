@@ -26,21 +26,6 @@ export const ExtensionManageStyle = styled.div`
     text-align: center;
   }
 
-  .column-name {
-    display: flex;
-    align-items: center;
-
-    img {
-      margin-right: 5px;
-    }
-
-    .column-name-title {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-
   .ant-table-expanded-row .ant-table-cell {
     padding-top: 4px;
     padding-bottom: 4px;

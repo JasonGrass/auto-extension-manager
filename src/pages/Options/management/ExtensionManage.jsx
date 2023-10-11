@@ -1,62 +1,17 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Button, Checkbox, Form, Input, Table, Tooltip, message } from "antd"
+import { Button, Checkbox, Form, Input, Table, message } from "antd"
 import classNames from "classnames"
 
 import storage from ".../storage/sync"
-import { isEdgeRuntime } from ".../utils/channelHelper"
 import { getIcon, sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
 import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
-import ExtensionChannelLabel from "./ExtensionChannelLabel"
+import ExtensionItem from "./ExtensionItem"
 import { ExtensionManageStyle } from "./ExtensionManageStyle"
 
 const { Search } = Input
-
-const columns = [
-  Table.EXPAND_COLUMN,
-  {
-    title: getLang("column_index"),
-    dataIndex: "index",
-    key: "index",
-    width: 80,
-    render: (text, record, index) => {
-      return <span className="column-index">{(index + 1).toString().padStart(2, "0")}</span>
-    }
-  },
-  {
-    title: getLang("column_extension"),
-    dataIndex: "name",
-    key: "name",
-    width: 360,
-    ellipsis: {
-      showTitle: false
-    },
-    render: (name, record, index) => {
-      return (
-        <Tooltip placement="topLeft" title={name}>
-          <span className="column-name">
-            <img src={record.icon} alt="" width={16} height={16} />
-            <span className="column-name-title">{name}</span>
-            <ExtensionChannelLabel channel={record.channel}></ExtensionChannelLabel>
-          </span>
-        </Tooltip>
-      )
-    }
-  },
-  {
-    title: getLang("column_alias"),
-    dataIndex: "alias",
-    key: "alias",
-    width: 320
-  },
-  {
-    title: getLang("column_remark"),
-    dataIndex: "remark",
-    key: "remark"
-  }
-]
 
 const ExtensionManage = memo(({ extensions, config }) => {
   const [messageApi, contextHolder] = message.useMessage()
@@ -135,6 +90,42 @@ const ExtensionManage = memo(({ extensions, config }) => {
     }
     setSearchNoRemark(value)
   }
+
+  const columns = [
+    Table.EXPAND_COLUMN,
+    {
+      title: getLang("column_index"),
+      dataIndex: "index",
+      key: "index",
+      width: 80,
+      render: (text, record, index) => {
+        return <span className="column-index">{(index + 1).toString().padStart(2, "0")}</span>
+      }
+    },
+    {
+      title: getLang("column_extension"),
+      dataIndex: "name",
+      key: "name",
+      width: 420,
+      ellipsis: {
+        showTitle: false
+      },
+      render: (name, record, index) => {
+        return <ExtensionItem name={name} record={record}></ExtensionItem>
+      }
+    },
+    {
+      title: getLang("column_alias"),
+      dataIndex: "alias",
+      key: "alias",
+      width: 320
+    },
+    {
+      title: getLang("column_remark"),
+      dataIndex: "remark",
+      key: "remark"
+    }
+  ]
 
   return (
     <ExtensionManageStyle>
@@ -278,12 +269,12 @@ function buildRecords(extensions, configs) {
       icon: getIcon(extension),
       __attach__: config
     }
-    record.enabled = true // 这里不考虑扩展的开启与禁用，都设置成 true，是为了让下面的排序不受影响
+
     records.push(record)
   }
 
   // 在别名设置页面，按照原始名称排序，不考虑别名
-  return sortExtension(records, { useAlias: false })
+  return sortExtension(records, { useAlias: false, ignoreEnable: true })
 }
 
 function search(records, searchText, existAlias, existRemark, noAlias, noRemark) {
