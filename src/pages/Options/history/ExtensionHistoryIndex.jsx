@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 
 import { storage } from ".../storage/sync"
 import { getLang } from ".../utils/utils"
@@ -13,6 +13,9 @@ import { getHiddenExtIds } from "./hiddenRecordHelper"
 const ExtensionManageIndex = () => {
   // 历史记录
   const [historyRecords, setHistoryRecords] = useState([])
+  // 隐藏的数据
+  const [hiddenExtensionIds, setHiddenExtensionIds] = useState([])
+
   // 表格的 loading 显示
   const [loading, setLoading] = useState(true)
 
@@ -48,10 +51,14 @@ const ExtensionManageIndex = () => {
     }
 
     const hiddenExtIds = await getHiddenExtIds()
-    const shownRecords = records.filter((item) => !hiddenExtIds.includes(item.extensionId))
 
-    setHistoryRecords(shownRecords)
-    setLoading(false)
+    setHiddenExtensionIds(hiddenExtIds)
+    setHistoryRecords(records)
+
+    // ExtensionHistory 内部使用 useBatchEffect 延迟了 100ms
+    setTimeout(() => {
+      setLoading(false)
+    }, 100)
   }
 
   useEffect(() => {
@@ -61,7 +68,10 @@ const ExtensionManageIndex = () => {
   return (
     <div>
       <Title title={getLang("history_title")}></Title>
-      <ExtensionHistory records={historyRecords} loading={loading}></ExtensionHistory>
+      <ExtensionHistory
+        records={historyRecords}
+        hiddenExtensionIds={hiddenExtensionIds}
+        loading={loading}></ExtensionHistory>
     </div>
   )
 }

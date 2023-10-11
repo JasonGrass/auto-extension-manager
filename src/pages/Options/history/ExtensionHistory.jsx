@@ -15,6 +15,7 @@ import {
 } from "antd"
 import chromeP from "webext-polyfill-kinda"
 
+import { useBatchEffect } from ".../utils/reactUtils"
 import { getLang } from ".../utils/utils"
 import { downloadIconDataUrl, getIcon } from "../../../utils/extensionHelper"
 import isMatch from "../../../utils/searchHelper"
@@ -22,12 +23,13 @@ import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
 import { HistoryRepo } from "../../Background/history/HistoryRepo"
 import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
 import Style from "./ExtensionHistoryStyle"
+import HiddenRecordView from "./HiddenRecordView"
 import { formatEventText, formatTimeAbsolute, formatTimeRelative } from "./formatter"
-import { addHiddenExtId } from "./hiddenRecordHelper"
+import { addHiddenExtId, removeHiddenExtId } from "./hiddenRecordHelper"
 
 const { Search } = Input
 
-const ExtensionHistory = memo(({ records, loading }) => {
+const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
   // 时间的显示方式，绝对时间 OR 相对时间
   const [timeShowWay, setTimeShowWay] = useState("relative") //absolute relative
   // 搜索词
@@ -36,7 +38,12 @@ const ExtensionHistory = memo(({ records, loading }) => {
   // 显示的记录
   const [shownRecords, setShownRecords] = useState(records)
 
-  const [hiddenExtIds, setHiddenExtIds] = useState([])
+  // 隐藏的扩展
+  const [hiddenExtIds, setHiddenExtIds] = useState(hiddenExtensionIds)
+
+  useEffect(() => {
+    setHiddenExtIds(hiddenExtensionIds)
+  }, [hiddenExtensionIds])
 
   // 仅显示当前扩展相关的记录
   const solo = (e, record) => {
@@ -49,6 +56,13 @@ const ExtensionHistory = memo(({ records, loading }) => {
     e.stopPropagation()
     await addHiddenExtId(record.extensionId)
     setHiddenExtIds((prev) => [...prev, record.extensionId])
+  }
+
+  // 回复显示隐藏的扩展
+  const recover = async (e, record) => {
+    e.stopPropagation()
+    await removeHiddenExtId(record.extensionId)
+    setHiddenExtIds((prev) => prev.filter((id) => id !== record.extensionId))
   }
 
   const columns = [
@@ -145,18 +159,22 @@ const ExtensionHistory = memo(({ records, loading }) => {
   ]
 
   // 执行搜索
-  useEffect(() => {
-    if (hiddenExtIds.length === 0) {
-      setShownRecords(search(records, searchWord))
-    } else {
-      setShownRecords(
-        search(
-          records.filter((r) => !hiddenExtIds.includes(r.extensionId)),
-          searchWord
+  useBatchEffect(
+    () => {
+      if (hiddenExtIds.length === 0) {
+        setShownRecords(search(records, searchWord))
+      } else {
+        setShownRecords(
+          search(
+            records.filter((r) => !hiddenExtIds.includes(r.extensionId)),
+            searchWord
+          )
         )
-      )
-    }
-  }, [records, searchWord, hiddenExtIds])
+      }
+    },
+    [records, searchWord, hiddenExtIds],
+    100
+  )
 
   const onSearch = (value) => {
     setSearchWord(value)
@@ -192,7 +210,9 @@ const ExtensionHistory = memo(({ records, loading }) => {
   return (
     <Style>
       <div className="history-manage-tools">
+        {/* 左侧工具栏 */}
         <div className="history-manage-tools-left">
+          {/* 搜索 */}
           <Search
             className="search"
             placeholder="search"
@@ -201,6 +221,7 @@ const ExtensionHistory = memo(({ records, loading }) => {
             onSearch={onSearch}
             onChange={(e) => onSearch(e.target.value)}
           />
+          {/* 绝对时间 */}
           <Checkbox
             className="setting-operation-item"
             checked={timeShowWay === "absolute"}
@@ -208,7 +229,14 @@ const ExtensionHistory = memo(({ records, loading }) => {
             {getLang("history_absolute_time")}
           </Checkbox>
         </div>
+        {/* 右侧操作工具栏 */}
         <div className="history-manage-tools-right">
+          {/* 隐藏的记录 */}
+          <HiddenRecordView
+            records={records}
+            hiddenExtensionIds={hiddenExtIds}
+            recover={recover}></HiddenRecordView>
+          {/* 清空记录 */}
           <Popconfirm
             title="Clear History Data"
             description="Are you sure to delete all the history records?"

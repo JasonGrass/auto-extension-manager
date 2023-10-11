@@ -21,6 +21,8 @@ const Style = styled.div`
 
   .history-manage-tools-right {
     margin: 0 20px 0 0;
+
+    display: flex;
   }
 
   .setting-operation-item {
