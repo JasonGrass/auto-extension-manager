@@ -24,7 +24,7 @@ const HiddenRecordView = memo(({ records, hiddenExtensionIds, recover }) => {
   const multiMenu = () => {
     const buildLabel = (item) => {
       return (
-        <ItemStyle onClick={(e) => menuItemOnClick(e, item)}>
+        <ItemStyle>
           <img src={item.icon} alt="icon" width={24} />
           <div className="hidden-record-name">{item.name}</div>
           <Space className="hidden-record-close" onClick={(e) => menuItemOnClick(e, item)}>
