@@ -86,6 +86,13 @@ APP 类型的扩展正在被废弃，PWA 应用不在浏览器扩展的框架内
 
 参考链接：<https://chromium.googlesource.com/chromium/src/+/HEAD/extensions/docs/extension_and_app_types.md>
 
+## 🍉 Internationalization
+
+[chrome.i18n - Chrome for Developers](https://developer.chrome.com/docs/extensions/reference/i18n/ )
+
+Language files are located in the `src/_locales` folder.
+If you find any translation issues, you can provide feedback in the issue section or directly submit a PR for correction.
+
 ## 🍉 其它
 
 本项目基于 [lxieyang/chrome-extension-boilerplate-react](https://github.com/lxieyang/chrome-extension-boilerplate-react ) 构建

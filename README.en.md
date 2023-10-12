@@ -82,6 +82,13 @@ You can open <chrome://apps> to see the details.
 
 ref: <https://chromium.googlesource.com/chromium/src/+/HEAD/extensions/docs/extension_and_app_types.md>
 
+## 🍉 Internationalization
+
+[chrome.i18n - Chrome for Developers](https://developer.chrome.com/docs/extensions/reference/i18n/ )
+
+Language files are located in the `src/_locales` folder.
+If you find any translation issues, you can provide feedback in the issue section or directly submit a PR for correction.
+
 ## 🍉 Other
 
 This project is built based on [lxieyang/chrome-extension-boilerplate-react](https://github.com/lxieyang/chrome-extension-boilerplate-react )
