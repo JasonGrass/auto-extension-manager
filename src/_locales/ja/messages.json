@@ -3,7 +3,7 @@
     "message": "拡張機能マネージャー"
   },
   "ext_desc": {
-    "message": "Chrome 拡張機能を管理する簡単な方法"
+    "message": "ブラウザ拡張機能を管理する簡単な方法"
   },
   "add": {
     "message": "追加"
@@ -177,7 +177,7 @@
     "message": "記録の消去"
   },
   "history_hidden_record": {
-    "message": "Hidden Records"
+    "message": "隠された記録"
   },
   "history_cause": {
     "message": "理由:"
@@ -215,6 +215,9 @@
   "history_browser_update": {
     "message": "ブラウザの更新"
   },
+  "management_show_operation": {
+    "message": "操作メニューを表示"
+  },
   "alias_exist": {
     "message": "別名あり"
   },
@@ -233,8 +236,8 @@
   "alias_remark_max_length": {
     "message": "コメントの最大文字数は100文字です。"
   },
-  "alias_title": {
-    "message": "別名"
+  "management_title": {
+    "message": "管理"
   },
   "setting_title": {
     "message": "設定"
@@ -528,10 +531,10 @@
     "message": "プロファイルの編集"
   },
   "scene_edit_name": {
-    "message": "プロファイル名"
+    "message": "名"
   },
   "scene_edit_desc": {
-    "message": "プロファイルの説明"
+    "message": "説明"
   },
   "setting_import_finish": {
     "message": "インポート成功"
@@ -582,10 +585,10 @@
     "message": "ショートカットキー 'F' でも検索ボックスを開くことができます。"
   },
   "setting_ui_search_jump": {
-    "message": "検索ボックス:Chromeウェブストア検索をサポート"
+    "message": "検索ボックス: ウェブストア検索をサポート"
   },
   "setting_ui_search_jump_tip": {
-    "message": "有効にすると、Chromeウェブストアにジャンプして検索できます。（Enterキーでクイックジャンプ）"
+    "message": "有効にすると、ウェブストアにジャンプして検索できます。(Enter キーでクイックジャンプ)"
   },
   "setting_ui_search_source": {
     "message": "検索ソース"
