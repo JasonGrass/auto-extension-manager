@@ -93,6 +93,8 @@ APP 类型的扩展正在被废弃，PWA 应用不在浏览器扩展的框架内
 Language files are located in the `src/_locales` folder.
 If you find any translation issues, you can provide feedback in the issue section or directly submit a PR for correction.
 
+Thanks to [Ruri-1973](https://github.com/Blank-1973) for Japanese translation. #79
+
 ## 🍉 其它
 
 本项目基于 [lxieyang/chrome-extension-boilerplate-react](https://github.com/lxieyang/chrome-extension-boilerplate-react ) 构建

@@ -89,6 +89,8 @@ ref: <https://chromium.googlesource.com/chromium/src/+/HEAD/extensions/docs/exte
 Language files are located in the `src/_locales` folder.
 If you find any translation issues, you can provide feedback in the issue section or directly submit a PR for correction.
 
+Thanks to [Ruri-1973](https://github.com/Blank-1973) for Japanese translation. #79
+
 ## 🍉 Other
 
 This project is built based on [lxieyang/chrome-extension-boilerplate-react](https://github.com/lxieyang/chrome-extension-boilerplate-react )
