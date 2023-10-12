@@ -70,98 +70,111 @@ const ExtensionManage = memo(({ extensions, config }) => {
     })
   }
 
-  const columns = [
-    Table.EXPAND_COLUMN,
-    {
-      title: getLang("column_index"),
-      dataIndex: "index",
-      key: "index",
-      width: 80,
-      render: (text, record, index) => {
-        return <span className="column-index">{(index + 1).toString().padStart(2, "0")}</span>
-      }
-    },
-    {
-      title: getLang("column_extension"),
-      dataIndex: "name",
-      key: "name",
-      width: 380,
-      ellipsis: {
-        showTitle: false
+  const [columns, setColumns] = useState([])
+  useEffect(() => {
+    setColumns(buildColumns(showOperation))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showOperation])
+
+  const buildColumns = (showOperation) => {
+    const columns = [
+      Table.EXPAND_COLUMN,
+      {
+        title: getLang("column_index"),
+        dataIndex: "index",
+        key: "index",
+        width: 80,
+        render: (text, record, index) => {
+          return <span className="column-index">{(index + 1).toString().padStart(2, "0")}</span>
+        }
       },
-      render: (name, record, index) => {
-        return <ExtensionNameItem name={name} record={record}></ExtensionNameItem>
+      {
+        title: getLang("column_extension"),
+        dataIndex: "name",
+        key: "name",
+        width: 380,
+        ellipsis: {
+          showTitle: false
+        },
+        render: (name, record, index) => {
+          return <ExtensionNameItem name={name} record={record}></ExtensionNameItem>
+        },
+        filters: isEdgeRuntime()
+          ? [
+              {
+                text: "Edge",
+                value: "Edge"
+              },
+              {
+                text: "Chrome",
+                value: "Chrome"
+              },
+              {
+                text: "Dev",
+                value: "Development"
+              }
+            ]
+          : [
+              {
+                text: "Dev",
+                value: "Development"
+              }
+            ],
+        onFilter: (value, record) => {
+          return record.channel === value
+        }
       },
-      filters: isEdgeRuntime()
-        ? [
-            {
-              text: "Edge",
-              value: "Edge"
-            },
-            {
-              text: "Chrome",
-              value: "Chrome"
-            },
-            {
-              text: "Dev",
-              value: "Development"
-            }
-          ]
-        : [
-            {
-              text: "Dev",
-              value: "Development"
-            }
-          ],
-      onFilter: (value, record) => {
-        return record.channel === value
-      }
-    },
-    {
-      title: getLang("rule_column_operation"),
-      key: "operation",
-      width: showOperation ? 180 : 320,
-      className: showOperation ? "" : "column-hidden",
-      render: (_, record, index) => {
-        return <ExtensionOperationItem record={record}></ExtensionOperationItem>
-      }
-    },
-    {
-      title: getLang("column_alias"),
-      dataIndex: "alias",
-      key: "alias",
-      width: 320,
-      filters: [
-        { text: getLang("alias_exist"), value: "has_alias" },
-        { text: getLang("alias_empty"), value: "no_alias" }
-      ],
-      onFilter: (value, record) => {
-        if (value === "has_alias") {
-          return Boolean(record.alias)
+
+      {
+        title: getLang("column_alias"),
+        dataIndex: "alias",
+        key: "alias",
+        width: 320,
+        filters: [
+          { text: getLang("alias_exist"), value: "has_alias" },
+          { text: getLang("alias_empty"), value: "no_alias" }
+        ],
+        onFilter: (value, record) => {
+          if (value === "has_alias") {
+            return Boolean(record.alias)
+          }
+          if (value === "no_alias") {
+            return !Boolean(record.alias)
+          }
         }
-        if (value === "no_alias") {
-          return !Boolean(record.alias)
+      },
+      {
+        title: getLang("column_remark"),
+        dataIndex: "remark",
+        key: "remark",
+        filters: [
+          { text: getLang("alias_remark_exist"), value: "has_remark" },
+          { text: getLang("alias_remark_empty"), value: "no_remark" }
+        ],
+        onFilter: (value, record) => {
+          if (value === "has_remark") {
+            return Boolean(record.remark)
+          }
+          if (value === "no_remark") {
+            return !Boolean(record.remark)
+          }
         }
       }
-    },
-    {
-      title: getLang("column_remark"),
-      dataIndex: "remark",
-      key: "remark",
-      filters: [
-        { text: getLang("alias_remark_exist"), value: "has_remark" },
-        { text: getLang("alias_remark_empty"), value: "no_remark" }
-      ],
-      onFilter: (value, record) => {
-        if (value === "has_remark") {
-          return Boolean(record.remark)
+    ]
+
+    if (showOperation) {
+      columns.splice(3, 0, {
+        title: getLang("rule_column_operation"),
+        key: "operation",
+        width: 180,
+        className: showOperation ? "" : "column-hidden",
+        render: (_, record, index) => {
+          return <ExtensionOperationItem record={record}></ExtensionOperationItem>
         }
-        if (value === "no_remark") {
-          return !Boolean(record.remark)
-        }
-      }
+      })
     }
-  ]
+    return columns
+  }
 
   return (
     <ExtensionManageStyle>
