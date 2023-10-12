@@ -51,7 +51,7 @@ const ExtensionManageIndex = () => {
 
   return (
     <div>
-      <Title title={getLang("alias_title")}></Title>
+      <Title title={getLang("management_title")}></Title>
       <ExtensionManage extensions={extensions} config={managementConfig}></ExtensionManage>
     </div>
   )

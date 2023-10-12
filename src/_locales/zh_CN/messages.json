@@ -236,8 +236,8 @@
   "alias_remark_max_length": {
     "message": "备注长度最大为 100"
   },
-  "alias_title": {
-    "message": "扩展别名"
+  "management_title": {
+    "message": "扩展管理"
   },
   "setting_title": {
     "message": "通用设置"

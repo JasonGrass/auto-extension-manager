@@ -42,7 +42,7 @@ function Navigation() {
 
       <NavLink to="/management" className="nav-item" onClick={() => reportEvent("management")}>
         <FormatPainterFilled />
-        <span className="text">{getLang("alias_title")}</span>
+        <span className="text">{getLang("management_title")}</span>
       </NavLink>
 
       <NavLink to="/rule" className="nav-item" onClick={() => reportEvent("rule")}>

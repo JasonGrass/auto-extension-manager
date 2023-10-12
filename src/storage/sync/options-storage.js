@@ -85,7 +85,7 @@ export const SyncOptionsStorage = {
       options.groups = strCompress.decompress(options.groups)
     }
 
-    // 扩展别名
+    // 扩展管理
     if (!options.management) {
       options.management = {}
     } else {

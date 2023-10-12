@@ -236,8 +236,8 @@
   "alias_remark_max_length": {
     "message": "The maximum length of a remark is 100 characters"
   },
-  "alias_title": {
-    "message": "Alias"
+  "management_title": {
+    "message": "Management"
   },
   "setting_title": {
     "message": "Settings"
