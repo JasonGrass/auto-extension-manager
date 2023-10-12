@@ -34,7 +34,7 @@ const SearchStyle = styled.div`
   top: -2px;
   left: 240px;
 
-  margin-left: 20px;
+  padding-left: 36px;
 
   input {
     width: 200px;
