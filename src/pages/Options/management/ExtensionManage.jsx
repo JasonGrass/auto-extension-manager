@@ -5,6 +5,7 @@ import classNames from "classnames"
 import localforage from "localforage"
 
 import storage from ".../storage/sync"
+import { isEdgeRuntime } from ".../utils/channelHelper"
 import { getIcon, sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
@@ -32,14 +33,7 @@ const ExtensionManage = memo(({ extensions, config }) => {
 
   // 搜索词
   const [searchWord, setSearchWord] = useState("")
-  // 搜索 存在别名
-  const [searchExistAlias, setSearchExistAlias] = useState(false)
-  // 搜索 存在备注
-  const [searchExistRemark, setSearchExistRemark] = useState(false)
-  // 搜索 没有设置别名
-  const [searchNoAlias, setSearchNoAlias] = useState(false)
-  // 搜索 没有设置备注
-  const [searchNoRemark, setSearchNoRemark] = useState(false)
+
   // 操作
   const [showOperation, setShowOperation] = useState(false)
 
@@ -60,10 +54,8 @@ const ExtensionManage = memo(({ extensions, config }) => {
 
   // 搜索
   useEffect(() => {
-    setShownData(
-      search(data, searchWord, searchExistAlias, searchExistRemark, searchNoAlias, searchNoRemark)
-    )
-  }, [data, searchWord, searchExistAlias, searchExistRemark, searchNoAlias, searchNoRemark])
+    setShownData(search(data, searchWord))
+  }, [data, searchWord])
 
   // 执行搜索
   const onSearch = (value) => {
@@ -76,38 +68,6 @@ const ExtensionManage = memo(({ extensions, config }) => {
       var reloadData = buildRecords(extensions, res)
       setData(reloadData)
     })
-  }
-
-  const onExistAliasChange = (e) => {
-    const value = e.target.checked
-    if (value) {
-      setSearchNoAlias(false)
-    }
-    setSearchExistAlias(value)
-  }
-
-  const onExistRemarkChange = (e) => {
-    const value = e.target.checked
-    if (value) {
-      setSearchNoRemark(false)
-    }
-    setSearchExistRemark(value)
-  }
-
-  const onNoAliasChange = (e) => {
-    const value = e.target.checked
-    if (value) {
-      setSearchExistAlias(false)
-    }
-    setSearchNoAlias(value)
-  }
-
-  const onNoRemarkChange = (e) => {
-    const value = e.target.checked
-    if (value) {
-      setSearchExistRemark(false)
-    }
-    setSearchNoRemark(value)
   }
 
   const columns = [
@@ -131,12 +91,36 @@ const ExtensionManage = memo(({ extensions, config }) => {
       },
       render: (name, record, index) => {
         return <ExtensionNameItem name={name} record={record}></ExtensionNameItem>
+      },
+      filters: isEdgeRuntime()
+        ? [
+            {
+              text: "Edge",
+              value: "Edge"
+            },
+            {
+              text: "Chrome",
+              value: "Chrome"
+            },
+            {
+              text: "Dev",
+              value: "Development"
+            }
+          ]
+        : [
+            {
+              text: "Dev",
+              value: "Development"
+            }
+          ],
+      onFilter: (value, record) => {
+        return record.channel === value
       }
     },
     {
       title: getLang("rule_column_operation"),
       key: "operation",
-      width: 180,
+      width: showOperation ? 180 : 320,
       className: showOperation ? "" : "column-hidden",
       render: (_, record, index) => {
         return <ExtensionOperationItem record={record}></ExtensionOperationItem>
@@ -146,12 +130,36 @@ const ExtensionManage = memo(({ extensions, config }) => {
       title: getLang("column_alias"),
       dataIndex: "alias",
       key: "alias",
-      width: 320
+      width: 320,
+      filters: [
+        { text: getLang("alias_exist"), value: "has_alias" },
+        { text: getLang("alias_empty"), value: "no_alias" }
+      ],
+      onFilter: (value, record) => {
+        if (value === "has_alias") {
+          return Boolean(record.alias)
+        }
+        if (value === "no_alias") {
+          return !Boolean(record.alias)
+        }
+      }
     },
     {
       title: getLang("column_remark"),
       dataIndex: "remark",
-      key: "remark"
+      key: "remark",
+      filters: [
+        { text: getLang("alias_remark_exist"), value: "has_remark" },
+        { text: getLang("alias_remark_empty"), value: "no_remark" }
+      ],
+      onFilter: (value, record) => {
+        if (value === "has_remark") {
+          return Boolean(record.remark)
+        }
+        if (value === "no_remark") {
+          return !Boolean(record.remark)
+        }
+      }
     }
   ]
 
@@ -174,28 +182,6 @@ const ExtensionManage = memo(({ extensions, config }) => {
           }}
           className="search-checkbox">
           {getLang("management_show_operation")}
-        </Checkbox>
-
-        <Checkbox
-          checked={searchExistAlias}
-          onChange={onExistAliasChange}
-          className="search-checkbox">
-          {getLang("alias_exist")}
-        </Checkbox>
-
-        <Checkbox
-          checked={searchExistRemark}
-          onChange={onExistRemarkChange}
-          className="search-checkbox">
-          {getLang("alias_remark_exist")}
-        </Checkbox>
-
-        <Checkbox checked={searchNoAlias} onChange={onNoAliasChange} className="search-checkbox">
-          {getLang("alias_empty")}
-        </Checkbox>
-
-        <Checkbox checked={searchNoRemark} onChange={onNoRemarkChange} className="search-checkbox">
-          {getLang("alias_remark_empty")}
         </Checkbox>
       </div>
 
