@@ -14,6 +14,7 @@ import "./index.css"
 import storage from ".../storage/sync"
 import { isEdgePackage, isEdgeRuntime } from ".../utils/channelHelper"
 import analytics from ".../utils/googleAnalyze"
+import { getLang } from ".../utils/googleAnalyzeHelper"
 import { ExtensionIconBuilder } from "../Background/extension/ExtensionIconBuilder"
 import Popup from "./Components/Popup"
 import { prepare } from "./prepare"
@@ -75,9 +76,9 @@ prepare().then((props) => {
 ExtensionIconBuilder.build()
 
 function fireEvent(props) {
-  const firePopupOpen = () => {
+  const firePopupOpen = async () => {
     const version = chrome.runtime.getManifest().version
-
+    const ul = await getLang()
     analytics.fireEvent("page_view_popup", {
       browser: isEdgeRuntime() ? "edge" : "chrome",
       package: isEdgePackage() ? "edge" : "chrome",
@@ -85,7 +86,8 @@ function fireEvent(props) {
       layout: props.options.setting.layout,
       display: props.options.setting.isDisplayByGroup ? "byGroup" : "byEnabled",
       action: props.options.setting.isRaiseEnableWhenSwitchGroup ? "raise" : "normal",
-      menuDisplay: props.options.setting.isMenuDisplayByRightClick ? "rightClick" : "hover"
+      menuDisplay: props.options.setting.isMenuDisplayByRightClick ? "rightClick" : "hover",
+      lang: ul
     })
   }
   // Fire a page view event on load

@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid"
 
 import { isDevRuntime } from "./channelHelper"
-import { getLang, getUip, getUserAgent, getVersion } from "./googleAnalyzeHelper"
+import { getUserAgent } from "./googleAnalyzeHelper"
 import secret from "./secret"
 
 const GA_ENDPOINT = "https://www.google-analytics.com/mp/collect"
@@ -66,10 +66,7 @@ export class Analytics {
 
   // Fires an event with optional params. Event names must only include letters and underscores.
   async fireEvent(name, params = {}) {
-    params.av = await getVersion()
-    params.uip = await getUip() // 此数据会被 GOOGLE 做匿名化处理，不会泄露隐私，https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters?hl=zh-cn#uip
-    params.ua = await getUserAgent()
-    params.ul = await getLang()
+    const ua = await getUserAgent()
 
     if (isDevRuntime()) {
       console.log("fireEvent on dev", name, params)
@@ -92,6 +89,7 @@ export class Analytics {
         }?measurement_id=${MEASUREMENT_ID}&api_secret=${API_SECRET}`,
         {
           method: "POST",
+          headers: { "User-Agent": ua },
           body: JSON.stringify({
             client_id: await this.getOrCreateClientId(),
             events: [
