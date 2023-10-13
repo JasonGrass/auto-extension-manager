@@ -23,7 +23,7 @@ const forage = localforage.createInstance({
   storeName: "management"
 })
 
-const ExtensionManage = memo(({ extensions, config }) => {
+const ExtensionManage = memo(({ extensions, options }) => {
   const [messageApi, contextHolder] = message.useMessage()
 
   // 全部数据
@@ -39,10 +39,13 @@ const ExtensionManage = memo(({ extensions, config }) => {
 
   // 初始化
   useEffect(() => {
-    const initData = buildRecords(extensions, config)
+    if (!options.management) {
+      return
+    }
+    const initData = buildRecords(extensions, options.management)
     setData(initData)
     setShownData(initData)
-  }, [extensions, config])
+  }, [extensions, options])
 
   useEffect(() => {
     const init = async () => {
@@ -169,7 +172,7 @@ const ExtensionManage = memo(({ extensions, config }) => {
         width: 180,
         className: showOperation ? "" : "column-hidden",
         render: (_, record, index) => {
-          return <ExtensionOperationItem record={record}></ExtensionOperationItem>
+          return <ExtensionOperationItem record={record} options={options}></ExtensionOperationItem>
         }
       })
     }

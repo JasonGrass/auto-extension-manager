@@ -6,3 +6,7 @@ body {
 #app-container {
   height: 100%;
 }
+
+.help-info-icon:hover {
+  color: #888;
+}

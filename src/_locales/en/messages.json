@@ -656,6 +656,9 @@
   "setting_func_group_allow_multi": {
     "message": "↑ Supports selecting multiple groups"
   },
+  "setting_func_home_link_store": {
+    "message": "The HOME button always opens the WebStore details page of the extension"
+  },
   "end": {
     "message": "end"
   }

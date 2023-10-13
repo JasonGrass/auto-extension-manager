@@ -12,7 +12,7 @@ import classNames from "classnames"
 
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
 import { isDevRuntime } from ".../utils/channelHelper"
-import { getIcon } from ".../utils/extensionHelper.js"
+import { getHomepageUrl, getIcon } from ".../utils/extensionHelper.js"
 import { getLang } from ".../utils/utils"
 import { isStringEmpty } from ".../utils/utils.js"
 import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
@@ -132,8 +132,9 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
    * 打开扩展主页
    */
   const handleHomeButtonClick = (e, item) => {
-    if (existHomePage) {
-      chrome.tabs.create({ url: item.homepageUrl })
+    const url = getHomepageUrl(item, options.setting.isHomeLinkToStore)
+    if (url) {
+      chrome.tabs.create({ url })
     }
   }
 

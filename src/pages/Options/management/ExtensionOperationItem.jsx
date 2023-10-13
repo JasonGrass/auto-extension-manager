@@ -5,9 +5,10 @@ import { Popconfirm, Space, Switch, Tooltip, message } from "antd"
 import classNames from "classnames"
 import styled from "styled-components"
 
+import { getHomepageUrl } from ".../utils/extensionHelper"
 import { getLang } from ".../utils/utils"
 
-const ExtensionOperationItem = memo(({ record }) => {
+const ExtensionOperationItem = memo(({ record, options }) => {
   const [messageApi, contextHolder] = message.useMessage()
   const [itemEnable, setItemEnable] = useState(record.enabled)
 
@@ -39,8 +40,9 @@ const ExtensionOperationItem = memo(({ record }) => {
    */
   const handleHomeButtonClick = (e, item) => {
     e.stopPropagation()
-    if (item.homepageUrl) {
-      chrome.tabs.create({ url: item.homepageUrl })
+    const url = getHomepageUrl(item, options.setting.isHomeLinkToStore)
+    if (url) {
+      chrome.tabs.create({ url })
     }
   }
 

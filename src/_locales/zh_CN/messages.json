@@ -656,6 +656,9 @@
   "setting_func_group_allow_multi": {
     "message": "↑ 支持分组多选"
   },
+  "setting_func_home_link_store": {
+    "message": "HOME 按钮始终打开扩展的应用商店详情页"
+  },
   "end": {
     "message": "end"
   }

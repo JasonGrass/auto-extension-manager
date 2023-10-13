@@ -13,7 +13,7 @@ import classNames from "classnames"
 import "./ExtensionListItem.css"
 
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
-import { getIcon } from ".../utils/extensionHelper.js"
+import { getHomepageUrl, getIcon } from ".../utils/extensionHelper.js"
 import { getLang } from ".../utils/utils"
 import { isStringEmpty } from ".../utils/utils.js"
 import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
@@ -93,7 +93,10 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
    * 打开扩展主页
    */
   const handleHomeButtonClick = (e, item) => {
-    chrome.tabs.create({ url: item.homepageUrl })
+    const url = getHomepageUrl(item, options.setting.isHomeLinkToStore)
+    if (url) {
+      chrome.tabs.create({ url })
+    }
   }
 
   // 如果存在别名，则显示别名

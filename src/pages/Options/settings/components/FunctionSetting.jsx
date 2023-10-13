@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { QuestionCircleOutlined } from "@ant-design/icons"
+import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons"
 import { Button, Popconfirm, Radio, Slider, Switch, Tooltip, message } from "antd"
 
 import { getLang } from ".../utils/utils"
@@ -10,6 +10,8 @@ const FunctionSetting = memo(({ setting, onSettingChange }) => {
   const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
   // 分组切换时，是否支持多选
   const [isSupportMultiSelectGroup, setIsSupportMultiSelectGroup] = useState(false)
+  // Home 按钮的链接
+  const [isHomeLinkToStore, setIsHomeLinkToStore] = useState(false)
 
   useEffect(() => {
     // 功能偏好
@@ -17,7 +19,13 @@ const FunctionSetting = memo(({ setting, onSettingChange }) => {
     setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
     const supportMultiSelectGroup = setting.isSupportMultiSelectGroup ?? false
     setIsSupportMultiSelectGroup(supportMultiSelectGroup)
+    const homeLinkToStore = setting.isHomeLinkToStore ?? false
+    setIsHomeLinkToStore(homeLinkToStore)
   }, [setting])
+
+  const onHomeLinkHelpClick = () => {
+    chrome.tabs.create({ url: "https://ext.jgrass.cc/docs/setting" })
+  }
 
   return (
     <div>
@@ -48,6 +56,19 @@ const FunctionSetting = memo(({ setting, onSettingChange }) => {
             }></Switch>
         </div>
       )}
+      {/* HOME 按钮点击的链接位置 */}
+      <div className="setting-item">
+        <span>
+          {getLang("setting_func_home_link_store")}
+          <InfoCircleOutlined onClick={onHomeLinkHelpClick} className="help-info-icon" />
+        </span>
+        <Switch
+          size="small"
+          checked={isHomeLinkToStore}
+          onChange={(value) =>
+            onSettingChange(value, setIsHomeLinkToStore, "isHomeLinkToStore")
+          }></Switch>
+      </div>
     </div>
   )
 })

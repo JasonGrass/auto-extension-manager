@@ -151,3 +151,18 @@ export const appendAdditionInfo = (extensions, managementOptions) => {
 
   return extensions
 }
+
+export const getHomepageUrl = (item, alwaysLinkToStore) => {
+  if (!alwaysLinkToStore) {
+    return item.homepageUrl
+  }
+
+  const updateUrl = item.updateUrl
+  if (updateUrl.includes(".google.com")) {
+    return "https://chrome.google.com/webstore/detail/" + item.id
+  } else if (updateUrl.includes("edge.microsoft.com")) {
+    return "https://microsoftedge.microsoft.com/addons/detail/" + item.id
+  } else {
+    return item.homepageUrl
+  }
+}

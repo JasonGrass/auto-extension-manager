@@ -14,7 +14,7 @@ const ChannelWorker = new ExtensionChannelWorker()
 
 const ExtensionManageIndex = () => {
   const [extensions, setExtensions] = useState([])
-  const [managementConfig, setManagementConfig] = useState({})
+  const [options, setOptions] = useState()
 
   useEffect(() => {
     const ready = async () => {
@@ -26,17 +26,17 @@ const ExtensionManageIndex = () => {
         ext.channel = channel
       }
 
+      const allOptions = await storage.options.getAll()
+
+      setOptions(allOptions)
       setExtensions(list)
+
+      analytics.fireEvent("alias_setting_open", {
+        totalCount: allOptions.management.extensions.length
+      })
     }
 
     ready()
-    storage.management.get().then((res) => {
-      setManagementConfig(res)
-
-      analytics.fireEvent("alias_setting_open", {
-        totalCount: res.extensions.length
-      })
-    })
   }, [])
 
   useEffect(() => {
@@ -49,10 +49,14 @@ const ExtensionManageIndex = () => {
     }
   }, [])
 
+  if (!options) {
+    return null
+  }
+
   return (
     <div>
       <Title title={getLang("management_title")}></Title>
-      <ExtensionManage extensions={extensions} config={managementConfig}></ExtensionManage>
+      <ExtensionManage extensions={extensions} options={options}></ExtensionManage>
     </div>
   )
 }

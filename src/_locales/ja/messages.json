@@ -656,6 +656,9 @@
   "setting_func_group_allow_multi": {
     "message": "↑ 複数のグループを選択可能"
   },
+  "setting_func_home_link_store": {
+    "message": "HOME ボタンは常にこの拡張機能のアプリショップ詳細ページを開きます"
+  },
   "end": {
     "message": "終了"
   }
