@@ -11,7 +11,7 @@ import ExtensionItems from "./ExtensionItems"
 
 const { CheckableTag } = Tag
 
-const ExtensionSelector = ({ options, config, extensions, params }, ref) => {
+const ExtensionTarget = ({ options, config, extensions, params }, ref) => {
   const groupList = storage.helper.formatGroups(options.groups)
 
   let emptyMessage = params.emptyMessage
@@ -169,7 +169,7 @@ const ExtensionSelector = ({ options, config, extensions, params }, ref) => {
   )
 }
 
-export default memo(forwardRef(ExtensionSelector))
+export default memo(forwardRef(ExtensionTarget))
 
 const Style = styled.div`
   .group-match-mode-container {
