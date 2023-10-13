@@ -1,5 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
+import { NavLink } from "react-router-dom"
 
+import { ImportOutlined, ShareAltOutlined } from "@ant-design/icons"
 import { Button, Checkbox, Form, Input, Table, message } from "antd"
 import classNames from "classnames"
 import localforage from "localforage"
@@ -183,22 +185,34 @@ const ExtensionManage = memo(({ extensions, options }) => {
     <ExtensionManageStyle>
       {contextHolder}
       <div className="extension-manage-tools">
-        <Search
-          className="search"
-          placeholder="search"
-          onSearch={onSearch}
-          onChange={(e) => onSearch(e.target.value)}
-        />
+        <div className="extension-manage-tools-left">
+          <Search
+            className="search"
+            placeholder="search"
+            onSearch={onSearch}
+            onChange={(e) => onSearch(e.target.value)}
+          />
 
-        <Checkbox
-          checked={showOperation}
-          onChange={(e) => {
-            setShowOperation(e.target.checked)
-            forage.setItem("showOperationColumn", e.target.checked)
-          }}
-          className="search-checkbox">
-          {getLang("management_show_operation")}
-        </Checkbox>
+          <Checkbox
+            checked={showOperation}
+            onChange={(e) => {
+              setShowOperation(e.target.checked)
+              forage.setItem("showOperationColumn", e.target.checked)
+            }}
+            className="search-checkbox">
+            {getLang("management_show_operation")}
+          </Checkbox>
+        </div>
+
+        <div className="extension-manage-tools-right">
+          <NavLink to="/management/share">
+            <Button icon={<ShareAltOutlined />}>分享/导出</Button>
+          </NavLink>
+
+          <NavLink to="/management/import">
+            <Button icon={<ImportOutlined />}>导入</Button>
+          </NavLink>
+        </div>
       </div>
 
       {/* [实现 antd table 自动调整可视高度 - 掘金](https://juejin.cn/post/6922375503798075400#comment ) */}

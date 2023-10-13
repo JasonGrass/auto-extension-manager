@@ -9,11 +9,14 @@ import "./index.css"
 import About from "./about/About.jsx"
 import GroupManagement from "./group/IndexGroup.jsx"
 import ExtensionHistoryIndex from "./history/ExtensionHistoryIndex"
+import ExtensionImport from "./import/ExtensionImport"
 import ExtensionManageIndex from "./management/ExtensionManageIndex.jsx"
+import ExtensionManageTable from "./management/ExtensionManageTable"
 import Navigation from "./navigation/Navigation.jsx"
 import RuleSetting from "./rule/RuleSetting.jsx"
 import Scene from "./scene/IndexScene.jsx"
 import Settings from "./settings/Settings.jsx"
+import ExtensionShare from "./share/ExtensionShare"
 
 function Options() {
   return (
@@ -35,7 +38,11 @@ function Options() {
             <Route path="/setting" element={<Settings />} />
             <Route path="/scene" element={<Scene />} />
             <Route path="/group" element={<GroupManagement />} />
-            <Route path="/management" element={<ExtensionManageIndex />} />
+            <Route path="/management" element={<ExtensionManageIndex />}>
+              <Route path="" element={<ExtensionManageTable />} />
+              <Route path="share" element={<ExtensionShare />} />
+              <Route path="import" element={<ExtensionImport />} />
+            </Route>
             <Route path="/rule" element={<RuleSetting />} />
             <Route path="/history" element={<ExtensionHistoryIndex />} />
           </Routes>

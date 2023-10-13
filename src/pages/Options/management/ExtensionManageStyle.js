@@ -3,8 +3,14 @@ import { styled } from "styled-components"
 export const ExtensionManageStyle = styled.div`
   .extension-manage-tools {
     display: flex;
-    align-items: baseline;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
+  }
+
+  .extension-manage-tools-left {
+    display: flex;
+    align-items: baseline;
 
     .search {
       width: 300px;
@@ -13,6 +19,17 @@ export const ExtensionManageStyle = styled.div`
 
     .search-checkbox {
       margin: 0 0 0 10px;
+    }
+  }
+
+  .extension-manage-tools-right {
+    display: flex;
+    align-items: baseline;
+
+    margin-right: 24px;
+
+    & > a {
+      margin-right: 12px;
     }
   }
 
