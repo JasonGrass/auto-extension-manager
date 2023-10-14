@@ -13,7 +13,7 @@ const ExtensionChannelLabel = memo(({ channel }) => {
     return null
   }
 
-  if (!isEdgeRuntime() && channel !== "Development") {
+  if (!isEdgeRuntime() && channel === "Chrome") {
     return null
   }
 
@@ -33,7 +33,7 @@ const ExtensionChannelLabel = memo(({ channel }) => {
 
 export default ExtensionChannelLabel
 
-const Style = styled.div`
+const Style = styled.span`
   .column-name-channel {
     position: relative;
     left: 8px;
