@@ -8,13 +8,13 @@ import localforage from "localforage"
 
 import storage from ".../storage/sync"
 import { isEdgeRuntime } from ".../utils/channelHelper"
-import { getIcon, sortExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
 import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
 import { ExtensionManageStyle } from "./ExtensionManageStyle"
 import ExtensionNameItem from "./ExtensionNameItem"
 import ExtensionOperationItem from "./ExtensionOperationItem"
+import { buildRecords } from "./utils"
 
 const { Search } = Input
 
@@ -206,10 +206,12 @@ const ExtensionManage = memo(({ extensions, options }) => {
 
         <div className="extension-manage-tools-right">
           <NavLink to="/management/share">
+            {/* TODO lang */}
             <Button icon={<ShareAltOutlined />}>分享/导出</Button>
           </NavLink>
 
           <NavLink to="/management/import">
+            {/* TODO lang */}
             <Button icon={<ImportOutlined />}>导入</Button>
           </NavLink>
         </div>
@@ -299,36 +301,6 @@ const ExpandEditor = ({ record, reload, messageApi }) => {
       </Form>
     </div>
   )
-}
-
-function buildRecords(extensions, configs) {
-  if (!extensions) {
-    return []
-  }
-
-  if (!configs) {
-    throw new Error("configs is required")
-  }
-
-  let records = []
-
-  for (const extension of extensions) {
-    const config = configs.extensions?.find((item) => item.extId === extension.id)
-
-    let record = {
-      key: extension.id,
-      ...extension,
-      alias: config?.alias,
-      remark: config?.remark,
-      icon: getIcon(extension),
-      __attach__: config
-    }
-
-    records.push(record)
-  }
-
-  // 在别名设置页面，按照原始名称排序，不考虑别名
-  return sortExtension(records, { useAlias: false, ignoreEnable: true })
 }
 
 function search(records, searchText, existAlias, existRemark, noAlias, noRemark) {
