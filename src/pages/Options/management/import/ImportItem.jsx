@@ -1,23 +1,37 @@
-import React, { memo, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 
 import { Button, Checkbox, Radio, Steps } from "antd"
 import classNames from "classnames"
 import styled from "styled-components"
 
+import PuzzleImage from ".../assets/img/puzzle.svg"
 import ExtensionChannelLabel from "../ExtensionChannelLabel"
 
-const ImportItem = memo(({ extension }) => {
+const ImportItem = memo(({ extension, storeSource, installed, onSelectChanged }) => {
   const [selected, setSelected] = useState(false)
+
+  const openStore = (e) => {
+    e.stopPropagation()
+    extension.openStoreLink(extension, storeSource)
+  }
+
+  useEffect(() => {
+    onSelectChanged?.(extension, selected)
+  }, [extension, selected, onSelectChanged])
 
   return (
     <Style>
       <div
-        onClick={(e) => setSelected((prev) => !prev)}
+        onClick={(e) => {
+          if (!installed) {
+            setSelected((prev) => !prev)
+          }
+        }}
         className={classNames({
           "import-item-select": selected,
           "import-item-container": true
         })}>
-        <img src={extension.icon} width={36} height={36} alt="logo" />
+        <img src={extension.icon ?? PuzzleImage} width={36} height={36} alt="logo" />
 
         <div className="ext-title-info">
           <span className="ext-title">
@@ -31,11 +45,13 @@ const ImportItem = memo(({ extension }) => {
           </span>
         </div>
 
-        <div className="ext-import-operations">
-          <Button className="ext-import-btn" type="primary" onClick={() => {}}>
-            打开应用商店
-          </Button>
-        </div>
+        {!installed && extension.webStoreUrl && (
+          <div className="ext-import-operations">
+            <Button className="ext-import-btn" type="primary" onClick={openStore}>
+              打开应用商店
+            </Button>
+          </div>
+        )}
       </div>
     </Style>
   )

@@ -101,3 +101,13 @@ export async function writeToClipboard(text) {
     return false
   }
 }
+
+export async function readFromClipboard() {
+  try {
+    const text = await navigator.clipboard.readText()
+    return text
+  } catch (error) {
+    console.error("读取剪贴板失败", error)
+    return ""
+  }
+}

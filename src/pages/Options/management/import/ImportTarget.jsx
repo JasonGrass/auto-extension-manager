@@ -1,37 +1,55 @@
-import React, { memo, useEffect, useRef, useState } from "react"
+import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 
 import { Button, Checkbox, Input, Radio, Segmented, Steps } from "antd"
 import styled from "styled-components"
 
+import { readFromClipboard } from ".../utils/utils"
+
 const { TextArea } = Input
 
-const ImportTarget = memo(() => {
-  const [targetRange, setTargetRange] = useState("file")
-
+const ImportTarget = ({ config }, ref) => {
   const [value, setValue] = useState("")
+
+  useImperativeHandle(ref, () => ({
+    getValue: () => {
+      return value
+    }
+  }))
+
+  useEffect(() => {
+    if (config) {
+      setValue(config.value)
+    }
+  }, [config])
+
+  const onPasteFromClipboard = async () => {
+    const content = await readFromClipboard()
+    if (content) {
+      setValue(content)
+    }
+  }
+
+  const onReadFromFile = async () => {
+    try {
+      const files = await window.showOpenFilePicker()
+      const fileHandle = files[0]
+      if (!fileHandle) {
+        return
+      }
+      const file = await fileHandle.getFile()
+      const fileContent = await file.text()
+      setValue(fileContent)
+    } catch (error) {
+      console.warn(error)
+    }
+  }
 
   return (
     <Style>
-      <Segmented
-        value={targetRange}
-        onChange={(v) => setTargetRange(v)}
-        options={[
-          { label: "文本", value: "text" },
-          { label: "文件", value: "file" }
-        ]}
-      />
-
-      {targetRange === "text" && (
-        <div className="import-text-tools">
-          <Button>从剪贴板中粘贴</Button>
-        </div>
-      )}
-
-      {targetRange === "file" && (
-        <div className="import-file-tools">
-          <Button>选择文件</Button>
-        </div>
-      )}
+      <div className="import-text-tools">
+        <Button onClick={onPasteFromClipboard}>从剪贴板中粘贴</Button>
+        <Button onClick={onReadFromFile}>从文件读取</Button>
+      </div>
 
       <TextArea
         className="share-textarea"
@@ -40,19 +58,19 @@ const ImportTarget = memo(() => {
         rows={12}></TextArea>
     </Style>
   )
-})
+}
 
-export default ImportTarget
+export default memo(forwardRef(ImportTarget))
 
 const Style = styled.div`
   .share-textarea {
   }
 
   .import-text-tools {
-    margin: 12px 0;
-  }
-
-  .import-file-tools {
-    margin: 12px 0;
+    display: flex;
+    margin: 0 0 12px 0;
+    & > button {
+      margin-right: 12px;
+    }
   }
 `

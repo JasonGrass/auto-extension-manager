@@ -42,5 +42,15 @@ export const useInit = (callback) => {
     }
   }, [])
 
+  useEffect(() => {
+    const handler = (info) => {
+      setExtensions((prev) => [...prev, info])
+    }
+    chrome.management.onInstalled.addListener(handler)
+    return () => {
+      chrome.management.onInstalled.removeListener(handler)
+    }
+  }, [])
+
   return [extensions, options]
 }
