@@ -17,11 +17,22 @@ export function buildRecords(extensions, configs) {
   for (const extension of extensions) {
     const config = configs.extensions?.find((item) => item.extId === extension.id)
 
+    let storeUrl = ""
+    if (extension.updateUrl?.includes(".google.com") || extension.channel === "Chrome") {
+      storeUrl = "https://chrome.google.com/webstore/detail/" + extension.id
+    } else if (
+      extension.updateUrl?.includes("edge.microsoft.com") ||
+      extension.channel === "Edge"
+    ) {
+      storeUrl = "https://microsoftedge.microsoft.com/addons/detail/" + extension.id
+    }
+
     let record = {
       key: extension.id,
       ...extension,
       alias: config?.alias,
       remark: config?.remark,
+      webStoreUrl: storeUrl,
       icon: getIcon(extension),
       __attach__: config
     }
