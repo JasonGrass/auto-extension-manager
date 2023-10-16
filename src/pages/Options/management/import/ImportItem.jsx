@@ -74,7 +74,7 @@ const Style = styled.div`
   }
 
   .import-item-select {
-    background-color: #91d5ff;
+    background-color: #e5e5e5;
   }
 
   .ext-title-info {
