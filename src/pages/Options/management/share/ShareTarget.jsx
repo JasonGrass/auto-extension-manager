@@ -34,7 +34,7 @@ const ShareTarget = ({ extensions, options, config }, ref) => {
     getConfig: () => {
       return {
         targetRange: targetRange,
-        partConfig: targetRef.current.getExtensionSelectConfig()
+        partConfig: targetRef?.current?.getExtensionSelectConfig()
       }
     }
   }))

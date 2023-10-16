@@ -6,6 +6,9 @@ import { useInit } from "./hooks/useInit.js"
 
 const ExtensionManageTable = () => {
   const [extensions, options] = useInit((exts, allOptions) => {
+    if (!allOptions) {
+      return
+    }
     analytics.fireEvent("alias_setting_open", {
       totalCount: allOptions.management.extensions.length
     })
