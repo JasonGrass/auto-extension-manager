@@ -6,9 +6,11 @@ import styled from "styled-components"
 
 import PuzzleImage from ".../assets/img/puzzle.svg"
 import ExtensionChannelLabel from "../ExtensionChannelLabel"
+import { downloadImage } from "./helper/imageHelper"
 
 const ImportItem = memo(({ extension, storeSource, installed, onSelectChanged }) => {
   const [selected, setSelected] = useState(false)
+  const [icon, setIcon] = useState(null)
 
   const openStore = (e) => {
     e.stopPropagation()
@@ -18,6 +20,19 @@ const ImportItem = memo(({ extension, storeSource, installed, onSelectChanged })
   useEffect(() => {
     onSelectChanged?.(extension, selected)
   }, [extension, selected, onSelectChanged])
+
+  useEffect(() => {
+    if (extension.icon) {
+      setIcon(extension.icon)
+      return
+    }
+
+    downloadImage(extension).then((image) => {
+      if (image) {
+        setIcon(image)
+      }
+    })
+  }, [extension])
 
   return (
     <Style>
@@ -31,7 +46,7 @@ const ImportItem = memo(({ extension, storeSource, installed, onSelectChanged })
           "import-item-select": selected,
           "import-item-container": true
         })}>
-        <img src={extension.icon ?? PuzzleImage} width={36} height={36} alt="logo" />
+        <img src={icon ?? PuzzleImage} width={36} height={36} alt="logo" />
 
         <div className="ext-title-info">
           <span className="ext-title">
