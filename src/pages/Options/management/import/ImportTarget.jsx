@@ -31,7 +31,18 @@ const ImportTarget = ({ config }, ref) => {
 
   const onReadFromFile = async () => {
     try {
-      const files = await window.showOpenFilePicker()
+      const files = await window.showOpenFilePicker({
+        types: [
+          {
+            description: "json/text",
+            accept: {
+              "application/json": [".json"],
+              "text/plain": [".txt"]
+            }
+          }
+        ],
+        multiple: false
+      })
       const fileHandle = files[0]
       if (!fileHandle) {
         return
