@@ -16,7 +16,8 @@ const ExtensionShare = memo(() => {
   const [currentStep, setCurrentStep] = useState(0)
 
   const [targetExtensionIds, setTargetExtensionIds] = useState([])
-  const [exportRange, setExportRange] = useState([])
+  const [targetConfig, setTargetConfig] = useState(null)
+  const [exportRange, setExportRange] = useState(["alias", "remark"])
 
   const targetRef = useRef()
   const contentRef = useRef()
@@ -25,7 +26,9 @@ const ExtensionShare = memo(() => {
     if (currentStep === 0) {
       try {
         const selected = targetRef.current.getTarget()
+        const config = targetRef.current.getConfig()
         setTargetExtensionIds(selected.extensionIds)
+        setTargetConfig(config)
       } catch (error) {
         messageApi.warning(error.message)
         return
@@ -78,10 +81,20 @@ const ExtensionShare = memo(() => {
 
       <div className="ext-share-step-content">
         {currentStep === 0 && (
-          <ShareTarget ref={targetRef} extensions={extensions} options={options}></ShareTarget>
+          <ShareTarget
+            ref={targetRef}
+            config={targetConfig}
+            extensions={extensions}
+            options={options}></ShareTarget>
         )}
 
-        {currentStep === 1 && <ShareContent ref={contentRef}></ShareContent>}
+        {currentStep === 1 && (
+          <ShareContent
+            ref={contentRef}
+            config={{
+              exportRange
+            }}></ShareContent>
+        )}
 
         {currentStep === 2 && (
           <ShareMode

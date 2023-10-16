@@ -3,7 +3,7 @@ import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useSta
 import { Button, Checkbox, Radio, Steps } from "antd"
 import styled from "styled-components"
 
-const ShareContent = (props, ref) => {
+const ShareContent = ({ config }, ref) => {
   const [exportRange, setExportRange] = useState(["alias", "remark"])
 
   useImperativeHandle(ref, () => ({
@@ -11,6 +11,13 @@ const ShareContent = (props, ref) => {
       return exportRange
     }
   }))
+
+  useEffect(() => {
+    if (!config) {
+      return
+    }
+    setExportRange(config.exportRange)
+  }, [config])
 
   const arrayIn = (array, value) => {
     return Array.from(new Set([...array, value]))

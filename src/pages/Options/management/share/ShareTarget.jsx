@@ -5,8 +5,9 @@ import styled from "styled-components"
 
 import ExtensionTarget from ".../pages/Options/components/ExtensionTarget"
 
-const ShareTarget = ({ extensions, options }, ref) => {
+const ShareTarget = ({ extensions, options, config }, ref) => {
   const [targetRange, setTargetRange] = useState("all")
+  const [partConfig, setPartConfig] = useState({})
 
   const targetRef = useRef()
 
@@ -28,8 +29,27 @@ const ShareTarget = ({ extensions, options }, ref) => {
       return {
         extensionIds: extensionIds
       }
+    },
+
+    getConfig: () => {
+      return {
+        targetRange: targetRange,
+        partConfig: targetRef.current.getExtensionSelectConfig()
+      }
     }
   }))
+
+  useEffect(() => {
+    if (!config) {
+      return
+    }
+    setTargetRange(config.targetRange)
+    if (config.targetRange === "part") {
+      setPartConfig({
+        target: config.partConfig
+      })
+    }
+  }, [config])
 
   // 搜索关键字
   const [searchText, setSearchText] = useState("")
@@ -58,7 +78,7 @@ const ShareTarget = ({ extensions, options }, ref) => {
             extensions={extensions}
             options={options}
             searchText={searchText}
-            config={{}}
+            config={partConfig}
             params={{
               emptyMessage: "没有选择任何扩展"
             }}>
