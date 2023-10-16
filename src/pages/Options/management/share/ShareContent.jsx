@@ -1,10 +1,16 @@
-import React, { memo, useEffect, useRef, useState } from "react"
+import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 
 import { Button, Checkbox, Radio, Steps } from "antd"
 import styled from "styled-components"
 
-const ShareContent = memo(() => {
+const ShareContent = (props, ref) => {
   const [exportRange, setExportRange] = useState(["alias", "remark"])
+
+  useImperativeHandle(ref, () => ({
+    getContent: () => {
+      return exportRange
+    }
+  }))
 
   const arrayIn = (array, value) => {
     return Array.from(new Set([...array, value]))
@@ -43,9 +49,9 @@ const ShareContent = memo(() => {
       </Checkbox>
     </Style>
   )
-})
+}
 
-export default ShareContent
+export default memo(forwardRef(ShareContent))
 
 const Style = styled.div`
   display: flex;

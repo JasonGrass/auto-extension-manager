@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from "react"
 import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite"
 import "react-json-view-lite/dist/index.css"
 
@@ -8,37 +8,49 @@ import styled from "styled-components"
 const { TextArea } = Input
 // exportRange: ["alias", "remark"]
 
-const Index = memo(({ extensions, options, exportRange, selectIds }) => {
+const Index = ({ extensions, options, exportRange, targetExtensionIds }, ref) => {
   const [records, setRecords] = useState([])
 
-  const [value, setValue] = useState("")
+  useImperativeHandle(ref, () => ({
+    getValue: () => {
+      if (records.length === 0) {
+        return ""
+      }
+      return JSON.stringify(records, null, 2)
+    }
+  }))
 
   useEffect(() => {
-    if (!options) {
+    if (!extensions || extensions.length === 0) {
       return
     }
 
     setRecords(
-      extensions.map((r) => {
-        const m = {
-          id: r.id,
-          name: r.name,
-          description: r.description,
-          homepageUrl: r.homepageUrl,
-          channel: r.channel
-        }
-        if (r.alias) {
-          m.alias = r.alias
-        }
-        if (r.remark) {
-          m.remark = r.remark
-        }
-        return m
-      })
+      extensions
+        .filter((ext) => targetExtensionIds.includes(ext.id))
+        .map((ext) => {
+          const result = {
+            id: ext.id,
+            name: ext.name,
+            description: ext.description,
+            version: ext.version,
+            homepageUrl: ext.homepageUrl,
+            channel: ext.channel,
+            type: ext.type
+          }
+          if (ext.webStoreUrl) {
+            result.webStoreUrl = ext.webStoreUrl
+          }
+          if (ext.alias && exportRange.includes("alias")) {
+            result.alias = ext.alias
+          }
+          if (ext.remark && exportRange.includes("remark")) {
+            result.remark = ext.remark
+          }
+          return result
+        })
     )
-
-    // setValue(JSON.stringify(records, null, 2))
-  }, [extensions, options])
+  }, [extensions, exportRange, targetExtensionIds])
 
   if (!options) {
     return null
@@ -57,9 +69,9 @@ const Index = memo(({ extensions, options, exportRange, selectIds }) => {
       />
     </Style>
   )
-})
+}
 
-export default Index
+export default memo(forwardRef(Index))
 
 const Style = styled.div`
   .json-view-container {

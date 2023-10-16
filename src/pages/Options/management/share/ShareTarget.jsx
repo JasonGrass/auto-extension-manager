@@ -1,14 +1,35 @@
-import React, { memo, useEffect, useRef, useState } from "react"
+import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 
 import { Button, Checkbox, Radio, Segmented, Steps } from "antd"
 import styled from "styled-components"
 
 import ExtensionTarget from ".../pages/Options/components/ExtensionTarget"
 
-const ShareTarget = memo(({ extensions, options }) => {
+const ShareTarget = ({ extensions, options }, ref) => {
   const [targetRange, setTargetRange] = useState("all")
-  const [selectedIds, setSelectedIds] = useState([])
+
   const targetRef = useRef()
+
+  useImperativeHandle(ref, () => ({
+    // 获取选择的目标扩展
+    getTarget: () => {
+      let extensionIds = []
+      if (targetRange === "part") {
+        const selected = targetRef.current.getExtensionSelectConfig()
+        options.groups
+          .filter((g) => selected.groups.includes(g.id))
+          .forEach((g) => extensionIds.push(...g.extensions))
+        extensionIds.push(...selected.extensions)
+        extensionIds = Array.from(new Set(extensionIds))
+      } else {
+        extensionIds = extensions.map((ext) => ext.id)
+      }
+
+      return {
+        extensionIds: extensionIds
+      }
+    }
+  }))
 
   // 搜索关键字
   const [searchText, setSearchText] = useState("")
@@ -53,9 +74,9 @@ const ShareTarget = memo(({ extensions, options }) => {
       )}
     </Style>
   )
-})
+}
 
-export default ShareTarget
+export default memo(forwardRef(ShareTarget))
 
 const Style = styled.div`
   .ext-select-target-wrapper {

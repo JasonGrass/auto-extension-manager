@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef, useState } from "react"
 
-import { Button, Checkbox, Radio, Steps } from "antd"
+import { Button, Checkbox, Radio, Steps, message } from "antd"
 import styled from "styled-components"
 
 import { useInit } from "../hooks/useInit"
@@ -9,9 +9,35 @@ import ShareMode from "./ShareMode"
 import ShareTarget from "./ShareTarget"
 
 const ExtensionShare = memo(() => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   const [extensions, options] = useInit()
 
-  const [currentStep, setCurrentStep] = useState(2)
+  const [currentStep, setCurrentStep] = useState(0)
+
+  const [targetExtensionIds, setTargetExtensionIds] = useState([])
+  const [exportRange, setExportRange] = useState([])
+
+  const targetRef = useRef()
+  const contentRef = useRef()
+
+  const onNext = () => {
+    if (currentStep === 0) {
+      try {
+        const selected = targetRef.current.getTarget()
+        setTargetExtensionIds(selected.extensionIds)
+      } catch (error) {
+        messageApi.warning(error.message)
+        return
+      }
+    }
+
+    if (currentStep === 1) {
+      setExportRange(contentRef.current.getContent())
+    }
+
+    setCurrentStep(currentStep + 1)
+  }
 
   if (!options) {
     return null
@@ -21,6 +47,7 @@ const ExtensionShare = memo(() => {
     //  TODO lang
 
     <Style>
+      {contextHolder}
       <h1>导出或分享你的扩展</h1>
       <div className="ext-share-steps">
         <Steps
@@ -50,15 +77,23 @@ const ExtensionShare = memo(() => {
       </Button>
 
       <div className="ext-share-step-content">
-        {currentStep === 0 && <ShareTarget extensions={extensions} options={options}></ShareTarget>}
+        {currentStep === 0 && (
+          <ShareTarget ref={targetRef} extensions={extensions} options={options}></ShareTarget>
+        )}
 
-        {currentStep === 1 && <ShareContent></ShareContent>}
+        {currentStep === 1 && <ShareContent ref={contentRef}></ShareContent>}
 
-        {currentStep === 2 && <ShareMode extensions={extensions} options={options}></ShareMode>}
+        {currentStep === 2 && (
+          <ShareMode
+            targetExtensionIds={targetExtensionIds}
+            exportRange={exportRange}
+            extensions={extensions}
+            options={options}></ShareMode>
+        )}
       </div>
 
       {currentStep >= 0 && currentStep <= 1 && (
-        <Button className="ext-share-step-btn" onClick={() => setCurrentStep(currentStep + 1)}>
+        <Button className="ext-share-step-btn" onClick={onNext}>
           下一步
         </Button>
       )}
