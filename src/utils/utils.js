@@ -56,3 +56,20 @@ export const downloadImageDataUrl = (imageUrl) => {
     xhr.send()
   })
 }
+
+/**
+ * 下载文件到本地
+ * @param {Blob} contentBlob 文件内容 e.g. new Blob([jsonStr], { type: "application/json" })
+ * @param {string} filename 文件名
+ */
+export const downloadFile = (contentBlob, filename) => {
+  const downloadLink = document.createElement("a")
+  downloadLink.href = URL.createObjectURL(contentBlob)
+  downloadLink.download = filename
+
+  document.body.appendChild(downloadLink)
+  downloadLink.click()
+
+  document.body.removeChild(downloadLink)
+  URL.revokeObjectURL(downloadLink.href)
+}

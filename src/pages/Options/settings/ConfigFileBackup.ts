@@ -1,4 +1,5 @@
 import storage from ".../storage/sync"
+import { downloadFile } from ".../utils/utils"
 import ConvertRuleToV2 from "../../Background/rule/RuleConverter"
 
 /**
@@ -127,15 +128,7 @@ function exportToJsonFile(data: any, filename: string) {
   const jsonStr = JSON.stringify(data, null, 2)
   const blob = new Blob([jsonStr], { type: "application/json" })
 
-  const downloadLink = document.createElement("a")
-  downloadLink.href = URL.createObjectURL(blob)
-  downloadLink.download = filename
-
-  document.body.appendChild(downloadLink)
-  downloadLink.click()
-
-  document.body.removeChild(downloadLink)
-  URL.revokeObjectURL(downloadLink.href)
+  downloadFile(blob, filename)
 }
 
 function formatDate(date: Date) {
