@@ -87,3 +87,17 @@ export function formatDate(date) {
 
   return `${year}${month}${day}_${hours}${minutes}${seconds}`
 }
+
+export async function writeToClipboard(text) {
+  const item = new ClipboardItem({
+    "text/plain": new Blob([text], { type: "text/plain" })
+  })
+
+  try {
+    await navigator.clipboard.write([item])
+    return true
+  } catch (error) {
+    console.error("保存到剪贴板失败", error)
+    return false
+  }
+}
