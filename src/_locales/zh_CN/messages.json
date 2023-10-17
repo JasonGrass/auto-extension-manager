@@ -611,6 +611,24 @@
   "setting_ui_show_by_group": {
     "message": "按分组显示扩展"
   },
+  "setting_ui_top_recently_update": {
+    "message": "置顶显示最近更新的扩展"
+  },
+  "setting_ui_top_recently_install_or_update": {
+    "message": "最近更新或者最近安装"
+  },
+  "setting_ui_top_recently_install_or_update_tip": {
+    "message": "\"最近更新\"包括\"最近安装\""
+  },
+  "setting_ui_top_recently_install_select": {
+    "message": "最近安装"
+  },
+  "setting_ui_top_recently_update_select": {
+    "message": "最近更新"
+  },
+  "setting_ui_top_recently_days": {
+    "message": "最近更新的计算阈值"
+  },
   "setting_list_view_show_button": {
     "message": "列表视图下，始终显示快捷操作按钮（默认 hover 显示）"
   },

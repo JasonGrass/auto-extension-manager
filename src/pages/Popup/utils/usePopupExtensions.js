@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 
 import chromeP from "webext-polyfill-kinda"
 
+import { ExtensionRepo } from ".../pages/Background/extension/ExtensionRepo"
 import { isMatchByCurrent } from ".../pages/Background/rule/handlers/matchHandler"
 import { LocalOptions } from ".../storage/local"
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
@@ -11,6 +12,8 @@ const manualEnableCounter = new ManualEnableCounter()
 const localOptions = new LocalOptions()
 
 const EMPTY_ITEMS = { top: [], enabled: [], disabled: [] }
+
+const extensionRecordRepo = new ExtensionRepo()
 
 /**
  * 根据浏览器 extension 和配置信息，对 popup 显示的扩展列表进行预处理
@@ -86,8 +89,54 @@ async function buildShowItems(extensions, options) {
   return [list0, list1, list2]
 }
 
-// 找出那些应该置顶显示的扩展
+/**
+ * 找出那些应该置顶显示的扩展
+ */
 export async function findTopExtensions(options) {
+  const byRule = await findTopExtensionsByRule(options)
+  const byTop = await findTopExtensionsByRecentlyUpdate(options)
+
+  return Array.from(new Set([...byRule, ...byTop]))
+}
+
+// 最近更新的扩展
+async function findTopExtensionsByRecentlyUpdate(options) {
+  if (!options.setting.isTopRecentlyUpdate) {
+    return []
+  }
+
+  const mode = options.setting.topRecentlyMode ?? "install"
+  const days = options.setting.topRecentlyDays ?? 7
+
+  const ids = await extensionRecordRepo.getKeys()
+  const records = []
+  for (const id of ids) {
+    const record = await extensionRecordRepo.get(id)
+    if (record) {
+      records.push(record)
+    }
+  }
+
+  const now = new Date().getTime()
+  const expired = now - days * 24 * 60 * 60 * 1000
+  return records
+    .filter((r) => {
+      const installDate = r.installDate ?? 0
+      const updateDate = r.updateDate ?? 0
+
+      if (installDate > expired) {
+        return true
+      }
+      if (mode === "update" && updateDate > expired) {
+        return true
+      }
+      return false
+    })
+    .map((r) => r.id)
+}
+
+// 由规则配置的，置顶的扩展
+async function findTopExtensionsByRule(options) {
   const tabs = await chromeP.tabs.query({
     active: true,
     lastFocusedWindow: true

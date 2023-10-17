@@ -611,6 +611,24 @@
   "setting_ui_show_by_group": {
     "message": "Display extensions by group"
   },
+  "setting_ui_top_recently_update": {
+    "message": "Top the most recently updated extensions"
+  },
+  "setting_ui_top_recently_install_or_update": {
+    "message": "Recently updated OR Recently installed"
+  },
+  "setting_ui_top_recently_install_or_update_tip": {
+    "message": "\"Recently updated\" includes \"Recently installed\""
+  },
+  "setting_ui_top_recently_install_select": {
+    "message": "Recently installed"
+  },
+  "setting_ui_top_recently_update_select": {
+    "message": "Recently updated"
+  },
+  "setting_ui_top_recently_days": {
+    "message": "Calculation threshold for \"Last Updated\""
+  },
   "setting_list_view_show_button": {
     "message": "List View: Always display the shortcut action buttons (default is hover to display)"
   },
