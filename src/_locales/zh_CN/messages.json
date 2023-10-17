@@ -659,6 +659,114 @@
   "setting_func_home_link_store": {
     "message": "HOME 按钮始终打开扩展的应用商店详情页"
   },
+  "management_export_or_share": {
+    "message": "分享/导出"
+  },
+  "management_import": {
+    "message": "导入"
+  },
+  "management_import_extension": {
+    "message": "导入扩展"
+  },
+  "management_import_source": {
+    "message": "来源"
+  },
+  "management_import_file_text": {
+    "message": "导入文件/粘贴文本"
+  },
+  "management_import_install_extension": {
+    "message": "安装扩展"
+  },
+  "management_prev_step": {
+    "message": "上一步"
+  },
+  "management_next_step": {
+    "message": "下一步"
+  },
+  "management_import_from_clipboard": {
+    "message": "从剪贴板中粘贴"
+  },
+  "management_import_from_file": {
+    "message": "从文件读取"
+  },
+  "management_open_web_store": {
+    "message": "打开应用商店"
+  },
+  "management_import_prepare": {
+    "message": "准备导入"
+  },
+  "management_import_open_all_link": {
+    "message": "打开全部的商店链接"
+  },
+  "management_import_open_select_link": {
+    "message": "打开选中的商店链接"
+  },
+  "management_import_alias": {
+    "message": "导入别名"
+  },
+  "management_import_remark": {
+    "message": "导入备注"
+  },
+  "management_import_store_source": {
+    "message": "应用商店源"
+  },
+  "management_import_already": {
+    "message": "已经安装"
+  },
+  "management_store_official": {
+    "message": "官方应用商店"
+  },
+  "management_export_share_your_extension": {
+    "message": "导出或分享你的扩展"
+  },
+  "management_export_target": {
+    "message": "目标"
+  },
+  "management_export_content": {
+    "message": "内容"
+  },
+  "management_export_type": {
+    "message": "导出方式"
+  },
+  "management_export_target_desc": {
+    "message": "选择分享/导出的扩展"
+  },
+  "management_export_content_desc": {
+    "message": "选择导出的自定义内容"
+  },
+  "management_export_type_desc": {
+    "message": "设置导出方式"
+  },
+  "management_export_all_extension": {
+    "message": "全部扩展"
+  },
+  "management_export_part_extension": {
+    "message": "部分扩展"
+  },
+  "management_export_no_extension_selected": {
+    "message": "没有选择任何扩展"
+  },
+  "management_export_extension_base_info": {
+    "message": "扩展基础信息"
+  },
+  "management_export_share_text": {
+    "message": "分享文本"
+  },
+  "management_export_download": {
+    "message": "下载"
+  },
+  "management_export_copy_to_clipboard": {
+    "message": "复制到剪贴板"
+  },
+  "management_export_share_text_title": {
+    "message": "给你分享了 $1 个浏览器扩展，复制此文本到扩展管理器中导入"
+  },
+  "management_export_md_template_new": {
+    "message": "新建模板"
+  },
+  "management_export_md_template_default": {
+    "message": "默认模板"
+  },
   "end": {
     "message": "end"
   }

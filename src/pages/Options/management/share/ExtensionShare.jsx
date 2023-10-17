@@ -3,6 +3,7 @@ import React, { memo, useEffect, useRef, useState } from "react"
 import { Button, Checkbox, Radio, Steps, message } from "antd"
 import styled from "styled-components"
 
+import { getLang } from ".../utils/utils"
 import { useInit } from "../hooks/useInit"
 import ShareContent from "./ShareContent"
 import ShareMode from "./ShareMode"
@@ -47,26 +48,24 @@ const ExtensionShare = memo(() => {
   }
 
   return (
-    //  TODO lang
-
     <Style>
       {contextHolder}
-      <h1>导出或分享你的扩展</h1>
+      <h1>{getLang("management_export_share_your_extension")}</h1>
       <div className="ext-share-steps">
         <Steps
           current={currentStep}
           items={[
             {
-              title: "目标",
-              description: "选择分享/导出的扩展"
+              title: getLang("management_export_target"),
+              description: getLang("management_export_target_desc")
             },
             {
-              title: "内容",
-              description: "选择导出的自定义内容"
+              title: getLang("management_export_content"),
+              description: getLang("management_export_content_desc")
             },
             {
-              title: "导出方式",
-              description: "设置导出方式"
+              title: getLang("management_export_type"),
+              description: getLang("management_export_type_desc")
             }
           ]}
         />
@@ -76,7 +75,7 @@ const ExtensionShare = memo(() => {
         className="ext-share-step-btn"
         disabled={currentStep <= 0}
         onClick={() => setCurrentStep(currentStep - 1)}>
-        上一步
+        {getLang("management_prev_step")}
       </Button>
 
       <div className="ext-share-step-content">
@@ -107,7 +106,7 @@ const ExtensionShare = memo(() => {
 
       {currentStep >= 0 && currentStep <= 1 && (
         <Button className="ext-share-step-btn" onClick={onNext}>
-          下一步
+          {getLang("management_next_step")}
         </Button>
       )}
     </Style>

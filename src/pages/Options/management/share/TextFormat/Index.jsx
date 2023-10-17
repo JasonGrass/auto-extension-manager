@@ -4,6 +4,8 @@ import { Input } from "antd"
 import LZString from "lz-string"
 import styled from "styled-components"
 
+import { getLang } from ".../utils/utils"
+
 const { TextArea } = Input
 
 const Index = ({ extensions, options, exportRange, targetExtensionIds }, ref) => {
@@ -42,8 +44,10 @@ const Style = styled.div`
 function buildShareContent(extensions, exportRange, targetExtensionIds) {
   const [content, length] = build(extensions, exportRange, targetExtensionIds)
 
+  const title = getLang("management_export_share_text_title", length)
+
   return `
-I've shared ${length} browser extensions with you. Go import them in the extension manager and take a look.
+${title}
 
 --------BEGIN--------
 ${content}

@@ -3,7 +3,7 @@ import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useSta
 import { Button, Checkbox, Input, Radio, Segmented, Steps } from "antd"
 import styled from "styled-components"
 
-import { readFromClipboard } from ".../utils/utils"
+import { getLang, readFromClipboard } from ".../utils/utils"
 
 const { TextArea } = Input
 
@@ -58,8 +58,10 @@ const ImportTarget = ({ config }, ref) => {
   return (
     <Style>
       <div className="import-text-tools">
-        <Button onClick={onPasteFromClipboard}>从剪贴板中粘贴</Button>
-        <Button onClick={onReadFromFile}>从文件读取</Button>
+        <Button onClick={onPasteFromClipboard}>
+          {getLang("management_import_from_clipboard")}
+        </Button>
+        <Button onClick={onReadFromFile}>{getLang("management_import_from_file")}</Button>
       </div>
 
       <TextArea

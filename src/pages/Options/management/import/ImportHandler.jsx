@@ -3,6 +3,7 @@ import React, { memo, useCallback, useState } from "react"
 import { Button, Checkbox, Dropdown, Space, message } from "antd"
 import styled from "styled-components"
 
+import { getLang } from ".../utils/utils"
 import ImportItem from "./ImportItem"
 import { useAlreadyInstall } from "./helper/useAlreadyInstall"
 import { useExtensionInstallListener } from "./helper/useExtensionInstallListener"
@@ -82,20 +83,22 @@ const ImportHandler = memo(({ extensions, options, inputs }) => {
   return (
     <Style>
       {contextHolder}
-      <h2 className="import-sub-title">准备导入</h2>
+      <h2 className="import-sub-title">{getLang("management_import_prepare")}</h2>
 
       <div className="import-ext-tools">
-        <Button onClick={onOpenAllStoreLink}>打开全部扩展的应用商店链接</Button>
-        <Button onClick={onOpenSelectStoreLink}>打开选中扩展的应用商店链接</Button>
+        <Button onClick={onOpenAllStoreLink}>{getLang("management_import_open_all_link")}</Button>
+        <Button onClick={onOpenSelectStoreLink}>
+          {getLang("management_import_open_select_link")}
+        </Button>
         <Checkbox checked={isImportAlias} onChange={(e) => setIsImportAlias(e.target.checked)}>
-          导入别名
+          {getLang("management_import_alias")}
         </Checkbox>
         <Checkbox checked={isImportRemark} onChange={(e) => setIsImportRemark(e.target.checked)}>
-          导入备注
+          {getLang("management_import_remark")}
         </Checkbox>
 
         <Space className="search-source-setting">
-          <span style={{ fontSize: 14 }}>应用商店源</span>
+          <span style={{ fontSize: 14 }}>{getLang("management_import_store_source")}</span>
           <Dropdown.Button menu={sourceMenuProps} onClick={handleSourceClick}>
             {extensionSource.label}
           </Dropdown.Button>
@@ -115,7 +118,9 @@ const ImportHandler = memo(({ extensions, options, inputs }) => {
         })}
       </ul>
 
-      <h2 className="import-sub-title">已经安装</h2>
+      {existItems.length > 0 && (
+        <h2 className="import-sub-title">{getLang("management_import_already")}</h2>
+      )}
 
       <ul>
         {existItems.map((ext) => {

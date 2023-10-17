@@ -3,6 +3,7 @@ import React, { memo, useEffect, useRef, useState } from "react"
 import { Button, Checkbox, Radio, Steps, message } from "antd"
 import styled from "styled-components"
 
+import { getLang } from ".../utils/utils"
 import { useInit } from "../hooks/useInit"
 import { buildRecords } from "../utils"
 import ImportHandler from "./ImportHandler"
@@ -42,7 +43,7 @@ const ExtensionImport = memo(() => {
       setInputText(text)
 
       const result = parse(text)
-      if (result) {
+      if (result && result.length > 0) {
         setInputs(result)
       } else {
         messageApi.warning("cannot parse the input text")
@@ -59,19 +60,19 @@ const ExtensionImport = memo(() => {
   return (
     <Style>
       {contentHolder}
-      <h1>导入扩展</h1>
+      <h1>{getLang("management_import_extension")}</h1>
 
       <div className="ext-import-steps">
         <Steps
           current={currentStep}
           items={[
             {
-              title: "来源",
-              description: "导入文件/粘贴文本"
+              title: getLang("management_import_source"),
+              description: getLang("management_import_file_text")
             },
             {
-              title: "导入",
-              description: "安装扩展"
+              title: getLang("management_import"),
+              description: getLang("management_import_install_extension")
             }
           ]}
         />
@@ -81,7 +82,7 @@ const ExtensionImport = memo(() => {
         className="ext-share-step-btn"
         disabled={currentStep <= 0}
         onClick={() => setCurrentStep(currentStep - 1)}>
-        上一步
+        {getLang("management_prev_step")}
       </Button>
 
       <div className="ext-import-step-content">
@@ -96,7 +97,7 @@ const ExtensionImport = memo(() => {
 
       {currentStep >= 0 && currentStep < 1 && (
         <Button className="ext-share-step-btn" onClick={onNext}>
-          下一步
+          {getLang("management_next_step")}
         </Button>
       )}
     </Style>

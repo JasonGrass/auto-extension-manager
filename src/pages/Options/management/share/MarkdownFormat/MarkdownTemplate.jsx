@@ -6,6 +6,8 @@ import localforage from "localforage"
 import { nanoid } from "nanoid"
 import styled from "styled-components"
 
+import { getLang } from ".../utils/utils"
+
 const forage = localforage.createInstance({
   driver: localforage.LOCALSTORAGE,
   name: "LocalCache",
@@ -49,7 +51,7 @@ remark: \${remark}
 */
 
 const DefaultMarkdownTemplate = {
-  label: "Default Template",
+  label: getLang("management_export_md_template_default"),
   key: "default",
   value: DefaultTemplateText,
   icon: <SnippetsOutlined />
@@ -193,7 +195,11 @@ const MarkdownTemplate = memo(({ onTemplateChange }) => {
             <Dropdown.Button menu={templateMenuProps}>{currentTemplate?.label}</Dropdown.Button>
           </Space>
         )}
-        {templateKey !== "new" && <Button onClick={onNewTemplateClick}>New Template</Button>}
+        {templateKey !== "new" && (
+          <Button onClick={onNewTemplateClick}>
+            {getLang("management_export_md_template_new")}
+          </Button>
+        )}
         {templateKey !== "default" && (
           <Input
             className="template-name-input"
@@ -202,10 +208,14 @@ const MarkdownTemplate = memo(({ onTemplateChange }) => {
             status={isOnSaving && !templateName ? "error" : ""}
             onChange={(e) => setTemplateName(e.target.value)}></Input>
         )}
-        {templateKey !== "default" && <Button onClick={onSaveTemplateClick}>Save</Button>}
-        {templateKey === "new" && <Button onClick={onCancelTemplateClick}>Cancel</Button>}
+        {templateKey !== "default" && (
+          <Button onClick={onSaveTemplateClick}>{getLang("save")}</Button>
+        )}
+        {templateKey === "new" && (
+          <Button onClick={onCancelTemplateClick}>{getLang("cancel")}</Button>
+        )}
         {templateKey !== "new" && templateKey !== "default" && (
-          <Button onClick={onDeleteTemplateClick}>Delete</Button>
+          <Button onClick={onDeleteTemplateClick}>{getLang("delete")}</Button>
         )}
       </div>
 

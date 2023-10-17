@@ -3,7 +3,7 @@ import React, { memo, useEffect, useRef, useState } from "react"
 import { Button, Checkbox, Radio, Segmented, message } from "antd"
 import styled from "styled-components"
 
-import { downloadFile, formatDate, writeToClipboard } from ".../utils/utils"
+import { downloadFile, formatDate, getLang, writeToClipboard } from ".../utils/utils"
 import { buildRecords } from "../utils"
 import JsonFormat from "./JsonFormat/Index"
 import MarkdownFormat from "./MarkdownFormat/Index"
@@ -72,7 +72,7 @@ const ShareMode = memo(({ targetExtensionIds, exportRange, extensions, options }
         value={exportType}
         onChange={(v) => setExportType(v)}
         options={[
-          { label: "分享文本", value: "text" },
+          { label: getLang("management_export_share_text"), value: "text" },
           { label: "Json", value: "json" },
           { label: "Markdown", value: "markdown" }
         ]}
@@ -107,10 +107,10 @@ const ShareMode = memo(({ targetExtensionIds, exportRange, extensions, options }
 
       <div className="ext-share-btn-group">
         <Button onClick={onDownload} type="primary">
-          下载
+          {getLang("management_export_download")}
         </Button>
         <Button onClick={onCopy} type="primary">
-          复制到剪贴板
+          {getLang("management_export_copy_to_clipboard")}
         </Button>
       </div>
     </Style>

@@ -1,8 +1,10 @@
 import { memo, useState } from "react"
 
+import { getLang } from ".../utils/utils"
+
 const searchSourceItems = [
   {
-    label: "Official WebStore",
+    label: getLang("management_store_official"),
     key: "default"
   },
   {

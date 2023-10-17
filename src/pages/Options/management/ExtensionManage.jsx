@@ -206,13 +206,11 @@ const ExtensionManage = memo(({ extensions, options }) => {
 
         <div className="extension-manage-tools-right">
           <NavLink to="/management/share">
-            {/* TODO lang */}
-            <Button icon={<ShareAltOutlined />}>分享/导出</Button>
+            <Button icon={<ShareAltOutlined />}>{getLang("management_export_or_share")}</Button>
           </NavLink>
 
           <NavLink to="/management/import">
-            {/* TODO lang */}
-            <Button icon={<ImportOutlined />}>导入</Button>
+            <Button icon={<ImportOutlined />}>{getLang("management_import")}</Button>
           </NavLink>
         </div>
       </div>

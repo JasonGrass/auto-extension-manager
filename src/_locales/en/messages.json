@@ -659,6 +659,114 @@
   "setting_func_home_link_store": {
     "message": "The HOME button always opens the WebStore details page of the extension"
   },
+  "management_export_or_share": {
+    "message": "Share/Export"
+  },
+  "management_import": {
+    "message": "Import"
+  },
+  "management_import_extension": {
+    "message": "Import Extension"
+  },
+  "management_import_source": {
+    "message": "Source"
+  },
+  "management_import_file_text": {
+    "message": "Import File/Paste Text"
+  },
+  "management_import_install_extension": {
+    "message": "Install Extension"
+  },
+  "management_prev_step": {
+    "message": "Previous"
+  },
+  "management_next_step": {
+    "message": "Next"
+  },
+  "management_import_from_clipboard": {
+    "message": "Paste from clipboard"
+  },
+  "management_import_from_file": {
+    "message": "Read from file"
+  },
+  "management_open_web_store": {
+    "message": "Open web store"
+  },
+  "management_import_prepare": {
+    "message": "Prepare to import"
+  },
+  "management_import_open_all_link": {
+    "message": "Open all store links"
+  },
+  "management_import_open_select_link": {
+    "message": "Open the selected store link"
+  },
+  "management_import_alias": {
+    "message": "Import alias"
+  },
+  "management_import_remark": {
+    "message": "Import remark"
+  },
+  "management_import_store_source": {
+    "message": "Web store source"
+  },
+  "management_import_already": {
+    "message": "Already installed"
+  },
+  "management_store_official": {
+    "message": "Official WebStore"
+  },
+  "management_export_share_your_extension": {
+    "message": "Export or share your extension"
+  },
+  "management_export_target": {
+    "message": "Target"
+  },
+  "management_export_content": {
+    "message": "Content"
+  },
+  "management_export_type": {
+    "message": "Export method"
+  },
+  "management_export_target_desc": {
+    "message": "Select extensions to share/export"
+  },
+  "management_export_content_desc": {
+    "message": "Select custom content for export"
+  },
+  "management_export_type_desc": {
+    "message": "Set export method"
+  },
+  "management_export_all_extension": {
+    "message": "All extensions"
+  },
+  "management_export_part_extension": {
+    "message": "Partial extension"
+  },
+  "management_export_no_extension_selected": {
+    "message": "No extensions selected"
+  },
+  "management_export_extension_base_info": {
+    "message": "Extension basic information"
+  },
+  "management_export_share_text": {
+    "message": "Share text"
+  },
+  "management_export_download": {
+    "message": "Download"
+  },
+  "management_export_copy_to_clipboard": {
+    "message": "Copy to clipboard"
+  },
+  "management_export_share_text_title": {
+    "message": "I have shared $1 browser extensions with you. Copy this text and import it into the extension manager"
+  },
+  "management_export_md_template_new": {
+    "message": "New template"
+  },
+  "management_export_md_template_default": {
+    "message": "Default Template"
+  },
   "end": {
     "message": "end"
   }

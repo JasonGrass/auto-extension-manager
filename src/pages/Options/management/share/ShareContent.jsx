@@ -3,6 +3,8 @@ import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useSta
 import { Button, Checkbox, Radio, Steps } from "antd"
 import styled from "styled-components"
 
+import { getLang } from ".../utils/utils"
+
 const ShareContent = ({ config }, ref) => {
   const [exportRange, setExportRange] = useState(["alias", "remark"])
 
@@ -30,7 +32,7 @@ const ShareContent = ({ config }, ref) => {
   return (
     <Style>
       <Checkbox checked disabled>
-        扩展基础信息
+        {getLang("management_export_extension_base_info")}
       </Checkbox>
       <Checkbox
         checked={exportRange.includes("alias")}
@@ -41,7 +43,7 @@ const ShareContent = ({ config }, ref) => {
             setExportRange(arrayOut(exportRange, "alias"))
           }
         }}>
-        别名
+        {getLang("column_alias")}
       </Checkbox>
       <Checkbox
         checked={exportRange.includes("remark")}
@@ -52,7 +54,7 @@ const ShareContent = ({ config }, ref) => {
             setExportRange(arrayOut(exportRange, "remark"))
           }
         }}>
-        备注
+        {getLang("column_remark")}
       </Checkbox>
     </Style>
   )

@@ -4,6 +4,7 @@ import { Button, Checkbox, Radio, Segmented, Steps } from "antd"
 import styled from "styled-components"
 
 import ExtensionTarget from ".../pages/Options/components/ExtensionTarget"
+import { getLang } from ".../utils/utils"
 
 const ShareTarget = ({ extensions, options, config }, ref) => {
   const [targetRange, setTargetRange] = useState("all")
@@ -66,8 +67,8 @@ const ShareTarget = ({ extensions, options, config }, ref) => {
         value={targetRange}
         onChange={(v) => setTargetRange(v)}
         options={[
-          { label: "全部扩展", value: "all" },
-          { label: "部分扩展", value: "part" }
+          { label: getLang("management_export_all_extension"), value: "all" },
+          { label: getLang("management_export_part_extension"), value: "part" }
         ]}
       />
 
@@ -80,7 +81,7 @@ const ShareTarget = ({ extensions, options, config }, ref) => {
             searchText={searchText}
             config={partConfig}
             params={{
-              emptyMessage: "没有选择任何扩展"
+              emptyMessage: getLang("management_export_no_extension_selected")
             }}>
             <SearchStyle>
               <input

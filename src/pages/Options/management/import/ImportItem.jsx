@@ -5,6 +5,7 @@ import classNames from "classnames"
 import styled from "styled-components"
 
 import PuzzleImage from ".../assets/img/puzzle.svg"
+import { getLang } from ".../utils/utils"
 import ExtensionChannelLabel from "../ExtensionChannelLabel"
 import { downloadImage } from "./helper/imageHelper"
 
@@ -55,15 +56,19 @@ const ImportItem = memo(({ extension, storeSource, installed, onSelectChanged })
           </span>
           <span className="ext-info-more">
             <span>ID: {extension.id}</span>
-            <span>别名: {extension.alias}</span>
-            <span>备注: {extension.remark}</span>
+            <span>
+              {getLang("column_alias")}: {extension.alias}
+            </span>
+            <span>
+              {getLang("column_remark")}: {extension.remark}
+            </span>
           </span>
         </div>
 
         {!installed && extension.webStoreUrl && (
           <div className="ext-import-operations">
             <Button className="ext-import-btn" type="primary" onClick={openStore}>
-              打开应用商店
+              {getLang("management_open_web_store")}
             </Button>
           </div>
         )}

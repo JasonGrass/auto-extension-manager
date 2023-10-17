@@ -659,6 +659,114 @@
   "setting_func_home_link_store": {
     "message": "HOME ボタンは常にこの拡張機能のアプリショップ詳細ページを開きます"
   },
+  "management_export_or_share": {
+    "message": "シェア/輸出"
+  },
+  "management_import": {
+    "message": "インポート"
+  },
+  "management_import_extension": {
+    "message": "拡張機能のインポート"
+  },
+  "management_import_source": {
+    "message": "出典"
+  },
+  "management_import_file_text": {
+    "message": "ファイルのインポート/テキストの貼り付け"
+  },
+  "management_import_install_extension": {
+    "message": "拡張機能をインストールする"
+  },
+  "management_prev_step": {
+    "message": "前のステップ"
+  },
+  "management_next_step": {
+    "message": "次のステップ"
+  },
+  "management_import_from_clipboard": {
+    "message": "クリップボードから貼り付け"
+  },
+  "management_import_from_file": {
+    "message": "ファイルから読み取る"
+  },
+  "management_open_web_store": {
+    "message": "ウェブストアを開く"
+  },
+  "management_import_prepare": {
+    "message": "インポートの準備をする"
+  },
+  "management_import_open_all_link": {
+    "message": "すべてのストアのリンクを開く"
+  },
+  "management_import_open_select_link": {
+    "message": "選択したストアのリンクを開く"
+  },
+  "management_import_alias": {
+    "message": "インポートエイリアス"
+  },
+  "management_import_remark": {
+    "message": "メモをインポートする"
+  },
+  "management_import_store_source": {
+    "message": "ウェブストアのソース"
+  },
+  "management_import_already": {
+    "message": "すでにインストールされています"
+  },
+  "management_store_official": {
+    "message": "公式アプリストア"
+  },
+  "management_export_share_your_extension": {
+    "message": "拡張機能をエクスポートまたは共有する"
+  },
+  "management_export_target": {
+    "message": "目標"
+  },
+  "management_export_content": {
+    "message": "コンテンツ"
+  },
+  "management_export_type": {
+    "message": "エクスポート方法"
+  },
+  "management_export_target_desc": {
+    "message": "共有/エクスポートする拡張機能を選択してください"
+  },
+  "management_export_content_desc": {
+    "message": "エクスポートするカスタム コンテンツを選択してください"
+  },
+  "management_export_type_desc": {
+    "message": "エクスポート方法を設定する"
+  },
+  "management_export_all_extension": {
+    "message": "すべての拡張機能"
+  },
+  "management_export_part_extension": {
+    "message": "部分の拡張機能"
+  },
+  "management_export_no_extension_selected": {
+    "message": "拡張子が選択されていません"
+  },
+  "management_export_extension_base_info": {
+    "message": "拡張機能の基本情報"
+  },
+  "management_export_share_text": {
+    "message": "テキストを共有する"
+  },
+  "management_export_download": {
+    "message": "ダウンロード"
+  },
+  "management_export_copy_to_clipboard": {
+    "message": "クリップボードにコピー"
+  },
+  "management_export_share_text_title": {
+    "message": "$1 つのブラウザ拡張機能を共有しました。このテキストをコピーして拡張機能マネージャーにインポートします"
+  },
+  "management_export_md_template_new": {
+    "message": "新しいテンプレートを作成する"
+  },
+  "management_export_md_template_default": {
+    "message": "デフォルトテンプレート"
+  },
   "end": {
     "message": "終了"
   }
