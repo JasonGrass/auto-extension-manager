@@ -3,6 +3,7 @@ import React, { memo, useEffect, useRef, useState } from "react"
 import { Button, Checkbox, Radio, Segmented, message } from "antd"
 import styled from "styled-components"
 
+import analytics from ".../utils/googleAnalyze"
 import { downloadFile, formatDate, getLang, writeToClipboard } from ".../utils/utils"
 import { buildRecords } from "../utils"
 import JsonFormat from "./JsonFormat/Index"
@@ -48,6 +49,10 @@ const ShareMode = memo(({ targetExtensionIds, exportRange, extensions, options }
     }
 
     downloadFile(new Blob([content], { type: "application/plain" }), filename)
+
+    analytics.fireEvent("extension_export_download", {
+      action: exportType
+    })
   }
 
   const onCopy = async () => {
@@ -63,6 +68,10 @@ const ShareMode = memo(({ targetExtensionIds, exportRange, extensions, options }
     } else {
       messageApi.warning("copy fail")
     }
+
+    analytics.fireEvent("extension_export_copy", {
+      action: exportType
+    })
   }
 
   return (

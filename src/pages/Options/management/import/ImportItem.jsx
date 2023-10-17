@@ -5,6 +5,7 @@ import classNames from "classnames"
 import styled from "styled-components"
 
 import PuzzleImage from ".../assets/img/puzzle.svg"
+import analytics from ".../utils/googleAnalyze"
 import { getLang } from ".../utils/utils"
 import ExtensionChannelLabel from "../ExtensionChannelLabel"
 import { downloadImage } from "./helper/imageHelper"
@@ -16,6 +17,8 @@ const ImportItem = memo(({ extension, storeSource, installed, onSelectChanged })
   const openStore = (e) => {
     e.stopPropagation()
     extension.openStoreLink(extension, storeSource)
+
+    analytics.fireEvent("extension_import_open_single_link")
   }
 
   useEffect(() => {

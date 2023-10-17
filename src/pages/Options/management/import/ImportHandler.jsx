@@ -3,6 +3,7 @@ import React, { memo, useCallback, useState } from "react"
 import { Button, Checkbox, Dropdown, Space, message } from "antd"
 import styled from "styled-components"
 
+import analytics from ".../utils/googleAnalyze"
 import { getLang } from ".../utils/utils"
 import ImportItem from "./ImportItem"
 import { useAlreadyInstall } from "./helper/useAlreadyInstall"
@@ -60,12 +61,14 @@ const ImportHandler = memo(({ extensions, options, inputs }) => {
     for (const ext of inputItems) {
       openStoreLink(ext, extensionSource.key)
     }
+    analytics.fireEvent("extension_import_open_all_link")
   }
 
   const onOpenSelectStoreLink = () => {
     for (const ext of inputItems.filter((i) => selectIds.includes(i.id))) {
       openStoreLink(ext, extensionSource.key)
     }
+    analytics.fireEvent("extension_import_open_select_link")
   }
 
   const onSelectChanged = useCallback((ext, selected) => {
