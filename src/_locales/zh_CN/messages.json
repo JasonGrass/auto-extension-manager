@@ -218,6 +218,9 @@
   "management_show_operation": {
     "message": "显示操作菜单"
   },
+  "management_show_more_detail": {
+    "message": "显示更多详情"
+  },
   "alias_exist": {
     "message": "存在别名"
   },

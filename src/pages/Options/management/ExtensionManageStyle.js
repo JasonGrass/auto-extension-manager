@@ -17,7 +17,7 @@ export const ExtensionManageStyle = styled.div`
       margin-right: 10px;
     }
 
-    .search-checkbox {
+    .settings-checkbox {
       margin: 0 0 0 10px;
     }
   }

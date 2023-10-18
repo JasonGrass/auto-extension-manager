@@ -218,6 +218,9 @@
   "management_show_operation": {
     "message": "Show operating menu"
   },
+  "management_show_more_detail": {
+    "message": "Show more details"
+  },
   "alias_exist": {
     "message": "Has alias"
   },

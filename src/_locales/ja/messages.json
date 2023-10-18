@@ -218,6 +218,9 @@
   "management_show_operation": {
     "message": "操作メニューを表示"
   },
+  "management_show_more_detail": {
+    "message": "さらに詳細を表示"
+  },
   "alias_exist": {
     "message": "別名あり"
   },

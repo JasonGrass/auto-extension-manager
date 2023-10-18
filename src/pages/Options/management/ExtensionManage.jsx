@@ -38,6 +38,8 @@ const ExtensionManage = memo(({ extensions, options }) => {
 
   // 操作
   const [showOperation, setShowOperation] = useState(false)
+  // 展开详情中显示更多信息
+  const [showMoreDetail, setShowMoreDetail] = useState(false)
 
   // 初始化
   useEffect(() => {
@@ -49,10 +51,13 @@ const ExtensionManage = memo(({ extensions, options }) => {
     setShownData(initData)
   }, [extensions, options])
 
+  // 设置配置的初始化
   useEffect(() => {
     const init = async () => {
       const show = await forage.getItem("showOperationColumn")
       setShowOperation(show ?? false)
+      const showMore = await forage.getItem("showMoreDetail")
+      setShowMoreDetail(showMore ?? false)
     }
     init()
   }, [])
@@ -199,8 +204,18 @@ const ExtensionManage = memo(({ extensions, options }) => {
               setShowOperation(e.target.checked)
               forage.setItem("showOperationColumn", e.target.checked)
             }}
-            className="search-checkbox">
+            className="settings-checkbox">
             {getLang("management_show_operation")}
+          </Checkbox>
+
+          <Checkbox
+            checked={showMoreDetail}
+            onChange={(e) => {
+              setShowMoreDetail(e.target.checked)
+              forage.setItem("showMoreDetail", e.target.checked)
+            }}
+            className="settings-checkbox">
+            {getLang("management_show_more_detail")}
           </Checkbox>
         </div>
 
@@ -222,7 +237,11 @@ const ExtensionManage = memo(({ extensions, options }) => {
         columns={columns}
         expandable={{
           expandedRowRender: (record) => (
-            <ExpandEditor record={record} reload={reload} messageApi={messageApi}></ExpandEditor>
+            <ExpandEditor
+              record={record}
+              showMoreDetail={showMoreDetail}
+              reload={reload}
+              messageApi={messageApi}></ExpandEditor>
           ),
           expandRowByClick: true
         }}
@@ -232,7 +251,7 @@ const ExtensionManage = memo(({ extensions, options }) => {
   )
 })
 
-const ExpandEditor = ({ record, reload, messageApi }) => {
+const ExpandEditor = ({ record, showMoreDetail, reload, messageApi }) => {
   const initValue = record
   const onFinish = async (values) => {
     const alias = values.alias?.trim() ?? ""
@@ -249,7 +268,7 @@ const ExpandEditor = ({ record, reload, messageApi }) => {
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
-        <ExtensionExpandedDetails ext={record}></ExtensionExpandedDetails>
+        <ExtensionExpandedDetails ext={record} showMore={showMoreDetail}></ExtensionExpandedDetails>
       </div>
 
       <Form

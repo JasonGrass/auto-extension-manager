@@ -158,6 +158,11 @@ export const getHomepageUrl = (item, alwaysLinkToStore) => {
   }
 
   const updateUrl = item.updateUrl
+
+  if (!updateUrl) {
+    return item.homepageUrl
+  }
+
   if (updateUrl.includes(".google.com")) {
     return "https://chrome.google.com/webstore/detail/" + item.id
   } else if (updateUrl.includes("edge.microsoft.com")) {
