@@ -13,13 +13,19 @@
 
 A simple way to manage your chrome extensions
 
-🍕 **Core Features**
+🍕 **Special Features**
 
 * Flexible rule customization to automatically enable or disable browser extensions.
 
 Matching conditions: URL / Profile / Operating system / Time.
 
 Actions: Enable when match, Close when match, Enable only when match, Disbale only when match, Custom; Support automatically refreshing the page after enabling or disabling extensions.
+
+* Bulk Export/Import and Share Extensions
+
+Bulk export extension information, support sharing text, json, custom markdown format; share or record your extension installation information.
+
+Bulk import extensions from shared text or json, simplifying the process of migrating or installing multiple extensions.
 
 🍕 **Basic Features**
 
