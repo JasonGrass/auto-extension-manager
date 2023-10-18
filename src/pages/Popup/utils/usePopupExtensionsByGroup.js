@@ -54,7 +54,7 @@ async function buildShowItems(extensions, options) {
     shownGroups.push({
       id: "__v_top__",
       name: "",
-      extensions: await sortShowItems(options, listTop)
+      extensions: sortByReferenceList(topExtensions, listTop)
     })
   }
 
