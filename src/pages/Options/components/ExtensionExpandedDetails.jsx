@@ -158,7 +158,7 @@ const ExtensionExpandedDetails = memo(({ ext, showTitle, showMore }) => {
       {webStoreUrl && webStoreUrl !== ext.homepageUrl && (
         <Row>
           <Col span={2}>
-            <span className="detail-title">web store:</span>
+            <span className="detail-title">webStore:</span>
           </Col>
           <Col>
             <a href={webStoreUrl} onClick={(e) => onLinkClick(e, webStoreUrl)}>
