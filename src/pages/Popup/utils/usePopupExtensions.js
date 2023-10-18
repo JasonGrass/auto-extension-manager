@@ -60,7 +60,7 @@ async function sortShowItems(options, list1, list2) {
 
   // 如果有需要，再按照频率排序
   const refList = await manualEnableCounter.getOrder()
-  return [order(refList, list1_pre), order(refList, list2_pre)]
+  return [sortByReferenceList(refList, list1_pre), sortByReferenceList(refList, list2_pre)]
 }
 
 async function buildShowItems(extensions, options) {
@@ -81,11 +81,11 @@ async function buildShowItems(extensions, options) {
     list2 = list2.filter((i) => !hiddenExtensions.includes(i.id))
   }
 
-  return [order(topExtensions, list0), list1, list2]
+  return [sortByReferenceList(topExtensions, list0), list1, list2]
 }
 
 /**
- * 找出那些应该置顶显示的扩展；返回结果已经进行了排序
+ * 找出那些应该置顶显示的扩展；返回结果已经进行了排序，返回结果是 ID 列表
  */
 export async function findTopExtensions(options) {
   const byRule = await findTopExtensionsByRule(options)
@@ -100,7 +100,7 @@ export async function findTopExtensions(options) {
   // 再按照频率排序
   if (options.setting.isSortByFrequency) {
     const refList = await manualEnableCounter.getOrder()
-    byRuleOrdered = order(refList, byRuleOrdered)
+    byRuleOrdered = sortByReferenceList(refList, byRuleOrdered)
   }
 
   return Array.from(new Set([...byRuleOrdered, ...byRecently]))
@@ -220,7 +220,10 @@ async function findTopExtensionsByRule(options) {
   return Array.from(new Set(ids))
 }
 
-export function order(orderExtIdList, list) {
+/**
+ * 根据指定的列表进行排序
+ */
+export function sortByReferenceList(orderExtIdList, list) {
   if (orderExtIdList.length === 0) return list
 
   const result = []

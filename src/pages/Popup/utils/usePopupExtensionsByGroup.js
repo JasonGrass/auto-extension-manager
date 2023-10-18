@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
 import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
 import { getLang } from ".../utils/utils"
-import { findTopExtensions, order } from "./usePopupExtensions"
+import { findTopExtensions, sortByReferenceList } from "./usePopupExtensions"
 
 const manualEnableCounter = new ManualEnableCounter()
 
@@ -123,7 +123,7 @@ async function sortShowItems(options, list) {
 
   // 如果有需要，再按照频率排序
   const refList = await manualEnableCounter.getOrder()
-  return order(refList, list_pre)
+  return sortByReferenceList(refList, list_pre)
 }
 
 function appendGroupInfo(extensions, group) {
