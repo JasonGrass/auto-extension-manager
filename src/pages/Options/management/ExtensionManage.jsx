@@ -8,6 +8,7 @@ import localforage from "localforage"
 
 import storage from ".../storage/sync"
 import { isEdgeRuntime } from ".../utils/channelHelper"
+import analytics from ".../utils/googleAnalyze"
 import isMatch from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
 import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
@@ -220,11 +221,11 @@ const ExtensionManage = memo(({ extensions, options }) => {
         </div>
 
         <div className="extension-manage-tools-right">
-          <NavLink to="/management/share">
+          <NavLink to="/management/share" onClick={(e) => analytics.firePageViewEvent("export")}>
             <Button icon={<ShareAltOutlined />}>{getLang("management_export_or_share")}</Button>
           </NavLink>
 
-          <NavLink to="/management/import">
+          <NavLink to="/management/import" onClick={(e) => analytics.firePageViewEvent("import")}>
             <Button icon={<ImportOutlined />}>{getLang("management_import")}</Button>
           </NavLink>
         </div>
