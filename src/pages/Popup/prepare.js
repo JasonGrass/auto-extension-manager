@@ -23,6 +23,13 @@ export const prepare = async function () {
     allOptions.setting.columnCountInGirdView
   )
 
+  let zoom = 1
+  if (allOptions.setting.zoomRatio) {
+    zoom = allOptions.setting.zoomRatio / 100
+  }
+
+  document.body.style.zoom = zoom
+
   return {
     // 插件信息
     extensions: extensions,
