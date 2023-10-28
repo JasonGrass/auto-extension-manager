@@ -668,6 +668,9 @@
   "setting_dark_mode_system": {
     "message": "System"
   },
+  "setting_popup_scale_title": {
+    "message": "Popup zoom ratio"
+  },
   "setting_func_witch_group": {
     "message": "When switching groups, enable the extensions in the current group and disable the rest"
   },

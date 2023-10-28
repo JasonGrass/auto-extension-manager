@@ -668,6 +668,9 @@
   "setting_dark_mode_system": {
     "message": "システム"
   },
+  "setting_popup_scale_title": {
+    "message": "ズーム倍率"
+  },
   "setting_func_witch_group": {
     "message": "グループ切り替え時、現在のグループ内の拡張機能を有効にし、それ以外を無効にします。"
   },

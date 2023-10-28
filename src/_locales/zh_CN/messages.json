@@ -668,6 +668,9 @@
   "setting_dark_mode_system": {
     "message": "跟随系统"
   },
+  "setting_popup_scale_title": {
+    "message": "缩放比例"
+  },
   "setting_func_witch_group": {
     "message": "切换分组时，启用当前分组扩展，禁用其它的扩展"
   },
