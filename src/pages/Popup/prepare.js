@@ -27,6 +27,7 @@ export const prepare = async function () {
   if (allOptions.setting.zoomRatio) {
     zoom = allOptions.setting.zoomRatio / 100
   }
+  document.body.style.height = `${zoom * 600}px`
 
   document.body.style.zoom = zoom
 
