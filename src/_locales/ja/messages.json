@@ -554,6 +554,9 @@
   "setting_popup_setting_display": {
     "message": "コンテンツ表示"
   },
+  "setting_popup_setting_group_sort": {
+    "message": "グループ化と並べ替え"
+  },
   "setting_popup_setting_other": {
     "message": "その他"
   },

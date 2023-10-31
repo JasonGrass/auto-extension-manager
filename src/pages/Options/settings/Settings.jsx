@@ -97,7 +97,7 @@ function Settings() {
       </div>
 
       {/* 分组与排序 */}
-      <h3 className="setting-space-title">分组与排序</h3>
+      <h3 className="setting-space-title">{getLang("setting_popup_setting_group_sort")}</h3>
       <div className="container">
         <GroupAndSortSetting
           setting={setting}

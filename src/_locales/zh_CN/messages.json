@@ -554,6 +554,9 @@
   "setting_popup_setting_display": {
     "message": "显示内容"
   },
+  "setting_popup_setting_group_sort": {
+    "message": "分组与排序"
+  },
   "setting_popup_setting_other": {
     "message": "其它"
   },
