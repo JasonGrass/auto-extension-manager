@@ -73,7 +73,7 @@ const ExtensionOperationItem = memo(({ record, options }) => {
         <SettingOutlined />
       </Space>
 
-      <Popconfirm
+      {/* <Popconfirm
         title={getLang("remove_extension")}
         description={getLang("remove_extension_confirm", record.shortName)}
         onConfirm={(e) => confirmDeleteExtension(e, record)}
@@ -82,7 +82,11 @@ const ExtensionOperationItem = memo(({ record, options }) => {
         <Space className="operation-menu-item">
           <DeleteOutlined />
         </Space>
-      </Popconfirm>
+      </Popconfirm> */}
+
+      <Space className="operation-menu-item" onClick={(e) => confirmDeleteExtension(e, record)}>
+        <DeleteOutlined />
+      </Space>
 
       <Space
         className={classNames({

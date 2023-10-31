@@ -147,7 +147,7 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
             onClick={(e) => handleSettingButtonClick(e, item)}
           />
 
-          <Popconfirm
+          {/* <Popconfirm
             title={getLang("remove_extension")}
             description={getLang("remove_extension_confirm", item.shortName)}
             onConfirm={(e) => confirmDeleteExtension(e, item)}
@@ -156,7 +156,13 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
             okText="Yes"
             cancelText="Cancel">
             <Button type="text" icon={<DeleteOutlined />} />
-          </Popconfirm>
+          </Popconfirm> */}
+
+          <Button
+            type="text"
+            icon={<DeleteOutlined />}
+            onClick={(e) => confirmDeleteExtension(e, item)}
+          />
 
           <Button
             disabled={!existHomePage}

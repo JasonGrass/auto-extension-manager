@@ -235,7 +235,7 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
             <SettingOutlined />
           </Space>
 
-          <Popconfirm
+          {/* <Popconfirm
             title={getLang("remove_extension")}
             description={getLang("remove_extension_confirm", item.shortName)}
             onConfirm={(e) => confirmDeleteExtension(e, item)}
@@ -244,7 +244,11 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
             <Space className="operation-menu-item">
               <DeleteOutlined />
             </Space>
-          </Popconfirm>
+          </Popconfirm> */}
+
+          <Space className="operation-menu-item" onClick={(e) => confirmDeleteExtension(e, item)}>
+            <DeleteOutlined />
+          </Space>
 
           <Space
             className={classNames({
