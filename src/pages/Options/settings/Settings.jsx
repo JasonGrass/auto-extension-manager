@@ -11,6 +11,7 @@ import { exportConfig, importConfig } from "./ConfigFileBackup.ts"
 import { SettingStyle } from "./SettingStyle.js"
 import ContentViewSetting from "./components/ContentViewSetting.jsx"
 import FunctionSetting from "./components/FunctionSetting.jsx"
+import GroupAndSortSetting from "./components/GroupAndSortSetting.jsx"
 import SearchSetting from "./components/SearchSetting.jsx"
 import ViewOtherSetting from "./components/ViewOtherSetting.jsx"
 
@@ -93,6 +94,14 @@ function Settings() {
         <ContentViewSetting
           setting={setting}
           onSettingChange={onSettingChange}></ContentViewSetting>
+      </div>
+
+      {/* 分组与排序 */}
+      <h3 className="setting-space-title">分组与排序</h3>
+      <div className="container">
+        <GroupAndSortSetting
+          setting={setting}
+          onSettingChange={onSettingChange}></GroupAndSortSetting>
       </div>
 
       {/* 其它 */}

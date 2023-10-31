@@ -15,15 +15,6 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
   // 是否显示固定分组扩展上面的小圆点
   const [isShowDotOfFixedExtension, setIsShowDotOfFixedExtension] = useState(true)
 
-  // 是否按分组显示
-  const [isDisplayByGroup, setIsDisplayByGroup] = useState(false)
-  // 置顶显示最近更新的扩展
-  const [isTopRecentlyUpdate, setIsTopRecentlyUpdate] = useState(false)
-  // 最近更新或者最近安装
-  const [topRecentlyMode, setTopRecentlyMode] = useState("install")
-  // 最近更新的计算天数
-  const [topRecentlyDays, setTopRecentlyDays] = useState(7)
-
   // 列表视图下，是否总是显示扩展操作按钮
   const [isShowItemOperationAlways, setIsShowItemOperationAlways] = useState(false)
   // 网格视图下，显示 APP 名称
@@ -38,15 +29,6 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
   useEffect(() => {
     const showApp = setting.isShowApp ?? false
     setIsShowApp(showApp)
-
-    const displayByGroup = setting.isDisplayByGroup ?? false
-    setIsDisplayByGroup(displayByGroup)
-    const topRecentlyUpdate = setting.isTopRecentlyUpdate ?? false
-    setIsTopRecentlyUpdate(topRecentlyUpdate)
-    const recentlyMode = setting.topRecentlyMode ?? "install"
-    setTopRecentlyMode(recentlyMode)
-    const recentlyDays = setting.topRecentlyDays ?? 7
-    setTopRecentlyDays(recentlyDays)
 
     const showItemOperationAlways = setting.isShowItemOperationAlways ?? false
     setIsShowItemOperationAlways(showItemOperationAlways)
@@ -123,69 +105,6 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
             onSettingChange(value, setIsShowDotOfFixedExtension, "isShowDotOfFixedExtension")
           }></Switch>
       </div>
-
-      {/* 是否按分组来展示扩展 */}
-      <div className="setting-item">
-        <span>{getLang("setting_ui_show_by_group")}</span>
-        <Switch
-          size="small"
-          checked={isDisplayByGroup}
-          onChange={(value) =>
-            onSettingChange(value, setIsDisplayByGroup, "isDisplayByGroup")
-          }></Switch>
-      </div>
-
-      {/* 是否置顶显示最近更新的扩展 */}
-      <div className="setting-item">
-        <span>{getLang("setting_ui_top_recently_update")}</span>
-        <Switch
-          size="small"
-          checked={isTopRecentlyUpdate}
-          onChange={(value) =>
-            onSettingChange(value, setIsTopRecentlyUpdate, "isTopRecentlyUpdate")
-          }></Switch>
-      </div>
-
-      {/* 最近更新或者最近安装 */}
-      {isTopRecentlyUpdate && (
-        <div className="setting-item">
-          <span>
-            ↑ {getLang("setting_ui_top_recently_install_or_update")}
-            <Tooltip
-              placement="top"
-              title={getLang("setting_ui_top_recently_install_or_update_tip")}>
-              <QuestionCircleOutlined />
-            </Tooltip>
-          </span>
-
-          <Radio.Group
-            size="small"
-            value={topRecentlyMode}
-            onChange={(e) =>
-              onSettingChange(e.target.value, setTopRecentlyMode, "topRecentlyMode")
-            }>
-            <Radio value="install">{getLang("setting_ui_top_recently_install_select")}</Radio>
-            <Radio value="update">{getLang("setting_ui_top_recently_update_select")}</Radio>
-          </Radio.Group>
-        </div>
-      )}
-
-      {/* 最近更新的计算天数 */}
-      {isTopRecentlyUpdate && (
-        <div className="setting-item">
-          <span>↑ {getLang("setting_ui_top_recently_days")}</span>
-          <Radio.Group
-            size="small"
-            value={topRecentlyDays}
-            onChange={(e) =>
-              onSettingChange(e.target.value, setTopRecentlyDays, "topRecentlyDays")
-            }>
-            <Radio value={7}>7 Days</Radio>
-            <Radio value={15}>15 Days</Radio>
-            <Radio value={30}>30 Days</Radio>
-          </Radio.Group>
-        </div>
-      )}
 
       {/* 列表视图下，始终显示快捷操作按钮（默认 hover 显示） */}
       <div className="setting-item">

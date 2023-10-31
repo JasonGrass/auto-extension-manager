@@ -6,16 +6,12 @@ import { Button, Popconfirm, Radio, Slider, Switch, Tooltip, message } from "ant
 import { getLang } from ".../utils/utils"
 
 const ViewOtherSetting = memo(({ setting, onSettingChange }) => {
-  // Popup 中，按照频率进行排序
-  const [isSortByFrequency, setIsSortByFrequency] = useState(false)
   // Popup 暗色模式
   const [darkMode, setDarkMode] = useState("system")
   // Popup 缩放比例
   const [zoomRatio, setZoomRatio] = useState(100)
 
   useEffect(() => {
-    const sortByFrequency = setting.isSortByFrequency ?? false
-    setIsSortByFrequency(sortByFrequency)
     const initDarkMode = setting.darkMode ?? "system"
     setDarkMode(initDarkMode)
     const ratio = setting.zoomRatio ?? 100
@@ -24,22 +20,6 @@ const ViewOtherSetting = memo(({ setting, onSettingChange }) => {
 
   return (
     <div>
-      {/* 排序：按照启用频率进行排序 */}
-      <div className="setting-item">
-        <span>
-          {getLang("setting_list_sort_type")}
-          <Tooltip placement="top" title={getLang("setting_list_sort_type_tip")}>
-            <QuestionCircleOutlined />
-          </Tooltip>{" "}
-        </span>
-        <Switch
-          size="small"
-          checked={isSortByFrequency}
-          onChange={(value) =>
-            onSettingChange(value, setIsSortByFrequency, "isSortByFrequency")
-          }></Switch>
-      </div>
-
       {/* 暗色模式 */}
       <div className="setting-item">
         <span>{getLang("setting_dark_mode_title")}</span>
