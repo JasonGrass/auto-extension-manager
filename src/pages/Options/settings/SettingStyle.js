@@ -1,6 +1,8 @@
 import styled from "styled-components"
 
 export const SettingStyle = styled.div`
+  padding-bottom: 24px;
+
   .container {
     width: 660px;
 
