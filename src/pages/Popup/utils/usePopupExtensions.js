@@ -85,7 +85,11 @@ async function buildShowItems(extensions, options) {
 }
 
 /**
- * 找出那些应该置顶显示的扩展；返回结果已经进行了排序，返回结果是 ID 列表
+ * 找出那些应该置顶显示的扩展；返回结果已经进行了排序，返回结果是 ID 列表;
+ * 排序规则：
+ * 1 规则设置的在前，最近更新的在后
+ * 2 规则设置置顶的，按是否启用+名称排序
+ * 3 最近更新的，按更新时间倒序
  */
 export async function findTopExtensions(options) {
   const byRule = await findTopExtensionsByRule(options)
@@ -96,7 +100,7 @@ export async function findTopExtensions(options) {
   }
 
   // 先按名称排序
-  let byRuleOrdered = sortExtension(byRule, { ignoreEnable: true })
+  let byRuleOrdered = sortExtension(byRule, { ignoreEnable: false })
   // 再按照频率排序
   if (options.setting.isSortByFrequency) {
     const refList = await manualEnableCounter.getOrder()
