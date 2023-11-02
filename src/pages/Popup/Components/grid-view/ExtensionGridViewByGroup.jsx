@@ -18,16 +18,18 @@ const ExtensionGridViewByGroup = memo(({ extensions, options, isShowBottomDivide
 
   return (
     <GridViewSpaceStyle>
-      {groups.map((group, index) => {
-        return (
-          <ExtensionGridSpace
-            group={group}
-            options={options}
-            key={group.id}
-            onItemMove={onItemMove}
-            groupIndex={index}></ExtensionGridSpace>
-        )
-      })}
+      {groups
+        .filter((g) => g.extensions.length > 0)
+        .map((group, index) => {
+          return (
+            <ExtensionGridSpace
+              group={group}
+              options={options}
+              key={group.id}
+              onItemMove={onItemMove}
+              groupIndex={index}></ExtensionGridSpace>
+          )
+        })}
       {isShowBottomDivider && <div className="divider"></div>}
     </GridViewSpaceStyle>
   )

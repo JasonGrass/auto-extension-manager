@@ -20,15 +20,17 @@ const ExtensionListViewByGroup = memo(({ extensions, options }) => {
 
   return (
     <Style>
-      {groups.map((group) => {
-        return (
-          <ExtensionListSpace
-            group={group}
-            options={options}
-            key={group.id}
-            onItemEnableChanged={onItemEnableChanged}></ExtensionListSpace>
-        )
-      })}
+      {groups
+        .filter((g) => g.extensions.length > 0)
+        .map((group) => {
+          return (
+            <ExtensionListSpace
+              group={group}
+              options={options}
+              key={group.id}
+              onItemEnableChanged={onItemEnableChanged}></ExtensionListSpace>
+          )
+        })}
     </Style>
   )
 })
