@@ -3,9 +3,14 @@
 # Extension Manager
 
 [![release](https://img.shields.io/github/v/release/JasonGrass/auto-extension-manager?style=for-the-badge)](https://github.com/JasonGrass/auto-extension-manager/releases)
+
 [![chrome-web-store](https://img.shields.io/chrome-web-store/v/efajbgpnlnobnkgdcgcnclngeolnmggp?style=for-the-badge)](https://chrome.google.com/webstore/detail/extension-manager/efajbgpnlnobnkgdcgcnclngeolnmggp)
 [![users](https://img.shields.io/chrome-web-store/users/efajbgpnlnobnkgdcgcnclngeolnmggp.svg?style=for-the-badge)](https://chrome.google.com/webstore/detail/extension-manager/efajbgpnlnobnkgdcgcnclngeolnmggp)
 [![stars](https://img.shields.io/chrome-web-store/stars/efajbgpnlnobnkgdcgcnclngeolnmggp?style=for-the-badge)](https://chrome.google.com/webstore/detail/extension-manager/efajbgpnlnobnkgdcgcnclngeolnmggp)
+
+[![edge-web-store](https://img.shields.io/badge/dynamic/json?style=for-the-badge&label=EDGE%20WEB%20STORE&color=ffba08&prefix=v&query=$.version&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/pifijhmfdnkanlcnecpifkmjbfoopokf)](https://microsoftedge.microsoft.com/addons/detail/extension-manager/pifijhmfdnkanlcnecpifkmjbfoopokf)
+[![users](https://img.shields.io/badge/dynamic/json?style=for-the-badge&label=USERS&color=81bc06&query=$.activeInstallCount&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/pifijhmfdnkanlcnecpifkmjbfoopokf)](https://microsoftedge.microsoft.com/addons/detail/extension-manager/pifijhmfdnkanlcnecpifkmjbfoopokf)
+[![stars](https://img.shields.io/badge/dynamic/json?style=for-the-badge&label=RATING&color=81bc06&query=$.averageRating&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/pifijhmfdnkanlcnecpifkmjbfoopokf)](https://microsoftedge.microsoft.com/addons/detail/extension-manager/pifijhmfdnkanlcnecpifkmjbfoopokf)
 
 [中文](./README.md)
 
@@ -95,7 +100,7 @@ ref: <https://chromium.googlesource.com/chromium/src/+/HEAD/extensions/docs/exte
 Language files are located in the `src/_locales` folder.
 If you find any translation issues, you can provide feedback in the issue section or directly submit a PR for correction.
 
-Thanks to [Ruri-1973](https://github.com/Blank-1973) for Japanese translation. #79
+Thanks to [Ruri-1973](https://github.com/Blank-1973) for Japanese translation. [#79](https://github.com/JasonGrass/auto-extension-manager/pull/79)
 
 ## 🍉 Other
 
