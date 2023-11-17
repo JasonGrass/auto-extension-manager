@@ -43,7 +43,8 @@ async function buildShowItems(extensions, options) {
   const list = appendAdditionInfo(extensions, options)
 
   // 筛选置顶的扩展
-  const topExtensions = await findTopExtensions(options)
+  const topExtensions = await findTopExtensions(extensions, options)
+
   let listTop = list.filter((i) => topExtensions.includes(i.id))
 
   // 不显示那些在隐藏分组中的扩展

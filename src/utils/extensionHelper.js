@@ -90,11 +90,15 @@ export const filterExtensions = (extensions, filter) => {
 }
 
 export const sortExtension = (extensions, options) => {
-  if (!extensions) {
+  if (!extensions || extensions.length === 0) {
     return []
   }
 
   options = options || {}
+
+  if (typeof extensions[0] !== "object") {
+    throw Error("sortExtension extensions param should be object type")
+  }
 
   const list = []
   // distinct

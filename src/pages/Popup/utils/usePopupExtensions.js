@@ -69,10 +69,11 @@ async function buildShowItems(extensions, options) {
   let list2 = list.filter((i) => !i.enabled)
 
   // 筛选置顶的扩展, 返回的是已经排序的扩展 id 列表
-  const topExtensions = await findTopExtensions(options)
-  let list0 = list.filter((i) => topExtensions.includes(i.id))
-  list1 = list1.filter((i) => !topExtensions.includes(i.id))
-  list2 = list2.filter((i) => !topExtensions.includes(i.id))
+  const topExtensionsIds = await findTopExtensions(extensions, options)
+
+  let list0 = list.filter((i) => topExtensionsIds.includes(i.id))
+  list1 = list1.filter((i) => !topExtensionsIds.includes(i.id))
+  list2 = list2.filter((i) => !topExtensionsIds.includes(i.id))
 
   // 不显示那些在隐藏分组中的扩展
   const hiddenExtensions = options.groups?.find((g) => g.id === "hidden")?.extensions
@@ -81,7 +82,7 @@ async function buildShowItems(extensions, options) {
     list2 = list2.filter((i) => !hiddenExtensions.includes(i.id))
   }
 
-  return [sortByReferenceList(topExtensions, list0), list1, list2]
+  return [sortByReferenceList(topExtensionsIds, list0), list1, list2]
 }
 
 /**
@@ -91,26 +92,34 @@ async function buildShowItems(extensions, options) {
  * 2 规则设置置顶的，按是否启用+名称排序
  * 3 最近更新的，按更新时间倒序
  */
-export async function findTopExtensions(options) {
-  const byRule = await findTopExtensionsByRule(options)
-  const byRecently = await findTopExtensionsByRecentlyUpdate(options)
+export async function findTopExtensions(extensions, options) {
+  const byRuleIds = await findTopExtensionsByRule(options)
 
-  if (byRule.length === 0) {
-    return byRecently
+  const byRecentlyIds = await findTopExtensionsByRecentlyUpdate(options)
+
+  if (byRuleIds.length === 0) {
+    return byRecentlyIds
   }
 
   // 先按名称排序
-  let byRuleOrdered = sortExtension(byRule, { ignoreEnable: false })
+  let byRuleOrderedExts = sortExtension(
+    extensions.filter((ext) => byRuleIds.includes(ext.id)),
+    { ignoreEnable: false }
+  )
+  let byRuleOrderedId = byRuleOrderedExts.map((ext) => ext.id)
+
   // 再按照频率排序
   if (options.setting.isSortByFrequency) {
     const refList = await manualEnableCounter.getOrder()
-    byRuleOrdered = sortByReferenceList(refList, byRuleOrdered)
+    byRuleOrderedId = sortByReferenceList(refList, byRuleOrderedId)
   }
 
-  return Array.from(new Set([...byRuleOrdered, ...byRecently]))
+  return Array.from(new Set([...byRuleOrderedId, ...byRecentlyIds]))
 }
 
-// 最近更新的扩展
+/**
+ * 最近更新的扩展，返回的是 ID 列表
+ */
 async function findTopExtensionsByRecentlyUpdate(options) {
   if (!options.setting.isTopRecentlyUpdate) {
     return []
@@ -153,18 +162,15 @@ async function findTopExtensionsByRecentlyUpdate(options) {
   const sortedItems = items.sort((a, b) => {
     const ta = Math.max(normalizeTime(a.installDate), normalizeTime(a.updateDate))
     const tb = Math.max(normalizeTime(b.installDate), normalizeTime(b.updateDate))
-
-    console.log(a.name, ta, b.name, tb)
-
     return tb - ta
   })
-
-  console.log(sortedItems)
 
   return sortedItems.map((i) => i.id)
 }
 
-// 由规则配置的，置顶的扩展
+/**
+ * 由规则配置的，置顶的扩展（返回的是 ID 列表）
+ */
 async function findTopExtensionsByRule(options) {
   const tabs = await chromeP.tabs.query({
     active: true,
