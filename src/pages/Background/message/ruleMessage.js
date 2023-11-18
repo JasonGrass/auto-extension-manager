@@ -4,7 +4,7 @@ import logger from ".../utils/logger"
 export const createCurrentSceneChangedHandler = (handler) => {
   // 当前情景模式变化时触发
   return (ctx) => {
-    logger().trace("[当前情景模式发生变更，重新触发规则执行]", ctx)
+    logger().debug("[当前情景模式发生变更，重新触发规则执行]", ctx)
 
     // 1. modify active scene id local storage
     const { params } = ctx
@@ -25,7 +25,7 @@ export const createCurrentSceneChangedHandler = (handler) => {
 export const createRuleConfigChangedHandler = (handler) => {
   // rule 配置发生变化时触发
   return (ctx) => {
-    logger().trace("[规则配置发生变更，重新触发规则执行]", ctx)
+    logger().debug("[规则配置发生变更，重新触发规则执行]", ctx)
     storage.options.getAll().then((options) => {
       handler.setRules(options.ruleConfig)
     })

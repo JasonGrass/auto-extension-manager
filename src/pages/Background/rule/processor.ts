@@ -1,6 +1,7 @@
 import chromeP from "webext-polyfill-kinda"
 
 import type { IExtensionManager } from ".../types/global"
+import logger from ".../utils/logger"
 import { DelayCloseToken, getDelayCloser } from "./delayCloser"
 import isMatch, { IMatchResult } from "./handlers/matchHandler"
 import getTarget from "./handlers/targetHandler"
@@ -106,6 +107,13 @@ function handle(
   if (action.actionType === "none") {
     return
   }
+
+  logger().debug(
+    `[Rule] handle start. match, target, config`,
+    matchResult,
+    targetExtensions,
+    config
+  )
 
   if (action.actionType === "custom") {
     handleAdvanceMode(matchResult, targetExtensions, action, ctx)
@@ -268,6 +276,7 @@ async function closeExtensions(
         return tab.url?.includes(`/${extId}/`)
       })
       if (settingTab) {
+        console.info(`[Rule] exist page about ${extId}, cancel disable`)
         continue
       }
 

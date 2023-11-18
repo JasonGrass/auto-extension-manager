@@ -22,7 +22,7 @@ export default async function checkCurrentOsMatch(rule: ruleV2.IRuleConfig) {
   }
 
   const result = config.os.includes(currentOsType)
-  logger().trace(
+  logger().debug(
     `[checkCurrentOsMatch] config: ${config.os}; currentOs:${currentOsType}; result:${result}`
   )
   return result

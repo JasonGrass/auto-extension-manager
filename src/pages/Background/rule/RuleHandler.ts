@@ -98,7 +98,7 @@ export class RuleHandler {
   private debounceDo
 
   private async do() {
-    logger().trace("[Extension Manager] 执行规则")
+    logger().debug("[Extension Manager] 执行规则")
 
     const self = await chromeP.management.getSelf()
     const tabs = await chromeP.tabs.query({})
@@ -109,6 +109,8 @@ export class RuleHandler {
       tab: this.#currentTabInfo,
       EM: this.EM
     }
+
+    logger().debug(`[Rule] ctx`, ctx)
 
     await processRule({
       scene: this.#currentScene,
