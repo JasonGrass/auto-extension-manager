@@ -4,6 +4,7 @@ import classNames from "classnames"
 import styled from "styled-components"
 
 import { usePopupExtensionsByGroup } from "../../utils/usePopupExtensionsByGroup"
+import FoldGroupName from "../common/FoldGroupName"
 import ExtensionGridItem from "./ExtensionGridItem"
 import { GridViewSpaceStyle } from "./ExtensionGridView"
 
@@ -38,14 +39,22 @@ const ExtensionGridViewByGroup = memo(({ extensions, options, isShowBottomDivide
 export default ExtensionGridViewByGroup
 
 const ExtensionGridSpace = memo(({ group, options, onItemMove, groupIndex }) => {
+  // 是否折叠分组显示
+  const [fold, setFold] = useState(false)
+
+  const onFoldChanged = useCallback((fold) => {
+    setFold(fold)
+  }, [])
+
   return (
     <GridSpaceByGroupStyle>
       {group.name && (
         <span className={classNames(["group-name", { "group-name-top": groupIndex === 0 }])}>
-          {group.name}
+          <FoldGroupName group={group} onFoldChanged={onFoldChanged}></FoldGroupName>
         </span>
       )}
-      <ul>
+
+      <ul className={classNames({ "show-list": !fold, "hide-list": fold })}>
         {group.extensions.map((item) => (
           <li key={item.id}>
             <ExtensionGridItem
@@ -69,6 +78,7 @@ const GridSpaceByGroupStyle = styled.div`
     display: flex;
 
     margin: 0 8px;
+    user-select: none;
 
     &::before,
     &::after {
@@ -86,6 +96,19 @@ const GridSpaceByGroupStyle = styled.div`
       flex: 1 1;
       margin: auto 0 auto 8px;
     }
+  }
+
+  .show-list {
+    opacity: 1;
+    max-height: 600px;
+    transition: all 0.4s;
+  }
+
+  .hide-list {
+    overflow: hidden;
+    opacity: 0;
+    max-height: 16px;
+    transition: all 0.4s;
   }
 
   .group-name-top {

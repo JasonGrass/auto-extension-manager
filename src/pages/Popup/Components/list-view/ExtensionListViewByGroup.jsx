@@ -4,6 +4,7 @@ import classNames from "classnames"
 import { styled } from "styled-components"
 
 import { usePopupExtensionsByGroup } from "../../utils/usePopupExtensionsByGroup"
+import FoldGroupName from "../common/FoldGroupName"
 import ExtensionListItem from "./ExtensionListItem"
 
 /**
@@ -38,10 +39,26 @@ const ExtensionListViewByGroup = memo(({ extensions, options }) => {
 export default ExtensionListViewByGroup
 
 const ExtensionListSpace = memo(({ group, options, onItemEnableChanged }) => {
+  // 是否折叠分组显示
+  const [fold, setFold] = useState(false)
+
+  const onFoldChanged = useCallback((fold) => {
+    setFold(fold)
+  }, [])
+
   return (
     <div>
-      {group.name && <span className="group-name">{group.name}</span>}
-      <ul>
+      {group.name && (
+        <span className="group-name">
+          <FoldGroupName group={group} onFoldChanged={onFoldChanged}></FoldGroupName>
+        </span>
+      )}
+
+      <ul
+        className={classNames({
+          "show-list": !fold,
+          "hide-list": fold
+        })}>
         {group.extensions.map((item) => (
           <li key={item.id}>
             <ExtensionListItem
@@ -72,8 +89,10 @@ const Style = styled.ul`
 
   .group-name {
     display: flex;
+    align-items: center;
 
     margin: 12px 8px;
+    user-select: none;
 
     &::before,
     &::after {
@@ -91,5 +110,18 @@ const Style = styled.ul`
       flex: 1 1;
       margin: auto 0 auto 8px;
     }
+  }
+
+  .show-list {
+    opacity: 1;
+    max-height: 600px;
+    transition: all 0.4s;
+  }
+
+  .hide-list {
+    overflow: hidden;
+    opacity: 0;
+    max-height: 0px;
+    transition: all 0.4s;
   }
 `

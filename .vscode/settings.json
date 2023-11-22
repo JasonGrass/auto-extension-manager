@@ -5,6 +5,7 @@
     "Dexie",
     "INDEXEDDB",
     "localforage",
+    "LOCALSTORAGE",
     "noreferrer",
     "pangea",
     "Popconfirm",
