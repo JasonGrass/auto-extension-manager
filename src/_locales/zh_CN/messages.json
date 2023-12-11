@@ -173,6 +173,9 @@
   "history_absolute_time": {
     "message": "绝对时间"
   },
+  "history_close_feature": {
+    "message": "关闭历史记录功能"
+  },
   "history_clean_record": {
     "message": "清空记录"
   },

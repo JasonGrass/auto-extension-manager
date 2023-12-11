@@ -173,6 +173,9 @@
   "history_absolute_time": {
     "message": "絶対時間"
   },
+  "history_close_feature": {
+    "message": "履歴機能をオフにする"
+  },
   "history_clean_record": {
     "message": "記録の消去"
   },

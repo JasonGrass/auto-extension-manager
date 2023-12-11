@@ -173,6 +173,9 @@
   "history_absolute_time": {
     "message": "Absolute Time"
   },
+  "history_close_feature": {
+    "message": "Disable History Record"
+  },
   "history_clean_record": {
     "message": "Clear Record"
   },

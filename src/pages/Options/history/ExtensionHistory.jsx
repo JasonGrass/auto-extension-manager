@@ -15,6 +15,7 @@ import {
 } from "antd"
 import chromeP from "webext-polyfill-kinda"
 
+import { LocalOptions } from ".../storage/local"
 import { useBatchEffect } from ".../utils/reactUtils"
 import { getLang } from ".../utils/utils"
 import { downloadIconDataUrl, getIcon } from "../../../utils/extensionHelper"
@@ -29,10 +30,13 @@ import { formatEventText, formatTimeAbsolute, formatTimeRelative } from "./forma
 import { addHiddenExtId, removeHiddenExtId } from "./hiddenRecordHelper"
 
 const { Search } = Input
+const localOptions = new LocalOptions()
 
 const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
   // 时间的显示方式，绝对时间 OR 相对时间
   const [timeShowWay, setTimeShowWay] = useState("relative") //absolute relative
+  // 历史记录功能是否关闭
+  const [isHistoryClosed, setIsHistoryClosed] = useState(false)
   // 搜索词
   const [searchWord, setSearchWord] = useState("")
 
@@ -45,6 +49,12 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
   useEffect(() => {
     setHiddenExtIds(hiddenExtensionIds)
   }, [hiddenExtensionIds])
+
+  useEffect(() => {
+    localOptions.getValue("isHistoryRecordFeatureClosed").then((v) => {
+      setIsHistoryClosed(v ?? false)
+    })
+  }, [])
 
   // 仅显示当前扩展相关的记录
   const solo = (e, record) => {
@@ -191,6 +201,15 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
     }
   }
 
+  const onHistoryClosedChange = (e) => {
+    const checked = e.target.checked
+    setIsHistoryClosed(checked)
+    localOptions.setValue("isHistoryRecordFeatureClosed", checked)
+    if (checked) {
+      confirmClearHistoryRecords()
+    }
+  }
+
   // 清空历史记录
   const confirmClearHistoryRecords = async () => {
     setShownRecords([])
@@ -230,6 +249,13 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
             checked={timeShowWay === "absolute"}
             onChange={onTimeShowWayChange}>
             {getLang("history_absolute_time")}
+          </Checkbox>
+          {/* 关闭历史记录功能 */}
+          <Checkbox
+            className="setting-operation-item"
+            checked={isHistoryClosed}
+            onChange={onHistoryClosedChange}>
+            {getLang("history_close_feature")}
           </Checkbox>
         </div>
         {/* 右侧操作工具栏 */}

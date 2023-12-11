@@ -1,7 +1,10 @@
+import { LocalOptions } from ".../storage/local"
 import { HistoryRepo } from "./HistoryRepo"
 import { HistoryRecord } from "./Record"
 
 export class HistoryService {
+  private localOptions = new LocalOptions()
+
   constructor(private repo: HistoryRepo) {}
 
   /**
@@ -9,6 +12,10 @@ export class HistoryService {
    * @param record 历史记录
    */
   public async add(record: HistoryRecord) {
+    const isClosed = await this.localOptions.getValue("isHistoryRecordFeatureClosed")
+    if (isClosed) {
+      return
+    }
     await this.repo.add(record)
   }
 
