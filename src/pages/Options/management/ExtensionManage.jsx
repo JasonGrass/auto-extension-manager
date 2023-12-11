@@ -133,9 +133,11 @@ const ExtensionManage = memo(({ extensions, options }) => {
             ],
         onFilter: (value, record) => {
           return record.channel === value
+        },
+        sorter: (a, b) => {
+          return a.name.localeCompare(b.name)
         }
       },
-
       {
         title: getLang("column_alias"),
         dataIndex: "alias",
@@ -181,6 +183,12 @@ const ExtensionManage = memo(({ extensions, options }) => {
         className: showOperation ? "" : "column-hidden",
         render: (_, record, index) => {
           return <ExtensionOperationItem record={record} options={options}></ExtensionOperationItem>
+        },
+        sorter: (a, b) => {
+          if (a.enabled === b.enabled) {
+            return a.name.localeCompare(b.name) // Sort by name
+          }
+          return a.enabled < b.enabled ? 1 : -1 // Sort by state
         }
       })
     }
