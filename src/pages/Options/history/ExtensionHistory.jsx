@@ -33,6 +33,8 @@ const { Search } = Input
 const localOptions = new LocalOptions()
 
 const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   // 时间的显示方式，绝对时间 OR 相对时间
   const [timeShowWay, setTimeShowWay] = useState("relative") //absolute relative
   // 历史记录功能是否关闭
@@ -206,7 +208,9 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
     setIsHistoryClosed(checked)
     localOptions.setValue("isHistoryRecordFeatureClosed", checked)
     if (checked) {
-      confirmClearHistoryRecords()
+      messageApi.success("disable history record")
+    } else {
+      messageApi.success("enable history record")
     }
   }
 
@@ -231,6 +235,7 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
 
   return (
     <Style>
+      {contextHolder}
       <div className="history-manage-tools">
         {/* 左侧工具栏 */}
         <div className="history-manage-tools-left">
