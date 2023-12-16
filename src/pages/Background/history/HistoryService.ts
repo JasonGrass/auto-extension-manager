@@ -12,8 +12,9 @@ export class HistoryService {
    * @param record 历史记录
    */
   public async add(record: HistoryRecord) {
-    const isClosed = await this.localOptions.getValue("isHistoryRecordFeatureClosed")
+    const isClosed = await this.localOptions.getValue<boolean>("isHistoryRecordFeatureClosed")
     if (isClosed) {
+      console.log("历史记录功能已关闭")
       return
     }
     await this.repo.add(record)
