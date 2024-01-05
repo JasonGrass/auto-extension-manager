@@ -14,10 +14,13 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
   const [topRecentlyMode, setTopRecentlyMode] = useState("install")
   // 最近更新的计算天数
   const [topRecentlyDays, setTopRecentlyDays] = useState(7)
+  // 默认的排序方式(仅在按分组显示时有效)
+  const [defaultSortField, setDefaultSortField] = useState("enable")
 
   // Popup 中，按照频率进行排序
   const [isSortByFrequency, setIsSortByFrequency] = useState(false)
 
+  // 初始化
   useEffect(() => {
     const displayByGroup = setting.isDisplayByGroup ?? false
     setIsDisplayByGroup(displayByGroup)
@@ -27,6 +30,8 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
     setTopRecentlyMode(recentlyMode)
     const recentlyDays = setting.topRecentlyDays ?? 7
     setTopRecentlyDays(recentlyDays)
+    const sortField = setting.defaultSortField ?? "enable"
+    setDefaultSortField(sortField)
 
     const sortByFrequency = setting.isSortByFrequency ?? false
     setIsSortByFrequency(sortByFrequency)
@@ -112,6 +117,22 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
             onSettingChange(value, setIsSortByFrequency, "isSortByFrequency")
           }></Switch>
       </div>
+
+      {/* 排序：默认排序方式 */}
+      {isDisplayByGroup && (
+        <div className="setting-item">
+          <span>排序：默认排序方式</span>
+          <Radio.Group
+            size="small"
+            value={defaultSortField}
+            onChange={(e) =>
+              onSettingChange(e.target.value, setDefaultSortField, "defaultSortField")
+            }>
+            <Radio value="enable">启用状态</Radio>
+            <Radio value="name">扩展名称</Radio>
+          </Radio.Group>
+        </div>
+      )}
     </div>
   )
 })
