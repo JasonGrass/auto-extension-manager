@@ -121,15 +121,15 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
       {/* 排序：默认排序方式 */}
       {isDisplayByGroup && (
         <div className="setting-item">
-          <span>排序：默认排序方式</span>
+          <span>{getLang("setting_list_default_sort_field")}</span>
           <Radio.Group
             size="small"
             value={defaultSortField}
             onChange={(e) =>
               onSettingChange(e.target.value, setDefaultSortField, "defaultSortField")
             }>
-            <Radio value="enable">启用状态</Radio>
-            <Radio value="name">扩展名称</Radio>
+            <Radio value="enable">{getLang("setting_list_default_sort_field_enable")}</Radio>
+            <Radio value="name">{getLang("setting_list_default_sort_field_name")}</Radio>
           </Radio.Group>
         </div>
       )}

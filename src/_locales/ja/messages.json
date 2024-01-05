@@ -662,6 +662,15 @@
   "setting_list_sort_type_tip": {
     "message": "デフォルトではアルファベット順"
   },
+  "setting_list_default_sort_field": {
+    "message": "並び替え:デフォルトの並べ替え"
+  },
+  "setting_list_default_sort_field_enable": {
+    "message": "有効ステータス"
+  },
+  "setting_list_default_sort_field_name": {
+    "message": "拡張子名"
+  },
   "setting_dark_mode_title": {
     "message": "ダークモード"
   },

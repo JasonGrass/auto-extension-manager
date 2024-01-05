@@ -662,6 +662,15 @@
   "setting_list_sort_type_tip": {
     "message": "默认按照名称排序"
   },
+  "setting_list_default_sort_field": {
+    "message": "排序：默认排序方式"
+  },
+  "setting_list_default_sort_field_enable": {
+    "message": "启用状态"
+  },
+  "setting_list_default_sort_field_name": {
+    "message": "扩展名称"
+  },
   "setting_dark_mode_title": {
     "message": "暗色模式"
   },

@@ -662,6 +662,15 @@
   "setting_list_sort_type_tip": {
     "message": "Alphabetically by default"
   },
+  "setting_list_default_sort_field": {
+    "message": "Order: Default sorting field"
+  },
+  "setting_list_default_sort_field_enable": {
+    "message": "Enabled status"
+  },
+  "setting_list_default_sort_field_name": {
+    "message": "Extension name"
+  },
   "setting_dark_mode_title": {
     "message": "Dark Mode"
   },
