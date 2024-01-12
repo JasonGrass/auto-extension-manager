@@ -37,3 +37,7 @@ body::-webkit-scrollbar {
 #app-container::-webkit-scrollbar {
   display: none;
 }
+
+html {
+  height: auto;
+}
