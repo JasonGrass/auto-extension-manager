@@ -13,9 +13,9 @@ export function getPopupWidth(layout, totalCount, columnCount) {
   }
 }
 
-export function getPopupHeight(layout, totalCount, columnCount) {
+export function getPopupHeight(layout, totalCount, columnCount, groupCount) {
   if (layout === "grid") {
-    const estimation = Math.ceil(totalCount / columnCount) * 100 + 100 // 往大了估算所需的高度
+    const estimation = Math.max(Math.ceil(totalCount / columnCount), groupCount) * 100 + 100 // 往大了估算所需的高度
     const h = Math.min(600, Math.max(200, estimation))
     return `${h}px`
   } else {

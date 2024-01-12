@@ -22,10 +22,17 @@ export const prepare = async function () {
     extensions.length,
     allOptions.setting.columnCountInGirdView
   )
+
+  // popup 高度设置
+  // 分组数量
+  const groupCount = allOptions.setting.isDisplayByGroup
+    ? allOptions.groups.length
+    : 3 /*启用+禁用+置顶*/
   document.body.style.height = getPopupHeight(
     allOptions.setting.layout,
     extensions.length,
-    allOptions.setting.columnCountInGirdView
+    allOptions.setting.columnCountInGirdView,
+    groupCount
   )
 
   let zoom = 1
