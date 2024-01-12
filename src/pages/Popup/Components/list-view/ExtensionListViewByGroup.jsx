@@ -69,9 +69,6 @@ const ExtensionListSpace = memo(({ group, options, onItemEnableChanged }) => {
             />
           </li>
         ))}
-        {new Array(10).fill("").map((_, index) => (
-          <i key={index}></i>
-        ))}
       </ul>
     </div>
   )
@@ -114,7 +111,6 @@ const Style = styled.ul`
 
   .show-list {
     opacity: 1;
-    max-height: 600px;
     transition: all 0.4s;
   }
 
