@@ -40,6 +40,30 @@ function IndexPopup({ originExtensions, options, params }) {
     setAllExtensionCount(list.length)
   }, [extensions])
 
+  // 扩展启用与禁用之后，更新显示
+  useEffect(() => {
+    const onEnabled = (info) => {
+      const one = extensions.find((ext) => ext.id === info.id)
+      if (one) {
+        one.enabled = true
+        setExtensions([...extensions])
+      }
+    }
+    const onDisabled = (info) => {
+      const one = extensions.find((ext) => ext.id === info.id)
+      if (one) {
+        one.enabled = false
+        setExtensions([...extensions])
+      }
+    }
+    chrome.management.onEnabled.addListener(onEnabled)
+    chrome.management.onDisabled.addListener(onDisabled)
+    return () => {
+      chrome.management.onEnabled.removeListener(onEnabled)
+      chrome.management.onDisabled.removeListener(onDisabled)
+    }
+  }, [extensions])
+
   // 分组切换
   const onGroupChanged = async (args) => {
     /*
