@@ -14,9 +14,19 @@ export interface IMatchResult {
   isCurrentMatch: boolean
 
   /**
-   * 按当前标签计算，是否不匹配
+   * 按全部标签计算，是否匹配
    */
   isAnyMatch: boolean
+
+  /**
+   * 只考虑 URL，当前是否 URL 匹配
+   */
+  isCurrentUrlMatch: boolean
+
+  /**
+   * 只考虑 URL，是否有任一 URL 匹配
+   */
+  isAnyUrlMatch: boolean
 }
 
 /**
@@ -32,7 +42,9 @@ export default async function isMatch(
 ): Promise<IMatchResult> {
   const result: IMatchResult = {
     isCurrentMatch: false,
-    isAnyMatch: false
+    isAnyMatch: false,
+    isCurrentUrlMatch: false,
+    isAnyUrlMatch: false
   }
 
   if (!rule.match) {
@@ -53,9 +65,12 @@ export default async function isMatch(
     isCurrentTimeMatch
   ]
   if (list.filter((m) => m !== undefined).length === 0) {
-    // 没有任何匹配条件，直接返回 不匹配
+    // 没有任何匹配条件，直接返回"不匹配"
     return result
   }
+
+  result.isCurrentUrlMatch = Boolean(isCurrentUrlMatch)
+  result.isAnyUrlMatch = Boolean(isAnyUrlMatch)
 
   // 当前标签是否匹配
   const currentCheckList = [

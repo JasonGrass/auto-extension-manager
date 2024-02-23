@@ -1,8 +1,6 @@
-import chromeP from "webext-polyfill-kinda"
-
 import type { IExtensionManager } from ".../types/global"
 import logger from ".../utils/logger"
-import { DelayCloseToken, getDelayCloser } from "./delayCloser"
+import { ExecuteTaskHandler, ExecuteTaskPriority } from "./ExecuteTaskHandler"
 import isMatch, { IMatchResult } from "./handlers/matchHandler"
 import getTarget from "./handlers/targetHandler"
 
@@ -54,19 +52,32 @@ type ProcessItem = {
   ctx: ProcessContext
 }
 
+type RunningProcessContext = ProcessContext & {
+  executeTaskHandler: ExecuteTaskHandler
+}
+
 async function processRule({ scene, rules, groups, ctx }: ProcessItem) {
   if (!rules) {
     return
   }
 
+  // 每一轮规则的执行，使用同一个 handler 实例
+  let executeTaskHandler = new ExecuteTaskHandler()
+
   for (const rule of rules) {
     try {
       // 每条规则处理的 rule 数据是不用的，这里需要对 ctx 拷贝一个副本，每个实例都是不同的 rule 数据
-      const copyCtx = { ...ctx, rule }
+      const copyCtx = { ...ctx, rule, executeTaskHandler }
       await process(rule, scene, groups, copyCtx)
     } catch (error) {
-      console.error("[规则执行失败]", rules, error)
+      console.error("[规则预执行失败]", rules, error)
     }
+  }
+
+  try {
+    await executeTaskHandler.execute()
+  } catch (error) {
+    console.error("[规则执行失败]", rules, error)
   }
 }
 
@@ -74,7 +85,7 @@ async function process(
   rule: ruleV2.IRuleConfig,
   scene: config.IScene | undefined,
   groups: config.IGroup[] | undefined,
-  ctx: ProcessContext
+  ctx: RunningProcessContext
 ) {
   // 规则没有生效
   if (!rule.enable) {
@@ -97,7 +108,7 @@ function handle(
   matchResult: IMatchResult,
   targetExtensions: string[],
   config: ruleV2.IRuleConfig,
-  ctx: ProcessContext
+  ctx: RunningProcessContext
 ) {
   const action = config.action
   if (!action) {
@@ -129,35 +140,66 @@ function handleSimpleMode(
   matchResult: IMatchResult,
   targetExtensions: string[],
   action: ruleV2.IAction,
-  ctx: ProcessContext
+  ctx: RunningProcessContext
 ) {
   const actionType = action.actionType
-
   const isMatch = matchResult.isCurrentMatch
 
-  const tabInfo = ctx.tab
+  const baseInfo = {
+    targetExtensions: targetExtensions,
+    tabInfo: ctx.tab,
+    ctx: ctx
+  }
 
   if (isMatch && actionType === "closeWhenMatched") {
-    closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo, ctx)
+    ctx.executeTaskHandler.close({
+      ...baseInfo,
+      reload: action.reloadAfterDisable,
+      priority: new ExecuteTaskPriority()
+    })
   }
 
   if (isMatch && actionType === "openWhenMatched") {
-    openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo, ctx)
+    ctx.executeTaskHandler.open({
+      ...baseInfo,
+      reload: action.reloadAfterEnable,
+      priority: new ExecuteTaskPriority()
+    })
   }
 
   if (actionType === "closeOnlyWhenMatched") {
     if (isMatch) {
-      closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo, ctx)
+      ctx.executeTaskHandler.close({
+        ...baseInfo,
+        reload: action.reloadAfterDisable,
+        priority: new ExecuteTaskPriority()
+      })
     } else {
-      openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo, ctx)
+      let priority = new ExecuteTaskPriority()
+      priority.setNotMatch()
+      ctx.executeTaskHandler.open({
+        ...baseInfo,
+        reload: action.reloadAfterEnable,
+        priority: priority
+      })
     }
   }
 
   if (actionType === "openOnlyWhenMatched") {
     if (isMatch) {
-      openExtensions(targetExtensions, action.reloadAfterEnable, tabInfo, ctx)
+      ctx.executeTaskHandler.open({
+        ...baseInfo,
+        reload: action.reloadAfterEnable,
+        priority: new ExecuteTaskPriority()
+      })
     } else {
-      closeExtensions(targetExtensions, action.reloadAfterDisable, tabInfo, ctx)
+      let priority = new ExecuteTaskPriority()
+      priority.setNotMatch()
+      ctx.executeTaskHandler.close({
+        ...baseInfo,
+        reload: action.reloadAfterDisable,
+        priority: priority
+      })
     }
   }
 }
@@ -169,7 +211,7 @@ async function handleAdvanceMode(
   matchResult: IMatchResult,
   targetExtensions: string[],
   action: ruleV2.IAction,
-  ctx: ProcessContext
+  ctx: RunningProcessContext
 ) {
   if (!action.custom) {
     return
@@ -177,11 +219,30 @@ async function handleAdvanceMode(
   const customRule = action.custom
   const tabInfo = ctx.tab
 
-  const open = (reload: boolean | undefined) => {
-    openExtensions(targetExtensions, reload, tabInfo, ctx)
+  const open = (
+    reload: boolean | undefined,
+    priority: ExecuteTaskPriority = new ExecuteTaskPriority()
+  ) => {
+    ctx.executeTaskHandler.open({
+      targetExtensions: targetExtensions,
+      reload: reload,
+      tabInfo: tabInfo,
+      ctx: ctx,
+      priority: priority
+    })
   }
-  const close = (reload: boolean | undefined) => {
-    closeExtensions(targetExtensions, reload, tabInfo, ctx)
+
+  const close = (
+    reload: boolean | undefined,
+    priority: ExecuteTaskPriority = new ExecuteTaskPriority()
+  ) => {
+    ctx.executeTaskHandler.close({
+      targetExtensions: targetExtensions,
+      reload: reload,
+      tabInfo: tabInfo,
+      ctx: ctx,
+      priority: priority
+    })
   }
 
   // 开启插件的判断
@@ -206,7 +267,9 @@ async function handleAdvanceMode(
     customRule.urlMatchWhenEnable === "currentNotMatch" &&
     !matchResult.isCurrentMatch
   ) {
-    open(action.reloadAfterEnable)
+    let priority = new ExecuteTaskPriority()
+    priority.setNotMatch()
+    open(action.reloadAfterEnable, priority)
   }
 
   if (
@@ -214,7 +277,9 @@ async function handleAdvanceMode(
     customRule.urlMatchWhenEnable === "allNotMatch" &&
     !matchResult.isAnyMatch
   ) {
-    open(action.reloadAfterEnable)
+    let priority = new ExecuteTaskPriority()
+    priority.setNotMatch()
+    open(action.reloadAfterEnable, priority)
   }
 
   // 禁用插件的判断
@@ -240,7 +305,9 @@ async function handleAdvanceMode(
     customRule.urlMatchWhenDisable === "currentNotMatch" &&
     !matchResult.isCurrentMatch
   ) {
-    close(action.reloadAfterDisable)
+    let priority = new ExecuteTaskPriority()
+    priority.setNotMatch()
+    close(action.reloadAfterDisable, priority)
   }
 
   if (
@@ -248,98 +315,13 @@ async function handleAdvanceMode(
     customRule.urlMatchWhenDisable === "allNotMatch" &&
     !matchResult.isAnyMatch
   ) {
-    close(action.reloadAfterDisable)
+    let priority = new ExecuteTaskPriority()
+    priority.setNotMatch()
+    close(action.reloadAfterDisable, priority)
   }
 
   if (customRule.timeWhenDisable === "closeWindow") {
     // 暂未实现
-  }
-}
-
-async function closeExtensions(
-  targetExtensions: string[],
-  reload: boolean | undefined,
-  tabInfo: chrome.tabs.Tab | undefined,
-  ctx: ProcessContext
-) {
-  let worked = false
-
-  let delayToken: DelayCloseToken | undefined
-  for (const extId of targetExtensions) {
-    try {
-      const info = await chromeP.management.get(extId)
-      if (!info || !info.enabled) {
-        continue
-      }
-      // 检查在所有打开的页面中，是否有目标扩展的设置页面，如果存在，则暂时不关闭扩展
-      const settingTab = ctx.tabs?.find((tab) => {
-        return tab.url?.includes(`/${extId}/`)
-      })
-      if (settingTab) {
-        console.info(`[Rule] exist page about ${extId}, cancel disable`)
-        continue
-      }
-
-      const delayCloser = getDelayCloser()
-      delayToken = delayCloser.close(info, () => {
-        // 历史记录
-        ctx.EM?.History.EventHandler.onAutoDisabled(info, ctx.rule!)
-      })
-
-      worked = true
-    } catch (err) {
-      console.warn(`Disable Extension fail (${extId}).`, err)
-    }
-  }
-
-  if (worked && reload && tabInfo && tabInfo.id) {
-    const token = delayToken
-    const closureTabInfo = tabInfo
-    setTimeout(async () => {
-      if (token?.Available) {
-        try {
-          await chrome.tabs.reload(closureTabInfo.id!)
-          console.log(
-            `[Extension Manager] reload tab [${closureTabInfo.title}](${closureTabInfo.url})`
-          )
-        } catch (err) {
-          console.warn(`closeExtensions reload tab fail.`, tabInfo, err)
-        }
-      }
-    }, DelayCloseToken.DelayTime + 50)
-  }
-}
-
-async function openExtensions(
-  targetExtensions: string[],
-  reload: boolean | undefined,
-  tabInfo: chrome.tabs.Tab | undefined,
-  ctx: ProcessContext
-) {
-  let worked = false
-
-  for (const extId of targetExtensions) {
-    try {
-      const delayCloser = getDelayCloser()
-      delayCloser.cancel(extId)
-
-      const info = await chromeP.management.get(extId)
-      if (!info || info.enabled) {
-        continue
-      }
-
-      console.log(`[Extension Manager] enable extension [${info.name}]`)
-      await chromeP.management.setEnabled(extId, true)
-      ctx.EM?.History.EventHandler.onAutoEnabled(info, ctx.rule!)
-      worked = true
-    } catch (err) {
-      console.warn(`Enable Extension fail (${extId}).`, err)
-    }
-  }
-
-  if (worked && reload && tabInfo && tabInfo.id) {
-    chrome.tabs.reload(tabInfo.id)
-    console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
   }
 }
 

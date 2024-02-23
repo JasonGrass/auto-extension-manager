@@ -3,7 +3,14 @@ const DELAY_TIME = 1000
 export class DelayCloseToken {
   public static DelayTime: number = DELAY_TIME
 
+  /**
+   * 待关闭扩展的 ID
+   */
   public Id: string
+
+  /**
+   * 延迟关闭是否还有效，如果无效，则不再执行关闭操作，通常是因为扩展有重新被启用了
+   */
   public Available: boolean
 
   public constructor(id: string) {
@@ -16,6 +23,9 @@ export class DelayCloseToken {
   }
 }
 
+/**
+ * 延迟关闭扩展
+ */
 class DelayCloser {
   private _waiting: DelayCloseToken[]
 
