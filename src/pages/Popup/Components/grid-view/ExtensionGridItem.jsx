@@ -101,17 +101,17 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
   }
 
   const handleContextMenu = (e) => {
-    if (isDevRuntime()) {
-      // dev 下，不阻止右键菜单
-      return
-    }
+    // 在扩展 Item 上，禁用默认的右键菜单，其它地方不禁用
     e.preventDefault()
   }
 
   useEffect(() => {
-    document.addEventListener("contextmenu", handleContextMenu)
-    return () => {
-      document.removeEventListener("contextmenu", handleContextMenu)
+    const el = containerRef.current
+    if (el) {
+      el.addEventListener("contextmenu", handleContextMenu)
+      return () => {
+        el.removeEventListener("contextmenu", handleContextMenu)
+      }
     }
   }, [])
 
