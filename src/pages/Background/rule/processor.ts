@@ -16,7 +16,7 @@ export type ProcessContext = {
   /**
    * 当前激活的 tab
    */
-  tab: chrome.tabs.Tab | undefined
+  tab: chrome.tabs.Tab | null
   /**
    * 当前浏览器打开的全部 tab
    */

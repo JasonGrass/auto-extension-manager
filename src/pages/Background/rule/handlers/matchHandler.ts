@@ -27,6 +27,11 @@ export interface IMatchResult {
    * 只考虑 URL，是否有任一 URL 匹配
    */
   isAnyUrlMatch: boolean
+
+  /**
+   * 匹配的 tab
+   */
+  matchTab: chrome.tabs.Tab | null
 }
 
 /**
@@ -44,15 +49,27 @@ export default async function isMatch(
     isCurrentMatch: false,
     isAnyMatch: false,
     isCurrentUrlMatch: false,
-    isAnyUrlMatch: false
+    isAnyUrlMatch: false,
+    matchTab: null
   }
 
   if (!rule.match) {
     return result
   }
 
+  let matchTab: chrome.tabs.Tab | null = null
+
   const isCurrentUrlMatch = await checkCurrentUrlMatch(ctx.tab, rule)
-  const isAnyUrlMatch = isCurrentUrlMatch || (await checkAnyUrlMatch(ctx.tabs, rule))
+  if (isCurrentUrlMatch) {
+    matchTab = ctx.tab
+  }
+  let isAnyUrlMatch = isCurrentUrlMatch
+  if (!isAnyUrlMatch) {
+    // 如果当前标签不匹配，则检查是否有其它标签页匹配
+    matchTab = await checkAnyUrlMatch(ctx.tabs, rule)
+    isAnyUrlMatch = Boolean(matchTab)
+  }
+
   const isCurrentSceneMatch = await checkCurrentSceneMatch(scene, rule)
   const isCurrentOsMatch = await checkCurrentOsMatch(rule)
   const isCurrentTimeMatch = await checkCurrentTimeMatch(rule)
@@ -71,6 +88,7 @@ export default async function isMatch(
 
   result.isCurrentUrlMatch = Boolean(isCurrentUrlMatch)
   result.isAnyUrlMatch = Boolean(isAnyUrlMatch)
+  result.matchTab = matchTab
 
   // 当前标签是否匹配
   const currentCheckList = [

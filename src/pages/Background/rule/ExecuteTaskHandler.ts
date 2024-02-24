@@ -25,7 +25,7 @@ export type ExecuteTask = {
   /**
    * 当前打开的 tab 信息
    */
-  tabInfo: chrome.tabs.Tab | undefined
+  tabInfo: chrome.tabs.Tab | null
 
   /**
    * 规则执行上下文的其他信息
@@ -113,7 +113,7 @@ export class ExecuteTaskHandler {
 async function closeExtensions(
   targetExtensions: string[],
   reload: boolean | undefined,
-  tabInfo: chrome.tabs.Tab | undefined,
+  tabInfo: chrome.tabs.Tab | null,
   ctx: ProcessContext
 ) {
   let worked = false
@@ -167,7 +167,7 @@ async function closeExtensions(
 async function openExtensions(
   targetExtensions: string[],
   reload: boolean | undefined,
-  tabInfo: chrome.tabs.Tab | undefined,
+  tabInfo: chrome.tabs.Tab | null,
   ctx: ProcessContext
 ) {
   let worked = false
