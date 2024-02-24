@@ -115,7 +115,7 @@ async function closeExtensions(
   targetExtensions: string[],
   reload: boolean | undefined,
   tabInfo: chrome.tabs.Tab | null,
-  ctx: ProcessContext
+  ctx: RunningProcessContext
 ) {
   let worked = false
 
@@ -138,7 +138,7 @@ async function closeExtensions(
       const delayCloser = getDelayCloser()
       delayToken = delayCloser.close(info, () => {
         // 历史记录
-        ctx.EM?.History.EventHandler.onAutoDisabled(info, ctx.rule!)
+        ctx.EM?.History.EventHandler.onAutoDisabled(info, ctx.rule!, ctx.matchResult!)
       })
 
       worked = true
@@ -169,7 +169,7 @@ async function openExtensions(
   targetExtensions: string[],
   reload: boolean | undefined,
   tabInfo: chrome.tabs.Tab | null,
-  ctx: ProcessContext
+  ctx: RunningProcessContext
 ) {
   let worked = false
 
@@ -185,7 +185,7 @@ async function openExtensions(
 
       console.log(`[Extension Manager] enable extension [${info.name}]`)
       await chromeP.management.setEnabled(extId, true)
-      ctx.EM?.History.EventHandler.onAutoEnabled(info, ctx.rule!)
+      ctx.EM?.History.EventHandler.onAutoEnabled(info, ctx.rule!, ctx.matchResult!)
       worked = true
     } catch (err) {
       console.warn(`Enable Extension fail (${extId}).`, err)

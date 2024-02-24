@@ -14,7 +14,7 @@ const extensionRepo = new ExtensionRepo()
 /**
  * 扩展的展开详情，在别名、历史记录表格行中展开，展示的更多信息
  */
-const ExtensionExpandedDetails = memo(({ ext, showTitle, showMore }) => {
+const ExtensionExpandedDetails = memo(({ ext, showTitle, showMore, remark }) => {
   const [manageUrl, setManageUrl] = useState("")
   const [webStoreUrl, setWebStoreUrl] = useState("")
   const [installTime, setInstallTime] = useState()
@@ -185,6 +185,18 @@ const ExtensionExpandedDetails = memo(({ ext, showTitle, showMore }) => {
           </a>
         </Col>
       </Row>
+
+      {remark && remark.trim() !== "" && (
+        <Row>
+          <Col span={2}></Col>
+          <Col span={20}>
+            <div className="detail-remark">
+              <div>{getLang("column_remark")}</div>
+              {remark}
+            </div>
+          </Col>
+        </Row>
+      )}
     </Style>
   )
 })
@@ -208,5 +220,16 @@ const Style = styled.div`
     padding-right: 5px;
 
     text-align: right;
+  }
+
+  .detail-remark {
+    margin-top: 4px;
+    padding: 2px;
+
+    color: #888;
+    font-size: 12px;
+
+    border: 1px dashed #ddd;
+    border-radius: 4px;
   }
 `

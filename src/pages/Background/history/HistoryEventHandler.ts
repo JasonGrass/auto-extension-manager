@@ -3,6 +3,7 @@ import chromeP from "webext-polyfill-kinda"
 import type { IExtensionManager } from ".../types/global"
 import logger from ".../utils/logger"
 import { ExtensionRecord } from "../extension/ExtensionRecord"
+import { IMatchResult } from "../rule/handlers/matchHandler"
 import { HistoryService } from "./HistoryService"
 import { HistoryRecord } from "./Record"
 
@@ -64,15 +65,23 @@ export class HistoryEventHandler {
   /*
    * 执行规则时自动启用了扩展
    */
-  public onAutoEnabled(info: chrome.management.ExtensionInfo, rule: ruleV2.IRuleConfig) {
-    this._enabledEventFilter.onAutoRuleEvent(info, rule)
+  public onAutoEnabled(
+    info: chrome.management.ExtensionInfo,
+    rule: ruleV2.IRuleConfig,
+    matchResult: IMatchResult
+  ) {
+    this._enabledEventFilter.onAutoRuleEvent(info, rule, matchResult)
   }
 
   /*
    * 执行规则时自动禁用了扩展
    */
-  public onAutoDisabled(info: chrome.management.ExtensionInfo, rule: ruleV2.IRuleConfig) {
-    this._disabledEventFilter.onAutoRuleEvent(info, rule)
+  public onAutoDisabled(
+    info: chrome.management.ExtensionInfo,
+    rule: ruleV2.IRuleConfig,
+    matchResult: IMatchResult
+  ) {
+    this._disabledEventFilter.onAutoRuleEvent(info, rule, matchResult)
   }
 
   /**
@@ -194,17 +203,25 @@ export class HistoryEventRaiser {
   /*
    * 执行规则时自动启用了扩展
    */
-  public onAutoEnabled(info: chrome.management.ExtensionInfo, rule: ruleV2.IRuleConfig) {
+  public onAutoEnabled(
+    info: chrome.management.ExtensionInfo,
+    rule: ruleV2.IRuleConfig,
+    matchResult: IMatchResult
+  ) {
     // console.log("onAutoEnabled", info, rule)
-    this.service.add(HistoryRecord.buildWithRule(info, "enabled", rule))
+    this.service.add(HistoryRecord.buildWithRule(info, "enabled", rule, matchResult))
   }
 
   /*
    * 执行规则时自动禁用了扩展
    */
-  public onAutoDisabled(info: chrome.management.ExtensionInfo, rule: ruleV2.IRuleConfig) {
+  public onAutoDisabled(
+    info: chrome.management.ExtensionInfo,
+    rule: ruleV2.IRuleConfig,
+    matchResult: IMatchResult
+  ) {
     // console.log("onAutoDisabled", info, rule)
-    this.service.add(HistoryRecord.buildWithRule(info, "disabled", rule))
+    this.service.add(HistoryRecord.buildWithRule(info, "disabled", rule, matchResult))
   }
 
   /**
@@ -260,13 +277,17 @@ class ReduplicativeEventFilter {
     }, this._threshold)
   }
 
-  public onAutoRuleEvent(info: chrome.management.ExtensionInfo, rule: ruleV2.IRuleConfig) {
+  public onAutoRuleEvent(
+    info: chrome.management.ExtensionInfo,
+    rule: ruleV2.IRuleConfig,
+    matchResult: IMatchResult
+  ) {
     this._autoEventRecord.set(info.id, Date.now())
 
     if (this.eventType === "enabled") {
-      this.output.onAutoEnabled(info, rule)
+      this.output.onAutoEnabled(info, rule, matchResult)
     } else {
-      this.output.onAutoDisabled(info, rule)
+      this.output.onAutoDisabled(info, rule, matchResult)
     }
   }
 

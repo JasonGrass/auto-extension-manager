@@ -1,3 +1,5 @@
+import { IMatchResult } from "../rule/handlers/matchHandler"
+
 export type RecordEvent =
   | "install"
   | "updated"
@@ -27,8 +29,14 @@ export class HistoryRecord {
   static buildWithRule(
     info: chrome.management.ExtensionInfo,
     event: RecordEvent,
-    rule: ruleV2.IRuleConfig
+    rule: ruleV2.IRuleConfig,
+    matchResult: IMatchResult
   ) {
+    let remark = ""
+    if (matchResult?.matchTab) {
+      remark = matchResult.matchTab.url ?? ""
+    }
+
     return new HistoryRecord(
       0,
       Date.now(),
@@ -37,7 +45,7 @@ export class HistoryRecord {
       "",
       info.name,
       info.version,
-      "",
+      remark,
       rule.id ?? "",
       ""
     )

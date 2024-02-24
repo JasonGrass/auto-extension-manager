@@ -293,7 +293,8 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
             return (
               <ExtensionExpandedDetails
                 ext={record.__extension__}
-                showTitle></ExtensionExpandedDetails>
+                showTitle
+                remark={record.remark}></ExtensionExpandedDetails>
             )
           },
           expandRowByClick: true
