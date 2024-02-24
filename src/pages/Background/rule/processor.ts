@@ -52,8 +52,16 @@ type ProcessItem = {
   ctx: ProcessContext
 }
 
-type RunningProcessContext = ProcessContext & {
+export type RunningProcessContext = ProcessContext & {
+  /**
+   * 最终的执行 Handler
+   */
   executeTaskHandler: ExecuteTaskHandler
+
+  /**
+   * 匹配结果
+   */
+  matchResult: IMatchResult | null
 }
 
 async function processRule({ scene, rules, groups, ctx }: ProcessItem) {
@@ -67,7 +75,7 @@ async function processRule({ scene, rules, groups, ctx }: ProcessItem) {
   for (const rule of rules) {
     try {
       // 每条规则处理的 rule 数据是不用的，这里需要对 ctx 拷贝一个副本，每个实例都是不同的 rule 数据
-      const copyCtx = { ...ctx, rule, executeTaskHandler }
+      const copyCtx = { ...ctx, rule, executeTaskHandler, matchResult: null }
       await process(rule, scene, groups, copyCtx)
     } catch (error) {
       console.error("[规则预执行失败]", rules, error)
@@ -92,7 +100,7 @@ async function process(
     return
   }
 
-  const match = await isMatch(scene, rule, ctx)
+  ctx.matchResult = await isMatch(scene, rule, ctx)
 
   const targetIdArray = getTarget(groups, rule)
   if (!targetIdArray || targetIdArray.length === 0) {
@@ -101,15 +109,18 @@ async function process(
   // 执行目标中，过滤掉自己
   const targetExtensionIds = targetIdArray.filter((id) => id !== ctx.self.id)
 
-  handle(match, targetExtensionIds, rule, ctx)
+  handle(targetExtensionIds, rule, ctx)
 }
 
 function handle(
-  matchResult: IMatchResult,
   targetExtensions: string[],
   config: ruleV2.IRuleConfig,
   ctx: RunningProcessContext
 ) {
+  const matchResult = ctx.matchResult
+  if (!matchResult) {
+    return
+  }
   const action = config.action
   if (!action) {
     return
@@ -217,17 +228,20 @@ async function handleAdvanceMode(
     return
   }
   const customRule = action.custom
-  const tabInfo = ctx.tab
+
+  const baseInfo = {
+    targetExtensions: targetExtensions,
+    tabInfo: ctx.tab,
+    ctx: ctx
+  }
 
   const open = (
     reload: boolean | undefined,
     priority: ExecuteTaskPriority = new ExecuteTaskPriority()
   ) => {
     ctx.executeTaskHandler.open({
-      targetExtensions: targetExtensions,
+      ...baseInfo,
       reload: reload,
-      tabInfo: tabInfo,
-      ctx: ctx,
       priority: priority
     })
   }
@@ -237,10 +251,8 @@ async function handleAdvanceMode(
     priority: ExecuteTaskPriority = new ExecuteTaskPriority()
   ) => {
     ctx.executeTaskHandler.close({
-      targetExtensions: targetExtensions,
+      ...baseInfo,
       reload: reload,
-      tabInfo: tabInfo,
-      ctx: ctx,
       priority: priority
     })
   }

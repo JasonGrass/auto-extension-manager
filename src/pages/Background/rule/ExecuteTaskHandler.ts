@@ -1,7 +1,8 @@
 import chromeP from "webext-polyfill-kinda"
 
 import { DelayCloseToken, getDelayCloser } from "./delayCloser"
-import type { ProcessContext } from "./processor"
+import { IMatchResult } from "./handlers/matchHandler"
+import type { ProcessContext, RunningProcessContext } from "./processor"
 
 /**
  * 启用或禁用扩展的任务描述
@@ -30,7 +31,7 @@ export type ExecuteTask = {
   /**
    * 规则执行上下文的其他信息
    */
-  ctx: ProcessContext
+  ctx: RunningProcessContext
 
   /**
    * 执行优先级
