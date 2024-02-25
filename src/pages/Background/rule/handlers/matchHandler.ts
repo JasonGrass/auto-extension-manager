@@ -131,7 +131,7 @@ export default async function isMatch(
 export async function isMatchByCurrent(
   activeScene: config.IScene | undefined,
   rule: ruleV2.IRuleConfig,
-  tabInfo: chrome.tabs.Tab | undefined
+  tabInfo: chrome.tabs.Tab | null
 ): Promise<boolean> {
   if (!rule.match) {
     return false

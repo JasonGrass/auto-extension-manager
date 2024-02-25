@@ -106,7 +106,7 @@ export class RuleHandler {
     const ctx = {
       self,
       tabs,
-      tab: this.#currentTabInfo,
+      tab: this.#currentTabInfo ?? null,
       EM: this.EM
     }
 
