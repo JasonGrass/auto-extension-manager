@@ -7,8 +7,10 @@ import {
   QuestionCircleOutlined
 } from "@ant-design/icons"
 import { Alert, Button, Checkbox, Dropdown, Input, Radio, Space, Switch, Tooltip } from "antd"
+import { nanoid } from "nanoid"
 import { styled } from "styled-components"
 
+import { SortableList } from ".../pages/Options/components/SortableList"
 import { getLang } from ".../utils/utils"
 
 /*
@@ -23,9 +25,7 @@ regex 正则表达式
 const TabUrlTrigger = ({ options, config }, ref) => {
   useImperativeHandle(ref, () => ({
     getTabUrlTriggerConfig: () => {
-      const urls = matchHostList
-        .filter((host) => host && host.trim() !== "")
-        .map((host) => host.trim())
+      const urls = matchHostList.filter((host) => !host.isEmpty()).map((host) => host.url.trim())
 
       if (urls.length === 0) {
         throw Error(getLang("trigger_url_no_any"))
@@ -51,7 +51,7 @@ const TabUrlTrigger = ({ options, config }, ref) => {
     const myConfig = config.match?.triggers?.find((t) => t.trigger === "urlTrigger")?.config ?? {}
 
     // 初始化匹配的 HOST 列表
-    setMatchHostList(myConfig.matchUrl ?? [""])
+    setMatchHostList(urlStrList2ObjectArray(myConfig.matchUrl))
 
     // 初始化匹配的计算方式
     if (myConfig.matchMethod === "regex") {
@@ -64,18 +64,19 @@ const TabUrlTrigger = ({ options, config }, ref) => {
   }, [config])
 
   const onAppendPatternClick = (e) => {
-    setMatchHostList([...matchHostList, ""])
+    const list = [...matchHostList]
+    list.push(createUrlObject(""))
+    setMatchHostList(list)
   }
 
   const onRemovePatternClick = (e) => {
-    const list = matchHostList.filter((host) => host && host !== "" && host.trim() !== "")
+    const list = matchHostList.filter((host) => !host.isEmpty())
     setMatchHostList(list)
   }
 
-  const onHostInputChanged = (e, index) => {
-    const list = [...matchHostList]
-    list[index] = e.target.value
-    setMatchHostList(list)
+  const onHostInputChanged = (e, item) => {
+    item.url = e.target.value
+    setMatchHostList([...matchHostList])
   }
 
   const onMatchMethodSwitchChanged = (e) => {
@@ -84,6 +85,13 @@ const TabUrlTrigger = ({ options, config }, ref) => {
 
   const onFullUrlSettingChange = (e) => {
     setUseFullUrl(e.target.checked)
+  }
+
+  /**
+   * URL 排序回调
+   */
+  const handleUrlDropEnd = async (updatedList) => {
+    setMatchHostList(updatedList)
   }
 
   return (
@@ -120,14 +128,20 @@ const TabUrlTrigger = ({ options, config }, ref) => {
       </div>
 
       <div className="url-pattern-container">
-        {matchHostList.map((host, index) => (
-          <Input
-            key={index}
-            value={host}
-            onChange={(e) => onHostInputChanged(e, index)}
-            placeholder="e.g. *feishu.cn* ; file://*.pdf ;"
-          />
-        ))}
+        <SortableList
+          items={matchHostList}
+          onChange={handleUrlDropEnd}
+          renderItem={(item, index) => (
+            <SortableList.Item id={item.id}>
+              <Input
+                key={item.id}
+                value={item.url}
+                onChange={(e) => onHostInputChanged(e, item)}
+                placeholder="e.g. *feishu.cn* ; file://*.pdf ;"
+              />
+              <SortableList.DragHandle />
+            </SortableList.Item>
+          )}></SortableList>
       </div>
 
       <div className="url-pattern-buttons">
@@ -162,6 +176,15 @@ const Style = styled.div`
     & > * {
       margin-bottom: 3px;
     }
+
+    ul.SortableList {
+      display: block;
+    }
+
+    li.SortableItem {
+      box-shadow: none;
+      padding: 2px 2px 2px 0;
+    }
   }
 
   .url-pattern-buttons {
@@ -170,3 +193,29 @@ const Style = styled.div`
     }
   }
 `
+
+function urlStrList2ObjectArray(urlList) {
+  if (!urlList || urlList.length === 0) {
+    return []
+  }
+
+  return urlList.map((url) => {
+    return createUrlObject(url)
+  })
+}
+
+/**
+ * 创建 URL 链接的包装对象
+ */
+function createUrlObject(url) {
+  const obj = Object.create(urlObjectProtoType)
+  obj.url = url ?? ""
+  obj.id = nanoid()
+  return obj
+}
+
+const urlObjectProtoType = {
+  isEmpty() {
+    return !Boolean(this.url) || !Boolean(this.url.trim())
+  }
+}
