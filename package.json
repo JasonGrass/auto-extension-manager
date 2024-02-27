@@ -1,8 +1,8 @@
 {
   "name": "extension-manager",
-  "version": "0.5.14",
+  "version": "0.5.15",
   "description": "a chrome extension manager where you can add rules",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/JasonGrass/auto-extension-manager"
