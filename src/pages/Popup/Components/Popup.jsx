@@ -187,12 +187,20 @@ const Style = styled.div`
 
   .header-container {
     flex: 0 0 auto;
+
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 1;
   }
 
   .extension-container {
     flex: 1 1 auto;
     overflow: auto;
     margin-left: 0px;
+
+    /* HeaderStyle 中设置的 Header 高度 */
+    margin-top: 42px;
   }
 
   .extension-container::-webkit-scrollbar {

@@ -25,21 +25,22 @@ export const prepare = async function () {
 
   // popup 高度设置
   // 分组数量
-  const groupCount = allOptions.setting.isDisplayByGroup
-    ? allOptions.groups.length
-    : 3 /*启用+禁用+置顶*/
-  document.body.style.height = getPopupHeight(
-    allOptions.setting.layout,
-    extensions.length,
-    allOptions.setting.columnCountInGirdView,
-    groupCount
-  )
+  // const groupCount = allOptions.setting.isDisplayByGroup
+  //   ? allOptions.groups.length
+  //   : 3 /*启用+禁用+置顶*/
+  // document.body.style.height = getPopupHeight(
+  //   allOptions.setting.layout,
+  //   extensions.length,
+  //   allOptions.setting.columnCountInGirdView,
+  //   groupCount
+  // )
+
+  document.body.style.height = "auto"
 
   let zoom = 1
   if (allOptions.setting.zoomRatio) {
     zoom = allOptions.setting.zoomRatio / 100
   }
-  // document.body.style.height = `${zoom * 600}px`
 
   document.body.style.zoom = zoom
 
