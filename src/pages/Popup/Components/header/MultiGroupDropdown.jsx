@@ -21,10 +21,12 @@ const MultiGroupDropdown = memo((props) => {
   useEffect(() => {
     localOptions.getValue("activeGroups").then((ids) => {
       if (ids) {
-        setSelectGroupIds(ids)
+        // ids 是缓存的上一次选择的分组 ID，可能有些分组已经被删除了
+        const availableIds = options.groups.filter((g) => ids.includes(g.id)).map((g) => g.id)
+        setSelectGroupIds(availableIds)
       }
     })
-  }, [])
+  }, [options])
 
   // 下拉菜单的显示标题
   useEffect(() => {
