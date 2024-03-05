@@ -5,6 +5,7 @@ import styled from "styled-components"
 
 import { usePopupExtensionsByGroup } from "../../utils/usePopupExtensionsByGroup"
 import FoldGroupName from "../common/FoldGroupName"
+import SortableGirdItemList from "../common/SortableGirdItemList"
 import ExtensionGridItem from "./ExtensionGridItem"
 import { GridViewSpaceStyle } from "./ExtensionGridView"
 
@@ -55,19 +56,18 @@ const ExtensionGridSpace = memo(({ group, options, onItemMove, groupIndex }) => 
       )}
 
       <ul className={classNames({ "show-list": !fold, "hide-list": fold })}>
-        {group.extensions.map((item) => (
-          <li key={item.id}>
-            <ExtensionGridItem
-              item={item}
-              enabled={item.enabled}
-              options={options}
-              onItemMove={onItemMove}
-            />
-          </li>
-        ))}
-        {new Array(10).fill("").map((_, index) => (
-          <i key={index}></i>
-        ))}
+        <SortableGirdItemList
+          extensions={group.extensions}
+          renderItem={(item, index) => {
+            return (
+              <ExtensionGridItem
+                item={item}
+                enabled={item.enabled}
+                options={options}
+                onItemMove={onItemMove}
+              />
+            )
+          }}></SortableGirdItemList>
       </ul>
     </GridSpaceByGroupStyle>
   )

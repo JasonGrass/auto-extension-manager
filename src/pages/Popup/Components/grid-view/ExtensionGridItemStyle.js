@@ -27,6 +27,7 @@ export const ExtensionGridItemStyle = styled.div`
 
   .grid-display-item-title {
     max-width: 66px;
+    min-height: 16px;
     margin-top: 4px;
     color: ${(props) => props.theme.enable_text};
 
@@ -39,6 +40,27 @@ export const ExtensionGridItemStyle = styled.div`
 
   .grid-display-item-title-gray {
     color: ${(props) => props.theme.disable_text};
+  }
+
+  .drag-icon-with-name-show {
+    position: relative;
+    margin-top: 4px;
+    min-height: 16px;
+  }
+
+  .drag-icon-without-name-show {
+    position: absolute;
+    bottom: 0px;
+  }
+
+  .grid-display-item .DragHandle {
+    padding: 0px;
+    background-color: transparent;
+  }
+
+  .drag-icon-svg {
+    width: 16px;
+    fill: ${(props) => props.theme.enable_text};
   }
 
   .item-pined-dot {

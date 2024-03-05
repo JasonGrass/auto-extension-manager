@@ -10,6 +10,7 @@ import {
 import { Popconfirm, Space, message } from "antd"
 import classNames from "classnames"
 
+import { SortableList } from ".../pages/Options/components/SortableList"
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
 import { isDevRuntime } from ".../utils/channelHelper"
 import { getHomepageUrl, getIcon } from ".../utils/extensionHelper.js"
@@ -191,7 +192,9 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
             { "grid-item-disable": !itemEnable && grayStyleOfDisable }
           ])}>
           <img src={getIcon(item, 128)} alt="icon" />
-          {isShowAppNameInGirdView && (
+
+          {/* 扩展名，如果 hover 则隐藏，以显示拖拽图标 */}
+          {isShowAppNameInGirdView && !isMouseEnter && (
             <span
               className={classNames([
                 "grid-display-item-title",
@@ -201,6 +204,29 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
               ])}>
               {getExtItemDisplayName(item)}
             </span>
+          )}
+
+          {/* 拖拽的抓手图标 */}
+          {isMouseEnter && (
+            <div
+              className={classNames({
+                "drag-icon-with-name-show": isShowAppNameInGirdView,
+                "drag-icon-without-name-show": !isShowAppNameInGirdView
+              })}>
+              <SortableList.DragHandle>
+                <svg
+                  t="1709625820769"
+                  className="drag-icon-svg"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="1485">
+                  <path
+                    d="M330.666667 640a74.666667 74.666667 0 1 1-149.333334 0 74.666667 74.666667 0 0 1 149.333334 0z m0-256a74.666667 74.666667 0 1 1-149.333334 0 74.666667 74.666667 0 0 1 149.333334 0z m256 256a74.666667 74.666667 0 1 1-149.333334 0 74.666667 74.666667 0 0 1 149.333334 0z m0-256a74.666667 74.666667 0 1 1-149.333334 0 74.666667 74.666667 0 0 1 149.333334 0z m256 256a74.666667 74.666667 0 1 1-149.333334 0 74.666667 74.666667 0 0 1 149.333334 0z m0-256a74.666667 74.666667 0 1 1-149.333334 0 74.666667 74.666667 0 0 1 149.333334 0z"
+                    p-id="1486"></path>
+                </svg>
+              </SortableList.DragHandle>
+            </div>
           )}
         </div>
         {itemPined && isShowDotOfFixedExtension && <i className="item-pined-dot"></i>}

@@ -3,6 +3,7 @@ import React, { memo, useCallback, useState } from "react"
 import { styled } from "styled-components"
 
 import { usePopupExtensions } from "../../utils/usePopupExtensions"
+import SortableGirdItemList from "../common/SortableGirdItemList"
 import ExtensionGridItem from "./ExtensionGridItem"
 
 const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
@@ -35,38 +36,33 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
           <i key={index}></i>
         ))}
       </ul>
+
       {dividerShow0 && <div className="divider"></div>}
-      <ul>
-        {items1.map((item) => {
+
+      <SortableGirdItemList
+        extensions={items1}
+        renderItem={(item, index) => {
           return (
-            <li key={item.id}>
-              <ExtensionGridItem
-                item={item}
-                options={options}
-                onItemMove={onItemMove}></ExtensionGridItem>
-            </li>
+            <ExtensionGridItem
+              item={item}
+              options={options}
+              onItemMove={onItemMove}></ExtensionGridItem>
           )
-        })}
-        {new Array(10).fill("").map((_, index) => (
-          <i key={index}></i>
-        ))}
-      </ul>
+        }}></SortableGirdItemList>
+
       {items1.length > 0 && items2.length > 0 && <div className="divider"></div>}
-      <ul>
-        {items2.map((item) => {
+
+      <SortableGirdItemList
+        extensions={items2}
+        renderItem={(item, index) => {
           return (
-            <li key={item.id}>
-              <ExtensionGridItem
-                item={item}
-                options={options}
-                onItemMove={onItemMove}></ExtensionGridItem>
-            </li>
+            <ExtensionGridItem
+              item={item}
+              options={options}
+              onItemMove={onItemMove}></ExtensionGridItem>
           )
-        })}
-        {new Array(10).fill("").map((_, index) => (
-          <i key={index}></i>
-        ))}
-      </ul>
+        }}></SortableGirdItemList>
+
       {isShowBottomDivider && <div className="divider"></div>}
     </GridViewSpaceStyle>
   )
