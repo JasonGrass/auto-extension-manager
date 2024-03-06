@@ -181,6 +181,11 @@ const Style = styled.div`
   background-color: ${(props) => props.theme.bg};
   color: ${(props) => props.theme.fg};
 
+  :root {
+    /* HeaderStyle 中设置的 Header 高度，不包括搜索框 */
+    --header-height: 42px;
+  }
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -199,8 +204,10 @@ const Style = styled.div`
     overflow: auto;
     margin-left: 0px;
 
-    /* HeaderStyle 中设置的 Header 高度 */
-    margin-top: 42px;
+    /* Header 的高度 */
+    margin-top: var(--header-height);
+
+    min-height: 60px;
   }
 
   .extension-container::-webkit-scrollbar {
