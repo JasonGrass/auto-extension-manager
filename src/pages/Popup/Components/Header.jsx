@@ -43,6 +43,12 @@ const Header = memo((props) => {
     if (isShowSearch) {
       searchInputRef.current.focus()
     }
+
+    if (isShowSearch) {
+      document.documentElement.style.setProperty("--header-height", `72px`)
+    } else {
+      document.documentElement.style.setProperty("--header-height", `42px`)
+    }
   }, [isShowSearch])
 
   // layout 变更时，保存配置

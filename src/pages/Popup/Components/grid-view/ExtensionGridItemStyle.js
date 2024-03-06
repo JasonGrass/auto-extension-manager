@@ -6,6 +6,7 @@ export const ExtensionGridItemStyle = styled.div`
   img {
     width: 42px;
     height: 42px;
+    user-select: none;
   }
 
   .grid-display-item {
@@ -32,6 +33,8 @@ export const ExtensionGridItemStyle = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    user-select: none;
   }
 
   .grid-display-item-title-gray {
