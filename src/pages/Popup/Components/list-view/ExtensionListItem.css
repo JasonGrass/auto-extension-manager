@@ -11,6 +11,8 @@
   padding: 1px;
   width: 24px;
   height: 24px;
+
+  user-select: none;
 }
 
 .list-item-img-box {
@@ -42,6 +44,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  user-select: none;
 }
 
 .list-item-container > .li-operation {
