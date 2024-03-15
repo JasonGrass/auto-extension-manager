@@ -27,8 +27,17 @@ export class HistoryRepo extends Dexie {
     }
   }
 
+  /**
+   * 获取所有的历史纪录。后续性能优化点：支持分页获取
+   */
   public async getAll(): Promise<Partial<HistoryRecord>[]> {
-    return await this.history.limit(MAX_HISTORY_COUNT - DELETE_COUNT_ONCE).toArray()
+    const all = await this.history.toArray()
+    if (all.length <= MAX_HISTORY_COUNT - DELETE_COUNT_ONCE) {
+      return all
+    }
+    const shouldRemoveCount = all.length - (MAX_HISTORY_COUNT - DELETE_COUNT_ONCE)
+    all.splice(0, shouldRemoveCount)
+    return all
   }
 
   public async clearAll() {
