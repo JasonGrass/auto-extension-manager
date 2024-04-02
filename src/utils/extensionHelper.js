@@ -1,3 +1,4 @@
+import { isEdgeRuntime } from ".../utils/channelHelper"
 import defaultPuzzleIcon from "../assets/img/puzzle.svg"
 import { downloadImageDataUrl } from "./utils"
 
@@ -173,5 +174,15 @@ export const getHomepageUrl = (item, alwaysLinkToStore) => {
     return "https://microsoftedge.microsoft.com/addons/detail/" + item.id
   } else {
     return item.homepageUrl
+  }
+}
+
+export const getOriginSettingUrl = (item) => {
+  if (isEdgeRuntime()) {
+    // edge://extensions/?id=xxx
+    return `edge://extensions/?id=${item.id}`
+  } else {
+    // chrome://extensions/?id=xxx
+    return `chrome://extensions/?id=${item.id}`
   }
 }

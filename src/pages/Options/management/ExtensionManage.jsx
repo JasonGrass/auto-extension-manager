@@ -142,11 +142,13 @@ const ExtensionManage = memo(({ extensions, options }) => {
         title: getLang("column_alias"),
         dataIndex: "alias",
         key: "alias",
-        width: 320,
         filters: [
           { text: getLang("alias_exist"), value: "has_alias" },
           { text: getLang("alias_empty"), value: "no_alias" }
         ],
+        render: (alias, record, index) => {
+          return <span className="text-wrap-max-two-line">{alias}</span>
+        },
         onFilter: (value, record) => {
           if (value === "has_alias") {
             return Boolean(record.alias)
@@ -164,6 +166,9 @@ const ExtensionManage = memo(({ extensions, options }) => {
           { text: getLang("alias_remark_exist"), value: "has_remark" },
           { text: getLang("alias_remark_empty"), value: "no_remark" }
         ],
+        render: (remark, record, index) => {
+          return <span className="text-wrap-max-two-line">{remark}</span>
+        },
         onFilter: (value, record) => {
           if (value === "has_remark") {
             return Boolean(record.remark)

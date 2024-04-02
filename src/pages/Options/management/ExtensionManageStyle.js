@@ -55,4 +55,14 @@ export const ExtensionManageStyle = styled.div`
   .column-hidden {
     display: none;
   }
+
+  /* 控制文本换行最多不超过2行 */
+  .text-wrap-max-two-line {
+    min-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 `

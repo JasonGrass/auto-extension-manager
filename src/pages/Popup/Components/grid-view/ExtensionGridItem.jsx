@@ -5,6 +5,7 @@ import {
   HomeOutlined,
   LockOutlined,
   SettingOutlined,
+  ToolOutlined,
   UnlockOutlined
 } from "@ant-design/icons"
 import { Popconfirm, Space, message } from "antd"
@@ -13,7 +14,7 @@ import classNames from "classnames"
 import { SortableList } from ".../pages/Options/components/SortableList"
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
 import { isDevRuntime } from ".../utils/channelHelper"
-import { getHomepageUrl, getIcon } from ".../utils/extensionHelper.js"
+import { getHomepageUrl, getIcon, getOriginSettingUrl } from ".../utils/extensionHelper.js"
 import { getLang } from ".../utils/utils"
 import { isStringEmpty } from ".../utils/utils.js"
 import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
@@ -140,6 +141,16 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
   }
 
   /**
+   * 打开浏览器自带的扩展设置页面
+   */
+  const handleOriginSettingButtonClick = (e, item) => {
+    const url = getOriginSettingUrl(item)
+    if (url) {
+      chrome.tabs.create({ url })
+    }
+  }
+
+  /**
    * 删除扩展
    */
   const confirmDeleteExtension = (e, item) => {
@@ -251,7 +262,6 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
           <Space className="operation-menu-item" onClick={(e) => handlePinButtonClick(e, item)}>
             {itemPined ? <LockOutlined /> : <UnlockOutlined />}
           </Space>
-
           <Space
             className={classNames({
               "operation-menu-item-disabled": !existOptionPage,
@@ -260,7 +270,6 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
             onClick={(e) => handleSettingButtonClick(e, item)}>
             <SettingOutlined />
           </Space>
-
           {/* <Popconfirm
             title={getLang("remove_extension")}
             description={getLang("remove_extension_confirm", item.shortName)}
@@ -271,11 +280,9 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
               <DeleteOutlined />
             </Space>
           </Popconfirm> */}
-
           <Space className="operation-menu-item" onClick={(e) => confirmDeleteExtension(e, item)}>
             <DeleteOutlined />
           </Space>
-
           <Space
             className={classNames({
               "operation-menu-item-disabled": !existHomePage,
@@ -283,6 +290,11 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
             })}
             onClick={(e) => handleHomeButtonClick(e, item)}>
             <HomeOutlined />
+          </Space>
+          <Space
+            className="operation-menu-item"
+            onClick={(e) => handleOriginSettingButtonClick(e, item)}>
+            <ToolOutlined />
           </Space>
         </div>
       </div>

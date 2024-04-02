@@ -3,6 +3,7 @@ import React, { memo, useEffect, useRef, useState } from "react"
 import { SearchOutlined, SettingOutlined } from "@ant-design/icons"
 import Icon from "@ant-design/icons/lib/components/Icon"
 import { Space } from "antd"
+import _ from "lodash"
 
 import EdgeIcon from ".../assets/img/Microsoft_Store.svg"
 import ChromeWebStoreIcon from ".../assets/img/chrome-web-store-icon.svg"
@@ -88,7 +89,9 @@ const Header = memo((props) => {
   const onSearchTextChange = (e) => {
     const text = e.target.value
     setSearchText(text)
-    onSearch?.(text)
+    _.throttle(() => {
+      onSearch?.(text)
+    }, 500)
   }
 
   useEffect(() => {
