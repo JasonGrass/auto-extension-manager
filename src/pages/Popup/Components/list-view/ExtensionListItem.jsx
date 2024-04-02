@@ -5,6 +5,7 @@ import {
   HomeOutlined,
   LockOutlined,
   SettingOutlined,
+  ToolOutlined,
   UnlockOutlined
 } from "@ant-design/icons"
 import { Button, Popconfirm, Switch, message } from "antd"
@@ -13,7 +14,7 @@ import classNames from "classnames"
 import "./ExtensionListItem.css"
 
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
-import { getHomepageUrl, getIcon } from ".../utils/extensionHelper.js"
+import { getHomepageUrl, getIcon, getOriginSettingUrl } from ".../utils/extensionHelper.js"
 import { getLang } from ".../utils/utils"
 import { isStringEmpty } from ".../utils/utils.js"
 import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
@@ -99,6 +100,16 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
     }
   }
 
+  /**
+   * 打开浏览器自带的扩展设置页面
+   */
+  const handleOriginSettingButtonClick = (e, item) => {
+    const url = getOriginSettingUrl(item)
+    if (url) {
+      chrome.tabs.create({ url })
+    }
+  }
+
   // 如果存在别名，则显示别名
   const showName = item.__attach__?.alias ? item.__attach__?.alias : item.name
 
@@ -170,6 +181,11 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
             icon={<HomeOutlined />}
             onClick={(e) => handleHomeButtonClick(e, item)}
           />
+
+          <Button
+            type="text"
+            icon={<ToolOutlined />}
+            onClick={(e) => handleOriginSettingButtonClick(e, item)}></Button>
         </div>
       )
     }
