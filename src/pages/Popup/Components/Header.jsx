@@ -89,10 +89,12 @@ const Header = memo((props) => {
   const onSearchTextChange = (e) => {
     const text = e.target.value
     setSearchText(text)
-    _.throttle(() => {
-      onSearch?.(text)
-    }, 500)
+    throttleSearch(text)
   }
+
+  const throttleSearch = _.throttle((text) => {
+    onSearch?.(text)
+  }, 500)
 
   useEffect(() => {
     const onKeydown = (e) => {
