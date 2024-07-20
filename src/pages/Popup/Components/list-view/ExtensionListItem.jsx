@@ -63,6 +63,11 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
     onItemEnableChanged?.(item)
   }
 
+  // 扩展名称被点击，则执行扩展启用与禁用
+  const onItemNameClick = () => {
+    onSwitchChange(!item.enabled, item)
+  }
+
   const onItemMouseOver = (e) => {
     if (e.type === "mouseenter") {
       setIsHover(true)
@@ -131,7 +136,9 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
         {itemPined && isShowDotOfFixedExtension && <i className="list-item-fix-dot"></i>}
       </div>
 
-      <span className="ext-name">{showName}</span>
+      <span className="ext-name" onClick={(e) => onItemNameClick(e, item)}>
+        {showName}
+      </span>
       {buildOperationButton(isHover || isShowOperationButton)}
     </div>
   )

@@ -48,6 +48,10 @@
   user-select: none;
 }
 
+.list-item-container > .ext-name:hover {
+  color: #555;
+}
+
 .list-item-container > .li-operation {
   white-space: nowrap;
   margin-left: 3px;
