@@ -40,6 +40,9 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
   // 固定分组的小圆点
   const isShowDotOfFixedExtension = options.setting.isShowDotOfFixedExtension ?? true
 
+  // 是否启用了切换分组时，执行启用/禁用扩展的操作。如果没有打开这个功能，则没必要显示锁的标记
+  const canLock = options.setting.isRaiseEnableWhenSwitchGroup ?? false
+
   // 在切换分组可以控制扩展的开启或关闭时，这里需要主动更新 enabled，否则 UI 显示会有问题
   useEffect(() => {
     setItemEnable(item.enabled)
@@ -58,6 +61,11 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
       manualEnableCounter.count(item.id)
     }
     onItemEnableChanged?.(item)
+  }
+
+  // 扩展名称被点击，则执行扩展启用与禁用
+  const onItemNameClick = () => {
+    onSwitchChange(!item.enabled, item)
   }
 
   const onItemMouseOver = (e) => {
@@ -128,7 +136,9 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
         {itemPined && isShowDotOfFixedExtension && <i className="list-item-fix-dot"></i>}
       </div>
 
-      <span className="ext-name">{showName}</span>
+      <span className="ext-name" onClick={(e) => onItemNameClick(e, item)}>
+        {showName}
+      </span>
       {buildOperationButton(isHover || isShowOperationButton)}
     </div>
   )
@@ -145,11 +155,13 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
             checked={itemEnable}
             onChange={(e) => onSwitchChange(e, item)}></Switch>
 
-          <Button
-            type="text"
-            icon={itemPined ? <LockOutlined /> : <UnlockOutlined />}
-            onClick={() => setItemPined(!itemPined)}
-          />
+          {canLock && (
+            <Button
+              type="text"
+              icon={itemPined ? <LockOutlined /> : <UnlockOutlined />}
+              onClick={() => setItemPined(!itemPined)}
+            />
+          )}
 
           <Button
             disabled={!existOptionPage}
