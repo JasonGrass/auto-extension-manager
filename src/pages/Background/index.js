@@ -3,7 +3,7 @@ import logger from ".../utils/logger"
 import { EventCache } from "./event/EventCache"
 import createExtension from "./extension"
 import createHistory from "./history"
-import createMessageHandler from "./message/Index.js"
+import createMessageHandler from "./message/messageIndex.js"
 import createRule from "./rule"
 
 console.log(`[Extension Manager] Background Run. ${new Date().toLocaleString()}`)
