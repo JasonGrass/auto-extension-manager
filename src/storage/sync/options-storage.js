@@ -72,6 +72,10 @@ export const SyncOptionsStorage = {
     if (options.setting.isShowDotOfFixedExtension === undefined) {
       options.setting.isShowDotOfFixedExtension = true
     }
+    if (options.setting.isShowAppNameInGirdView === undefined) {
+      // 默认显示扩展名称
+      options.setting.isShowAppNameInGirdView = true
+    }
 
     // 情景模式
     if (!options.scenes) {

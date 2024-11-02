@@ -51,7 +51,7 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
   const [isMenuOnRight, setIsMenuOnRight] = useState(true)
 
   // 是否显示 APP 名称
-  const isShowAppNameInGirdView = options.setting.isShowAppNameInGirdView ?? false
+  const isShowAppNameInGirdView = options.setting.isShowAppNameInGirdView ?? true
   // 禁用扩展使用灰色
   const grayStyleOfDisable = options.setting.isGaryStyleOfDisableInGridView ?? false
   // 固定分组扩展的小圆点

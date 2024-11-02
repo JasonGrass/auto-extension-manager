@@ -18,7 +18,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
   // 列表视图下，是否总是显示扩展操作按钮
   const [isShowItemOperationAlways, setIsShowItemOperationAlways] = useState(false)
   // 网格视图下，显示 APP 名称
-  const [isShowAppNameInGirdView, setIsShowAppNameInGirdView] = useState(false)
+  const [isShowAppNameInGirdView, setIsShowAppNameInGirdView] = useState(true)
   // 网格视图下，每行显示的扩展个数
   const [columnCountInGirdView, setColumnCountInGirdView] = useState(6)
   // 网格视图下，禁用扩展使用灰色样式
@@ -36,7 +36,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
     const showFixedExtension = setting.isShowFixedExtension ?? true
     setIsShowFixedExtension(showFixedExtension)
 
-    const showAppNameInGridView = setting.isShowAppNameInGirdView ?? false
+    const showAppNameInGridView = setting.isShowAppNameInGirdView ?? true
     setIsShowAppNameInGirdView(showAppNameInGridView)
 
     // 网格视图下的列数
