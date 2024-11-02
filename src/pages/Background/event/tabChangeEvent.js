@@ -31,18 +31,23 @@ async function onTabCreated(tab) {
   }
 
   let waitingTime = 0
-  // 等待 tab 加载完成，最多等待 9 秒
-  while (tab.status === "loading") {
-    if (waitingTime > 9000) {
+  // 等待 tab 加载，最多等待 9 秒；不必等待加载完成，url 和 title 出来之后就可以了
+  while (!Boolean(tab.url) || !Boolean(tab.title)) {
+    if (waitingTime > 9000 || tab.status !== "loading") {
       return
     }
+    const waitSpan = 500 // 等待间隔，500ms
     await new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve()
-      }, 200)
+      }, waitSpan)
     })
     tab = await chrome.tabs.get(tab.id)
-    waitingTime += 200
+    waitingTime += waitSpan
+  }
+
+  if (tab.status !== "loading" && tab.status !== "complete") {
+    return
   }
 
   const tabInfo = {
