@@ -101,19 +101,7 @@ export const GroupOptions = {
       return
     }
     const newGroups = []
-    const fixedGroup = all.groups.find((g) => g.id === "fixed")
-    if (fixedGroup) {
-      newGroups.push(fixedGroup)
-    }
-    const hiddenGroup = all.groups.find((g) => g.id === "hidden")
-    if (hiddenGroup) {
-      newGroups.push(hiddenGroup)
-    }
-
     for (const item of items) {
-      if (item.id === "fixed" || item.id === "hidden") {
-        continue
-      }
       const exist = all.groups.find((g) => g.id === item.id)
       if (exist) {
         newGroups.push(exist)

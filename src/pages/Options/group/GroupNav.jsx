@@ -37,11 +37,7 @@ function GroupNav({
       fixedGroup.desc = getLang("group_fixed_desc")
     }
 
-    showGroupItems = [
-      fixedGroup,
-      hiddenGroup,
-      ...groupInfo.filter((g) => !storage.helper.isSpecialGroup(g))
-    ].filter(Boolean)
+    showGroupItems = groupInfo.filter(Boolean)
 
     setGroupItems(showGroupItems)
   }, [groupInfo])
@@ -165,11 +161,7 @@ function GroupNav({
           {(provided, snapshot) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {groupItems.map((group, index) => (
-                <Draggable
-                  key={group.id}
-                  draggableId={group.id}
-                  index={index}
-                  isDragDisabled={group.id === "fixed" || group.id === "hidden"}>
+                <Draggable key={group.id} draggableId={group.id} index={index}>
                   {(provided, snapshot) => (
                     <div
                       className="item-container"
