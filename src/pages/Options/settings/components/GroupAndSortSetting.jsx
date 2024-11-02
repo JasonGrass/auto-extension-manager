@@ -95,6 +95,7 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
             onChange={(e) =>
               onSettingChange(e.target.value, setTopRecentlyDays, "topRecentlyDays")
             }>
+            <Radio value={1}>1 Day</Radio>
             <Radio value={7}>7 Days</Radio>
             <Radio value={15}>15 Days</Radio>
             <Radio value={30}>30 Days</Radio>
