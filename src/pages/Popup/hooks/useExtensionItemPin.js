@@ -2,6 +2,12 @@ import { useEffect, useState } from "react"
 
 import storage from ".../storage/sync"
 
+/**
+ * 判断单个扩展是否在固定分组中
+ * @param {*} item
+ * @param {*} options
+ * @returns
+ */
 export function useExtensionItemPin(item, options) {
   // 扩展是否在固定分组中
   const [itemPined, setItemPined] = useState(false)
