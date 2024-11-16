@@ -90,6 +90,9 @@ export const filterExtensions = (extensions, filter) => {
   return extensions.filter(filter)
 }
 
+/**
+ * 对扩展进行排序，安装是否启用 + 名称排序，如果 options 中配置了 ignoreEnable，则只按照名称排序。
+ */
 export const sortExtension = (extensions, options) => {
   if (!extensions || extensions.length === 0) {
     return []

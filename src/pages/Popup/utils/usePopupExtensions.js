@@ -88,33 +88,20 @@ async function buildShowItems(extensions, options) {
 /**
  * 找出那些应该置顶显示的扩展；返回结果已经进行了排序，返回结果是 ID 列表;
  * 排序规则：
- * 1 规则设置的在前，最近更新的在后
- * 2 规则设置置顶的，按是否启用+名称排序
- * 3 最近更新的，按更新时间倒序
+ * 1 规则设置置顶的在前，其次是最近手动启用的，最近更新的在后
+ * 2 规则设置置顶的，按名称排序
+ * 3 最近手动启用的，按照操作的时间排序
+ * 4 最近更新的，按更新时间倒序
  */
 export async function findTopExtensions(extensions, options) {
-  const byRuleIds = await findTopExtensionsByRule(options)
+  // 规则设置的置顶
+  const byRuleIds = await findTopExtensionsByRuleThenOrder(extensions, options)
+  // 手动启用带来的置顶
+  const byRecentlyManualEnableIds = await findTopExtensionsByRecentlyManualEnable(options)
+  // 最近安装或者更新带来的置顶
+  const byRecentlyUpdateIds = await findTopExtensionsByRecentlyUpdate(options)
 
-  const byRecentlyIds = await findTopExtensionsByRecentlyUpdate(options)
-
-  if (byRuleIds.length === 0) {
-    return byRecentlyIds
-  }
-
-  // 先按名称排序
-  let byRuleOrderedExts = sortExtension(
-    extensions.filter((ext) => byRuleIds.includes(ext.id)),
-    { ignoreEnable: false }
-  )
-  let byRuleOrderedId = byRuleOrderedExts.map((ext) => ext.id)
-
-  // 再按照频率排序
-  if (options.setting.isSortByFrequency) {
-    const refList = await manualEnableCounter.getOrder()
-    byRuleOrderedId = sortByReferenceList(refList, byRuleOrderedId)
-  }
-
-  return Array.from(new Set([...byRuleOrderedId, ...byRecentlyIds]))
+  return Array.from(new Set([...byRuleIds, ...byRecentlyManualEnableIds, ...byRecentlyUpdateIds]))
 }
 
 /**
@@ -169,7 +156,30 @@ async function findTopExtensionsByRecentlyUpdate(options) {
 }
 
 /**
- * 由规则配置的，置顶的扩展（返回的是 ID 列表）
+ * 由规则配置的，置顶的扩展（返回的是 ID 列表）（已经排序）
+ */
+async function findTopExtensionsByRuleThenOrder(extensions, options) {
+  // 规则设置的置顶
+  const byRuleIds = await findTopExtensionsByRule(options)
+
+  // 先按名称排序（仅对于规则带来的置顶）
+  let byRuleOrderedExts = sortExtension(
+    extensions.filter((ext) => byRuleIds.includes(ext.id)),
+    { ignoreEnable: false }
+  )
+  let byRuleOrderedId = byRuleOrderedExts.map((ext) => ext.id)
+
+  // 再按照频率排序（仅对于规则带来的置顶）
+  if (options.setting.isSortByFrequency) {
+    const refList = await manualEnableCounter.getOrder()
+    byRuleOrderedId = sortByReferenceList(refList, byRuleOrderedId)
+  }
+
+  return byRuleOrderedId
+}
+
+/**
+ * 由规则配置的，置顶的扩展（返回的是 ID 列表）（未排序）
  */
 async function findTopExtensionsByRule(options) {
   const tabs = await chromeP.tabs.query({
@@ -231,6 +241,20 @@ async function findTopExtensionsByRule(options) {
 }
 
 /**
+ * 找到那些最近手动启用的扩展，将其置顶显示（如果开启了此配置），返回的是扩展 ID 列表
+ */
+async function findTopExtensionsByRecentlyManualEnable(options) {
+  if (!options.setting.isTopRecentlyEnabled) {
+    return []
+  }
+
+  const recentlyManualEnableIds = await manualEnableCounter.getRecentlyEnableIds()
+
+  // 最多取前 10  个
+  return recentlyManualEnableIds.slice(0, 10)
+}
+
+/**
  * 根据指定的列表进行排序
  */
 export function sortByReferenceList(orderExtIdList, list) {
@@ -247,6 +271,6 @@ export function sortByReferenceList(orderExtIdList, list) {
     }
   }
 
-  const left = list.filter((ext) => !orderedIdList.includes(ext.id))
-  return [...result, ...left]
+  const rest = list.filter((ext) => !orderedIdList.includes(ext.id))
+  return [...result, ...rest]
 }

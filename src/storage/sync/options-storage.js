@@ -76,6 +76,10 @@ export const SyncOptionsStorage = {
       // 默认显示扩展名称
       options.setting.isShowAppNameInGirdView = true
     }
+    // 默认排序方式修改成 name
+    if (options.setting.defaultSortField === undefined) {
+      options.setting.defaultSortField = "name"
+    }
 
     // 情景模式
     if (!options.scenes) {
