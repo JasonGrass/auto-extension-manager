@@ -118,7 +118,7 @@ async function sortShowItems(options, list) {
   // 先按照名称排序执行一次
 
   const list_pre = sortExtension(list, {
-    ignoreEnable: options.setting.defaultSortField === "name"
+    ignoreEnable: options.setting.defaultSortField !== "enable"
   })
 
   if (!options.setting.isSortByFrequency) {

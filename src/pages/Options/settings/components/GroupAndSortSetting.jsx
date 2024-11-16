@@ -17,7 +17,7 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
   // 最近更新的计算天数
   const [topRecentlyDays, setTopRecentlyDays] = useState(7)
   // 默认的排序方式(仅在按分组显示时有效)
-  const [defaultSortField, setDefaultSortField] = useState("enable")
+  const [defaultSortField, setDefaultSortField] = useState("name")
 
   // Popup 中，按照频率进行排序
   const [isSortByFrequency, setIsSortByFrequency] = useState(false)
@@ -34,7 +34,7 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
     setTopRecentlyMode(recentlyMode)
     const recentlyDays = setting.topRecentlyDays ?? 7
     setTopRecentlyDays(recentlyDays)
-    const sortField = setting.defaultSortField ?? "enable"
+    const sortField = setting.defaultSortField ?? "name"
     setDefaultSortField(sortField)
 
     const sortByFrequency = setting.isSortByFrequency ?? false
