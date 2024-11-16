@@ -620,6 +620,9 @@
   "setting_ui_show_by_group": {
     "message": "按分组显示扩展"
   },
+  "setting_ui_top_recently_enabled": {
+    "message": "置顶显示最近启用的扩展"
+  },
   "setting_ui_top_recently_update": {
     "message": "置顶显示最近更新的扩展"
   },

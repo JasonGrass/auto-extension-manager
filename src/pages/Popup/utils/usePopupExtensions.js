@@ -244,6 +244,10 @@ async function findTopExtensionsByRule(options) {
  * 找到那些最近手动启用的扩展，将其置顶显示（如果开启了此配置），返回的是扩展 ID 列表
  */
 async function findTopExtensionsByRecentlyManualEnable(options) {
+  if (!options.setting.isTopRecentlyEnabled) {
+    return []
+  }
+
   const recentlyManualEnableIds = await manualEnableCounter.getRecentlyEnableIds()
 
   // 最多取前 10  个

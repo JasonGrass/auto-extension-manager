@@ -8,6 +8,8 @@ import { getLang } from ".../utils/utils"
 const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
   // 是否按分组显示
   const [isDisplayByGroup, setIsDisplayByGroup] = useState(false)
+  // 置顶显示最近启用的扩展
+  const [isTopRecentlyEnabled, setIsTopRecentlyEnabled] = useState(false)
   // 置顶显示最近更新的扩展
   const [isTopRecentlyUpdate, setIsTopRecentlyUpdate] = useState(false)
   // 最近更新或者最近安装
@@ -24,6 +26,8 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
   useEffect(() => {
     const displayByGroup = setting.isDisplayByGroup ?? false
     setIsDisplayByGroup(displayByGroup)
+    const topRecentlyEnabled = setting.isTopRecentlyEnabled ?? false
+    setIsTopRecentlyEnabled(topRecentlyEnabled)
     const topRecentlyUpdate = setting.isTopRecentlyUpdate ?? false
     setIsTopRecentlyUpdate(topRecentlyUpdate)
     const recentlyMode = setting.topRecentlyMode ?? "install"
@@ -47,6 +51,17 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
           checked={isDisplayByGroup}
           onChange={(value) =>
             onSettingChange(value, setIsDisplayByGroup, "isDisplayByGroup")
+          }></Switch>
+      </div>
+
+      {/* 是否置顶显示最近启用的扩展 */}
+      <div className="setting-item">
+        <span>{getLang("setting_ui_top_recently_enabled")}</span>
+        <Switch
+          size="small"
+          checked={isTopRecentlyEnabled}
+          onChange={(value) =>
+            onSettingChange(value, setIsTopRecentlyEnabled, "isTopRecentlyEnabled")
           }></Switch>
       </div>
 
