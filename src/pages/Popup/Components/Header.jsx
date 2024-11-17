@@ -13,6 +13,7 @@ import storage from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper"
 import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
+import MoreOperationDropdown from "./header/MoreOperationDropdown"
 import SceneDropdown from "./header/SceneDropdown"
 
 const Header = memo((props) => {
@@ -211,6 +212,10 @@ const Header = memo((props) => {
             <Space className="setting setting-icon" onClick={(e) => onSettingClick(e)}>
               <SettingOutlined />
             </Space>
+
+            <MoreOperationDropdown
+              className="dropdown more-operation"
+              options={options}></MoreOperationDropdown>
           </div>
         )}
       </Style>

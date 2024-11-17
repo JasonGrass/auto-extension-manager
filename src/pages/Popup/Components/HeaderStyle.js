@@ -49,7 +49,11 @@ const Style = styled.div`
   }
 
   .right .setting {
-    margin: 0 4px;
+    margin: -2px 4px 0 4px;
+  }
+
+  .right .more-operation {
+    margin: -2px 4px 0 4px;
   }
 
   .setting-icon {
