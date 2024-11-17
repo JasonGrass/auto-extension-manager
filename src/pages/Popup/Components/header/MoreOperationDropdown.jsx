@@ -46,17 +46,21 @@ const MoreOperationDropdown = memo(({ options, className, messageApi }) => {
 
   const [snapshotMenuList, setSnapshotMenuList] = useState(initSnapshotMenu)
 
-  function resumeSnapshot(snapshot) {
-    console.log(`resumeSnapshot ${snapshot}`)
+  async function resumeSnapshot(snapshot) {
+    console.log(`resumeSnapshot ${snapshot.key}`)
     messageApi.info(`resume snapshot ${snapshot.key}`)
     for (const extState of snapshot.states) {
-      chrome.management.setEnabled(extState.id, extState.enabled)
+      try {
+        await chrome.management.setEnabled(extState.id, extState.enabled)
+      } catch (ex) {
+        console.warn(`[resume snapshot] ${extState.id}`, ex)
+      }
     }
     updateView()
   }
 
   function deleteSnapshot(snapshot) {
-    console.log(`deleteSnapshot ${snapshot}`)
+    console.log(`deleteSnapshot ${snapshot.key}`)
     messageApi.info(`delete snapshot ${snapshot.key}`)
     forage.removeItem(snapshot.key)
     updateView()
