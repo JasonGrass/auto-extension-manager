@@ -1,6 +1,6 @@
 {
   "name": "extension-manager",
-  "version": "0.5.24",
+  "version": "0.5.25",
   "description": "a chrome extension manager where you can add rules",
   "license": "AGPL-3.0",
   "repository": {
