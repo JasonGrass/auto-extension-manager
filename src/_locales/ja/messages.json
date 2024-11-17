@@ -809,6 +809,18 @@
   "management_export_md_template_default": {
     "message": "デフォルトテンプレート"
   },
+  "snapshot_disable_all": {
+    "message": "すべて無効化"
+  },
+  "snapshot_capture": {
+    "message": "スナップショット保存"
+  },
+  "snapshot_restore": {
+    "message": "スナップショット復元"
+  },
+  "snapshot_delete_all": {
+    "message": "すべて削除"
+  },
   "end": {
     "message": "終了"
   }

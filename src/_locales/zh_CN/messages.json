@@ -809,6 +809,18 @@
   "management_export_md_template_default": {
     "message": "默认模板"
   },
+  "snapshot_disable_all": {
+    "message": "禁用全部扩展"
+  },
+  "snapshot_capture": {
+    "message": "保存扩展快照"
+  },
+  "snapshot_restore": {
+    "message": "恢复快照"
+  },
+  "snapshot_delete_all": {
+    "message": "删除全部快照"
+  },
   "end": {
     "message": "end"
   }

@@ -11,6 +11,7 @@ import { Dropdown, Space } from "antd"
 import dayjs from "dayjs"
 import localforage from "localforage"
 
+import { getLang } from ".../utils/utils"
 import { MoreOperationDropdownSnapshotStyle } from "./MoreOperationDropdownStyle.js"
 
 const forage = localforage.createInstance({
@@ -36,7 +37,11 @@ const MoreOperationDropdown = memo(({ options, className, messageApi }) => {
 
   // 初始化快照子菜单
   const initSnapshotMenu = [
-    { key: "delete-all-snapshot", label: "删除全部快照", onClick: deleteAllSnapshot }
+    {
+      key: "delete-all-snapshot",
+      label: getLang("snapshot_delete_all"),
+      onClick: deleteAllSnapshot
+    }
   ]
 
   const [snapshotMenuList, setSnapshotMenuList] = useState(initSnapshotMenu)
@@ -143,19 +148,19 @@ const MoreOperationDropdown = memo(({ options, className, messageApi }) => {
   const moreOperationMenuItems = [
     {
       key: "disable-all-ext",
-      label: "禁用全部扩展",
+      label: getLang("snapshot_disable_all"),
       icon: <CloseOutlined />,
       onClick: disableAllExtension
     },
     {
       key: "save-ext-snapshot",
-      label: "保存扩展快照",
+      label: getLang("snapshot_capture"),
       icon: <CopyOutlined />,
       onClick: saveExtensionStateSnapshot
     },
     {
       key: "restore-snapshot",
-      label: <span>恢复快照</span>,
+      label: <span>{getLang("snapshot_restore")}</span>,
       icon: <RedoOutlined />,
       children: snapshotMenuList
     }

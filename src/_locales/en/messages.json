@@ -809,6 +809,18 @@
   "management_export_md_template_default": {
     "message": "Default Template"
   },
+  "snapshot_disable_all": {
+    "message": "Disable All Extensions"
+  },
+  "snapshot_capture": {
+    "message": "Capture Extension Snapshot"
+  },
+  "snapshot_restore": {
+    "message": "Restore Snapshot"
+  },
+  "snapshot_delete_all": {
+    "message": "Delete All Snapshots"
+  },
   "end": {
     "message": "end"
   }
