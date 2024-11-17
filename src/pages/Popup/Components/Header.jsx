@@ -2,7 +2,7 @@ import React, { memo, useEffect, useRef, useState } from "react"
 
 import { SearchOutlined, SettingOutlined } from "@ant-design/icons"
 import Icon from "@ant-design/icons/lib/components/Icon"
-import { Space } from "antd"
+import { Space, message } from "antd"
 import _ from "lodash"
 
 import EdgeIcon from ".../assets/img/Microsoft_Store.svg"
@@ -26,6 +26,8 @@ const Header = memo((props) => {
     onSearch,
     isDarkMode
   } = props
+
+  const [messageApi, contextHolder] = message.useMessage()
 
   // 是否显示操作菜单，用于控制延迟渲染
   const [isShowOperations, setIsShowOperations] = useState(false)
@@ -184,6 +186,7 @@ const Header = memo((props) => {
 
   return (
     <>
+      {contextHolder}
       <Style>
         <div className="left">
           <img src={isDarkMode ? DarkIcon : LightIcon} alt="" />
@@ -215,7 +218,8 @@ const Header = memo((props) => {
 
             <MoreOperationDropdown
               className="dropdown more-operation"
-              options={options}></MoreOperationDropdown>
+              options={options}
+              messageApi={messageApi}></MoreOperationDropdown>
           </div>
         )}
       </Style>
