@@ -1,6 +1,6 @@
-import React, { memo, useEffect, useRef, useState } from "react"
+import React, { Suspense, lazy, memo, useEffect, useRef, useState } from "react"
 
-import { SearchOutlined, SettingOutlined } from "@ant-design/icons"
+import { MenuOutlined, SearchOutlined, SettingOutlined } from "@ant-design/icons"
 import Icon from "@ant-design/icons/lib/components/Icon"
 import { Space, message } from "antd"
 import _ from "lodash"
@@ -13,8 +13,10 @@ import storage from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper"
 import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
-import MoreOperationDropdown from "./header/MoreOperationDropdown"
 import SceneDropdown from "./header/SceneDropdown"
+
+// import MoreOperationDropdown from "./header/MoreOperationDropdown"
+const LazyMoreOperationDropdown = lazy(() => import("./header/MoreOperationDropdown"))
 
 const Header = memo((props) => {
   const {
@@ -216,10 +218,18 @@ const Header = memo((props) => {
               <SettingOutlined />
             </Space>
 
-            <MoreOperationDropdown
-              className="dropdown more-operation"
-              options={options}
-              messageApi={messageApi}></MoreOperationDropdown>
+            <Suspense>
+              <LazyMoreOperationDropdown
+                fallback={
+                  <span>
+                    <MenuOutlined />
+                  </span>
+                }
+                className="dropdown more-operation"
+                options={options}
+                messageApi={messageApi}
+              />
+            </Suspense>
           </div>
         )}
       </Style>
