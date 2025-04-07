@@ -8,6 +8,8 @@
 
 # production
 /build
+build.crx
+build.pem
 
 # zip
 /zip
