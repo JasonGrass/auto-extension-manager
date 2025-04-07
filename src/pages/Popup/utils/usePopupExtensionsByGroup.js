@@ -55,14 +55,18 @@ async function buildShowItems(extensions, options) {
     shownGroups.push({
       id: "__v_top__",
       name: "",
-      extensions: sortByReferenceList(topExtensions, listTop)
+      extensions: sortByReferenceList(
+        topExtensions,
+        listTop,
+        options.setting.isShowHiddenExtension ? hiddenExtensions : []
+      )
     })
   }
 
   const groupArray = options.groups ?? []
   const asyncGroups = groupArray.map(async (g) => {
     // 不显示 hidden 分组
-    if (g.id === "hidden") {
+    if (g.id === "hidden" && !(options.setting.isShowHiddenExtension ?? false)) {
       return null
     }
     // 不显示 fixed 分组
@@ -76,7 +80,7 @@ async function buildShowItems(extensions, options) {
     // 不显示被隐藏的扩展
     const extArray = list
       .filter((i) => g.extensions.includes(i.id))
-      .filter((i) => !hiddenExtensions.includes(i.id))
+      .filter((i) => !options.setting.isShowHiddenExtension && !hiddenExtensions.includes(i.id))
 
     if (extArray.length === 0) {
       return null
@@ -85,6 +89,9 @@ async function buildShowItems(extensions, options) {
     let groupName = g.name
     if (g.id === "fixed") {
       groupName = getLang("group_fixed_name")
+    }
+    if (g.id === "hidden") {
+      groupName = getLang("group_hidden_name")
     }
 
     appendGroupInfo(extArray, g)
@@ -103,7 +110,7 @@ async function buildShowItems(extensions, options) {
   const groupedExtensionIds = Array.from(new Set(groupArray.map((g) => g.extensions).flat()))
   const noneGroupExtensions = list
     .filter((i) => !groupedExtensionIds.includes(i.id))
-    .filter((i) => !hiddenExtensions.includes(i.id))
+    .filter((i) => !options.setting.isShowHiddenExtension && !hiddenExtensions.includes(i.id))
   const sortedNoneGroupExtensions = await sortShowItems(options, noneGroupExtensions)
   const noneGroupExtensionsGroup = {
     id: "__no_group__",

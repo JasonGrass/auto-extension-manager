@@ -12,6 +12,8 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
 
   // 是否在 Popup 中，展示固定分组中的扩展
   const [isShowFixedExtension, setIsShowFixedExtension] = useState(true)
+  // Show Hidden Group Extension
+  const [isShowHiddenExtension, setIsShowHiddenExtension] = useState(true)
   // 是否显示固定分组扩展上面的小圆点
   const [isShowDotOfFixedExtension, setIsShowDotOfFixedExtension] = useState(true)
 
@@ -35,6 +37,9 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
 
     const showFixedExtension = setting.isShowFixedExtension ?? true
     setIsShowFixedExtension(showFixedExtension)
+
+    const showHiddenExtension = setting.isShowHiddenExtension ?? false
+    setIsShowHiddenExtension(showHiddenExtension)
 
     const showAppNameInGridView = setting.isShowAppNameInGirdView ?? true
     setIsShowAppNameInGirdView(showAppNameInGridView)
@@ -92,6 +97,22 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
           checked={isShowFixedExtension}
           onChange={(value) =>
             onSettingChange(value, setIsShowFixedExtension, "isShowFixedExtension")
+          }></Switch>
+      </div>
+
+      {/* Show extensions in Hidden grouping */}
+      <div className="setting-item">
+        <span>
+          {getLang("setting_ui_show_hidden_extension")}
+          <Tooltip placement="top" title={getLang("setting_ui_show_hidden_extension_tip")}>
+            <QuestionCircleOutlined />
+          </Tooltip>{" "}
+        </span>
+        <Switch
+          size="small"
+          checked={isShowHiddenExtension}
+          onChange={(value) =>
+            onSettingChange(value, setIsShowHiddenExtension, "isShowHiddenExtension")
           }></Switch>
       </div>
 
