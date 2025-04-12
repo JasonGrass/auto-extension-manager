@@ -614,6 +614,12 @@
   "setting_ui_show_fixed_extension_tip": {
     "message": "固定グループの拡張機能とは常駐拡張機能です。ポップアップリストに表示させたくない場合は、このオプションを無効にします。"
   },
+  "setting_ui_show_hidden_extension": {
+    "message": "隠しグループの拡張機能を表示"
+  },
+  "setting_ui_show_hidden_extension_tip": {
+    "message": "隠しグループの拡張機能は、デフォルトではポップアップリストに表示されません。表示させたい場合は、このオプションを有効にしてください。"
+  },
   "setting_ui_show_fixed_dot": {
     "message": "固定グループ拡張機能の右上に小さな点を表示します。"
   },
