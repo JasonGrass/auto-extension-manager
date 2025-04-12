@@ -1,4 +1,4 @@
-import { getPackageChannel } from "./generate/builderEnv"
+import { getPackageChannel } from "./generate/builderEnv.temp.js"
 
 /*
  * 判断运行环境是否为 Edge 浏览器，仅限在有 BOM 的页面使用
