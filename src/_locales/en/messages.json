@@ -614,6 +614,12 @@
   "setting_ui_show_fixed_extension_tip": {
     "message": "The extensions in the fixed group, are typically the resident extensions. If you don't want them to be displayed in the Popup list, you can disable this option."
   },
+  "setting_ui_show_hidden_extension": {
+    "message": "Display extensions of the hidden group"
+  },
+  "setting_ui_show_hidden_extension_tip": {
+    "message": "The extensions in the hidden group, are typically not displayed by default. You can enable this option to show them in the Popup list."
+  },
   "setting_ui_show_fixed_dot": {
     "message": "Display a small dot in the upper right corner of the fixed group extensions"
   },

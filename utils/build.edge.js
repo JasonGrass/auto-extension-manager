@@ -1,7 +1,7 @@
 var path = require("path")
 var fs = require("fs")
 
-const buildEnvFile = path.join(__dirname, "..", "src/utils/generate/builderEnv.js")
+const buildEnvFile = path.join(__dirname, "..", "src/utils/generate/builderEnv.temp.js")
 
 const content = `
   export const getPackageChannel = () => {

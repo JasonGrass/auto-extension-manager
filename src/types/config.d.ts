@@ -5,6 +5,7 @@ declare namespace config {
     isShowSearchBarDefault: boolean
     isRaiseEnableWhenSwitchGroup: boolean
     isShowFixedExtension: boolean
+    isShowHiddenExtension: boolean
   }
 
   export interface IScene {

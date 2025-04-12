@@ -614,6 +614,12 @@
   "setting_ui_show_fixed_extension_tip": {
     "message": "固定分组中的扩展，通常为常驻扩展，如果不想在 Popup 列表中展示，可以关闭此选项"
   },
+  "setting_ui_show_hidden_extension": {
+    "message": "显示隐藏分组中的扩展"
+  },
+  "setting_ui_show_hidden_extension_tip": {
+    "message": "隐藏分组中的扩展，默认不在 Popup 列表中展示。如果想显示，可以打开此选项"
+  },
   "setting_ui_show_fixed_dot": {
     "message": "显示固定分组扩展右上角的小圆点"
   },

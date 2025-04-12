@@ -20,10 +20,12 @@ export async function handleExtensionOnOff(extensions, options, selectGroups, cu
   const self = await chromeP.management.getSelf()
 
   const fixedExtensionIds = options.groups.find((g) => g.id === "fixed")?.extensions ?? []
+
   const currentExtensionIds = selectGroups.map((g) => g.extensions).flat()
 
   // 被启用的扩展：固定分组和当前分组中的扩展
   const enabledExtensionIds = Array.from(new Set([...fixedExtensionIds, ...currentExtensionIds]))
+
   // 被禁用的扩展：除此之外的扩展（不包括 APP 类型的扩展，不包括自身）
   const disabledExtensionIds = extensions
     .filter((ext) => isExtExtension(ext))

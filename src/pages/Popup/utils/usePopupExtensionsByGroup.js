@@ -62,7 +62,7 @@ async function buildShowItems(extensions, options) {
   const groupArray = options.groups ?? []
   const asyncGroups = groupArray.map(async (g) => {
     // 不显示 hidden 分组
-    if (g.id === "hidden") {
+    if (g.id === "hidden" && !(options.setting.isShowHiddenExtension ?? false)) {
       return null
     }
     // 不显示 fixed 分组
@@ -73,10 +73,14 @@ async function buildShowItems(extensions, options) {
     if (!g.extensions || g.extensions.length === 0) {
       return null
     }
+
+    // 筛选出当前分组的扩展
+    let extArray = list.filter((i) => g.extensions.includes(i.id))
+
     // 不显示被隐藏的扩展
-    const extArray = list
-      .filter((i) => g.extensions.includes(i.id))
-      .filter((i) => !hiddenExtensions.includes(i.id))
+    if (!options.setting.isShowHiddenExtension) {
+      extArray = extArray.filter((i) => !hiddenExtensions.includes(i.id))
+    }
 
     if (extArray.length === 0) {
       return null
@@ -85,6 +89,9 @@ async function buildShowItems(extensions, options) {
     let groupName = g.name
     if (g.id === "fixed") {
       groupName = getLang("group_fixed_name")
+    }
+    if (g.id === "hidden") {
+      groupName = getLang("group_hidden_name")
     }
 
     appendGroupInfo(extArray, g)
@@ -101,9 +108,12 @@ async function buildShowItems(extensions, options) {
 
   // 没有任何分组的扩展
   const groupedExtensionIds = Array.from(new Set(groupArray.map((g) => g.extensions).flat()))
-  const noneGroupExtensions = list
-    .filter((i) => !groupedExtensionIds.includes(i.id))
-    .filter((i) => !hiddenExtensions.includes(i.id))
+  let noneGroupExtensions = list.filter((i) => !groupedExtensionIds.includes(i.id))
+  // 不显示被隐藏的扩展
+  if (!options.setting.isShowHiddenExtension) {
+    noneGroupExtensions = noneGroupExtensions.filter((i) => !hiddenExtensions.includes(i.id))
+  }
+
   const sortedNoneGroupExtensions = await sortShowItems(options, noneGroupExtensions)
   const noneGroupExtensionsGroup = {
     id: "__no_group__",

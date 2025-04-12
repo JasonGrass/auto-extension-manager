@@ -8,6 +8,8 @@
 
 # production
 /build
+build.crx
+build.pem
 
 # zip
 /zip
@@ -27,3 +29,4 @@ secrets.*.js
 src/utils/secret.js
 .VSCodeCounter/
 
+builderEnv.temp.js
