@@ -70,6 +70,11 @@ prepare().then((props) => {
     </ConfigProvider>
   )
 
+  // 如果是 dark mode，则设置 body 的背景色为黑色
+  if (isDarkMode) {
+    document.body.style.backgroundColor = styled_dark_theme.bg
+  }
+
   fireEvent(props)
 })
 
