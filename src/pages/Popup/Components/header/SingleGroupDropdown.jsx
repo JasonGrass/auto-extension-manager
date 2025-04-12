@@ -24,9 +24,12 @@ const SingleGroupDropdown = memo((props) => {
   ]
 
   // 分组切换菜单（单选）
-  let groupMenuItems = groups
-    .map((g) => ({ label: g.name, key: g.id }))
-    .filter((g) => g.key !== "hidden") // Popup 中不展示隐藏分组
+  let groupMenuItems = groups.map((g) => ({ label: g.name, key: g.id }))
+
+  // Show Hidden Extension if the setting is true
+  if (!options.setting.isShowHiddenExtension ?? false) {
+    groupMenuItems = groupMenuItems.filter((g) => g.key !== "hidden")
+  }
 
   // 判断是否展示固定分组
   if (!(options.setting.isShowFixedExtension ?? true)) {

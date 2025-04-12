@@ -81,6 +81,11 @@ export const SyncOptionsStorage = {
       options.setting.defaultSortField = "name"
     }
 
+    // default for show hidden extension is set to false
+    if (options.setting.isShowHiddenExtension === undefined) {
+      options.setting.isShowHiddenExtension = false
+    }
+
     // 情景模式
     if (!options.scenes) {
       options.scenes = []

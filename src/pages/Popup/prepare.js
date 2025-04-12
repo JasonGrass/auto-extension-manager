@@ -67,6 +67,12 @@ async function getShownExtensions(allOptions) {
       allExtensions = allExtensions.filter((ext) => !fixedGroup.extensions.includes(ext.id))
     }
   }
+  if (!allOptions.setting.isShowHiddenExtension) {
+    const hiddenGroup = allOptions.groups.find((g) => g.id === "hidden")
+    if (hiddenGroup && hiddenGroup.extensions) {
+      allExtensions = allExtensions.filter((ext) => !hiddenGroup.extensions.includes(ext.id))
+    }
+  }
 
   // 不展示主题类的扩展，不展示自己
   const selfId = await getSelfId()
