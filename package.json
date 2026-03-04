@@ -28,7 +28,7 @@
     "lodash": "^4.17.21",
     "lz-string": "^1.5.0",
     "mitt": "^3.0.1",
-    "nanoid": "^4.0.2",
+    "nanoid": "^5.1.6",
     "new-github-issue-url": "^1.0.0",
     "pinyin-match": "^1.2.4",
     "react": "^18.2.0",
@@ -56,7 +56,7 @@
     "babel-loader": "^9.1.2",
     "babel-preset-react-app": "^10.0.1",
     "clean-webpack-plugin": "^4.0.0",
-    "copy-webpack-plugin": "^11.0.0",
+    "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^6.7.3",
     "eslint": "^8.31.0",
     "eslint-config-react-app": "^7.0.1",
@@ -84,7 +84,10 @@
     "typescript": "^4.9.4",
     "webpack": "^5.75.0",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1",
+    "webpack-dev-server": "^5.2.3",
     "zip-webpack-plugin": "^4.0.1"
+  },
+  "overrides": {
+    "ws": "^8.0.0"
   }
 }
