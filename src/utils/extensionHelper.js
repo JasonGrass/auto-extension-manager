@@ -169,7 +169,7 @@ export const getHomepageUrl = (item, alwaysLinkToStore) => {
   }
 
   if (updateUrl.includes(".google.com")) {
-    return "https://chrome.google.com/webstore/detail/" + item.id
+    return "https://chromewebstore.google.com/detail/" + item.id
   } else if (updateUrl.includes("edge.microsoft.com")) {
     return "https://microsoftedge.microsoft.com/addons/detail/" + item.id
   } else {

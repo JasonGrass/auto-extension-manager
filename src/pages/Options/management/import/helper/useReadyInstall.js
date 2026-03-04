@@ -57,7 +57,7 @@ function buildInputs(inputs) {
   for (const item of items) {
     if (!item.webStoreUrl) {
       if (item.channel === "Chrome") {
-        item.webStoreUrl = `https://chrome.google.com/webstore/detail/${item.id}`
+        item.webStoreUrl = `https://chromewebstore.google.com/detail/${item.id}`
       } else if (item.channel === "Edge") {
         item.webStoreUrl = `https://microsoftedge.microsoft.com/addons/detail/${item.id}`
       }

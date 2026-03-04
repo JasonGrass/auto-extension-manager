@@ -19,7 +19,7 @@ export function buildRecords(extensions, configs) {
 
     let storeUrl = ""
     if (extension.updateUrl?.includes(".google.com") || extension.channel === "Chrome") {
-      storeUrl = "https://chrome.google.com/webstore/detail/" + extension.id
+      storeUrl = "https://chromewebstore.google.com/detail/" + extension.id
     } else if (
       extension.updateUrl?.includes("edge.microsoft.com") ||
       extension.channel === "Edge"
