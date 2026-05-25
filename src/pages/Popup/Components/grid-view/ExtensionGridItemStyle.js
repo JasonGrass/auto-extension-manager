@@ -203,9 +203,5 @@ export const ExtensionGridItemStyle = styled.div`
 
   .grid-item-disable {
     filter: grayscale(100%) opacity(50%);
-
-    &:hover {
-      filter: none;
-    }
   }
 `

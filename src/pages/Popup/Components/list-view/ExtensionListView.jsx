@@ -1,6 +1,5 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, useCallback, useEffect, useState } from "react"
 
-import classNames from "classnames"
 import { styled } from "styled-components"
 
 import { usePopupExtensions } from "../../utils/usePopupExtensions"
@@ -11,8 +10,18 @@ import ExtensionListItem from "./ExtensionListItem"
  */
 const ExtensionList = memo(({ extensions, options }) => {
   const [showItems, setItems] = useState([])
+  const [moved, setMoved] = useState("") // Trigger usePopupExtensions to rebuild after enable state changes.
 
-  const [items] = usePopupExtensions(extensions, options)
+  const [items] = usePopupExtensions(extensions, options, moved)
+
+  const onItemEnableChanged = useCallback(
+    (item) => {
+      if (options.setting.isRefreshAfterEnableDisable ?? true) {
+        setMoved(Date.now().toString())
+      }
+    },
+    [options]
+  )
 
   useEffect(() => {
     const items0 = items.top
@@ -30,7 +39,10 @@ const ExtensionList = memo(({ extensions, options }) => {
       {showItems.map((item) => {
         return (
           <li key={item.id}>
-            <ExtensionListItem item={item} options={options}></ExtensionListItem>
+            <ExtensionListItem
+              item={item}
+              options={options}
+              onItemEnableChanged={onItemEnableChanged}></ExtensionListItem>
           </li>
         )
       })}

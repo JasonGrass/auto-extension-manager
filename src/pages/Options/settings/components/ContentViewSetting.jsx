@@ -24,7 +24,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
   // 网格视图下，每行显示的扩展个数
   const [columnCountInGirdView, setColumnCountInGirdView] = useState(6)
   // 网格视图下，禁用扩展使用灰色样式
-  const [isGaryStyleOfDisableInGridView, setIsGaryStyleOfDisableInGridView] = useState(false)
+  const [isGaryStyleOfDisableInGridView, setIsGaryStyleOfDisableInGridView] = useState(true)
   // 网格视图下，使用鼠标右键弹出菜单（而不是 hover）
   const [isMenuDisplayByRightClick, setIsMenuDisplayByRightClick] = useState(false)
 
@@ -56,7 +56,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
     setColumnCountInGirdView(tempColumnInGirdView)
 
     // 禁用扩展使用灰色样式
-    const grayWhenDisable = setting.isGaryStyleOfDisableInGridView ?? false
+    const grayWhenDisable = setting.isGaryStyleOfDisableInGridView ?? true
     setIsGaryStyleOfDisableInGridView(grayWhenDisable)
 
     // 固定分组扩展的小圆点
