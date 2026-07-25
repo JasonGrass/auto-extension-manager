@@ -7,11 +7,16 @@ export const MoreOperationDropdownSnapshotStyle = styled.div`
   align-items: center; /* 垂直居中对齐 */
 
   .snapshot-label {
-    flex-grow: 1; /* 使 snapshot-label 占据剩余空间 */
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     text-align: left;
   }
 
   .snapshot-action-btn {
+    flex-shrink: 0;
     margin-left: 6px;
   }
 
