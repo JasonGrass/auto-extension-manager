@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from "react"
+import React, { memo, useCallback, useState } from "react"
 
 import classNames from "classnames"
 import { styled } from "styled-components"
@@ -17,7 +17,7 @@ const ExtensionListViewByGroup = memo(({ extensions, options }) => {
 
   const onItemEnableChanged = useCallback(
     (item) => {
-      if (options.setting.isRefreshAfterEnableDisable) {
+      if (options.setting.isRefreshAfterEnableDisable ?? true) {
         setMoved(Date.now().toString())
       }
     },

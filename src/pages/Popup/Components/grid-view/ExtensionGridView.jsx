@@ -16,7 +16,7 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
 
   const onItemMove = useCallback(
     (item) => {
-      if (options.setting.isRefreshAfterEnableDisable) {
+      if (options.setting.isRefreshAfterEnableDisable ?? true) {
         setMoved(Date.now().toString())
       }
     },
@@ -32,7 +32,10 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
         {items0.map((item) => {
           return (
             <li key={item.id}>
-              <ExtensionGridItem item={item} options={options}></ExtensionGridItem>
+              <ExtensionGridItem
+                item={item}
+                options={options}
+                onItemMove={onItemMove}></ExtensionGridItem>
             </li>
           )
         })}

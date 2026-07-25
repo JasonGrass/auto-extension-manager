@@ -15,7 +15,7 @@ const ExtensionGridViewByGroup = memo(({ extensions, options, isShowBottomDivide
 
   const onItemMove = useCallback(
     (item) => {
-      if (options.setting.isRefreshAfterEnableDisable) {
+      if (options.setting.isRefreshAfterEnableDisable ?? true) {
         setMoved(Date.now().toString())
       }
     },

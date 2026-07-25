@@ -42,23 +42,32 @@ function IndexPopup({ originExtensions, options, params }) {
 
   // 扩展启用与禁用之后，更新显示
   useEffect(() => {
-    const onEnabled = (info) => {
-      const one = extensions.find((ext) => ext.id === info.id)
-      if (one) {
-        one.enabled = true
-        if (options.setting.isRefreshAfterEnableDisable) {
-          setExtensions([...extensions])
-        }
+    const refreshAfterEnableDisable = options.setting.isRefreshAfterEnableDisable ?? true
+    const updateExtensionEnabled = (info, enabled) => {
+      if (!refreshAfterEnableDisable) {
+        return
       }
+
+      setExtensions((currentExtensions) => {
+        let matched = false
+        const nextExtensions = currentExtensions.map((ext) => {
+          if (ext.id !== info.id) {
+            return ext
+          }
+
+          matched = true
+          return { ...ext, enabled }
+        })
+
+        return matched ? nextExtensions : currentExtensions
+      })
+    }
+
+    const onEnabled = (info) => {
+      updateExtensionEnabled(info, true)
     }
     const onDisabled = (info) => {
-      const one = extensions.find((ext) => ext.id === info.id)
-      if (one) {
-        one.enabled = false
-        if (options.setting.isRefreshAfterEnableDisable) {
-          setExtensions([...extensions])
-        }
-      }
+      updateExtensionEnabled(info, false)
     }
     chrome.management.onEnabled.addListener(onEnabled)
     chrome.management.onDisabled.addListener(onDisabled)
@@ -66,7 +75,7 @@ function IndexPopup({ originExtensions, options, params }) {
       chrome.management.onEnabled.removeListener(onEnabled)
       chrome.management.onDisabled.removeListener(onDisabled)
     }
-  }, [extensions])
+  }, [options.setting.isRefreshAfterEnableDisable])
 
   // 分组切换
   const onGroupChanged = async (args) => {
