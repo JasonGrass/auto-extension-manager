@@ -67,9 +67,7 @@ class DelayCloser {
 
   // 从缓存中移除掉所有已经失效的 token，避免内存浪费
   private removeIneffective() {
-    for (const item of this._waiting.filter((i) => !i.Available)) {
-      this._waiting.slice(this._waiting.indexOf(item), 1)
-    }
+    this._waiting = this._waiting.filter((i) => i.Available)
   }
 }
 
