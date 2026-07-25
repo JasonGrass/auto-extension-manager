@@ -39,7 +39,7 @@ class DelayCloser {
     this._waiting.push(token)
 
     setTimeout(
-      async (t) => {
+      async (t: DelayCloseToken) => {
         this.removeIneffective()
         if (!t.Available) {
           // 此关闭动作无效，则不再执行

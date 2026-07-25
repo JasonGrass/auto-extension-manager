@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES2020",
     "allowJs": true,
     "strict": true,
     "esModuleInterop": true,
@@ -8,16 +8,20 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
     "resolveJsonModule": true,
     "noEmit": false,
     "jsx": "react",
     "sourceMap": true,
+    "rootDir": "./src",
     "baseUrl": ".",
     "outDir": "dist",
     "paths": {
       ".../*": ["./src/*"]
     },
+    "types": ["chrome"],
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": ["src/**/*"]
