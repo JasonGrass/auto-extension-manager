@@ -41,7 +41,9 @@ export const SettingStyle = styled.div`
     margin: 5px 10px;
     padding: 5px 0 8px 0;
 
-    border-bottom: 1px solid ${(props) => props.theme.setting_border_bottom};
+    &:not(:last-child) {
+      border-bottom: 1px solid ${(props) => props.theme.setting_border_bottom};
+    }
 
     span {
       flex: 1 1 auto;
