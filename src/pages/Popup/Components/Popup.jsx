@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useLayoutEffect, useState } from "react"
 
 import classNames from "classnames"
 import { styled } from "styled-components"
 
-import { getPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
+import { applyPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
 import { isExtExtension } from "../../../utils/extensionHelper.js"
 import { handleExtensionOnOff } from "../ExtensionOnOffHandler.js"
 import { useSearchController } from "../hooks/useSearchController"
@@ -32,6 +32,11 @@ function IndexPopup({ originExtensions, options, params }) {
 
   // 布局样式
   const [layout, setLayout] = useState(options.setting.layout)
+
+  // 等待新布局完成 DOM 更新后再调整 Popup 尺寸，避免旧的 Grid 内容阻止窗口缩小。
+  useLayoutEffect(() => {
+    applyPopupWidth(layout, originExtensions.length, options.setting.columnCountInGirdView)
+  }, [layout, originExtensions.length, options.setting.columnCountInGirdView])
 
   // 数量显示
   useEffect(() => {
@@ -118,11 +123,6 @@ function IndexPopup({ originExtensions, options, params }) {
   // 布局切换
   const onLayoutChanged = (layout) => {
     setLayout(layout)
-    document.body.style.width = getPopupWidth(
-      layout,
-      originExtensions.length,
-      options.setting.columnCountInGirdView
-    )
   }
 
   const getExtensionDisplay = () => {

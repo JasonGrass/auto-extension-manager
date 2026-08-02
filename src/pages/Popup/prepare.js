@@ -1,6 +1,6 @@
 import localforage from "localforage"
 
-import { getPopupHeight, getPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
+import { applyPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
 import storage from ".../storage/sync"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
 
@@ -17,7 +17,7 @@ export const prepare = async function () {
   const extensions = await getShownExtensions(allOptions)
 
   // popup 宽度设置
-  document.body.style.width = getPopupWidth(
+  applyPopupWidth(
     allOptions.setting.layout,
     extensions.length,
     allOptions.setting.columnCountInGirdView

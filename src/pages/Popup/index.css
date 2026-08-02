@@ -1,7 +1,8 @@
 @import url(../../utils/reset.css);
 
 body {
-  width: 420px;
+  /* Keep the initial size in sync with LIST_POPUP_WIDTH in popupLayoutHelper.js. */
+  width: 480px;
   height: 600px;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",

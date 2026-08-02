@@ -1,5 +1,7 @@
 import { MAX_COLUMN_COUNT, MIN_COLUMN_COUNT } from ".../pages/Options/settings/SettingConst"
 
+export const LIST_POPUP_WIDTH = 480
+
 export function getPopupWidth(layout, totalCount, columnCount) {
   if (layout === "grid") {
     let count = Number(columnCount)
@@ -9,8 +11,17 @@ export function getPopupWidth(layout, totalCount, columnCount) {
 
     return `${count * 80}px`
   } else {
-    return "420px"
+    return `${LIST_POPUP_WIDTH}px`
   }
+}
+
+export function applyPopupWidth(layout, totalCount, columnCount) {
+  const width = getPopupWidth(layout, totalCount, columnCount)
+
+  // Chrome sizes an extension popup from the root document. Updating only body
+  // can leave the viewport at the previous (wider) grid size.
+  document.documentElement.style.width = width
+  document.body.style.width = width
 }
 
 export function getPopupHeight(layout, totalCount, columnCount, groupCount) {
