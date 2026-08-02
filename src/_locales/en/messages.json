@@ -78,7 +78,7 @@
     "message": "Fixed Group"
   },
   "group_fixed_desc": {
-    "message": "This is a built-in group where extensions within this group will not be disabled when manually switching groups in the Popup. Typically, permanent extensions are placed in this group. Note: If a specific extension is explicitly configured to be disabled in a rule configuration, it will still be disabled even if it is in the fixed group."
+    "message": "This is a built-in group. Extensions in it are not affected by batch operations from Popup group switches. It is intended for resident extensions; disabling an extension individually or through a rule still takes effect."
   },
   "group_hidden_name": {
     "message": "Hidden Group"
@@ -105,7 +105,7 @@
     "message": "Possibly a repeat operation"
   },
   "group_may_redundant_desc": {
-    "message": "This extension is already in a fixed group, the extension will always be activated when switching groups"
+    "message": "This extension is already in the fixed group, so Popup group switches will not enable or disable it in a batch operation."
   },
   "enable_extension": {
     "message": "Enable"
@@ -698,14 +698,26 @@
   "setting_popup_scale_title": {
     "message": "Popup zoom ratio"
   },
-  "setting_func_witch_group": {
-    "message": "When switching groups, enable the extensions in the current group and disable the rest"
+  "setting_func_enable_group_exclusively": {
+    "message": "Enable the current group and disable all other extensions"
   },
-  "setting_func_witch_group_tip": {
-    "message": "After enabling, when switching groups in the Popup, all extensions that are not in the fixed groups or the current group will be disabled."
+  "setting_func_enable_group_exclusively_tip": {
+    "message": "When enabled, turning on a group from its switch enables that group and disables every other extension except extensions in the current group or the fixed group. Fixed-group extensions are never disabled by this operation."
   },
-  "setting_func_group_allow_multi": {
-    "message": "↑ Supports selecting multiple groups"
+  "popup_group_toggle_tip": {
+    "message": "Control every extension in this group. Fixed-group extensions are not affected."
+  },
+  "popup_group_toggle_off_state_tip": {
+    "message": "Off: Every controllable extension in this group is disabled."
+  },
+  "popup_group_toggle_mixed_state_tip": {
+    "message": "Mixed: Some controllable extensions are enabled and others are disabled. Click the left side to turn all off or the right side to turn all on."
+  },
+  "popup_group_toggle_on_state_tip": {
+    "message": "On: Every controllable extension in this group is enabled."
+  },
+  "popup_group_toggle_empty_tip": {
+    "message": "This group has no extensions that can be controlled"
   },
   "setting_func_home_link_store": {
     "message": "The HOME button always opens the WebStore details page of the extension"

@@ -1,11 +1,11 @@
-import React, { useEffect, useLayoutEffect, useState } from "react"
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react"
 
 import classNames from "classnames"
 import { styled } from "styled-components"
 
 import { applyPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
 import { isExtExtension } from "../../../utils/extensionHelper.js"
-import { handleExtensionOnOff } from "../ExtensionOnOffHandler.js"
+import { handleGroupExtensionOnOff } from "../ExtensionOnOffHandler.js"
 import { useSearchController } from "../hooks/useSearchController"
 import { useShowAppController } from "../hooks/useShowAppController"
 import AppList from "./AppList"
@@ -17,6 +17,8 @@ import ExtensionListViewByGroup from "./list-view/ExtensionListViewByGroup.jsx"
 
 function IndexPopup({ originExtensions, options, params }) {
   const [extensions, setExtensions] = useState(originExtensions)
+  // 分组开关必须始终反映真实状态，不能受“启停后刷新列表”设置影响。
+  const [enabledById, setEnabledById] = useState(() => buildEnabledById(originExtensions))
 
   // 启用的扩展数量（不包括 APP 类型）
   const [activeExtensionCount, setActiveExtensionCount] = useState(0)
@@ -27,8 +29,28 @@ function IndexPopup({ originExtensions, options, params }) {
   const [isShowAppExtension, setIsShowAppExtension] = useShowAppController(options)
 
   // 搜索控制
-  const [pluginExtensions, appExtensions, onSearchByTextChange, onSearchByGroupChange] =
-    useSearchController(extensions)
+  const [
+    pluginExtensions,
+    appExtensions,
+    onSearchByTextChange,
+    onSearchByGroupChange,
+    currentGroup
+  ] = useSearchController(extensions, options)
+
+  // 直接查看固定分组时临时覆盖综合视图的隐藏偏好。
+  const displayOptions = useMemo(() => {
+    if (currentGroup?.id !== "fixed" || (options.setting.isShowFixedExtension ?? true)) {
+      return options
+    }
+
+    return {
+      ...options,
+      setting: {
+        ...options.setting,
+        isShowFixedExtension: true
+      }
+    }
+  }, [currentGroup, options])
 
   // 布局样式
   const [layout, setLayout] = useState(options.setting.layout)
@@ -40,15 +62,22 @@ function IndexPopup({ originExtensions, options, params }) {
 
   // 数量显示
   useEffect(() => {
-    const list = extensions.filter((ext) => isExtExtension(ext))
-    setActiveExtensionCount(list.filter((ext) => ext.enabled).length)
+    let list = extensions.filter((ext) => isExtExtension(ext))
+    if (!(options.setting.isShowFixedExtension ?? true)) {
+      const fixedExtensionIds =
+        options.groups.find((group) => group.id === "fixed")?.extensions ?? []
+      list = list.filter((ext) => !fixedExtensionIds.includes(ext.id))
+    }
+    setActiveExtensionCount(list.filter((ext) => enabledById[ext.id] ?? ext.enabled).length)
     setAllExtensionCount(list.length)
-  }, [extensions])
+  }, [enabledById, extensions, options.groups, options.setting.isShowFixedExtension])
 
   // 扩展启用与禁用之后，更新显示
   useEffect(() => {
     const refreshAfterEnableDisable = options.setting.isRefreshAfterEnableDisable ?? true
     const updateExtensionEnabled = (info, enabled) => {
+      setEnabledById((current) => ({ ...current, [info.id]: enabled }))
+
       if (!refreshAfterEnableDisable) {
         return
       }
@@ -82,43 +111,33 @@ function IndexPopup({ originExtensions, options, params }) {
     }
   }, [options.setting.isRefreshAfterEnableDisable])
 
-  // 分组切换
-  const onGroupChanged = async (args) => {
-    /*
-    args.action    true:开启了切换分组启用或禁用扩展的配置
-    args.select    所选的分组，为 null 表示没有选中任何分组（单选）
-    args.selectIds 所选分组集合，为 [] 表示没有选中任何分组（多选）
-    */
-
-    // 如果开启了配置，切换分组意味着：执行扩展的启用与禁用，没有切换显示的功能
-    // 如果开启了配置，并且当前组不为空，则执行扩展的启用与禁用
-    if (args.action && args.select) {
-      const newExtensions = await handleExtensionOnOff(
-        extensions,
-        options,
-        [args.select],
-        args.select
-      )
-      setExtensions(newExtensions)
+  useEffect(() => {
+    const onFixedGroupChanged = () => {
+      // enabledById 的新引用会让 memo 化的 Header 重新计算固定成员排除逻辑。
+      setEnabledById((current) => ({ ...current }))
     }
+    window.addEventListener("popup-fixed-group-changed", onFixedGroupChanged)
+    return () => window.removeEventListener("popup-fixed-group-changed", onFixedGroupChanged)
+  }, [])
 
-    // 多选
-    if (args.action && args.selects) {
-      const newExtensions = await handleExtensionOnOff(
-        extensions,
-        options,
-        args.selects,
-        args.current
-      )
-      setExtensions(newExtensions)
-    }
+  // 切换分组只负责切换显示，不再触发任何扩展启停操作。
+  const onGroupChanged = useCallback(
+    (group) => {
+      setIsShowAppExtension(!group)
+      onSearchByGroupChange(group)
+    },
+    [onSearchByGroupChange, setIsShowAppExtension]
+  )
 
-    if (!args.action) {
-      // 如果没有开启配置，切换分组意味着：切换分组显示，没有扩展启用与禁用功能
-      setIsShowAppExtension(!args.select) // 切换到特定分组时，不显示 APP
-      onSearchByGroupChange(args.select)
-    }
-  }
+  const onGroupEnableChanged = useCallback(
+    async (group, enabled) => {
+      const result = await handleGroupExtensionOnOff(extensions, options, group, enabled)
+      setExtensions(result.extensions)
+      setEnabledById(buildEnabledById(result.extensions))
+      return result
+    },
+    [extensions, options]
+  )
 
   // 布局切换
   const onLayoutChanged = (layout) => {
@@ -131,10 +150,12 @@ function IndexPopup({ originExtensions, options, params }) {
         return (
           <ExtensionListViewByGroup
             extensions={pluginExtensions}
-            options={options}></ExtensionListViewByGroup>
+            options={displayOptions}></ExtensionListViewByGroup>
         )
       } else {
-        return <ExtensionList extensions={pluginExtensions} options={options}></ExtensionList>
+        return (
+          <ExtensionList extensions={pluginExtensions} options={displayOptions}></ExtensionList>
+        )
       }
     } else {
       // 展示样式（是否按分组展示）
@@ -142,7 +163,7 @@ function IndexPopup({ originExtensions, options, params }) {
         return (
           <ExtensionGridViewByGroup
             extensions={pluginExtensions}
-            options={options}
+            options={displayOptions}
             isShowBottomDivider={
               isShowAppExtension && appExtensions.length > 0
             }></ExtensionGridViewByGroup>
@@ -151,7 +172,7 @@ function IndexPopup({ originExtensions, options, params }) {
         return (
           <ExtensionGrid
             extensions={pluginExtensions}
-            options={options}
+            options={displayOptions}
             isShowBottomDivider={isShowAppExtension && appExtensions.length > 0}></ExtensionGrid>
         )
       }
@@ -165,7 +186,10 @@ function IndexPopup({ originExtensions, options, params }) {
           activeCount={activeExtensionCount}
           totalCount={allExtensionCount}
           options={options}
+          extensions={extensions}
+          enabledById={enabledById}
           onGroupChanged={onGroupChanged}
+          onGroupEnableChanged={onGroupEnableChanged}
           onLayoutChanged={onLayoutChanged}
           onSearch={onSearchByTextChange}
           isDarkMode={params.isDarkMode}></Header>
@@ -184,6 +208,10 @@ function IndexPopup({ originExtensions, options, params }) {
 }
 
 export default IndexPopup
+
+function buildEnabledById(extensions) {
+  return Object.fromEntries((extensions ?? []).map((ext) => [ext.id, Boolean(ext.enabled)]))
+}
 
 const Style = styled.div`
   display: flex;

@@ -1,89 +1,118 @@
 import chromeP from "webext-polyfill-kinda"
 
+import storage from ".../storage/sync"
 import { sendMessage } from ".../utils/messageHelper"
-import { isAppExtension, isExtExtension } from "../../utils/extensionHelper"
+import { isExtExtension } from "../../utils/extensionHelper"
 
 /**
- * 执行扩展的启用与禁用
- * @param {*} extensions 所有被操作扩展
- * @param {*} options 用户设置
- * @param {*} selectGroups 当前选中的分组集合
- * @param {*} currentGroup 引起变化的当前分组
- * @returns 新的扩展信息
- * */
-export async function handleExtensionOnOff(extensions, options, selectGroups, currentGroup) {
-  if (!selectGroups) {
-    // 没有选择任何分组，啥也不做
-    return []
+ * 返回分组内实际可控制的扩展。固定分组成员即使同时属于当前分组也必须排除。
+ */
+export function getControllableGroupExtensions(group, extensions, fixedExtensionIds) {
+  const groupExtensionIds = new Set(group?.extensions ?? [])
+  const fixedIds = new Set(fixedExtensionIds ?? [])
+
+  return (extensions ?? []).filter(
+    (ext) => isExtExtension(ext) && groupExtensionIds.has(ext.id) && !fixedIds.has(ext.id)
+  )
+}
+
+/**
+ * 分组开关的显示状态。mixed 仅由真实扩展状态得出，不会作为操作目标。
+ */
+export function getGroupEnableState(group, extensions, fixedExtensionIds, enabledById = {}) {
+  const controllable = getControllableGroupExtensions(group, extensions, fixedExtensionIds)
+  if (controllable.length === 0) {
+    return "empty"
+  }
+
+  const enabledCount = controllable.filter(
+    (ext) => enabledById[ext.id] ?? ext.enabled ?? false
+  ).length
+  if (enabledCount === 0) {
+    return "off"
+  }
+  if (enabledCount === controllable.length) {
+    return "on"
+  }
+  return "mixed"
+}
+
+/**
+ * 批量启用或禁用一个分组。启用排他配置后，会保留当前组和固定组并禁用其他扩展。
+ */
+export async function handleGroupExtensionOnOff(extensions, options, currentGroup, enabled) {
+  if (!currentGroup || currentGroup.id === "fixed") {
+    return { extensions, actuallyEnabledIds: [], actuallyDisabledIds: [] }
   }
 
   const self = await chromeP.management.getSelf()
+  // 每次操作前重新读取固定分组，避免误伤刚刚固定但 Popup options 尚未同步的扩展。
+  const latestGroups = await storage.group.getGroups()
+  const fixedExtensionIds = latestGroups.find((g) => g.id === "fixed")?.extensions ?? []
+  const fixedIds = new Set(fixedExtensionIds)
+  // 操作前重新读取浏览器状态，避免“启停后不刷新列表”时使用到过期的 enabled 值。
+  const installedExtensions = (await chromeP.management.getAll()).filter(
+    (ext) => isExtExtension(ext) && ext.id !== self.id
+  )
+  const currentExtensions = getControllableGroupExtensions(
+    currentGroup,
+    installedExtensions,
+    fixedExtensionIds
+  )
+  const currentIds = new Set(currentExtensions.map((ext) => ext.id))
 
-  const fixedExtensionIds = options.groups.find((g) => g.id === "fixed")?.extensions ?? []
+  const enabledExtensionIds = enabled ? [...currentIds] : []
+  let disabledExtensionIds = enabled ? [] : [...currentIds]
 
-  const currentExtensionIds = selectGroups.map((g) => g.extensions).flat()
-
-  // 被启用的扩展：固定分组和当前分组中的扩展
-  const enabledExtensionIds = Array.from(new Set([...fixedExtensionIds, ...currentExtensionIds]))
-
-  // 被禁用的扩展：除此之外的扩展（不包括 APP 类型的扩展，不包括自身）
-  const disabledExtensionIds = extensions
-    .filter((ext) => isExtExtension(ext))
-    .map((ext) => ext.id)
-    .filter((id) => id !== self.id)
-    .filter((id) => !enabledExtensionIds.includes(id))
-
-  // const disabledExtensions = extensions.filter((ext) => disabledExtensionIds.includes(ext.id))
-  // const enabledExtensions = extensions.filter((ext) => enabledExtensionIds.includes(ext.id))
-
-  const actuallyEnabledIds = [] // 实际执行了启用动作的扩展 ID
-  for (const extId of enabledExtensionIds) {
-    try {
-      const info = await chromeP.management.get(extId)
-      if (!info.enabled) {
-        await chromeP.management.setEnabled(extId, true)
-        actuallyEnabledIds.push(extId)
-      }
-    } catch (error) {
-      console.warn(`enable extension fail(${extId}).`, error)
-    }
+  if (enabled && (options.setting.isEnableCurrentGroupAndDisableOthers ?? false)) {
+    disabledExtensionIds = installedExtensions
+      .map((ext) => ext.id)
+      .filter((id) => !fixedIds.has(id) && !currentIds.has(id))
   }
 
-  const actuallyDisabledIds = [] // 实际执行了禁用动作的扩展 ID
-  for (const extId of disabledExtensionIds) {
-    try {
-      const info = await chromeP.management.get(extId)
-      if (info.enabled) {
-        await chromeP.management.setEnabled(extId, false)
-        actuallyDisabledIds.push(extId)
-      }
-    } catch (error) {
-      console.warn(`disable extension fail(${extId}).`, error)
-    }
-  }
+  const actuallyEnabledIds = await setExtensionStates(
+    enabledExtensionIds,
+    true,
+    installedExtensions
+  )
+  const actuallyDisabledIds = await setExtensionStates(
+    disabledExtensionIds,
+    false,
+    installedExtensions
+  )
 
-  // 通知 background，手动启用或禁用了哪些扩展，以进行历史操作记录
   await sendMessage("manual-change-group", {
     actuallyEnabledIds,
     actuallyDisabledIds,
     group: currentGroup
   })
 
-  let allExtensions = await chromeP.management.getAll()
-  allExtensions = allExtensions
-    .filter(
-      (ext) =>
-        enabledExtensionIds.includes(ext.id) ||
-        disabledExtensionIds.includes(ext.id) ||
-        isAppExtension(ext) // 启用和禁用的里面，都没有包含 APP 类型的扩展
-    )
+  const refreshedExtensions = (await chromeP.management.getAll())
+    .filter((ext) => ext.type !== "theme")
     .filter((ext) => ext.id !== self.id)
 
-  // 如果用户配置了不显示固定分组中的扩展，则这里过滤掉
-  const isShowFixedExtension = options.setting.isShowFixedExtension ?? true
-  if (!isShowFixedExtension) {
-    allExtensions = allExtensions.filter((ext) => !fixedExtensionIds.includes(ext.id))
+  return {
+    extensions: refreshedExtensions,
+    actuallyEnabledIds,
+    actuallyDisabledIds
+  }
+}
+
+async function setExtensionStates(extensionIds, enabled, extensions) {
+  const extensionById = new Map(extensions.map((ext) => [ext.id, ext]))
+  const actuallyChangedIds = []
+
+  for (const extId of extensionIds) {
+    try {
+      const info = extensionById.get(extId) ?? (await chromeP.management.get(extId))
+      if (info.enabled !== enabled) {
+        await chromeP.management.setEnabled(extId, enabled)
+        actuallyChangedIds.push(extId)
+      }
+    } catch (error) {
+      console.warn(`${enabled ? "enable" : "disable"} extension fail(${extId}).`, error)
+    }
   }
 
-  return allExtensions
+  return actuallyChangedIds
 }

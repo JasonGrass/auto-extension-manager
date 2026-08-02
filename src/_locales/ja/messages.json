@@ -78,7 +78,7 @@
     "message": "固定グループ"
   },
   "group_fixed_desc": {
-    "message": "これは固定のグループであり、ポップアップでグループを手動で切り替えても、このグループ内の拡張機能は無効になりません。通常、永続的な拡張機能はこのグループに配置されます。注: 特定の拡張機能がルールで無効になるように設定されている場合、それが固定グループに含まれている場合でも、無効になります。"
+    "message": "これは組み込みグループです。固定グループ内の拡張機能は、ポップアップのグループスイッチによる一括操作の影響を受けません。個別操作またはルールによる無効化は引き続き有効です。"
   },
   "group_hidden_name": {
     "message": "非表示グループ"
@@ -105,7 +105,7 @@
     "message": "反復操作の可能性"
   },
   "group_may_redundant_desc": {
-    "message": "この拡張機能はすでに固定グループにあり、グループを切り替えると拡張機能は常にアクティブになります。"
+    "message": "この拡張機能は固定グループにあるため、ポップアップのグループスイッチによる一括有効化または無効化の対象外です。"
   },
   "enable_extension": {
     "message": "有効化"
@@ -698,14 +698,26 @@
   "setting_popup_scale_title": {
     "message": "ズーム倍率"
   },
-  "setting_func_witch_group": {
-    "message": "グループ切り替え時、現在のグループ内の拡張機能を有効にし、それ以外を無効にします。"
+  "setting_func_enable_group_exclusively": {
+    "message": "現在のグループを有効にし、その他すべての拡張機能を無効にする"
   },
-  "setting_func_witch_group_tip": {
-    "message": "有効化後、ポップアップでグループ切り替え時、固定グループまたは現在のグループにない拡張機能はすべて無効になります。"
+  "setting_func_enable_group_exclusively_tip": {
+    "message": "有効にすると、グループスイッチでグループをオンにした際、現在のグループを有効にし、現在のグループと固定グループ以外のすべての拡張機能を無効にします。固定グループ内の拡張機能は無効になりません。"
   },
-  "setting_func_group_allow_multi": {
-    "message": "↑ 複数のグループを選択可能"
+  "popup_group_toggle_tip": {
+    "message": "このグループ内のすべての拡張機能を操作します。固定グループ内の拡張機能は影響を受けません。"
+  },
+  "popup_group_toggle_off_state_tip": {
+    "message": "オフ：このグループ内の操作可能な拡張機能はすべて無効です。"
+  },
+  "popup_group_toggle_mixed_state_tip": {
+    "message": "混合：操作可能な拡張機能の一部が有効で、一部が無効です。左側ですべてオフ、右側ですべてオンにできます。"
+  },
+  "popup_group_toggle_on_state_tip": {
+    "message": "オン：このグループ内の操作可能な拡張機能はすべて有効です。"
+  },
+  "popup_group_toggle_empty_tip": {
+    "message": "このグループには操作可能な拡張機能がありません"
   },
   "setting_func_home_link_store": {
     "message": "HOME ボタンは常にこの拡張機能のアプリショップ詳細ページを開きます"

@@ -78,7 +78,7 @@
     "message": "固定分組"
   },
   "group_fixed_desc": {
-    "message": "這是一個內置分組，此分組中的擴展，在 Popup 中手動切換分組時，不會被禁用。通常將常駐的擴展放在此分組中。注意：如果在規則配置中，明確配置關閉某個擴展，即使此擴展在固定分組中，禁用依舊有效。"
+    "message": "這是一個內置分組。通過 Popup 的分組開關批量啟停擴展時，固定分組中的擴展不會受到影響。通常將常駐擴展放在此分組中；用戶單獨關閉或規則明確關閉擴展時仍然有效。"
   },
   "group_hidden_name": {
     "message": "隱藏分組"
@@ -105,7 +105,7 @@
     "message": "可能是重複操作"
   },
   "group_may_redundant_desc": {
-    "message": "此擴展已經在固定分組中，切換分組時擴展將始終被激活"
+    "message": "此擴展已在固定分組中，Popup 分組開關不會批量啟用或禁用它"
   },
   "enable_extension": {
     "message": "啓用"
@@ -698,14 +698,26 @@
   "setting_popup_scale_title": {
     "message": "縮放比例"
   },
-  "setting_func_witch_group": {
-    "message": "切換分組時，啓用當前分組擴展，禁用其它的擴展"
+  "setting_func_enable_group_exclusively": {
+    "message": "啟用當前分組並禁用其他全部擴展"
   },
-  "setting_func_witch_group_tip": {
-    "message": "打開此配置之後，在 Popup 中切換分組時，會禁用掉所有不是固定分組也不是當前分組中的擴展"
+  "setting_func_enable_group_exclusively_tip": {
+    "message": "開啟後，通過分組開關啟用某一分組時，將啟用當前分組中的擴展，並禁用除當前分組和固定分組外的其他所有擴展。固定分組中的擴展不會被禁用。"
   },
-  "setting_func_group_allow_multi": {
-    "message": "↑ 支持分組多選"
+  "popup_group_toggle_tip": {
+    "message": "控制此分組中的全部擴展。固定分組中的擴展不受影響。"
+  },
+  "popup_group_toggle_off_state_tip": {
+    "message": "關閉：此分組中所有可控制擴展均已停用。"
+  },
+  "popup_group_toggle_mixed_state_tip": {
+    "message": "混合：部分可控制擴展已啟用、部分已停用；點擊左側全部關閉，點擊右側全部開啟。"
+  },
+  "popup_group_toggle_on_state_tip": {
+    "message": "開啟：此分組中所有可控制擴展均已啟用。"
+  },
+  "popup_group_toggle_empty_tip": {
+    "message": "此分組中沒有可控制的擴展"
   },
   "setting_func_home_link_store": {
     "message": "HOME 按鈕始終打開擴展的應用商店詳情頁"

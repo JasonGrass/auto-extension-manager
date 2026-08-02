@@ -1,32 +1,24 @@
 import React, { memo, useMemo } from "react"
 
 import { storage } from ".../storage/sync"
-import MultiGroupDropdown from "./MultiGroupDropdown"
 import SingleGroupDropdown from "./SingleGroupDropdown"
 
-const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
-  const groupItems = useMemo(() => storage.helper.formatGroups(options.groups), [options.groups])
+const GroupDropdown = memo(
+  ({ options, extensions, enabledById, className, onGroupChanged, onGroupEnableChanged }) => {
+    const groupItems = useMemo(() => storage.helper.formatGroups(options.groups), [options.groups])
 
-  // 是否允许分组多选
-  const raiseEnable = options.setting.isRaiseEnableWhenSwitchGroup
-  const supportMultiSelect = options.setting.isSupportMultiSelectGroup ?? false
-  const isMultiSelect = raiseEnable && supportMultiSelect
-
-  return (
-    <div className={className}>
-      {isMultiSelect ? (
-        <MultiGroupDropdown
-          options={options}
-          items={groupItems}
-          onGroupChanged={onGroupChanged}></MultiGroupDropdown>
-      ) : (
+    return (
+      <div className={className}>
         <SingleGroupDropdown
           options={options}
+          extensions={extensions}
+          enabledById={enabledById}
           groups={groupItems}
-          onGroupChanged={onGroupChanged}></SingleGroupDropdown>
-      )}
-    </div>
-  )
-})
+          onGroupChanged={onGroupChanged}
+          onGroupEnableChanged={onGroupEnableChanged}></SingleGroupDropdown>
+      </div>
+    )
+  }
+)
 
 export default GroupDropdown

@@ -27,7 +27,7 @@ export function useExtensionItemPin(item, options) {
     setItemPined(pined)
 
     storage.group.getGroups().then((groups) => {
-      let fixedGroup = groups.find((g) => g.id === "fixed")
+      const fixedGroup = groups.find((g) => g.id === "fixed")
 
       const set = new Set(fixedGroup.extensions)
 
@@ -35,14 +35,26 @@ export function useExtensionItemPin(item, options) {
         set.add(item.id)
         const ids = Array.from(set)
         fixedGroup.extensions = ids
-        storage.group.update(fixedGroup)
+        updateFixedGroup(fixedGroup, ids)
       } else {
         set.delete(item.id)
         const ids = Array.from(set)
         fixedGroup.extensions = ids
-        storage.group.update(fixedGroup)
+        updateFixedGroup(fixedGroup, ids)
       }
     })
+  }
+
+  const updateFixedGroup = async (fixedGroup, ids) => {
+    await storage.group.update(fixedGroup)
+
+    // 同步 Popup 初始化时读取的 options，让分组开关立即使用最新固定成员集合。
+    const optionFixedGroup = options.groups.find((group) => group.id === "fixed")
+    if (optionFixedGroup) {
+      optionFixedGroup.extensions ??= []
+      optionFixedGroup.extensions.splice(0, optionFixedGroup.extensions.length, ...ids)
+    }
+    window.dispatchEvent(new Event("popup-fixed-group-changed"))
   }
 
   return [itemPined, updatePined]

@@ -6,7 +6,7 @@ import isMatch from ".../utils/searchHelper"
 /**
  * 根据搜索词和当前选择的分组变化，执行搜索
  */
-export const useSearchController = (extensions) => {
+export const useSearchController = (extensions, options) => {
   // 普通扩展
   const [pluginExtensions, setPluginExtensions] = useState([])
   // APP 类型的扩展
@@ -29,6 +29,13 @@ export const useSearchController = (extensions) => {
         groupExtensions = extensions.filter((ext) => group.extensions.includes(ext.id))
       } else {
         groupExtensions = filterExtensions(extensions, isExtExtension)
+
+        // “显示固定分组扩展”只影响全部等综合视图；直接选择固定分组时仍显示组内内容。
+        if (!(options.setting.isShowFixedExtension ?? true)) {
+          const fixedExtensionIds =
+            options.groups?.find((item) => item.id === "fixed")?.extensions ?? []
+          groupExtensions = groupExtensions.filter((ext) => !fixedExtensionIds.includes(ext.id))
+        }
       }
 
       if (!search || search.trim() === "") {
@@ -50,7 +57,7 @@ export const useSearchController = (extensions) => {
         return result
       }
     },
-    [extensions]
+    [extensions, options.groups, options.setting.isShowFixedExtension]
   )
 
   // 执行 APP 类型扩展的搜索
@@ -76,14 +83,20 @@ export const useSearchController = (extensions) => {
   }, [currentGroup, currentSearchText, searchPlugin, searchApp])
 
   // 执行搜索，搜索词变更时调用
-  const onSearchByTextChange = (text) => {
+  const onSearchByTextChange = useCallback((text) => {
     setSearchText(text)
-  }
+  }, [])
 
   // 执行搜索，当前分组变更时调用
-  const onSearchByGroupChange = (group) => {
+  const onSearchByGroupChange = useCallback((group) => {
     setCurrentGroup(group)
-  }
+  }, [])
 
-  return [pluginExtensions, appExtensions, onSearchByTextChange, onSearchByGroupChange]
+  return [
+    pluginExtensions,
+    appExtensions,
+    onSearchByTextChange,
+    onSearchByGroupChange,
+    currentGroup
+  ]
 }

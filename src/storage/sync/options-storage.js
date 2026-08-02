@@ -85,6 +85,9 @@ export const SyncOptionsStorage = {
     if (options.setting.isShowHiddenExtension === undefined) {
       options.setting.isShowHiddenExtension = false
     }
+    if (options.setting.isEnableCurrentGroupAndDisableOthers === undefined) {
+      options.setting.isEnableCurrentGroupAndDisableOthers = false
+    }
 
     // 情景模式
     if (!options.scenes) {

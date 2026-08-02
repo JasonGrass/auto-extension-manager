@@ -78,7 +78,7 @@
     "message": "固定分组"
   },
   "group_fixed_desc": {
-    "message": "这是一个内置分组，此分组中的扩展，在 Popup 中手动切换分组时，不会被禁用。通常将常驻的扩展放在此分组中。注意：如果在规则配置中，明确配置关闭某个扩展，即使此扩展在固定分组中，禁用依旧有效。"
+    "message": "这是一个内置分组。通过 Popup 的分组开关批量启停扩展时，固定分组中的扩展不会受到影响。通常将常驻扩展放在此分组中；用户单独关闭或规则明确关闭扩展时仍然有效。"
   },
   "group_hidden_name": {
     "message": "隐藏分组"
@@ -105,7 +105,7 @@
     "message": "可能是重复操作"
   },
   "group_may_redundant_desc": {
-    "message": "此扩展已经在固定分组中，切换分组时扩展将始终被激活"
+    "message": "此扩展已在固定分组中，Popup 分组开关不会批量启用或禁用它"
   },
   "enable_extension": {
     "message": "启用"
@@ -698,14 +698,26 @@
   "setting_popup_scale_title": {
     "message": "缩放比例"
   },
-  "setting_func_witch_group": {
-    "message": "切换分组时，启用当前分组扩展，禁用其它的扩展"
+  "setting_func_enable_group_exclusively": {
+    "message": "启用当前分组并禁用其他全部扩展"
   },
-  "setting_func_witch_group_tip": {
-    "message": "打开此配置之后，在 Popup 中切换分组时，会禁用掉所有不是固定分组也不是当前分组中的扩展"
+  "setting_func_enable_group_exclusively_tip": {
+    "message": "开启后，通过分组开关启用某一分组时，将启用当前分组中的扩展，并禁用除当前分组和固定分组外的其他所有扩展。固定分组中的扩展不会被禁用。"
   },
-  "setting_func_group_allow_multi": {
-    "message": "↑ 支持分组多选"
+  "popup_group_toggle_tip": {
+    "message": "控制此分组中的全部扩展。固定分组中的扩展不受影响。"
+  },
+  "popup_group_toggle_off_state_tip": {
+    "message": "关闭：此分组中所有可控制扩展均已禁用。"
+  },
+  "popup_group_toggle_mixed_state_tip": {
+    "message": "混合：部分可控制扩展已启用、部分已禁用；点击左侧全部关闭，点击右侧全部开启。"
+  },
+  "popup_group_toggle_on_state_tip": {
+    "message": "开启：此分组中所有可控制扩展均已启用。"
+  },
+  "popup_group_toggle_empty_tip": {
+    "message": "此分组中没有可控制的扩展"
   },
   "setting_func_home_link_store": {
     "message": "HOME 按钮始终打开扩展的应用商店详情页"

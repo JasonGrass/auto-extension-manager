@@ -28,6 +28,13 @@ code {
   overflow: hidden;
 }
 
+/* 分组菜单项包含名称和状态开关，不能沿用普通菜单项的单行文本裁剪。 */
+.ant-dropdown-menu-item.group-dropdown-menu-item .ant-dropdown-menu-title-content {
+  display: block;
+  max-width: none;
+  overflow: visible;
+}
+
 #app-container {
   height: 100%;
   min-height: 300px;

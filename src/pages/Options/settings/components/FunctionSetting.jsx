@@ -1,24 +1,21 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons"
-import { Button, Popconfirm, Radio, Slider, Switch, Tooltip, message } from "antd"
+import { Switch, Tooltip } from "antd"
 
 import { getLang } from ".../utils/utils"
 
 const FunctionSetting = memo(({ setting, onSettingChange }) => {
-  // 切换分组时，是否执行扩展启用与禁用
-  const [isRaiseEnableWhenSwitchGroup, setIsRaiseEnableWhenSwitchGroup] = useState(false)
-  // 分组切换时，是否支持多选
-  const [isSupportMultiSelectGroup, setIsSupportMultiSelectGroup] = useState(false)
+  // 启用当前分组时，是否禁用当前分组和固定分组之外的所有扩展
+  const [isEnableCurrentGroupAndDisableOthers, setIsEnableCurrentGroupAndDisableOthers] =
+    useState(false)
   // Home 按钮的链接
   const [isHomeLinkToStore, setIsHomeLinkToStore] = useState(false)
 
   useEffect(() => {
     // 功能偏好
-    const raiseEnableWhenSwitchGroup = setting.isRaiseEnableWhenSwitchGroup ?? false
-    setIsRaiseEnableWhenSwitchGroup(raiseEnableWhenSwitchGroup)
-    const supportMultiSelectGroup = setting.isSupportMultiSelectGroup ?? false
-    setIsSupportMultiSelectGroup(supportMultiSelectGroup)
+    const enableCurrentGroupAndDisableOthers = setting.isEnableCurrentGroupAndDisableOthers ?? false
+    setIsEnableCurrentGroupAndDisableOthers(enableCurrentGroupAndDisableOthers)
     const homeLinkToStore = setting.isHomeLinkToStore ?? false
     setIsHomeLinkToStore(homeLinkToStore)
   }, [setting])
@@ -29,33 +26,25 @@ const FunctionSetting = memo(({ setting, onSettingChange }) => {
 
   return (
     <div>
-      {/* 切换分组时，启用当前分组扩展，禁用其它的扩展 */}
+      {/* 启用当前分组并禁用其他全部扩展 */}
       <div className="setting-item">
         <span>
-          {getLang("setting_func_witch_group")}
-          <Tooltip placement="top" title={getLang("setting_func_witch_group_tip")}>
+          {getLang("setting_func_enable_group_exclusively")}
+          <Tooltip placement="top" title={getLang("setting_func_enable_group_exclusively_tip")}>
             <QuestionCircleOutlined />
           </Tooltip>{" "}
         </span>
         <Switch
           size="small"
-          checked={isRaiseEnableWhenSwitchGroup}
+          checked={isEnableCurrentGroupAndDisableOthers}
           onChange={(value) =>
-            onSettingChange(value, setIsRaiseEnableWhenSwitchGroup, "isRaiseEnableWhenSwitchGroup")
+            onSettingChange(
+              value,
+              setIsEnableCurrentGroupAndDisableOthers,
+              "isEnableCurrentGroupAndDisableOthers"
+            )
           }></Switch>
       </div>
-      {/* 支持分组多选 */}
-      {isRaiseEnableWhenSwitchGroup && (
-        <div className="setting-item">
-          <span>{getLang("setting_func_group_allow_multi")}</span>
-          <Switch
-            size="small"
-            checked={isSupportMultiSelectGroup}
-            onChange={(value) =>
-              onSettingChange(value, setIsSupportMultiSelectGroup, "isSupportMultiSelectGroup")
-            }></Switch>
-        </div>
-      )}
       {/* HOME 按钮点击的链接位置 */}
       <div className="setting-item">
         <span>

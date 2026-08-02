@@ -1,25 +1,29 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react"
+import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 
 import { CaretDownOutlined } from "@ant-design/icons"
 import { Dropdown } from "antd"
+import { styled } from "styled-components"
 
 import { LocalOptions } from ".../storage/local/LocalOptions"
 import { getLang } from ".../utils/utils"
+import { getGroupEnableState } from "../../ExtensionOnOffHandler"
+import GroupStateToggle from "./GroupStateToggle"
 import { MenuStyle } from "./MenuStyle"
 
 const localOptions = new LocalOptions()
 
 const SingleGroupDropdown = memo((props) => {
-  const { options, groups, onGroupChanged } = props
+  const { options, extensions, enabledById, groups, onGroupChanged, onGroupEnableChanged } = props
   const [selectedGroup, setSelectGroup] = useState(null)
+  const [groupStateSnapshot, setGroupStateSnapshot] = useState(null)
+  const batchPendingRef = useRef(false)
 
-  // 辅助菜单
-  const raiseEnable = options.setting.isRaiseEnableWhenSwitchGroup
-  const menuTitleAll = raiseEnable ? getLang("group_unselect") : getLang("group_select_all")
+  const menuTitleAll = getLang("group_select_all")
   const fixMenu = [
     {
       label: menuTitleAll,
-      key: "all"
+      key: "all",
+      className: "group-dropdown-menu-item"
     }
   ]
 
@@ -31,67 +35,83 @@ const SingleGroupDropdown = memo((props) => {
       result = result.filter((g) => g.id !== "hidden")
     }
 
-    // 判断是否展示固定分组
-    if (!(options.setting.isShowFixedExtension ?? true)) {
-      result = result.filter((g) => g.id !== "fixed")
+    return result
+  }, [groups, options.setting.isShowHiddenExtension])
+
+  const fixedExtensionIds = useMemo(
+    () => groups.find((group) => group.id === "fixed")?.extensions ?? [],
+    [groups]
+  )
+
+  const handleGroupEnableChanged = async (group, enabled) => {
+    if (batchPendingRef.current) {
+      return
     }
 
-    return result
-  }, [groups, options.setting.isShowFixedExtension, options.setting.isShowHiddenExtension])
+    batchPendingRef.current = true
+    // 批量操作期间冻结所有开关的视觉状态，避免逐个扩展更新时短暂显示 mixed。
+    setGroupStateSnapshot(
+      Object.fromEntries(
+        visibleGroups.map((item) => [
+          item.id,
+          getGroupEnableState(item, extensions, fixedExtensionIds, enabledById)
+        ])
+      )
+    )
+    try {
+      await onGroupEnableChanged(group, enabled)
+    } finally {
+      batchPendingRef.current = false
+      setGroupStateSnapshot(null)
+    }
+  }
 
-  const groupMenuItems = visibleGroups.map((g) => ({ label: g.name, key: g.id }))
+  const groupMenuItems = visibleGroups.map((group) => {
+    const isFixed = group.id === "fixed"
+    const state =
+      groupStateSnapshot?.[group.id] ??
+      getGroupEnableState(group, extensions, fixedExtensionIds, enabledById)
 
-  // 执行此操作，将会根据配置，切换分组显示，或者执行扩展的启用与禁用
-  const raiseSelectedGroupChanged = useCallback(
-    (selectedGroup) => {
-      if (!selectedGroup || selectedGroup.key === "all") {
-        onGroupChanged({
-          select: null,
-          action: raiseEnable
-        })
-      } else {
-        onGroupChanged({
-          select: selectedGroup,
-          action: raiseEnable
-        })
-      }
-    },
-    [raiseEnable, onGroupChanged]
-  )
+    return {
+      label: (
+        <GroupMenuItem>
+          <span className="group-name">{group.name}</span>
+          {!isFixed && (
+            <GroupStateToggle
+              state={state}
+              loading={groupStateSnapshot !== null}
+              groupName={group.name}
+              onChange={(enabled) => handleGroupEnableChanged(group, enabled)}
+            />
+          )}
+        </GroupMenuItem>
+      ),
+      key: group.id,
+      title: group.name,
+      className: "group-dropdown-menu-item"
+    }
+  })
 
   // 初始化
   useEffect(() => {
     localOptions.getActiveGroupId().then((groupId) => {
       const group = visibleGroups.find((g) => g.id === groupId) ?? null
       setSelectGroup(group)
+      onGroupChanged(group)
 
       // 缓存的分组可能已被删除或已按显示设置隐藏，避免下次仍进入不可恢复的筛选状态。
       if (groupId && !group) {
         localOptions.setActiveGroupId(null)
       }
     })
-  }, [visibleGroups])
-
-  // 切换分组没有启用禁用逻辑时的业务
-  useEffect(() => {
-    const isRaiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
-    if (!isRaiseEnableWhenSwitchGroup) {
-      raiseSelectedGroupChanged(selectedGroup)
-    }
-  }, [selectedGroup, options, raiseSelectedGroupChanged])
+  }, [visibleGroups, onGroupChanged])
 
   // 手动切换分组
   const handleGroupMenuClick = (e) => {
     const group = visibleGroups.find((g) => g.id === e.key) ?? null
     setSelectGroup(group)
     localOptions.setActiveGroupId(group?.id)
-
-    // 切换分组有启用禁用逻辑时的业务
-    const isRaiseEnableWhenSwitchGroup = options.setting?.isRaiseEnableWhenSwitchGroup ?? false
-    // 只有手动切换分组，才执行分组启用与禁用逻辑
-    if (isRaiseEnableWhenSwitchGroup) {
-      raiseSelectedGroupChanged(group)
-    }
+    onGroupChanged(group)
   }
 
   const groupMenu = {
@@ -114,3 +134,19 @@ const SingleGroupDropdown = memo((props) => {
 })
 
 export default SingleGroupDropdown
+
+const GroupMenuItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 210px;
+
+  .group-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`

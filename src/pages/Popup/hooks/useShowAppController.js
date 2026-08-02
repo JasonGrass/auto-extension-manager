@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 /**
  * 是否显示 app 类型扩展的控制，
@@ -15,9 +15,12 @@ export const useShowAppController = (options) => {
     setIsShowAppExtension(showApp)
   }, [options])
 
-  const setShowAppExtension = (value) => {
-    setIsShowAppExtension(isSettingShowAppExtension && value)
-  }
+  const setShowAppExtension = useCallback(
+    (value) => {
+      setIsShowAppExtension(isSettingShowAppExtension && value)
+    },
+    [isSettingShowAppExtension]
+  )
 
   return [isShowAppExtension, setShowAppExtension]
 }

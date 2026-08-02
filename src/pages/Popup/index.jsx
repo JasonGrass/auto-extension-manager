@@ -90,7 +90,9 @@ function fireEvent(props) {
       version: version,
       layout: props.options.setting.layout,
       display: props.options.setting.isDisplayByGroup ? "byGroup" : "byEnabled",
-      action: props.options.setting.isRaiseEnableWhenSwitchGroup ? "raise" : "normal",
+      groupExclusive: props.options.setting.isEnableCurrentGroupAndDisableOthers
+        ? "enabled"
+        : "disabled",
       menuDisplay: props.options.setting.isMenuDisplayByRightClick ? "rightClick" : "hover",
       lang: ul
     })

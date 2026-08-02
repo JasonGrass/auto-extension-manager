@@ -23,7 +23,10 @@ const Header = memo((props) => {
     activeCount,
     totalCount,
     options,
+    extensions,
+    enabledById,
     onGroupChanged,
+    onGroupEnableChanged,
     onLayoutChanged,
     onSearch,
     isDarkMode
@@ -204,7 +207,10 @@ const Header = memo((props) => {
             <GroupDropdown
               className="dropdown"
               options={options}
-              onGroupChanged={onGroupChanged}></GroupDropdown>
+              extensions={extensions}
+              enabledById={enabledById}
+              onGroupChanged={onGroupChanged}
+              onGroupEnableChanged={onGroupEnableChanged}></GroupDropdown>
 
             <Space className="search setting-icon" onClick={onSearchClick}>
               <SearchOutlined />

@@ -60,14 +60,6 @@ export const prepare = async function () {
 async function getShownExtensions(allOptions) {
   let allExtensions = await chrome.management.getAll()
 
-  // 如果关闭了在 Popup 中显示固定分组中的扩展，则隐藏这些扩展
-  if (!(allOptions.setting.isShowFixedExtension ?? true)) {
-    const fixedGroup = allOptions.groups.find((g) => g.id === "fixed")
-    if (fixedGroup && fixedGroup.extensions) {
-      allExtensions = allExtensions.filter((ext) => !fixedGroup.extensions.includes(ext.id))
-    }
-  }
-
   // 不展示主题类的扩展，不展示自己
   const selfId = await getSelfId()
   allExtensions = allExtensions

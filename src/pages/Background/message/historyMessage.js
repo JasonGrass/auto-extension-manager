@@ -2,7 +2,7 @@ import logger from ".../utils/logger"
 
 export const createManualChangeGroupHandler = (EM) => {
   return (ctx) => {
-    logger().debug("切换分组导致扩展状态变更", ctx)
+    logger().debug("通过分组开关批量变更扩展状态", ctx)
 
     const actuallyEnabledIds = ctx.params.actuallyEnabledIds
     const actuallyDisabledIds = ctx.params.actuallyDisabledIds

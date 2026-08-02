@@ -43,10 +43,6 @@ const GroupContentSpace = memo((props) => {
     if (group.id === "fixed") {
       return // 固定分组中的操作不管
     }
-    if (!options.setting.isRaiseEnableWhenSwitchGroup) {
-      return // 切换分组时，不执行扩展的启用与禁用，则不用提示
-    }
-
     const local = new LocalOptions()
     const isShowAlreadyFixedTip = await local.getValue("isShowAlreadyFixedTip")
     if (isShowAlreadyFixedTip === false) {

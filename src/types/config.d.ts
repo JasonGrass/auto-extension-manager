@@ -3,7 +3,7 @@ declare namespace config {
     isShowApp: boolean
     isShowItemOperationAlways: boolean
     isShowSearchBarDefault: boolean
-    isRaiseEnableWhenSwitchGroup: boolean
+    isEnableCurrentGroupAndDisableOthers: boolean
     isShowFixedExtension: boolean
     isShowHiddenExtension: boolean
   }
