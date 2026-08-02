@@ -8,9 +8,9 @@ const Style = styled.div`
   padding: 0px 5px;
   margin-bottom: 2px;
 
-  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: ${(props) => props.theme.header_shadow};
 
-  background-color: ${(props) => props.theme.bg};
+  background-color: ${(props) => props.theme.surface};
   color: ${(props) => props.theme.fg};
 
   .left,
@@ -32,7 +32,7 @@ const Style = styled.div`
 
   .right .ant-space {
     &:hover {
-      color: #555;
+      color: ${(props) => props.theme.primary};
     }
   }
 
@@ -59,7 +59,7 @@ const Style = styled.div`
   .setting-icon {
     font-size: 20px;
     &:hover {
-      color: #555;
+      color: ${(props) => props.theme.primary};
     }
   }
 
@@ -83,15 +83,15 @@ const SearchStyle = styled.div`
 
     outline-style: none;
     border: 1px solid ${(props) => props.theme.input_border};
-    border-radius: 1px;
+    border-radius: 6px;
 
     &:focus {
-      border-color: #66afe9cc;
+      border-color: ${(props) => props.theme.primary};
       outline: 0;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(102, 175, 233, 0.6);
+      box-shadow: 0 0 0 2px ${(props) => props.theme.focus_ring};
     }
 
-    background-color: ${(props) => props.theme.bg};
+    background-color: ${(props) => props.theme.surface};
     color: ${(props) => props.theme.fg};
   }
 

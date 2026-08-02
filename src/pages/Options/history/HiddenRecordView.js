@@ -83,6 +83,6 @@ const ItemStyle = styled.div`
 
   .hidden-record-close {
     margin-left: 8px;
-    color: #f5222d;
+    color: ${(props) => props.theme.danger};
   }
 `

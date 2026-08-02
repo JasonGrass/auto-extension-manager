@@ -116,7 +116,8 @@ const Style = styled.div`
   .ext-import-step-content {
     margin: 12px 48px 12px 0;
     padding: 12px;
-    border: 1px solid #e8e8e8;
-    border-radius: 4px;
+    border: 1px solid ${(props) => props.theme.border2};
+    border-radius: 7px;
+    background: ${(props) => props.theme.surface};
   }
 `

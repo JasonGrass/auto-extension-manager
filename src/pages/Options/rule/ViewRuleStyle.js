@@ -9,7 +9,7 @@ const Style = styled.div`
 
   .error-text {
     font-weight: 700;
-    color: #f5222d;
+    color: ${(props) => props.theme.danger};
   }
 
   .rule-row-selected {
@@ -18,13 +18,13 @@ const Style = styled.div`
 
   @keyframes flashing {
     0% {
-      background-color: #95de6400;
+      background-color: transparent;
     }
     50% {
-      background-color: #95de64ff;
+      background-color: ${(props) => props.theme.primary_soft_strong};
     }
     100% {
-      background-color: #95de6400;
+      background-color: transparent;
     }
   }
 

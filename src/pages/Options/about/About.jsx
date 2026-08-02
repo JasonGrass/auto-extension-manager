@@ -21,7 +21,7 @@ import { AboutStyle } from "./AboutStyle"
 
 function About() {
   const theme = useTheme()
-  const isDarkMode = theme.bg === "#242529"
+  const isDarkMode = theme.isDark
 
   const [version, setVersion] = useState("UNKNOWN")
   const [latestVersion, setLatestVersion] = useState("")

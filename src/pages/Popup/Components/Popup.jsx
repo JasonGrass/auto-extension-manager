@@ -257,15 +257,12 @@ const Style = styled.div`
 
   .extension-container::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    opacity: 1;
-    background: #cccccc;
+    background: ${(props) => props.theme.scrollbar_thumb};
   }
 
   .extension-container::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    background: #cccccc33;
+    background: ${(props) => props.theme.scrollbar_track};
   }
 
   .extension-container-grid::-webkit-scrollbar {

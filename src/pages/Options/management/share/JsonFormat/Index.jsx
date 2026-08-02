@@ -1,14 +1,15 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from "react"
-import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite"
+import { JsonView, allExpanded, darkStyles, defaultStyles } from "react-json-view-lite"
 import "react-json-view-lite/dist/index.css"
 
 import { Input } from "antd"
-import styled from "styled-components"
+import styled, { useTheme } from "styled-components"
 
 const { TextArea } = Input
 // exportRange: ["alias", "remark"]
 
 const Index = ({ extensions, options, exportRange, targetExtensionIds }, ref) => {
+  const theme = useTheme()
   const [records, setRecords] = useState([])
 
   useImperativeHandle(ref, () => ({
@@ -60,7 +61,7 @@ const Index = ({ extensions, options, exportRange, targetExtensionIds }, ref) =>
     <Style>
       <JsonView
         style={{
-          ...defaultStyles,
+          ...(theme.isDark ? darkStyles : defaultStyles),
           container: "json-view-container",
           undefinedValue: "json-view-undefined"
         }}
@@ -79,8 +80,9 @@ const Style = styled.div`
 
     margin: 12px 0;
     padding: 8px 0;
-    border: 1px solid #eee;
-    border-radius: 4px;
+    border: 1px solid ${(props) => props.theme.border2};
+    border-radius: 6px;
+    background: ${(props) => props.theme.surface};
 
     font-family: "Courier New", Courier, monospace;
 

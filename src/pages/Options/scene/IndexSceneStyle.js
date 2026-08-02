@@ -97,18 +97,18 @@ export const SceneStyle = styled.div`
       box-shadow: 1px 1px 2px 0px ${(props) => props.theme.scene_edit_shadow};
 
       font-size: 20px;
-      color: #337ab7;
+      color: ${(props) => props.theme.primary};
 
       & > span:hover {
         cursor: pointer;
-        color: #337ab7cc;
+        color: ${(props) => props.theme.primary_hover};
       }
     }
   }
 
   .scene-item-selected {
     /* background-color: #337ab788; */
-    color: #337ab7;
+    color: ${(props) => props.theme.primary};
     font-weight: 900;
   }
 
@@ -122,7 +122,7 @@ export const SceneStyle = styled.div`
 
   .scene-item-name {
     &:hover {
-      color: #337ab7;
+      color: ${(props) => props.theme.primary_hover};
     }
   }
 
@@ -140,7 +140,7 @@ export const SceneStyle = styled.div`
     .scene-item-add-icon {
       font-size: 16px;
       margin-right: 6px;
-      color: #337ab7;
+      color: ${(props) => props.theme.primary};
     }
   }
 

@@ -41,6 +41,6 @@ export const AppListStyle = styled.div`
   }
 
   .not-enable {
-    color: #cccccc;
+    color: ${(props) => props.theme.disable_text};
   }
 `

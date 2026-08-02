@@ -15,7 +15,7 @@ const EditorCommonStyle = styled.div`
       height: 3px;
       margin: 5px 0;
 
-      background: #337ab7;
+      background: ${(props) => props.theme.primary};
     }
 
     .title {

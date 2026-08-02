@@ -51,11 +51,12 @@ const Style = styled.div`
 
       margin-right: 10px;
       font-size: 16px;
-      color: #ff4757;
+      color: ${(props) => props.theme.danger};
       cursor: pointer;
 
       &:hover {
-        color: #ff6348;
+        color: ${(props) => props.theme.danger};
+        filter: brightness(1.12);
       }
     }
   }

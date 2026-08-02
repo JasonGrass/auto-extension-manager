@@ -27,8 +27,7 @@ const Style = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #888a;
-    filter: blur(1px);
+    background-color: ${(props) => props.theme.modal_overlay};
   }
 
   .modal-editor-wrapper-container {
@@ -56,10 +55,10 @@ const Style = styled.div`
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: ${(props) =>
-        props.theme.bg === "#242529" ? "rgba(36, 37, 41, 0.85)" : "rgba(255, 255, 255, 0.8)"};
-      border-radius: 6px;
-      filter: blur(1px);
+      background-color: ${(props) => props.theme.surface_elevated};
+      border: 1px solid ${(props) => props.theme.border2};
+      border-radius: 8px;
+      box-shadow: ${(props) => props.theme.card_shadow};
       z-index: -1;
     }
   }

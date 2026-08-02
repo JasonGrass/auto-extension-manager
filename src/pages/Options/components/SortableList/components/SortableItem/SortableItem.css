@@ -37,7 +37,7 @@
 }
 
 .DragHandle:focus-visible {
-  box-shadow: 0 0px 0px 2px #4c9ffe;
+  box-shadow: 0 0 0 2px var(--app-primary);
 }
 
 .DragHandle svg {

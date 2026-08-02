@@ -59,7 +59,7 @@ const Style = styled.span`
 
   .fold-icon {
     margin-right: 4px;
-    color: #888;
+    color: ${(props) => props.theme.fg5};
     font-size: 10px;
   }
 `

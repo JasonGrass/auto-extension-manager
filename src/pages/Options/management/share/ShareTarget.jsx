@@ -111,13 +111,15 @@ const SearchStyle = styled.div`
     height: 24px;
 
     outline-style: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid ${(props) => props.theme.input_border};
+    border-radius: 6px;
+    background: ${(props) => props.theme.surface};
+    color: ${(props) => props.theme.fg};
 
     &:focus {
-      border-color: #66afe9;
+      border-color: ${(props) => props.theme.primary};
       outline: 0;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(102, 175, 233, 0.6);
+      box-shadow: 0 0 0 2px ${(props) => props.theme.focus_ring};
     }
   }
 `

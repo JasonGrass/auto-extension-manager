@@ -126,15 +126,15 @@ const TooltipContent = styled.div`
     height: 8px;
     margin-top: 5px;
     border-radius: 50%;
-    background: #bfbfbf;
+    background: ${(props) => props.theme.fg6};
   }
 
   .state-dot.state-mixed {
-    background: #faad14;
+    background: ${(props) => props.theme.warning};
   }
 
   .state-dot.state-on {
-    background: #1677ff;
+    background: ${(props) => props.theme.primary};
   }
 `
 
@@ -151,7 +151,7 @@ const ToggleButton = styled.button`
   padding: 0;
   border: 0;
   border-radius: 10px;
-  background: #bfbfbf;
+  background: ${(props) => props.theme.fg6};
   cursor: pointer;
   transition: background 0.2s ease;
 
@@ -162,13 +162,13 @@ const ToggleButton = styled.button`
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: #fff;
+    background: ${(props) => props.theme.surface};
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     transition: left 0.2s ease;
   }
 
   &.state-on {
-    background: #1677ff;
+    background: ${(props) => props.theme.primary};
 
     .thumb {
       left: 24px;
@@ -176,7 +176,7 @@ const ToggleButton = styled.button`
   }
 
   &.state-mixed {
-    background: #faad14;
+    background: ${(props) => props.theme.warning};
 
     .thumb {
       left: 13px;
@@ -184,7 +184,7 @@ const ToggleButton = styled.button`
   }
 
   &.state-empty {
-    background: #d9d9d9;
+    background: ${(props) => props.theme.border3};
   }
 
   &.loading {
@@ -197,7 +197,7 @@ const ToggleButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid #1677ff;
+    outline: 2px solid ${(props) => props.theme.primary};
     outline-offset: 2px;
   }
 `

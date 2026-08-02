@@ -29,11 +29,11 @@
   height: 10px;
   margin: 0;
 
-  border: 3px solid #888;
+  border: 3px solid var(--app-fg-muted);
   border-radius: 6px;
-  box-shadow: 0 0 0px 1px #fff;
+  box-shadow: 0 0 0 1px var(--app-pin-ring);
 
-  background-color: #3ffa7b;
+  background-color: var(--app-pin-dot);
 }
 
 .list-item-container > .ext-name {
@@ -49,7 +49,7 @@
 }
 
 .list-item-container > .ext-name:hover {
-  color: #555;
+  color: var(--app-primary);
 }
 
 .list-item-container > .li-operation {
@@ -69,15 +69,15 @@
 }
 
 .list-item-container.not-enable {
-  color: #888888;
-  background-color: #cccccc33;
+  color: var(--app-fg-muted);
+  background-color: var(--app-disabled-bg);
 }
 
 .list-item-container.is-enable {
-  border-bottom: 1px solid #cccccc33;
+  border-bottom: 1px solid var(--app-border);
 }
 
 .list-item-container.item-is-top {
-  color: #337ab7;
+  color: var(--app-primary);
   font-weight: bold;
 }

@@ -92,12 +92,14 @@ const Style = styled.div`
     height: 60px;
     padding: 12px 12px 8px 12px;
 
-    border: 1px solid #e8e8e8;
-    border-radius: 4px;
+    border: 1px solid ${(props) => props.theme.border2};
+    border-radius: 6px;
+    background-color: ${(props) => props.theme.surface};
   }
 
   .import-item-select {
-    background-color: #e5e5e5;
+    border-color: ${(props) => props.theme.primary};
+    background-color: ${(props) => props.theme.primary_soft};
   }
 
   .ext-title-info {
@@ -115,7 +117,7 @@ const Style = styled.div`
     }
 
     .ext-info-more {
-      color: #888;
+      color: ${(props) => props.theme.fg5};
 
       & > span {
         margin-right: 12px;

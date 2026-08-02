@@ -103,9 +103,9 @@ const Style = styled.div`
 
     border: 3px solid ${(props) => props.theme.fg6};
     border-radius: 6px;
-    box-shadow: 0 0 0px 1px ${(props) => props.theme.bg};
+    box-shadow: 0 0 0 1px ${(props) => props.theme.pin_ring};
 
-    background-color: #3ffa7b;
+    background-color: ${(props) => props.theme.pin_dot};
   }
 
   .ext-item img {

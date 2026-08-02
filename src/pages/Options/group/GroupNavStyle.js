@@ -17,7 +17,7 @@ export const GroupNavStyle = styled.div`
     user-select: none;
 
     &:hover {
-      background-color: #337ab7cc;
+      background-color: ${(props) => props.theme.primary_soft};
     }
 
     &:hover .tab-operation {
@@ -43,7 +43,8 @@ export const GroupNavStyle = styled.div`
   }
 
   .selected-group-item {
-    background: #337ab788;
+    background: ${(props) => props.theme.primary_soft_strong};
+    color: ${(props) => props.theme.primary};
   }
 
   .add-new-group {

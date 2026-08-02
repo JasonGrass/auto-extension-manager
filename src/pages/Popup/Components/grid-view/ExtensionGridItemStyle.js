@@ -47,9 +47,9 @@ export const ExtensionGridItemStyle = styled.div`
 
     font-size: 12px;
     line-height: 1.4;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.75);
-    border-radius: 4px;
+    color: ${(props) => props.theme.on_accent};
+    background-color: ${(props) => props.theme.tooltip_bg};
+    border-radius: 6px;
     white-space: normal;
     word-break: break-word;
     pointer-events: none;
@@ -71,12 +71,12 @@ export const ExtensionGridItemStyle = styled.div`
 
   .tooltip-arrow-top {
     top: -4px;
-    border-bottom: 4px solid rgba(0, 0, 0, 0.75);
+    border-bottom: 4px solid ${(props) => props.theme.tooltip_bg};
   }
 
   .tooltip-arrow-bottom {
     bottom: -4px;
-    border-top: 4px solid rgba(0, 0, 0, 0.75);
+    border-top: 4px solid ${(props) => props.theme.tooltip_bg};
   }
 
   .grid-display-item-title-gray {
@@ -92,11 +92,11 @@ export const ExtensionGridItemStyle = styled.div`
     height: 12px;
     margin: 0;
 
-    border: 3px solid #888;
+    border: 3px solid ${(props) => props.theme.fg6};
     border-radius: 6px;
-    box-shadow: 0 0 0px 1px #fff;
+    box-shadow: 0 0 0 1px ${(props) => props.theme.pin_ring};
 
-    background-color: #3ffa7b;
+    background-color: ${(props) => props.theme.pin_dot};
   }
 
   .operation-menu {
@@ -107,10 +107,10 @@ export const ExtensionGridItemStyle = styled.div`
 
     z-index: 1000;
 
-    border-radius: 4px;
-    background-color: #24bfc4;
+    border-radius: 7px;
+    background-color: ${(props) => props.theme.operation_bg};
 
-    box-shadow: #24c1c0 0px 1px 4px;
+    box-shadow: 0 6px 18px ${(props) => props.theme.operation_shadow};
   }
 
   /* 扩展禁用时，hover 菜单的样式 */
@@ -120,7 +120,7 @@ export const ExtensionGridItemStyle = styled.div`
 
   .operation-menu-title {
     padding: 8px 12px;
-    color: #fff;
+    color: ${(props) => props.theme.on_accent};
     text-align: center;
 
     overflow: hidden;
@@ -128,7 +128,7 @@ export const ExtensionGridItemStyle = styled.div`
     white-space: nowrap;
 
     border-radius: 4px 4px 0px 0px;
-    background-color: #27b0d4;
+    background-color: ${(props) => props.theme.operation_title_bg};
   }
 
   .operation-menu-items {
@@ -140,7 +140,7 @@ export const ExtensionGridItemStyle = styled.div`
     padding: 2px 6px;
 
     font-size: 22px;
-    color: #fff;
+    color: ${(props) => props.theme.on_accent};
   }
 
   .menu-on {
@@ -188,7 +188,7 @@ export const ExtensionGridItemStyle = styled.div`
   }
 
   .operation-menu-item-disabled {
-    color: #ccc;
+    color: ${(props) => props.theme.disable_text};
   }
 
   .operation-menu-item {
@@ -196,8 +196,8 @@ export const ExtensionGridItemStyle = styled.div`
 
     &:hover {
       transform: scale(1.2);
-      color: #346dbc;
-      text-shadow: 2px 2px 4px #24bfc4;
+      color: ${(props) => props.theme.primary_hover};
+      text-shadow: none;
     }
   }
 

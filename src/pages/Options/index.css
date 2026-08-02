@@ -1,6 +1,9 @@
 body {
   width: 100%;
-  transition: background-color 0.2s, color 0.2s;
+  margin: 0;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 
 #app-container {
@@ -8,5 +11,5 @@ body {
 }
 
 .help-info-icon:hover {
-  color: #888;
+  color: var(--app-primary);
 }

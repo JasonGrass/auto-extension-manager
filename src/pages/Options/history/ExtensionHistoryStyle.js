@@ -71,7 +71,7 @@ const Style = styled.div`
     }
 
     :hover {
-      color: #9e1068;
+      color: ${(props) => props.theme.primary_hover};
     }
   }
 

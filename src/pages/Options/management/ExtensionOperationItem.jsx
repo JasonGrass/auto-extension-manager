@@ -120,8 +120,8 @@ const Style = styled.span`
 
     &:hover {
       transform: scale(1.6);
-      color: #346dbc;
-      text-shadow: 2px 2px 4px #24bfc4;
+      color: ${(props) => props.theme.primary};
+      text-shadow: none;
     }
   }
 `
