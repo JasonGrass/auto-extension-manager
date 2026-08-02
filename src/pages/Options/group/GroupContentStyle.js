@@ -13,7 +13,7 @@ export const GroupContentStyle = styled.div`
   }
 
   .desc {
-    margin: 20px 36px 0 10px;
+    margin: 20px 36px 20px 10px;
     padding-left: 5px;
 
     color: ${(props) => props.theme.fg6};
