@@ -164,6 +164,7 @@ const Style = styled.div`
     }
 
     .ant-tag-checkable {
+      margin-inline-end: 8px;
       border: 1px solid ${(props) => props.theme.border2};
     }
 

@@ -152,7 +152,7 @@ ${navigator.userAgent}`
           </div>
         )}
 
-        <Space size={[0, 8]}>
+        <Space size={[8, 8]} wrap>
           <Tag className="badges-tag" icon={<GithubOutlined />} onClick={openGithub}>
             Github
           </Tag>
