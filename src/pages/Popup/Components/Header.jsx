@@ -1,6 +1,6 @@
-import React, { Suspense, lazy, memo, useEffect, useRef, useState } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 
-import { MenuOutlined, SearchOutlined, SettingOutlined } from "@ant-design/icons"
+import { SearchOutlined, SettingOutlined } from "@ant-design/icons"
 import Icon from "@ant-design/icons/lib/components/Icon"
 import { Space, message } from "antd"
 import _ from "lodash"
@@ -13,10 +13,8 @@ import storage from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper"
 import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
+import MoreOperationDropdown from "./header/MoreOperationDropdown"
 import SceneDropdown from "./header/SceneDropdown"
-
-// import MoreOperationDropdown from "./header/MoreOperationDropdown"
-const LazyMoreOperationDropdown = lazy(() => import("./header/MoreOperationDropdown"))
 
 const Header = memo((props) => {
   const {
@@ -34,8 +32,6 @@ const Header = memo((props) => {
 
   const [messageApi, contextHolder] = message.useMessage()
 
-  // 是否显示操作菜单，用于控制延迟渲染
-  const [isShowOperations, setIsShowOperations] = useState(false)
   // 是否显示搜索框
   const [isShowSearch, setIsShowSearch] = useState(options.setting.isShowSearchBarDefault)
   // 布局样式
@@ -43,10 +39,6 @@ const Header = memo((props) => {
 
   const [searchText, setSearchText] = useState("")
   const searchInputRef = useRef(null)
-
-  useEffect(() => {
-    setIsShowOperations(true)
-  }, [])
 
   useEffect(() => {
     if (isShowSearch) {
@@ -200,44 +192,35 @@ const Header = memo((props) => {
           </h2>
         </div>
 
-        {isShowOperations && (
-          <div className="right">
-            <SceneDropdown className="dropdown" options={options}></SceneDropdown>
+        <div className="right">
+          <SceneDropdown className="dropdown" options={options}></SceneDropdown>
 
-            <GroupDropdown
-              className="dropdown"
-              options={options}
-              extensions={extensions}
-              enabledById={enabledById}
-              onGroupChanged={onGroupChanged}
-              onGroupEnableChanged={onGroupEnableChanged}></GroupDropdown>
+          <GroupDropdown
+            className="dropdown"
+            options={options}
+            extensions={extensions}
+            enabledById={enabledById}
+            onGroupChanged={onGroupChanged}
+            onGroupEnableChanged={onGroupEnableChanged}></GroupDropdown>
 
-            <Space className="search setting-icon" onClick={onSearchClick}>
-              <SearchOutlined />
-            </Space>
+          <Space className="search setting-icon" onClick={onSearchClick}>
+            <SearchOutlined />
+          </Space>
 
-            <Space className="layout setting-icon" onClick={onLayoutClick}>
-              <Icon component={LayoutSvg}></Icon>
-            </Space>
+          <Space className="layout setting-icon" onClick={onLayoutClick}>
+            <Icon component={LayoutSvg}></Icon>
+          </Space>
 
-            <Space className="setting setting-icon" onClick={(e) => onSettingClick(e)}>
-              <SettingOutlined />
-            </Space>
+          <Space className="setting setting-icon" onClick={(e) => onSettingClick(e)}>
+            <SettingOutlined />
+          </Space>
 
-            <Suspense>
-              <LazyMoreOperationDropdown
-                fallback={
-                  <span>
-                    <MenuOutlined />
-                  </span>
-                }
-                className="dropdown more-operation"
-                options={options}
-                messageApi={messageApi}
-              />
-            </Suspense>
-          </div>
-        )}
+          <MoreOperationDropdown
+            className="dropdown more-operation"
+            options={options}
+            messageApi={messageApi}
+          />
+        </div>
       </Style>
 
       {isShowSearch && (

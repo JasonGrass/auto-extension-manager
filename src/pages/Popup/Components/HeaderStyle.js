@@ -83,7 +83,7 @@ const SearchStyle = styled.div`
 
     outline-style: none;
     border: 1px solid ${(props) => props.theme.input_border};
-    border-radius: 6px;
+    border-radius: 0;
 
     &:focus {
       border-color: ${(props) => props.theme.primary};
