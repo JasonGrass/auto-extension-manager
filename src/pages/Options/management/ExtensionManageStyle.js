@@ -1,40 +1,57 @@
 import { styled } from "styled-components"
 
 export const ExtensionManageStyle = styled.div`
+  width: 100%;
+  min-width: 0;
+
   .extension-manage-tools {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 10px 16px;
     margin-bottom: 10px;
   }
 
   .extension-manage-tools-left {
     display: flex;
-    align-items: baseline;
+    flex: 1 1 520px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
 
     .search {
       width: 300px;
-      margin-right: 10px;
+      max-width: 100%;
     }
 
     .settings-checkbox {
-      margin: 0 0 0 10px;
+      margin: 0;
     }
   }
 
   .extension-manage-tools-right {
     display: flex;
-    align-items: baseline;
-
-    margin-right: 24px;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    margin-right: 5px;
 
     & > a {
-      margin-right: 12px;
+      min-width: 0;
     }
   }
 
   .ant-table-wrapper {
-    margin-right: 5px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .ant-table-cell {
+    overflow-wrap: anywhere;
   }
 
   .column-index {
