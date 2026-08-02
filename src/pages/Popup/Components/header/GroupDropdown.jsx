@@ -1,11 +1,11 @@
-import React, { memo } from "react"
+import React, { memo, useMemo } from "react"
 
 import { storage } from ".../storage/sync"
 import MultiGroupDropdown from "./MultiGroupDropdown"
 import SingleGroupDropdown from "./SingleGroupDropdown"
 
 const GroupDropdown = memo(({ options, className, onGroupChanged }) => {
-  const groupItems = storage.helper.formatGroups(options.groups)
+  const groupItems = useMemo(() => storage.helper.formatGroups(options.groups), [options.groups])
 
   // 是否允许分组多选
   const raiseEnable = options.setting.isRaiseEnableWhenSwitchGroup

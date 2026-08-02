@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from "react"
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react"
 
 import { CaretDownOutlined } from "@ant-design/icons"
 import { Dropdown } from "antd"
@@ -24,17 +24,22 @@ const SingleGroupDropdown = memo((props) => {
   ]
 
   // 分组切换菜单（单选）
-  let groupMenuItems = groups.map((g) => ({ label: g.name, key: g.id }))
+  const visibleGroups = useMemo(() => {
+    let result = groups
 
-  // Show Hidden Extension if the setting is true
-  if (!options.setting.isShowHiddenExtension ?? false) {
-    groupMenuItems = groupMenuItems.filter((g) => g.key !== "hidden")
-  }
+    if (!(options.setting.isShowHiddenExtension ?? false)) {
+      result = result.filter((g) => g.id !== "hidden")
+    }
 
-  // 判断是否展示固定分组
-  if (!(options.setting.isShowFixedExtension ?? true)) {
-    groupMenuItems = groupMenuItems.filter((g) => g.key !== "fixed")
-  }
+    // 判断是否展示固定分组
+    if (!(options.setting.isShowFixedExtension ?? true)) {
+      result = result.filter((g) => g.id !== "fixed")
+    }
+
+    return result
+  }, [groups, options.setting.isShowFixedExtension, options.setting.isShowHiddenExtension])
+
+  const groupMenuItems = visibleGroups.map((g) => ({ label: g.name, key: g.id }))
 
   // 执行此操作，将会根据配置，切换分组显示，或者执行扩展的启用与禁用
   const raiseSelectedGroupChanged = useCallback(
@@ -57,9 +62,15 @@ const SingleGroupDropdown = memo((props) => {
   // 初始化
   useEffect(() => {
     localOptions.getActiveGroupId().then((groupId) => {
-      setSelectGroup(options.groups?.find((g) => g.id === groupId))
+      const group = visibleGroups.find((g) => g.id === groupId) ?? null
+      setSelectGroup(group)
+
+      // 缓存的分组可能已被删除或已按显示设置隐藏，避免下次仍进入不可恢复的筛选状态。
+      if (groupId && !group) {
+        localOptions.setActiveGroupId(null)
+      }
     })
-  }, [options])
+  }, [visibleGroups])
 
   // 切换分组没有启用禁用逻辑时的业务
   useEffect(() => {
@@ -71,7 +82,7 @@ const SingleGroupDropdown = memo((props) => {
 
   // 手动切换分组
   const handleGroupMenuClick = (e) => {
-    const group = options.groups?.find((g) => g.id === e.key)
+    const group = visibleGroups.find((g) => g.id === e.key) ?? null
     setSelectGroup(group)
     localOptions.setActiveGroupId(group?.id)
 
@@ -86,11 +97,6 @@ const SingleGroupDropdown = memo((props) => {
   const groupMenu = {
     items: [...fixMenu, ...groupMenuItems],
     onClick: handleGroupMenuClick
-  }
-
-  if (groupMenuItems.length === 0) {
-    // 没有分组数据，隐藏切换菜单
-    return null
   }
 
   return (
