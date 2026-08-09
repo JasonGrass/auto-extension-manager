@@ -57,8 +57,18 @@ function IndexPopup({ originExtensions, options, params }) {
 
   // 等待新布局完成 DOM 更新后再调整 Popup 尺寸，避免旧的 Grid 内容阻止窗口缩小。
   useLayoutEffect(() => {
-    applyPopupWidth(layout, originExtensions.length, options.setting.columnCountInGirdView)
-  }, [layout, originExtensions.length, options.setting.columnCountInGirdView])
+    applyPopupWidth(
+      layout,
+      originExtensions.length,
+      options.setting.columnCountInGirdView,
+      options.setting.zoomRatio
+    )
+  }, [
+    layout,
+    originExtensions.length,
+    options.setting.columnCountInGirdView,
+    options.setting.zoomRatio
+  ])
 
   // 数量显示
   useEffect(() => {

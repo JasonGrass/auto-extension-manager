@@ -20,7 +20,8 @@ export const prepare = async function () {
   applyPopupWidth(
     allOptions.setting.layout,
     extensions.length,
-    allOptions.setting.columnCountInGirdView
+    allOptions.setting.columnCountInGirdView,
+    allOptions.setting.zoomRatio
   )
 
   // popup 高度设置

@@ -15,12 +15,14 @@ export function getPopupWidth(layout, totalCount, columnCount) {
   }
 }
 
-export function applyPopupWidth(layout, totalCount, columnCount) {
+export function applyPopupWidth(layout, totalCount, columnCount, zoomRatio = 100) {
   const width = getPopupWidth(layout, totalCount, columnCount)
+  const ratio = Number(zoomRatio)
+  const zoom = Number.isFinite(ratio) && ratio > 0 ? ratio / 100 : 1
 
-  // Chrome sizes an extension popup from the root document. Updating only body
-  // can leave the viewport at the previous (wider) grid size.
-  document.documentElement.style.width = width
+  // Keep body's logical width for layout, while sizing Chrome's popup viewport
+  // from the zoomed visual width of the root document.
+  document.documentElement.style.width = `${parseFloat(width) * zoom}px`
   document.body.style.width = width
 }
 
