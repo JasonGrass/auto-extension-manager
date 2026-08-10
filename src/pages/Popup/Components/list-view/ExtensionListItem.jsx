@@ -40,6 +40,9 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
   // 固定分组的小圆点
   const isShowDotOfFixedExtension = options.setting.isShowDotOfFixedExtension ?? true
 
+  // 固定操作暂不开放
+  const canLock = false
+
   // 分组开关批量控制扩展后，需要主动同步 enabled，否则 UI 显示会有问题。
   useEffect(() => {
     setItemEnable(item.enabled)
@@ -152,11 +155,13 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
             checked={itemEnable}
             onChange={(e) => onSwitchChange(e, item)}></Switch>
 
-          <Button
-            type="text"
-            icon={itemPined ? <LockOutlined /> : <UnlockOutlined />}
-            onClick={() => setItemPined(!itemPined)}
-          />
+          {canLock && (
+            <Button
+              type="text"
+              icon={itemPined ? <LockOutlined /> : <UnlockOutlined />}
+              onClick={() => setItemPined(!itemPined)}
+            />
+          )}
 
           <Button
             disabled={!existOptionPage}

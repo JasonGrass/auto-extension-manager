@@ -34,6 +34,9 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
   // 扩展是否在固定分组中
   const [itemPined, setItemPined] = useExtensionItemPin(item, options)
 
+  // 固定操作暂不开放
+  const canLock = false
+
   useEffect(() => {
     setItemEnable(item.enabled)
   }, [item, enabled])
@@ -299,9 +302,11 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
         ref={menuRef}>
         <h3 className="operation-menu-title">{item.name}</h3>
         <div className="operation-menu-items">
-          <Space className="operation-menu-item" onClick={(e) => handlePinButtonClick(e, item)}>
-            {itemPined ? <LockOutlined /> : <UnlockOutlined />}
-          </Space>
+          {canLock && (
+            <Space className="operation-menu-item" onClick={(e) => handlePinButtonClick(e, item)}>
+              {itemPined ? <LockOutlined /> : <UnlockOutlined />}
+            </Space>
+          )}
           <Space
             className={classNames({
               "operation-menu-item-disabled": !existOptionPage,
