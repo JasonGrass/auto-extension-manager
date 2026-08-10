@@ -45,7 +45,8 @@ const SceneDropdown = memo(({ options, className }) => {
 
   const sceneMenu = {
     items: [...fixMenu, ...configMenu],
-    onClick: handleSceneMenuClick
+    onClick: handleSceneMenuClick,
+    style: { maxHeight: "none", overflowY: "visible" }
   }
 
   if (configMenu.length === 0) {

@@ -196,7 +196,8 @@ export const ExtensionGridItemStyle = styled.div`
 
     &:hover {
       transform: scale(1.2);
-      color: ${(props) => props.theme.primary_hover};
+      color: ${(props) =>
+        props.theme.isDark ? props.theme.primary_hover : props.theme.on_accent};
       text-shadow: none;
     }
   }

@@ -116,7 +116,8 @@ const SingleGroupDropdown = memo((props) => {
 
   const groupMenu = {
     items: [...fixMenu, ...groupMenuItems],
-    onClick: handleGroupMenuClick
+    onClick: handleGroupMenuClick,
+    style: { maxHeight: "none", overflowY: "visible" }
   }
 
   return (
