@@ -23,7 +23,7 @@ const SingleGroupDropdown = memo((props) => {
     {
       label: menuTitleAll,
       key: "all",
-      className: "group-dropdown-menu-item"
+      className: "state-toggle-dropdown-menu-item"
     }
   ]
 
@@ -88,7 +88,7 @@ const SingleGroupDropdown = memo((props) => {
       ),
       key: group.id,
       title: group.name,
-      className: "group-dropdown-menu-item"
+      className: "state-toggle-dropdown-menu-item"
     }
   })
 

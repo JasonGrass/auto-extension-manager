@@ -29,8 +29,8 @@ function Scene() {
   const [itemEditInfo, setItemEditInfo] = useState({})
   // 编辑状态：新建、更新、没有在编辑
   const [itemEditType, setItemEditType] = useState("")
-  // 当前激活的情景模式
-  const [activeScene, setActiveScene] = useState(null)
+  // 当前激活的情景模式 ID 集合
+  const [activeSceneIds, setActiveSceneIds] = useState([])
   // 当前选中的情景模式
   const [selectedScene, setSelectedScene] = useState(null)
 
@@ -38,13 +38,9 @@ function Scene() {
 
   async function fetchScene() {
     const all = await storage.scene.getAll()
-    all.forEach((i) => (i.isActive = false))
-    const activeId = await storage.scene.getActive()
-    const activeItem = all.find((i) => i.id === activeId)
-    if (activeItem) {
-      activeItem.isActive = true
-    }
-    setActiveScene(activeItem)
+    const activeIds = await storage.scene.getActiveIds()
+    all.forEach((item) => (item.isActive = activeIds.includes(item.id)))
+    setActiveSceneIds(activeIds)
     setSceneList(all)
 
     if (selectedScene) {
@@ -108,14 +104,16 @@ function Scene() {
     await storage.scene.orderScenes(updatedList)
   }
 
+  const activeScenes = sceneList.filter((scene) => activeSceneIds.includes(scene.id))
+
   return (
     <SceneStyle>
       <Title title={getLang("scene_title")}></Title>
       {contextHolder}
-      {activeScene ? (
+      {activeScenes.length > 0 ? (
         <h2 className="current-active-scene-title">
           {getLang("scene_current_active")}
-          {activeScene.name}
+          {activeScenes.map((scene) => scene.name).join(", ")}
         </h2>
       ) : (
         <h2 className="current-active-scene-title">{getLang("scene_current_active_none")}</h2>
@@ -164,27 +162,19 @@ function Scene() {
 
   function buildSceneItem(item) {
     const onActiveChange = async (e, i) => {
-      let scene = null
-
-      if (e) {
-        if (activeScene) {
-          activeScene.isActive = false
-        }
-
-        i.isActive = true
-        await storage.scene.setActive(i.id)
-        setActiveScene(i)
-        scene = i
-      } else {
-        i.isActive = false
-        await storage.scene.setActive("")
-        setActiveScene(null)
-      }
-
       try {
-        await sendMessage("current-scene-changed", scene)
+        const options = await storage.options.getAll()
+        const exclusive = options.setting.isActivateCurrentSceneAndDisableOthers ?? false
+        const nextIds = await storage.scene.setActiveState(i.id, e, exclusive)
+
+        // Derive every switch from the canonical set so exclusive activation updates peers immediately.
+        setActiveSceneIds(nextIds)
+        setSceneList((current) =>
+          current.map((scene) => ({ ...scene, isActive: nextIds.includes(scene.id) }))
+        )
+        await sendMessage("current-scenes-changed", { ids: nextIds })
       } catch (error) {
-        console.error("change current scene failed", error)
+        console.error("change current active scenes failed", error)
       }
     }
 
@@ -194,8 +184,10 @@ function Scene() {
     }
 
     const onDeleteClick = async (e, i) => {
-      await storage.scene.deleteOne(i.id)
+      const nextIds = await storage.scene.deleteOne(i.id)
+      setActiveSceneIds(nextIds ?? [])
       await fetchScene()
+      await sendMessage("current-scenes-changed", { ids: nextIds ?? [] })
     }
 
     const onSceneItemClick = () => {

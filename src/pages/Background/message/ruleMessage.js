@@ -1,22 +1,22 @@
+import { normalizeActiveSceneIds } from ".../storage/local/activeSceneState"
 import storage from ".../storage/sync"
 import logger from ".../utils/logger"
 
-export const createCurrentSceneChangedHandler = (handler) => {
-  // 当前情景模式变化时触发
+export const createCurrentScenesChangedHandler = (handler) => {
+  // 当前激活的情景模式集合变化时触发
   return (ctx) => {
-    logger().debug("[当前情景模式发生变更，重新触发规则执行]", ctx)
+    logger().debug("[当前激活的情景模式集合发生变更，重新触发规则执行]", ctx)
 
-    // 1. modify active scene id local storage
     const { params } = ctx
-    if (!params || !params.id || params.id === "" || params.id === "cancel") {
-      // 取消了情景模式的设置
-      storage.scene.setActive("")
-    } else {
-      storage.scene.setActive(params.id)
-    }
+    const activeSceneIds = normalizeActiveSceneIds(params?.ids)
 
-    // 2. run rules for current scene
-    handler.onCurrentSceneChanged(params)
+    // The sender persists first for immediate UI feedback. Repeating the write here
+    // makes messages from future callers safe and keeps background as a valid entry point.
+    storage.scene.setActiveIds(activeSceneIds).catch((error) => {
+      console.error("save current active scenes failed", error)
+    })
+
+    handler.onCurrentScenesChanged(activeSceneIds)
 
     ctx.sendResponse()
   }

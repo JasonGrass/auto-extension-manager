@@ -1,47 +1,104 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 
 import { CaretDownOutlined } from "@ant-design/icons"
 import { Dropdown } from "antd"
+import { styled } from "styled-components"
 
-import { LocalOptions } from ".../storage/local"
+import storage from ".../storage/sync"
 import { sendMessage } from ".../utils/messageHelper"
 import { getLang } from ".../utils/utils"
 import { MenuStyle } from "./MenuStyle"
+import SceneStateToggle from "./SceneStateToggle"
 
 const SceneDropdown = memo(({ options, className }) => {
-  const [scene, setScene] = useState(null)
+  const [activeSceneIds, setActiveSceneIds] = useState([])
+  const [isUpdating, setIsUpdating] = useState(false)
+  const pendingRef = useRef(false)
+
   useEffect(() => {
-    const local = new LocalOptions()
-    local.getActiveSceneId().then((activeId) => {
-      if (activeId) {
-        setScene(options.scenes?.find((s) => s.id === activeId))
-      }
-    })
+    storage.scene.getActiveIds().then(setActiveSceneIds)
   }, [options])
 
   const fixMenu = [
     {
       label: getLang("scene_cancel_all"),
-      key: "cancel"
+      key: "cancel",
+      disabled: activeSceneIds.length === 0
     }
   ]
 
-  const configMenu =
-    options.scenes?.map((scene) => ({
-      label: scene.name,
-      key: scene.id
-    })) ?? []
+  const notifyRules = async (ids) => {
+    await sendMessage("current-scenes-changed", { ids })
+  }
 
-  const handleSceneMenuClick = async (e) => {
-    const scene = options.scenes?.filter((s) => s.id === e.key)[0]
-    setScene(scene)
+  const setSceneActive = async (scene, active) => {
+    if (!scene || pendingRef.current) {
+      return
+    }
 
+    pendingRef.current = true
+    setIsUpdating(true)
     try {
-      await sendMessage("current-scene-changed", scene)
+      const exclusive = options.setting.isActivateCurrentSceneAndDisableOthers ?? false
+      const nextIds = await storage.scene.setActiveState(scene.id, active, exclusive)
+      setActiveSceneIds(nextIds)
+      await notifyRules(nextIds)
     } catch (error) {
-      console.error("change current scene failed", error)
+      console.error("change current active scenes failed", error)
+    } finally {
+      pendingRef.current = false
+      setIsUpdating(false)
     }
   }
+
+  const configMenu =
+    options.scenes?.map((scene) => {
+      const active = activeSceneIds.includes(scene.id)
+      return {
+        label: (
+          <SceneMenuItem>
+            <span className="scene-name">{scene.name}</span>
+            <SceneStateToggle
+              active={active}
+              loading={isUpdating}
+              sceneName={scene.name}
+              ariaLabel={getLang("popup_scene_toggle_tip", scene.name)}
+              onChange={(checked) => setSceneActive(scene, checked)}
+            />
+          </SceneMenuItem>
+        ),
+        key: scene.id,
+        title: scene.name,
+        className: "state-toggle-dropdown-menu-item"
+      }
+    }) ?? []
+
+  const handleSceneMenuClick = async (e) => {
+    if (pendingRef.current) {
+      return
+    }
+
+    if (e.key === "cancel") {
+      const nextIds = await storage.scene.setActiveIds([])
+      setActiveSceneIds(nextIds)
+      await notifyRules(nextIds)
+      return
+    }
+
+    const scene = options.scenes?.find((item) => item.id === e.key)
+    await setSceneActive(scene, !activeSceneIds.includes(e.key))
+  }
+
+  const activeScenes = useMemo(
+    () => options.scenes?.filter((scene) => activeSceneIds.includes(scene.id)) ?? [],
+    [activeSceneIds, options.scenes]
+  )
+  const menuTitle =
+    activeScenes.length === 0
+      ? getLang("scene_title")
+      : activeScenes.length === 1
+        ? activeScenes[0].name
+        : getLang("scene_active_count", activeScenes.length.toString())
 
   const sceneMenu = {
     items: [...fixMenu, ...configMenu],
@@ -59,7 +116,7 @@ const SceneDropdown = memo(({ options, className }) => {
       <Dropdown menu={sceneMenu} trigger={["hover"]} placement="bottomLeft">
         <MenuStyle>
           <span className="content">
-            <span className="menu-item-text">{scene?.name ?? getLang("scene_title")}</span>
+            <span className="menu-item-text">{menuTitle}</span>
             <CaretDownOutlined className="caret" />
           </span>
         </MenuStyle>
@@ -69,3 +126,19 @@ const SceneDropdown = memo(({ options, className }) => {
 })
 
 export default SceneDropdown
+
+const SceneMenuItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 210px;
+
+  .scene-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`

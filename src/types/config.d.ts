@@ -4,6 +4,7 @@ declare namespace config {
     isShowItemOperationAlways: boolean
     isShowSearchBarDefault: boolean
     isEnableCurrentGroupAndDisableOthers: boolean
+    isActivateCurrentSceneAndDisableOthers: boolean
     isShowFixedExtension: boolean
     isShowHiddenExtension: boolean
     isShowLockButtonInOperationMenu: boolean

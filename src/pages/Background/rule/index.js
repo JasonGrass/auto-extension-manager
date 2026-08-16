@@ -19,7 +19,8 @@ const createRule = async (EM) => {
   // 初始化
   const options = await storage.options.getAll()
 
-  const activeSceneId = await EM.LocalOptions.getActiveSceneId()
+  // Use the scene storage facade so stale IDs from scenes deleted by older versions are removed.
+  const activeSceneIds = await storage.scene.getActiveIds()
 
   const tabs = await chromeP.tabs.query({
     active: true,
@@ -27,15 +28,7 @@ const createRule = async (EM) => {
   })
   const tab = tabs ? tabs[0] : undefined
 
-  handler.init(
-    {
-      id: activeSceneId
-    },
-    tab,
-    options.ruleConfig,
-    options.groups,
-    EM
-  )
+  handler.init(activeSceneIds, tab, options.ruleConfig, options.groups, EM)
 
   return {
     handler

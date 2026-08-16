@@ -20,9 +20,9 @@ export class RuleHandler {
   #currentTabInfo?: chrome.tabs.Tab
 
   /**
-   * 本地打开的情景模式
+   * 本地激活的情景模式 ID 集合
    */
-  #currentScene?: config.IScene
+  #activeSceneIds: string[] = []
 
   /**
    * 所有的规则数据，缓存起来，是避免每次执行规则时，都需要从 storage 中获取一遍
@@ -39,8 +39,9 @@ export class RuleHandler {
    */
   private EM?: IExtensionManager
 
-  onCurrentSceneChanged(scene: config.IScene) {
-    this.#currentScene = scene
+  onCurrentScenesChanged(activeSceneIds: string[]) {
+    // Copy message data so later mutations in a sender cannot affect cached rule state.
+    this.#activeSceneIds = [...activeSceneIds]
     this.invokeDebounceDo()
   }
 
@@ -49,15 +50,15 @@ export class RuleHandler {
     this.invokeDebounceDo()
   }
 
-  onTabClosed(tabId: number, removeInfo: any) {
+  onTabClosed(_tabId: number, _removeInfo: unknown) {
     this.invokeDebounceDo()
   }
 
-  onWindowClosed(windowsId: number) {
+  onWindowClosed(_windowsId: number) {
     this.invokeDebounceDo()
   }
 
-  setRules(rules: any[]) {
+  setRules(rules: unknown[]) {
     if (!rules || rules.length === 0) {
       return
     }
@@ -66,13 +67,13 @@ export class RuleHandler {
   }
 
   init(
-    scene: config.IScene,
+    activeSceneIds: string[],
     tabInfo: chrome.tabs.Tab | undefined,
-    rules: any[],
+    rules: unknown[],
     groups: config.IGroup[],
     EM: IExtensionManager
   ) {
-    this.#currentScene = scene
+    this.#activeSceneIds = [...activeSceneIds]
     this.#currentTabInfo = tabInfo
     this._rules = this.convertRule(rules)
     this.#groups = groups
@@ -80,7 +81,7 @@ export class RuleHandler {
     this.debounceDo()
   }
 
-  private convertRule(rules: any[]): ruleV2.IRuleConfig[] {
+  private convertRule(rules: unknown[]): ruleV2.IRuleConfig[] {
     if (!rules || rules.length === 0) {
       return []
     }
@@ -113,7 +114,7 @@ export class RuleHandler {
     logger().debug(`[Rule] ctx`, ctx)
 
     await processRule({
-      scene: this.#currentScene,
+      activeSceneIds: this.#activeSceneIds,
       rules: this._rules,
       groups: this.#groups,
       ctx: ctx
@@ -123,7 +124,7 @@ export class RuleHandler {
 
 // use singleton pattern to create a rule handler
 const createRuleHandler: () => RuleHandler = (function () {
-  let instance: any = null
+  let instance: RuleHandler | null = null
   return function () {
     if (!instance) {
       instance = new RuleHandler()

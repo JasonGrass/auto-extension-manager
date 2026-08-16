@@ -1,6 +1,8 @@
 import localforage from "localforage"
 import OptionsSync from "webext-options-sync"
 
+import { normalizeActiveSceneIds, resolveStoredActiveSceneIds } from "./activeSceneState"
+
 /**
  * 保存在本地的配置项
  */
@@ -20,30 +22,52 @@ export class LocalOptions {
    * 迁移旧的配置
    */
   async migrate() {
-    let activeSceneId = await this.getActiveSceneId()
-    if (activeSceneId !== null) {
-      // 已经是新版本了，不必迁移
+    const activeSceneIds = await this.forage.getItem<unknown>("activeSceneIds")
+    if (Array.isArray(activeSceneIds)) {
+      // Normalize existing collection data and keep the legacy key available for rollback.
+      await this.setActiveSceneIds(activeSceneIds)
       return
     }
 
+    const localLegacyId = await this.forage.getItem<unknown>("activeSceneId")
     const oldOptions = new OptionsSync({
       storageType: "local"
     })
-    const all = (await oldOptions.getAll()) as any
-    activeSceneId = String(all.scene?.activeId ?? "")
-    await this.setActiveSceneId(activeSceneId)
+    const all = (await oldOptions.getAll()) as { scene?: { activeId?: unknown } }
+    const optionsSyncLegacyId = String(all.scene?.activeId ?? "")
+
+    // Prefer the latest IndexedDB single-scene key, then fall back to the oldest OptionsSync data.
+    // An existing empty IndexedDB value means the user explicitly cancelled all scenes.
+    const legacyId = typeof localLegacyId === "string" ? localLegacyId : optionsSyncLegacyId
+    await this.setActiveSceneIds(resolveStoredActiveSceneIds(undefined, legacyId))
   }
 
+  /** @deprecated Use getActiveSceneIds for multi-scene aware code. */
   async getActiveSceneId(): Promise<string | null> {
-    const id = await this.forage.getItem<string>("activeSceneId")
-    if (id === null || id === undefined) {
-      return null
-    }
-    return id
+    const ids = await this.getActiveSceneIds()
+    return ids.length > 0 ? ids[ids.length - 1] : null
   }
 
+  /** @deprecated Use setActiveSceneIds for multi-scene aware code. */
   async setActiveSceneId(id: string) {
-    await this.forage.setItem("activeSceneId", id)
+    await this.setActiveSceneIds(id ? [id] : [])
+  }
+
+  async getActiveSceneIds(): Promise<string[]> {
+    const [value, legacyId] = await Promise.all([
+      this.forage.getItem<unknown>("activeSceneIds"),
+      this.forage.getItem<unknown>("activeSceneId")
+    ])
+    return resolveStoredActiveSceneIds(value, legacyId)
+  }
+
+  async setActiveSceneIds(ids: unknown) {
+    const normalized = normalizeActiveSceneIds(ids)
+    await this.forage.setItem("activeSceneIds", normalized)
+
+    // Dual-write the most recently activated scene so a version rollback still has usable state.
+    const legacyId = normalized.length > 0 ? normalized[normalized.length - 1] : ""
+    await this.forage.setItem("activeSceneId", legacyId)
   }
 
   async getActiveGroupId(): Promise<string | null> {

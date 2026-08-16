@@ -28,8 +28,8 @@ code {
   overflow: hidden;
 }
 
-/* 分组菜单项包含名称和状态开关，不能沿用普通菜单项的单行文本裁剪。 */
-.ant-dropdown-menu-item.group-dropdown-menu-item .ant-dropdown-menu-title-content {
+/* 带状态开关的菜单项不能沿用普通文本菜单 120px 的裁剪宽度。 */
+.ant-dropdown-menu-item.state-toggle-dropdown-menu-item .ant-dropdown-menu-title-content {
   display: block;
   max-width: none;
   overflow: visible;

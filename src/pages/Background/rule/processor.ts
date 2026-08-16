@@ -5,7 +5,7 @@ import isMatch, { IMatchResult } from "./handlers/matchHandler"
 import getTarget from "./handlers/targetHandler"
 
 /**
- * 根据当前情景模式，标签页信息，规则信息，处理扩展的打开或关闭
+ * 根据当前激活的情景模式集合、标签页信息和规则信息，处理扩展的打开或关闭
  */
 
 export type ProcessContext = {
@@ -35,9 +35,9 @@ export type ProcessContext = {
 
 type ProcessItem = {
   /**
-   * 当前场景
+   * 当前激活的情景模式 ID 集合
    */
-  scene: config.IScene | undefined
+  activeSceneIds: string[] | undefined
   /**
    * 用户配置的分组数据
    */
@@ -64,19 +64,19 @@ export type RunningProcessContext = ProcessContext & {
   matchResult: IMatchResult | null
 }
 
-async function processRule({ scene, rules, groups, ctx }: ProcessItem) {
+async function processRule({ activeSceneIds, rules, groups, ctx }: ProcessItem) {
   if (!rules) {
     return
   }
 
   // 每一轮规则的执行，使用同一个 handler 实例
-  let executeTaskHandler = new ExecuteTaskHandler()
+  const executeTaskHandler = new ExecuteTaskHandler()
 
   for (const rule of rules) {
     try {
       // 每条规则处理的 rule 数据是不用的，这里需要对 ctx 拷贝一个副本，每个实例都是不同的 rule 数据
       const copyCtx = { ...ctx, rule, executeTaskHandler, matchResult: null }
-      await process(rule, scene, groups, copyCtx)
+      await process(rule, activeSceneIds, groups, copyCtx)
     } catch (error) {
       console.error("[规则预执行失败]", rules, error)
     }
@@ -91,7 +91,7 @@ async function processRule({ scene, rules, groups, ctx }: ProcessItem) {
 
 async function process(
   rule: ruleV2.IRuleConfig,
-  scene: config.IScene | undefined,
+  activeSceneIds: string[] | undefined,
   groups: config.IGroup[] | undefined,
   ctx: RunningProcessContext
 ) {
@@ -100,7 +100,7 @@ async function process(
     return
   }
 
-  ctx.matchResult = await isMatch(scene, rule, ctx)
+  ctx.matchResult = await isMatch(activeSceneIds, rule, ctx)
 
   const targetIdArray = getTarget(groups, rule)
   if (!targetIdArray || targetIdArray.length === 0) {
@@ -186,7 +186,7 @@ function handleSimpleMode(
         priority: new ExecuteTaskPriority()
       })
     } else {
-      let priority = new ExecuteTaskPriority()
+      const priority = new ExecuteTaskPriority()
       priority.setNotMatch()
       ctx.executeTaskHandler.open({
         ...baseInfo,
@@ -204,7 +204,7 @@ function handleSimpleMode(
         priority: new ExecuteTaskPriority()
       })
     } else {
-      let priority = new ExecuteTaskPriority()
+      const priority = new ExecuteTaskPriority()
       priority.setNotMatch()
       ctx.executeTaskHandler.close({
         ...baseInfo,
@@ -279,7 +279,7 @@ async function handleAdvanceMode(
     customRule.urlMatchWhenEnable === "currentNotMatch" &&
     !matchResult.isCurrentMatch
   ) {
-    let priority = new ExecuteTaskPriority()
+    const priority = new ExecuteTaskPriority()
     priority.setNotMatch()
     open(action.reloadAfterEnable, priority)
   }
@@ -289,7 +289,7 @@ async function handleAdvanceMode(
     customRule.urlMatchWhenEnable === "allNotMatch" &&
     !matchResult.isAnyMatch
   ) {
-    let priority = new ExecuteTaskPriority()
+    const priority = new ExecuteTaskPriority()
     priority.setNotMatch()
     open(action.reloadAfterEnable, priority)
   }
@@ -317,7 +317,7 @@ async function handleAdvanceMode(
     customRule.urlMatchWhenDisable === "currentNotMatch" &&
     !matchResult.isCurrentMatch
   ) {
-    let priority = new ExecuteTaskPriority()
+    const priority = new ExecuteTaskPriority()
     priority.setNotMatch()
     close(action.reloadAfterDisable, priority)
   }
@@ -327,7 +327,7 @@ async function handleAdvanceMode(
     customRule.urlMatchWhenDisable === "allNotMatch" &&
     !matchResult.isAnyMatch
   ) {
-    let priority = new ExecuteTaskPriority()
+    const priority = new ExecuteTaskPriority()
     priority.setNotMatch()
     close(action.reloadAfterDisable, priority)
   }

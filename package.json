@@ -11,6 +11,7 @@
     "build": "node utils/build.chrome.js",
     "build:edge": "node utils/build.edge.js",
     "start": "node utils/webserver.js",
+    "test": "node --no-warnings --test test/*.test.mjs",
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
   },
   "dependencies": {

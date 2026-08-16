@@ -35,6 +35,12 @@
   "scene_cancel_all": {
     "message": "すべてキャンセル"
   },
+  "scene_active_count": {
+    "message": "$1 件がアクティブ"
+  },
+  "popup_scene_toggle_tip": {
+    "message": "$1 を有効または無効にする"
+  },
   "group_title": {
     "message": "グループ"
   },
@@ -709,6 +715,12 @@
   },
   "setting_func_enable_group_exclusively_tip": {
     "message": "有効にすると、グループスイッチでグループをオンにした際、現在のグループを有効にし、現在のグループと固定グループ以外のすべての拡張機能を無効にします。固定グループ内の拡張機能は無効になりません。"
+  },
+  "setting_func_activate_scene_exclusively": {
+    "message": "プロファイルを有効にするとき、他のすべてのプロファイルを無効にする"
+  },
+  "setting_func_activate_scene_exclusively_tip": {
+    "message": "有効にすると、プロファイルを有効にした際に他のすべてのプロファイルが無効になります。この設定をオンにしても現在の状態はすぐには変わらず、プロファイルを無効にしても別のプロファイルは自動的に有効になりません。"
   },
   "popup_group_toggle_tip": {
     "message": "このグループ内のすべての拡張機能を操作します。固定グループ内の拡張機能は影響を受けません。"

@@ -35,6 +35,12 @@
   "scene_cancel_all": {
     "message": "取消所有"
   },
+  "scene_active_count": {
+    "message": "已激活 $1 個"
+  },
+  "popup_scene_toggle_tip": {
+    "message": "激活或取消激活「$1」"
+  },
   "group_title": {
     "message": "分組管理"
   },
@@ -709,6 +715,12 @@
   },
   "setting_func_enable_group_exclusively_tip": {
     "message": "開啟後，通過分組開關啟用某一分組時，將啟用當前分組中的擴展，並禁用除當前分組和固定分組外的其他所有擴展。固定分組中的擴展不會被禁用。"
+  },
+  "setting_func_activate_scene_exclusively": {
+    "message": "激活當前情景模式時，禁用其他所有情景模式"
+  },
+  "setting_func_activate_scene_exclusively_tip": {
+    "message": "開啟後，激活一個情景模式時將取消激活其他所有情景模式。開啟此設定不會立即改變當前狀態，取消激活情景模式也不會自動激活其他模式。"
   },
   "popup_group_toggle_tip": {
     "message": "控制此分組中的全部擴展。固定分組中的擴展不受影響。"

@@ -91,6 +91,10 @@ export const SyncOptionsStorage = {
     if (options.setting.isEnableCurrentGroupAndDisableOthers === undefined) {
       options.setting.isEnableCurrentGroupAndDisableOthers = false
     }
+    if (options.setting.isActivateCurrentSceneAndDisableOthers === undefined) {
+      // Multiple scenes are allowed by default; exclusivity is an explicit user preference.
+      options.setting.isActivateCurrentSceneAndDisableOthers = false
+    }
 
     // 情景模式
     if (!options.scenes) {

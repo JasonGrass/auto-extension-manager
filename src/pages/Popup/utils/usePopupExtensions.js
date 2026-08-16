@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 
 import chromeP from "webext-polyfill-kinda"
 
@@ -71,7 +71,7 @@ async function buildShowItems(extensions, options) {
   // 筛选置顶的扩展, 返回的是已经排序的扩展 id 列表
   const topExtensionsIds = await findTopExtensions(extensions, options)
 
-  let list0 = list.filter((i) => topExtensionsIds.includes(i.id))
+  const list0 = list.filter((i) => topExtensionsIds.includes(i.id))
   list1 = list1.filter((i) => !topExtensionsIds.includes(i.id))
   list2 = list2.filter((i) => !topExtensionsIds.includes(i.id))
 
@@ -163,7 +163,7 @@ async function findTopExtensionsByRuleThenOrder(extensions, options) {
   const byRuleIds = await findTopExtensionsByRule(options)
 
   // 先按名称排序（仅对于规则带来的置顶）
-  let byRuleOrderedExts = sortExtension(
+  const byRuleOrderedExts = sortExtension(
     extensions.filter((ext) => byRuleIds.includes(ext.id)),
     { ignoreEnable: false }
   )
@@ -203,12 +203,12 @@ async function findTopExtensionsByRule(options) {
     return []
   }
 
-  const sceneId = await localOptions.getActiveSceneId()
+  const activeSceneIds = await localOptions.getActiveSceneIds()
 
   // 找到所有匹配当前标签页的规则
   const matchRules = []
   for (const rule of rules) {
-    const isMatch = await isMatchByCurrent({ id: sceneId }, rule, currentTab)
+    const isMatch = await isMatchByCurrent(activeSceneIds, rule, currentTab)
     if (isMatch) {
       matchRules.push(rule)
     }

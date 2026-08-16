@@ -1,6 +1,3 @@
-import chromeP from "webext-polyfill-kinda"
-
-import logger from ".../utils/logger"
 import type { ProcessContext } from "../processor"
 import checkCurrentOsMatch from "./match/osMatchHandler"
 import checkCurrentTimeMatch from "./match/periodMatchHandler"
@@ -36,12 +33,12 @@ export interface IMatchResult {
 
 /**
  * 判断当前状态（情景模式，当前 URL）是否与指定规则匹配
- * @param scene 当前的情景模式
+ * @param activeSceneIds 当前激活的情景模式 ID 集合
  * @param tabInfo 当前标签页的信息
  * @param rule 规则数据
  */
 export default async function isMatch(
-  scene: config.IScene | undefined,
+  activeSceneIds: string[] | undefined,
   rule: ruleV2.IRuleConfig,
   ctx: ProcessContext
 ): Promise<IMatchResult> {
@@ -70,7 +67,7 @@ export default async function isMatch(
     isAnyUrlMatch = Boolean(matchTab)
   }
 
-  const isCurrentSceneMatch = await checkCurrentSceneMatch(scene, rule)
+  const isCurrentSceneMatch = await checkCurrentSceneMatch(activeSceneIds, rule)
   const isCurrentOsMatch = await checkCurrentOsMatch(rule)
   const isCurrentTimeMatch = await checkCurrentTimeMatch(rule)
 
@@ -129,7 +126,7 @@ export default async function isMatch(
 }
 
 export async function isMatchByCurrent(
-  activeScene: config.IScene | undefined,
+  activeSceneIds: string[] | undefined,
   rule: ruleV2.IRuleConfig,
   tabInfo: chrome.tabs.Tab | null
 ): Promise<boolean> {
@@ -138,7 +135,7 @@ export async function isMatchByCurrent(
   }
 
   const isCurrentUrlMatch = await checkCurrentUrlMatch(tabInfo, rule)
-  const isCurrentSceneMatch = await checkCurrentSceneMatch(activeScene, rule)
+  const isCurrentSceneMatch = await checkCurrentSceneMatch(activeSceneIds, rule)
   const isCurrentOsMatch = await checkCurrentOsMatch(rule)
   const isCurrentTimeMatch = await checkCurrentTimeMatch(rule)
 

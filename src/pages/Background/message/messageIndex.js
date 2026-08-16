@@ -1,6 +1,6 @@
 import { listen } from ".../utils/messageHelper"
 import { createManualChangeGroupHandler } from "./historyMessage"
-import { createCurrentSceneChangedHandler, createRuleConfigChangedHandler } from "./ruleMessage"
+import { createCurrentScenesChangedHandler, createRuleConfigChangedHandler } from "./ruleMessage"
 
 /**
  * 自定义 message 的处理（popup / options 页面发送过来的 message）
@@ -28,8 +28,8 @@ const createMessageHandler = (EM) => {
  * 规则处理相关的 message
  */
 const createRuleMessage = (handler, ctx) => {
-  // 当前情况模式发生变更
-  listen("current-scene-changed", ctx, createCurrentSceneChangedHandler(handler))
+  // 当前激活的情景模式集合发生变更
+  listen("current-scenes-changed", ctx, createCurrentScenesChangedHandler(handler))
 
   // 规则配置发生变更
   listen("rule-config-changed", ctx, createRuleConfigChangedHandler(handler))
@@ -54,17 +54,14 @@ export default createMessageHandler
   OnMessageCallback(ctx),
   ctx:
   {
-    "message": "{\"id\":\"current-scene-changed\",\"params\":{\"name\":\"开发模式\",\"id\":\"10LNWD41eerhzEbvnoJwL\"}}",
+    "message": "{\"id\":\"current-scenes-changed\",\"params\":{\"ids\":[\"10LNWD41eerhzEbvnoJwL\"]}}",
     "sender": {
         "id": "ildkgigifaagohmoehgmhapickcnlefd",
         "url": "chrome-extension://ildkgigifaagohmoehgmhapickcnlefd/popup.html",
         "origin": "chrome-extension://ildkgigifaagohmoehgmhapickcnlefd"
     },
-    "id": "current-scene-changed",
-    "params": {
-        "name": "开发模式",
-        "id": "10LNWD41eerhzEbvnoJwL"
-    },
+    "id": "current-scenes-changed",
+    "params": { "ids": ["10LNWD41eerhzEbvnoJwL"] },
     sendResponse: ƒ()
   }
 */

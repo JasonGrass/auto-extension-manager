@@ -9,6 +9,9 @@ const FunctionSetting = memo(({ setting, onSettingChange }) => {
   // 启用当前分组时，是否禁用当前分组和固定分组之外的所有扩展
   const [isEnableCurrentGroupAndDisableOthers, setIsEnableCurrentGroupAndDisableOthers] =
     useState(false)
+  // 激活情景模式时，是否取消激活其他所有情景模式
+  const [isActivateCurrentSceneAndDisableOthers, setIsActivateCurrentSceneAndDisableOthers] =
+    useState(false)
   // Home 按钮的链接
   const [isHomeLinkToStore, setIsHomeLinkToStore] = useState(false)
 
@@ -16,6 +19,9 @@ const FunctionSetting = memo(({ setting, onSettingChange }) => {
     // 功能偏好
     const enableCurrentGroupAndDisableOthers = setting.isEnableCurrentGroupAndDisableOthers ?? false
     setIsEnableCurrentGroupAndDisableOthers(enableCurrentGroupAndDisableOthers)
+    const activateCurrentSceneAndDisableOthers =
+      setting.isActivateCurrentSceneAndDisableOthers ?? false
+    setIsActivateCurrentSceneAndDisableOthers(activateCurrentSceneAndDisableOthers)
     const homeLinkToStore = setting.isHomeLinkToStore ?? false
     setIsHomeLinkToStore(homeLinkToStore)
   }, [setting])
@@ -42,6 +48,25 @@ const FunctionSetting = memo(({ setting, onSettingChange }) => {
               value,
               setIsEnableCurrentGroupAndDisableOthers,
               "isEnableCurrentGroupAndDisableOthers"
+            )
+          }></Switch>
+      </div>
+      {/* 激活当前情景模式时，禁用其他所有情景模式 */}
+      <div className="setting-item">
+        <span>
+          {getLang("setting_func_activate_scene_exclusively")}
+          <Tooltip placement="top" title={getLang("setting_func_activate_scene_exclusively_tip")}>
+            <QuestionCircleOutlined />
+          </Tooltip>{" "}
+        </span>
+        <Switch
+          size="small"
+          checked={isActivateCurrentSceneAndDisableOthers}
+          onChange={(value) =>
+            onSettingChange(
+              value,
+              setIsActivateCurrentSceneAndDisableOthers,
+              "isActivateCurrentSceneAndDisableOthers"
             )
           }></Switch>
       </div>

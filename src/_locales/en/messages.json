@@ -35,6 +35,12 @@
   "scene_cancel_all": {
     "message": "Cancel all"
   },
+  "scene_active_count": {
+    "message": "$1 active"
+  },
+  "popup_scene_toggle_tip": {
+    "message": "Activate or deactivate $1"
+  },
   "group_title": {
     "message": "Group"
   },
@@ -525,7 +531,7 @@
     "message": "End Time"
   },
   "scene_current_active": {
-    "message": "Current Active Profile:"
+    "message": "Current Active Profiles:"
   },
   "scene_current_active_none": {
     "message": "No Profile is Activated"
@@ -709,6 +715,12 @@
   },
   "setting_func_enable_group_exclusively_tip": {
     "message": "When enabled, turning on a group from its switch enables that group and disables every other extension except extensions in the current group or the fixed group. Fixed-group extensions are never disabled by this operation."
+  },
+  "setting_func_activate_scene_exclusively": {
+    "message": "Deactivate all other profiles when activating a profile"
+  },
+  "setting_func_activate_scene_exclusively_tip": {
+    "message": "When enabled, activating a profile deactivates every other profile. Turning this setting on does not immediately change the current state, and deactivating a profile does not activate another one."
   },
   "popup_group_toggle_tip": {
     "message": "Control every extension in this group. Fixed-group extensions are not affected."
