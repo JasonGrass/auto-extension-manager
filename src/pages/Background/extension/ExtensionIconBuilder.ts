@@ -1,6 +1,10 @@
 import chromeP from "webext-polyfill-kinda"
 
-import { buildTextIcon, downloadIconDataUrl } from ".../utils/extensionHelper"
+import { buildTextIcon, resolveExtensionIcon } from ".../utils/extensionHelper"
+import {
+  EXTENSION_ICON_CACHE_VERSION,
+  shouldRefreshExtensionIcon
+} from ".../utils/extensionIconPolicy"
 import { LocalOptions } from "../../../storage/local"
 import { HistoryRecord } from "../history/Record"
 import { ExtensionRepo } from "./ExtensionRepo"
@@ -31,25 +35,29 @@ export class ExtensionIconBuilder {
 
       const repo = new ExtensionRepo()
       const extension = await repo.get(record.extensionId)
-      if (extension && extension.icon) {
+      if (extension?.icon && !shouldRefreshExtensionIcon(extension)) {
         // 缓存的 extension 数据中，有 icon (base64 编码)
         record.icon = extension.icon // 绝大多数情况下，这里能获取到数据
         continue
       }
 
       useFallbackMethod = true
-      // 尝试下载 icon
-      const icon = await downloadIconDataUrl(extension)
-      if (icon) {
-        record.icon = icon
-        continue
+      // 对仍然安装的扩展读取最新 management 信息，以便使用 manifest 图标或主页 favicon。
+      try {
+        const chromeExt = await chromeP.management.get(record.extensionId)
+        const resolved = await resolveExtensionIcon(chromeExt)
+        if (resolved.icon) {
+          record.icon = resolved.icon
+          continue
+        }
+      } catch {
+        // 已卸载扩展无法查询，继续使用历史记录名称生成文字图标。
       }
-      // 使用文本生成 icon
       record.icon = await buildTextIcon(record.name)
     }
 
     if (useFallbackMethod) {
-      ExtensionIconBuilder.build(true)
+      ExtensionIconBuilder.build()
     }
   }
 
@@ -62,42 +70,53 @@ export class ExtensionIconBuilder {
   }
 
   public async exec(force: boolean = false) {
-    // 因为是耗性能的操作，不必每次都执行。
+    const [keys, installedExtensions] = await Promise.all([
+      this.repo.getKeys(),
+      chromeP.management.getAll()
+    ])
+    const cachedExtensions = await Promise.all(keys.map((key) => this.repo.get(key)))
+    const cacheById = new Map(
+      cachedExtensions
+        .filter((extension) => extension)
+        .map((extension) => [extension!.id, extension!])
+    )
+
+    // 同时比较当前已安装版本与缓存版本：即使后台安装事件被遗漏，也会在下一次打开页面时重取。
+    const hasPendingIcon = installedExtensions.some((extension) =>
+      shouldRefreshExtensionIcon(cacheById.get(extension.id), false, extension.version)
+    )
+
+    // 因为是耗性能的操作，不必每次都执行；但有待补建的旧缓存时必须执行一次迁移。
     const isAnyNewInstalled = await this.localOptions.getNeedBuildExtensionIcon()
-    if (!force && !isAnyNewInstalled) {
+    if (!force && !isAnyNewInstalled && !hasPendingIcon) {
       return
     }
 
     console.log("[ExtensionIconBuilder] build")
 
-    const keys = await this.repo.getKeys()
-
-    for (const key of keys) {
-      const extension = await this.repo.get(key)
-      if (!extension) {
-        continue
-      }
-
-      if (extension.icon && !extension.needUpdateIcon) {
-        // 如果不是新安装或者扩展有更新，在 extension.icon 存在的情况下，不需要重新构建 ICON
+    for (const chromeExt of installedExtensions) {
+      const extension = cacheById.get(chromeExt.id)
+      if (!shouldRefreshExtensionIcon(extension, force, chromeExt.version)) {
         continue
       }
 
       try {
-        const chromeExt = await chromeP.management.get(key)
-        const dataUri = await downloadIconDataUrl(chromeExt)
-        if (!dataUri) {
+        const resolved = await resolveExtensionIcon(chromeExt)
+        if (!resolved.icon) {
           continue
         }
         const info = {
           ...extension,
           ...chromeExt,
-          icon: dataUri,
+          state: "install" as const,
+          icon: resolved.icon,
+          iconSource: resolved.iconSource,
+          iconCacheVersion: EXTENSION_ICON_CACHE_VERSION,
           recordUpdateTime: Date.now(),
           needUpdateIcon: false
         }
-        this.repo.set(info)
-      } catch (error) {
+        await this.repo.set(info)
+      } catch {
         // ignore
       }
     }

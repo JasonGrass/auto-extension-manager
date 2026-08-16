@@ -18,7 +18,8 @@ import chromeP from "webext-polyfill-kinda"
 import { LocalOptions } from ".../storage/local"
 import { useBatchEffect } from ".../utils/reactUtils"
 import { getLang } from ".../utils/utils"
-import { downloadIconDataUrl, getIcon } from "../../../utils/extensionHelper"
+import { resolveExtensionIcon } from "../../../utils/extensionHelper"
+import { EXTENSION_ICON_CACHE_VERSION } from "../../../utils/extensionIconPolicy"
 import isMatch from "../../../utils/searchHelper"
 import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
 import { HistoryRepo } from "../../Background/history/HistoryRepo"
@@ -227,9 +228,15 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
     const list = await chromeP.management.getAll()
     const now = Date.now()
     for (const item of list) {
-      const iconDataUrl = await downloadIconDataUrl(item)
-      const ext = { ...item, icon: iconDataUrl, recordUpdateTime: now }
-      extRepo.set(ext)
+      const resolved = await resolveExtensionIcon(item)
+      const ext = {
+        ...item,
+        icon: resolved.icon,
+        iconSource: resolved.iconSource,
+        iconCacheVersion: EXTENSION_ICON_CACHE_VERSION,
+        recordUpdateTime: now
+      }
+      await extRepo.set(ext)
     }
   }
 

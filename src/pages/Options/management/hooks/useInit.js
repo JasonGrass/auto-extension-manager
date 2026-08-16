@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 
+import { attachCachedExtensionIcons } from ".../pages/Background/extension/ExtensionRepo"
 import storage from ".../storage/sync"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import { ExtensionChannelWorker } from "../worker/ExtensionChannelWorker"
@@ -13,7 +14,7 @@ export const useInit = (callback) => {
   useEffect(() => {
     const ready = async () => {
       const exts = await chrome.management.getAll()
-      const list = filterExtensions(exts, isExtExtension)
+      const list = await attachCachedExtensionIcons(filterExtensions(exts, isExtExtension))
 
       for (const ext of list) {
         const channel = await ChannelWorker.getExtensionChannel(ext.id)
@@ -43,8 +44,9 @@ export const useInit = (callback) => {
   }, [])
 
   useEffect(() => {
-    const handler = (info) => {
-      setExtensions((prev) => [...prev, info])
+    const handler = async (info) => {
+      const [extension] = await attachCachedExtensionIcons([info])
+      setExtensions((prev) => [...prev, extension])
     }
     chrome.management.onInstalled.addListener(handler)
     return () => {

@@ -6,6 +6,7 @@ import { message } from "antd"
 import classNames from "classnames"
 import chromeP from "webext-polyfill-kinda"
 
+import { attachCachedExtensionIcons } from ".../pages/Background/extension/ExtensionRepo"
 import storage from ".../storage/sync"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper"
 import analytics from ".../utils/googleAnalyze.js"
@@ -69,8 +70,9 @@ function GroupManagement() {
       setOptions(o)
     })
 
-    chromeP.management.getAll().then((exts) => {
-      setExtensions(filterExtensions(exts, isExtExtension))
+    chromeP.management.getAll().then(async (exts) => {
+      const list = await attachCachedExtensionIcons(filterExtensions(exts, isExtExtension))
+      setExtensions(list)
     })
 
     storage.group.getGroups().then((groups) => {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import chromeP from "webext-polyfill-kinda"
 
+import { attachCachedExtensionIcons } from ".../pages/Background/extension/ExtensionRepo"
 import storage from ".../storage/sync"
 import { appendAdditionInfo, filterExtensions, isExtExtension } from ".../utils/extensionHelper.js"
 import analytics from ".../utils/googleAnalyze.js"
@@ -25,8 +26,8 @@ function RuleSetting() {
       setOptions(options)
     })
 
-    chromeP.management.getAll().then((res) => {
-      const list = filterExtensions(res, isExtExtension)
+    chromeP.management.getAll().then(async (res) => {
+      const list = await attachCachedExtensionIcons(filterExtensions(res, isExtExtension))
       storage.management.get().then((options) => {
         appendAdditionInfo(list, options)
         setExtensions(list)

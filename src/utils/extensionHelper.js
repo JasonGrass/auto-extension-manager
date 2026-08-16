@@ -1,73 +1,97 @@
 import { isEdgeRuntime } from ".../utils/channelHelper"
 import defaultPuzzleIcon from "../assets/img/puzzle.svg"
-import { downloadImageDataUrl } from "./utils"
+import {
+  buildTextIconDataUrl,
+  getExtensionHomepageForFavicon,
+  getManifestIconCandidates
+} from "./extensionIconPolicy"
+import { downloadImageDataUrl, renderImageDataUrl } from "./utils"
 
 export const getIcon = function (extension, size = 16) {
-  const { icons } = extension
-
-  if (!icons || icons.length === 0) {
-    return defaultPuzzleIcon
+  // 前台列表会附加 IndexedDB 中的持久缓存。优先使用它，保证只声明 action.default_icon
+  // 的扩展也能显示主页 favicon 或文字兜底，而不是固定的拼图图标。
+  if (extension?.icon) {
+    return extension.icon
   }
 
-  // 复制数组后按尺寸从小到大排列，避免修改原始数组
-  const sortedIcons = [...icons].sort((a, b) => a.size - b.size)
-
-  // Get retina size if necessary
-  size *= window.devicePixelRatio
-
-  // 从小到大遍历，找到第一个 >= 目标尺寸的图标（即满足要求的最小尺寸图标）
-  for (const icon of sortedIcons) {
-    if (icon.size >= size) {
-      return icon.url
-    }
-  }
-
-  // 如果没有找到足够大的，则返回最大的那个
-  return sortedIcons[sortedIcons.length - 1]?.url ?? defaultPuzzleIcon
+  const targetSize = size * (globalThis.devicePixelRatio ?? 1)
+  return (
+    getManifestIconCandidates(extension, targetSize)[0] ||
+    buildTextIconDataUrl(extension?.name) ||
+    defaultPuzzleIcon
+  )
 }
 
 /**
- * 下载 ICON 并将其转换成 dataUrl，如果失败，则返回空字符串; 仅支持在 DOM 下调用
+ * 尝试下载扩展在 manifest 顶层 `icons` 中声明的图标，并转成可缓存的 Data URL。
+ *
+ * 注意：该 API 无法获得 action.default_icon。对于只声明 action.default_icon 的扩展
+ * （例如 Tabs Outliner），或资源未对其他扩展开放的情况，本函数会返回空字符串，
+ * 由调用方生成文字图标等兜底内容。
+ *
+ * 仅支持在具备 DOM 的页面调用；单个候选图标下载失败后会继续尝试较小尺寸图标，
+ * 避免一个损坏或不可访问的大图导致整个扩展都没有缓存图标。
  */
 export const downloadIconDataUrl = async function (appInfo) {
-  if (!appInfo) {
-    return ""
-  }
-  let iconUrl = undefined
-  if (appInfo.icons) {
-    let maxSize = 0
-    for (let j = 0; j < appInfo.icons.length; j++) {
-      const iconInfo = appInfo.icons[j]
-      if (iconInfo.size > maxSize) {
-        maxSize = iconInfo.size
-        iconUrl = iconInfo.url
+  const iconCandidates = getManifestIconCandidates(appInfo, 128)
+
+  for (const iconUrl of iconCandidates) {
+    try {
+      return await downloadImageDataUrl(iconUrl)
+    } catch {
+      try {
+        return await renderImageDataUrl(iconUrl)
+      } catch {
+        // 跨扩展资源被拒绝时继续尝试下一尺寸。
       }
     }
   }
-  if (!iconUrl) {
-    return ""
-  } else {
-    const uri = await downloadImageDataUrl(iconUrl)
-    return uri
+
+  return ""
+}
+
+/** 尝试使用扩展独立主页的 favicon；商店页面会被过滤，避免缓存商店公共图标。 */
+export const downloadHomepageFaviconDataUrl = async function (appInfo, size = 128) {
+  const pageUrl = getExtensionHomepageForFavicon(appInfo)
+  if (!pageUrl || !globalThis.chrome?.runtime?.getURL) return ""
+
+  const faviconUrl = chrome.runtime.getURL(
+    `_favicon/?pageUrl=${encodeURIComponent(pageUrl)}&size=${size}`
+  )
+  try {
+    return await downloadImageDataUrl(faviconUrl)
+  } catch {
+    try {
+      return await renderImageDataUrl(faviconUrl)
+    } catch {
+      return ""
+    }
   }
 }
 
 /**
- * 根据名称，生成一个默认的，使用第一个字符的文字 ICON
+ * 按真实 manifest 图标、独立主页 favicon、文字图标的顺序解析最佳可用图标。
+ * @returns {Promise<{icon: string, iconSource: "manifest" | "favicon" | "fallback"}>}
+ */
+export const resolveExtensionIcon = async function (appInfo) {
+  const manifestIcon = await downloadIconDataUrl(appInfo)
+  if (manifestIcon) return { icon: manifestIcon, iconSource: "manifest" }
+
+  const favicon = await downloadHomepageFaviconDataUrl(appInfo)
+  if (favicon) return { icon: favicon, iconSource: "favicon" }
+
+  const fallback = await buildTextIcon(appInfo?.name)
+  return { icon: fallback, iconSource: "fallback" }
+}
+
+/**
+ * 根据扩展名称生成稳定的文字图标 Data URL。
+ *
+ * 这用于无法通过 management API 获取真实图标的扩展。返回 Data URL 而不是 Blob URL，
+ * 以保证图标可安全地缓存到 IndexedDB，且不随创建它的 Popup 页面关闭而失效。
  */
 export const buildTextIcon = async (name) => {
-  if (!name) {
-    return ""
-  }
-  const canvas = new OffscreenCanvas(128, 128)
-  const ctx = canvas.getContext("2d")
-  ctx.font = "120px Arial"
-  ctx.fillStyle = "grey"
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
-  ctx.fillStyle = "white"
-  ctx.fillText(name[0], 22, 110)
-  const blob = await canvas.convertToBlob()
-  return URL.createObjectURL(blob)
+  return buildTextIconDataUrl(name)
 }
 
 export const isAppExtension = function (ext) {

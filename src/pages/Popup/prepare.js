@@ -1,5 +1,6 @@
 import localforage from "localforage"
 
+import { attachCachedExtensionIcons } from ".../pages/Background/extension/ExtensionRepo"
 import { applyPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
 import storage from ".../storage/sync"
 import { appendAdditionInfo } from ".../utils/extensionHelper"
@@ -66,6 +67,8 @@ async function getShownExtensions(allOptions) {
   allExtensions = allExtensions
     .filter((ext) => ext.type !== "theme")
     .filter((ext) => ext.id !== selfId)
+
+  allExtensions = await attachCachedExtensionIcons(allExtensions)
 
   // 填充附加信息
   const extensions = appendAdditionInfo(allExtensions, allOptions.management)
