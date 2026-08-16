@@ -623,6 +623,12 @@
   "setting_ui_show_fixed_dot": {
     "message": "顯示固定分組擴展右上角的小圓點"
   },
+  "setting_ui_show_lock_button": {
+    "message": "操作菜單中，顯示鎖定/解鎖按鈕"
+  },
+  "setting_ui_show_lock_button_tip": {
+    "message": "此按鈕用於將擴展放入固定分組（鎖定），或從固定分組移除（解鎖）"
+  },
   "setting_ui_show_by_group": {
     "message": "按分組顯示擴展"
   },

@@ -40,8 +40,8 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
   // 固定分组的小圆点
   const isShowDotOfFixedExtension = options.setting.isShowDotOfFixedExtension ?? true
 
-  // 固定操作暂不开放
-  const canLock = false
+  // 是否在操作菜单中显示锁定/解锁按钮
+  const canLock = options.setting.isShowLockButtonInOperationMenu ?? false
 
   // 分组开关批量控制扩展后，需要主动同步 enabled，否则 UI 显示会有问题。
   useEffect(() => {

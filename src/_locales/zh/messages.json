@@ -623,6 +623,12 @@
   "setting_ui_show_fixed_dot": {
     "message": "显示固定分组扩展右上角的小圆点"
   },
+  "setting_ui_show_lock_button": {
+    "message": "操作菜单中，显示锁定/解锁按钮"
+  },
+  "setting_ui_show_lock_button_tip": {
+    "message": "这个按钮用于将扩展放在固定分组(锁定)或者从固定分组移除(解锁)"
+  },
   "setting_ui_show_by_group": {
     "message": "按分组显示扩展"
   },

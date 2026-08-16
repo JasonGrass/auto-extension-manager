@@ -6,6 +6,7 @@ declare namespace config {
     isEnableCurrentGroupAndDisableOthers: boolean
     isShowFixedExtension: boolean
     isShowHiddenExtension: boolean
+    isShowLockButtonInOperationMenu: boolean
   }
 
   export interface IScene {

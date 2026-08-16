@@ -72,6 +72,9 @@ export const SyncOptionsStorage = {
     if (options.setting.isShowDotOfFixedExtension === undefined) {
       options.setting.isShowDotOfFixedExtension = true
     }
+    if (options.setting.isShowLockButtonInOperationMenu === undefined) {
+      options.setting.isShowLockButtonInOperationMenu = false
+    }
     if (options.setting.isShowAppNameInGirdView === undefined) {
       // 默认显示扩展名称
       options.setting.isShowAppNameInGirdView = true

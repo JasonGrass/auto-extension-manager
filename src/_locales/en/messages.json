@@ -623,6 +623,12 @@
   "setting_ui_show_fixed_dot": {
     "message": "Display a small dot in the upper right corner of the fixed group extensions"
   },
+  "setting_ui_show_lock_button": {
+    "message": "Show the lock/unlock button in the operation menu"
+  },
+  "setting_ui_show_lock_button_tip": {
+    "message": "Use this button to add an extension to the fixed group (lock) or remove it from the fixed group (unlock)."
+  },
   "setting_ui_show_by_group": {
     "message": "Display extensions by group"
   },

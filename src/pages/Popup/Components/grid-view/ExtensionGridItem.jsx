@@ -34,8 +34,8 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
   // 扩展是否在固定分组中
   const [itemPined, setItemPined] = useExtensionItemPin(item, options)
 
-  // 固定操作暂不开放
-  const canLock = false
+  // 是否在操作菜单中显示锁定/解锁按钮
+  const canLock = options.setting.isShowLockButtonInOperationMenu ?? false
 
   useEffect(() => {
     setItemEnable(item.enabled)

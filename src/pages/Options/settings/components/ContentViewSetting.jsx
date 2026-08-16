@@ -16,6 +16,8 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
   const [isShowHiddenExtension, setIsShowHiddenExtension] = useState(true)
   // 是否显示固定分组扩展上面的小圆点
   const [isShowDotOfFixedExtension, setIsShowDotOfFixedExtension] = useState(true)
+  // 是否在操作菜单中显示锁定/解锁按钮
+  const [isShowLockButtonInOperationMenu, setIsShowLockButtonInOperationMenu] = useState(false)
 
   // 列表视图下，是否总是显示扩展操作按钮
   const [isShowItemOperationAlways, setIsShowItemOperationAlways] = useState(false)
@@ -62,6 +64,10 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
     // 固定分组扩展的小圆点
     const dotOfFixedExtension = setting.isShowDotOfFixedExtension ?? true
     setIsShowDotOfFixedExtension(dotOfFixedExtension)
+
+    // 操作菜单中的锁定/解锁按钮
+    const showLockButtonInOperationMenu = setting.isShowLockButtonInOperationMenu ?? false
+    setIsShowLockButtonInOperationMenu(showLockButtonInOperationMenu)
 
     // 网格视图下，使用鼠标右键弹出菜单
     const menuDisplayByRightClick = setting.isMenuDisplayByRightClick ?? false
@@ -124,6 +130,26 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
           checked={isShowDotOfFixedExtension}
           onChange={(value) =>
             onSettingChange(value, setIsShowDotOfFixedExtension, "isShowDotOfFixedExtension")
+          }></Switch>
+      </div>
+
+      {/* 操作菜单中显示锁定/解锁按钮 */}
+      <div className="setting-item">
+        <span>
+          {getLang("setting_ui_show_lock_button")}
+          <Tooltip placement="top" title={getLang("setting_ui_show_lock_button_tip")}>
+            <QuestionCircleOutlined />
+          </Tooltip>{" "}
+        </span>
+        <Switch
+          size="small"
+          checked={isShowLockButtonInOperationMenu}
+          onChange={(value) =>
+            onSettingChange(
+              value,
+              setIsShowLockButtonInOperationMenu,
+              "isShowLockButtonInOperationMenu"
+            )
           }></Switch>
       </div>
 

@@ -623,6 +623,12 @@
   "setting_ui_show_fixed_dot": {
     "message": "固定グループ拡張機能の右上に小さな点を表示します。"
   },
+  "setting_ui_show_lock_button": {
+    "message": "操作メニューにロック/ロック解除ボタンを表示する"
+  },
+  "setting_ui_show_lock_button_tip": {
+    "message": "このボタンで拡張機能を固定グループに追加（ロック）、または固定グループから削除（ロック解除）できます。"
+  },
   "setting_ui_show_by_group": {
     "message": "グループごとの拡張機能表示"
   },
