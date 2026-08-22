@@ -872,6 +872,12 @@
   "management_load_error_title": {
     "message": "Extension management could not be loaded"
   },
+  "management_filter_group": {
+    "message": "Filter by group"
+  },
+  "management_all_groups": {
+    "message": "All groups"
+  },
   "management_load_error_description": {
     "message": "No extension data was received, or the table took too long to render. Refresh the page to try again."
   },

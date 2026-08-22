@@ -872,6 +872,12 @@
   "management_load_error_title": {
     "message": "擴充功能管理載入失敗"
   },
+  "management_filter_group": {
+    "message": "按群組篩選"
+  },
+  "management_all_groups": {
+    "message": "所有群組"
+  },
   "management_load_error_description": {
     "message": "未能取得擴充功能資料，或表格呈現逾時。請重新整理頁面後再試。"
   },

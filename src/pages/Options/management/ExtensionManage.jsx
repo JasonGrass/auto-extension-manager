@@ -1,8 +1,8 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, useEffect, useMemo, useState } from "react"
 import { NavLink } from "react-router-dom"
 
 import { ImportOutlined, ShareAltOutlined } from "@ant-design/icons"
-import { Button, Checkbox, Form, Input, Table, message } from "antd"
+import { Button, Checkbox, Form, Input, Select, Table, message } from "antd"
 import classNames from "classnames"
 import localforage from "localforage"
 
@@ -15,6 +15,11 @@ import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
 import { ExtensionManageStyle } from "./ExtensionManageStyle"
 import ExtensionNameItem from "./ExtensionNameItem"
 import ExtensionOperationItem from "./ExtensionOperationItem"
+import {
+  ALL_GROUPS_FILTER,
+  buildGroupFilterOptions,
+  filterRecordsByGroup
+} from "./managementFilter"
 import { buildRecords } from "./utils"
 import { ManagementLoadError } from "./managementLoadPolicy"
 
@@ -37,6 +42,8 @@ const ExtensionManage = memo(({ extensions, options, onTableRendered, onTableErr
 
   // 搜索词
   const [searchWord, setSearchWord] = useState("")
+  // 分组筛选
+  const [selectedGroupId, setSelectedGroupId] = useState(ALL_GROUPS_FILTER)
 
   // 操作
   const [showOperation, setShowOperation] = useState(false)
@@ -92,10 +99,24 @@ const ExtensionManage = memo(({ extensions, options, onTableRendered, onTableErr
     void init()
   }, [])
 
-  // 搜索
+  const groups = options.groups ?? []
+  const groupFilterOptions = useMemo(() => buildGroupFilterOptions(groups, getLang), [groups])
+
+  // 当前分组被删除后恢复为显示全部
   useEffect(() => {
-    setShownData(search(data, searchWord))
-  }, [data, searchWord])
+    if (
+      selectedGroupId !== ALL_GROUPS_FILTER &&
+      !groups.some((group) => group.id === selectedGroupId)
+    ) {
+      setSelectedGroupId(ALL_GROUPS_FILTER)
+    }
+  }, [groups, selectedGroupId])
+
+  // 搜索和分组筛选
+  useEffect(() => {
+    const searchedData = search(data, searchWord)
+    setShownData(filterRecordsByGroup(searchedData, selectedGroupId, groups))
+  }, [data, groups, searchWord, selectedGroupId])
 
   // 执行搜索
   const onSearch = (value) => {
@@ -251,13 +272,23 @@ const ExtensionManage = memo(({ extensions, options, onTableRendered, onTableErr
             onChange={(e) => onSearch(e.target.value)}
           />
 
+          <Select
+            aria-label={getLang("management_filter_group") || getLang("group_title")}
+            className="group-filter"
+            value={selectedGroupId}
+            options={groupFilterOptions}
+            onChange={setSelectedGroupId}
+            optionFilterProp="label"
+            showSearch
+          />
+
           <Checkbox
             checked={showOperation}
             onChange={(e) => {
               setShowOperation(e.target.checked)
               forage.setItem("showOperationColumn", e.target.checked)
             }}
-            className="settings-checkbox">
+            className="settings-checkbox show-operation-checkbox">
             {getLang("management_show_operation")}
           </Checkbox>
 

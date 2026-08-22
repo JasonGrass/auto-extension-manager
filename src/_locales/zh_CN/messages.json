@@ -872,6 +872,12 @@
   "management_load_error_title": {
     "message": "扩展管理加载失败"
   },
+  "management_filter_group": {
+    "message": "按分组筛选"
+  },
+  "management_all_groups": {
+    "message": "全部分组"
+  },
   "management_load_error_description": {
     "message": "未能获取扩展数据，或表格渲染超时。请刷新页面后重试。"
   },

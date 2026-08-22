@@ -872,6 +872,12 @@
   "management_load_error_title": {
     "message": "Не удалось загрузить управление расширениями"
   },
+  "management_filter_group": {
+    "message": "Фильтр по группе"
+  },
+  "management_all_groups": {
+    "message": "Все группы"
+  },
   "management_load_error_description": {
     "message": "Данные расширений не получены или таблица загружалась слишком долго. Обновите страницу и повторите попытку."
   },

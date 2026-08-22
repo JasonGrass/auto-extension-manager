@@ -26,8 +26,17 @@ export const ExtensionManageStyle = styled.div`
       max-width: 100%;
     }
 
+    .group-filter {
+      width: 180px;
+      max-width: 100%;
+    }
+
     .settings-checkbox {
       margin: 0;
+    }
+
+    .show-operation-checkbox {
+      margin-left: 10px;
     }
   }
 
