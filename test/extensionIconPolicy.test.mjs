@@ -4,7 +4,6 @@ import test from "node:test"
 import {
   EXTENSION_ICON_CACHE_VERSION,
   buildTextIconDataUrl,
-  getExtensionHomepageForFavicon,
   getManifestIconCandidates,
   shouldRefreshExtensionIcon
 } from "../src/utils/extensionIconPolicy.ts"
@@ -26,6 +25,16 @@ test("old icon caches are refreshed once after the cache format upgrade", () => 
       version: "1.0"
     }),
     false
+  )
+
+  assert.equal(
+    shouldRefreshExtensionIcon({
+      icon: "data:image/png;base64,old-favicon",
+      iconSource: "favicon",
+      iconCacheVersion: 2,
+      version: "1.0"
+    }),
+    true
   )
 })
 
@@ -60,20 +69,6 @@ test("manifest icon candidates prefer the smallest sufficient size then smaller 
     "16.png"
   ])
   assert.deepEqual(getManifestIconCandidates({ name: "action-only" }, 128), [])
-})
-
-test("favicon fallback accepts independent homepages but excludes extension stores", () => {
-  assert.equal(
-    getExtensionHomepageForFavicon({ homepageUrl: "https://tabsoutliner.com" }),
-    "https://tabsoutliner.com/"
-  )
-  assert.equal(
-    getExtensionHomepageForFavicon({
-      homepageUrl: "https://chromewebstore.google.com/detail/example/extension-id"
-    }),
-    ""
-  )
-  assert.equal(getExtensionHomepageForFavicon({ homepageUrl: "chrome-extension://id/page" }), "")
 })
 
 test("text fallback is a stable SVG data URL and supports unicode names", () => {

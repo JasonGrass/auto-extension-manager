@@ -33,7 +33,6 @@
   },
   "default_locale": "en",
   "permissions": [
-    "favicon",
     "management",
     "storage",
     "tabs"

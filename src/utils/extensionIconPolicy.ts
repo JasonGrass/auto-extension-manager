@@ -7,11 +7,11 @@
  * web_accessible_resources 向本扩展开放该文件，也不能跨扩展读取。
  *
  * 因此，对于只声明 `action.default_icon` 的扩展，公开 API 无法保证取得原始 PNG。
- * 本项目只能依次尝试顶层 manifest 图标、扩展独立主页 favicon，最后生成稳定的文字图标。
+ * 本项目只能依次尝试顶层 manifest 图标，最后生成稳定的文字图标。
  * 若必须获取原始图标，只能额外下载并解析商店/CRX 安装包，这会引入网络权限、隐私、
  * 商店兼容性和远程接口稳定性问题，当前策略不采用这种方式。
  */
-export const EXTENSION_ICON_CACHE_VERSION = 2
+export const EXTENSION_ICON_CACHE_VERSION = 3
 
 type IconRecord = {
   icon?: string
@@ -28,7 +28,6 @@ type ExtensionIcon = {
 }
 
 type ExtensionInfoLike = {
-  homepageUrl?: string
   icons?: ExtensionIcon[]
   name?: string
 }
@@ -71,25 +70,6 @@ export const getManifestIconCandidates = (extension: ExtensionInfoLike, size = 1
     })
     .map((icon) => icon.url)
     .filter((url, index, urls) => urls.indexOf(url) === index)
-}
-
-const STORE_HOSTS = new Set([
-  "chrome.google.com",
-  "chromewebstore.google.com",
-  "microsoftedge.microsoft.com",
-  "addons.mozilla.org"
-])
-
-/** 商店页面的 favicon 是商店自身图标，不能代表扩展，因而只使用独立主页。 */
-export const getExtensionHomepageForFavicon = (extension: ExtensionInfoLike) => {
-  try {
-    const url = new URL(extension?.homepageUrl ?? "")
-    if (!(["http:", "https:"] as string[]).includes(url.protocol)) return ""
-    if (STORE_HOSTS.has(url.hostname.toLowerCase())) return ""
-    return url.href
-  } catch {
-    return ""
-  }
 }
 
 const escapeXml = (value: string) =>

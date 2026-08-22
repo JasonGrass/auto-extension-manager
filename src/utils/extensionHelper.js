@@ -1,15 +1,11 @@
 import { isEdgeRuntime } from ".../utils/channelHelper"
 import defaultPuzzleIcon from "../assets/img/puzzle.svg"
-import {
-  buildTextIconDataUrl,
-  getExtensionHomepageForFavicon,
-  getManifestIconCandidates
-} from "./extensionIconPolicy"
+import { buildTextIconDataUrl, getManifestIconCandidates } from "./extensionIconPolicy"
 import { downloadImageDataUrl, renderImageDataUrl } from "./utils"
 
 export const getIcon = function (extension, size = 16) {
   // 前台列表会附加 IndexedDB 中的持久缓存。优先使用它，保证只声明 action.default_icon
-  // 的扩展也能显示主页 favicon 或文字兜底，而不是固定的拼图图标。
+  // 的扩展也能显示文字兜底，而不是固定的拼图图标。
   if (extension?.icon) {
     return extension.icon
   }
@@ -50,35 +46,13 @@ export const downloadIconDataUrl = async function (appInfo) {
   return ""
 }
 
-/** 尝试使用扩展独立主页的 favicon；商店页面会被过滤，避免缓存商店公共图标。 */
-export const downloadHomepageFaviconDataUrl = async function (appInfo, size = 128) {
-  const pageUrl = getExtensionHomepageForFavicon(appInfo)
-  if (!pageUrl || !globalThis.chrome?.runtime?.getURL) return ""
-
-  const faviconUrl = chrome.runtime.getURL(
-    `_favicon/?pageUrl=${encodeURIComponent(pageUrl)}&size=${size}`
-  )
-  try {
-    return await downloadImageDataUrl(faviconUrl)
-  } catch {
-    try {
-      return await renderImageDataUrl(faviconUrl)
-    } catch {
-      return ""
-    }
-  }
-}
-
 /**
- * 按真实 manifest 图标、独立主页 favicon、文字图标的顺序解析最佳可用图标。
- * @returns {Promise<{icon: string, iconSource: "manifest" | "favicon" | "fallback"}>}
+ * 按真实 manifest 图标、文字图标的顺序解析最佳可用图标。
+ * @returns {Promise<{icon: string, iconSource: "manifest" | "fallback"}>}
  */
 export const resolveExtensionIcon = async function (appInfo) {
   const manifestIcon = await downloadIconDataUrl(appInfo)
   if (manifestIcon) return { icon: manifestIcon, iconSource: "manifest" }
-
-  const favicon = await downloadHomepageFaviconDataUrl(appInfo)
-  if (favicon) return { icon: favicon, iconSource: "favicon" }
 
   const fallback = await buildTextIcon(appInfo?.name)
   return { icon: fallback, iconSource: "fallback" }

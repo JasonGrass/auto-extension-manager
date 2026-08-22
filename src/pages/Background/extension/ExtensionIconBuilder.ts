@@ -42,7 +42,7 @@ export class ExtensionIconBuilder {
       }
 
       useFallbackMethod = true
-      // 对仍然安装的扩展读取最新 management 信息，以便使用 manifest 图标或主页 favicon。
+      // 对仍然安装的扩展读取最新 management 信息，以便使用 manifest 图标。
       try {
         const chromeExt = await chromeP.management.get(record.extensionId)
         const resolved = await resolveExtensionIcon(chromeExt)
