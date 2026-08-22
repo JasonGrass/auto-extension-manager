@@ -5,8 +5,10 @@ import { Dropdown } from "antd"
 import { styled } from "styled-components"
 
 import { LocalOptions } from ".../storage/local/LocalOptions"
+import { filterExtensions, isExtExtension } from ".../utils/extensionHelper"
 import { getLang } from ".../utils/utils"
 import { getGroupEnableState } from "../../ExtensionOnOffHandler"
+import { buildNoGroup, NO_GROUP_ID } from "../../utils/popupGroupHelper"
 import GroupStateToggle from "./GroupStateToggle"
 import { MenuStyle } from "./MenuStyle"
 
@@ -19,6 +21,15 @@ const SingleGroupDropdown = memo((props) => {
   const batchPendingRef = useRef(false)
 
   const menuTitleAll = getLang("group_select_all")
+  const noGroup = useMemo(
+    () =>
+      buildNoGroup(
+        filterExtensions(extensions, isExtExtension),
+        groups,
+        getLang("group_no_group_name")
+      ),
+    [extensions, groups]
+  )
   const fixMenu = [
     {
       label: menuTitleAll,
@@ -35,8 +46,8 @@ const SingleGroupDropdown = memo((props) => {
       result = result.filter((g) => g.id !== "hidden")
     }
 
-    return result
-  }, [groups, options.setting.isShowHiddenExtension])
+    return [...result, noGroup]
+  }, [groups, noGroup, options.setting.isShowHiddenExtension])
 
   const fixedExtensionIds = useMemo(
     () => groups.find((group) => group.id === "fixed")?.extensions ?? [],
@@ -52,10 +63,12 @@ const SingleGroupDropdown = memo((props) => {
     // 批量操作期间冻结所有开关的视觉状态，避免逐个扩展更新时短暂显示 mixed。
     setGroupStateSnapshot(
       Object.fromEntries(
-        visibleGroups.map((item) => [
-          item.id,
-          getGroupEnableState(item, extensions, fixedExtensionIds, enabledById)
-        ])
+        visibleGroups
+          .filter((item) => item.id !== NO_GROUP_ID)
+          .map((item) => [
+            item.id,
+            getGroupEnableState(item, extensions, fixedExtensionIds, enabledById)
+          ])
       )
     )
     try {
@@ -67,16 +80,17 @@ const SingleGroupDropdown = memo((props) => {
   }
 
   const groupMenuItems = visibleGroups.map((group) => {
-    const isFixed = group.id === "fixed"
-    const state =
-      groupStateSnapshot?.[group.id] ??
-      getGroupEnableState(group, extensions, fixedExtensionIds, enabledById)
+    const hasStateToggle = group.id !== "fixed" && group.id !== NO_GROUP_ID
+    const state = hasStateToggle
+      ? (groupStateSnapshot?.[group.id] ??
+        getGroupEnableState(group, extensions, fixedExtensionIds, enabledById))
+      : null
 
     return {
       label: (
         <GroupMenuItem>
           <span className="group-name">{group.name}</span>
-          {!isFixed && (
+          {hasStateToggle && (
             <GroupStateToggle
               state={state}
               loading={groupStateSnapshot !== null}
