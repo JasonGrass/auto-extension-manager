@@ -869,6 +869,15 @@
   "group_sort_by_install_time": {
     "message": "按安裝時間排序"
   },
+  "management_load_error_title": {
+    "message": "擴充功能管理載入失敗"
+  },
+  "management_load_error_description": {
+    "message": "未能取得擴充功能資料，或表格呈現逾時。請重新整理頁面後再試。"
+  },
+  "management_reload": {
+    "message": "重新整理並重試"
+  },
   "end": {
     "message": "end"
   }

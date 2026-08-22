@@ -869,6 +869,15 @@
   "group_sort_by_install_time": {
     "message": "Сортировка по дате установки"
   },
+  "management_load_error_title": {
+    "message": "Не удалось загрузить управление расширениями"
+  },
+  "management_load_error_description": {
+    "message": "Данные расширений не получены или таблица загружалась слишком долго. Обновите страницу и повторите попытку."
+  },
+  "management_reload": {
+    "message": "Обновить и повторить"
+  },
   "end": {
     "message": "Окончено"
   }

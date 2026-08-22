@@ -869,6 +869,15 @@
   "group_sort_by_install_time": {
     "message": "按安装时间排序"
   },
+  "management_load_error_title": {
+    "message": "扩展管理加载失败"
+  },
+  "management_load_error_description": {
+    "message": "未能获取扩展数据，或表格渲染超时。请刷新页面后重试。"
+  },
+  "management_reload": {
+    "message": "刷新并重试"
+  },
   "end": {
     "message": "end"
   }

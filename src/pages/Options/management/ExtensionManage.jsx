@@ -16,6 +16,7 @@ import { ExtensionManageStyle } from "./ExtensionManageStyle"
 import ExtensionNameItem from "./ExtensionNameItem"
 import ExtensionOperationItem from "./ExtensionOperationItem"
 import { buildRecords } from "./utils"
+import { ManagementLoadError } from "./managementLoadPolicy"
 
 const { Search } = Input
 
@@ -26,7 +27,7 @@ const forage = localforage.createInstance({
   storeName: "management"
 })
 
-const ExtensionManage = memo(({ extensions, options }) => {
+const ExtensionManage = memo(({ extensions, options, onTableRendered, onTableError }) => {
   const [messageApi, contextHolder] = message.useMessage()
 
   // 全部数据
@@ -45,22 +46,50 @@ const ExtensionManage = memo(({ extensions, options }) => {
   // 初始化
   useEffect(() => {
     if (!options.management) {
+      onTableError?.(
+        new ManagementLoadError(
+          "MISSING_MANAGEMENT_OPTIONS",
+          "The management section is missing from extension options"
+        )
+      )
       return
     }
-    const initData = buildRecords(extensions, options.management)
-    setData(initData)
-    setShownData(initData)
-  }, [extensions, options])
+    try {
+      // Known low-probability risk: if alias/remark is saved before an outstanding extension
+      // enhancement finishes, the later extensions update can briefly rebuild records from
+      // the initially loaded (stale) options. This fast-interaction race is intentionally
+      // left unhandled for now.
+      const initData = buildRecords(extensions, options.management)
+      if (initData.length === 0) {
+        onTableError?.(
+          new ManagementLoadError(
+            "NO_TABLE_DATA",
+            "No records were produced for the extension management table"
+          )
+        )
+        return
+      }
+      setData(initData)
+      setShownData(initData)
+    } catch (error) {
+      onTableError?.(error)
+    }
+  }, [extensions, onTableError, options])
 
   // 设置配置的初始化
   useEffect(() => {
     const init = async () => {
-      const show = await forage.getItem("showOperationColumn")
-      setShowOperation(show ?? false)
-      const showMore = await forage.getItem("showMoreDetail")
-      setShowMoreDetail(showMore ?? false)
+      try {
+        const show = await forage.getItem("showOperationColumn")
+        setShowOperation(show ?? false)
+        const showMore = await forage.getItem("showMoreDetail")
+        setShowMoreDetail(showMore ?? false)
+      } catch (error) {
+        // These preferences are optional; their defaults keep the table fully usable.
+        console.warn("[ExtensionManagement] Local display preferences could not be loaded", error)
+      }
     }
-    init()
+    void init()
   }, [])
 
   // 搜索
@@ -83,9 +112,19 @@ const ExtensionManage = memo(({ extensions, options }) => {
 
   const [columns, setColumns] = useState([])
   useEffect(() => {
-    setColumns(buildColumns(showOperation))
+    try {
+      setColumns(buildColumns(showOperation))
+    } catch (error) {
+      onTableError?.(error)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showOperation])
+  }, [onTableError, showOperation])
+
+  useEffect(() => {
+    if (shownData.length > 0 && columns.length > 0) {
+      onTableRendered?.()
+    }
+  }, [columns.length, onTableRendered, shownData.length])
 
   const buildColumns = (showOperation) => {
     const columns = [

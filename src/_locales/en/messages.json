@@ -869,6 +869,15 @@
   "group_sort_by_install_time": {
     "message": "Sort by Install Time"
   },
+  "management_load_error_title": {
+    "message": "Extension management could not be loaded"
+  },
+  "management_load_error_description": {
+    "message": "No extension data was received, or the table took too long to render. Refresh the page to try again."
+  },
+  "management_reload": {
+    "message": "Refresh and retry"
+  },
   "end": {
     "message": "end"
   }

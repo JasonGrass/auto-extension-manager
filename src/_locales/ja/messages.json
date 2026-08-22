@@ -869,6 +869,15 @@
   "group_sort_by_install_time": {
     "message": "インストール時間順で並べ替え"
   },
+  "management_load_error_title": {
+    "message": "拡張機能の管理を読み込めませんでした"
+  },
+  "management_load_error_description": {
+    "message": "拡張機能データを取得できなかったか、テーブルの表示に時間がかかりすぎました。ページを更新して再試行してください。"
+  },
+  "management_reload": {
+    "message": "更新して再試行"
+  },
   "end": {
     "message": "終了"
   }
