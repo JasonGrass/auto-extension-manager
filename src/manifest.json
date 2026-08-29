@@ -36,5 +36,9 @@
     "management",
     "storage",
     "tabs"
+  ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
   ]
 }

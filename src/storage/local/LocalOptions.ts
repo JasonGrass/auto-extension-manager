@@ -119,4 +119,16 @@ export class LocalOptions {
       isNeedBuildExtensionIcon.toString().toLowerCase()
     )
   }
+
+  async getLlmConfig(): Promise<config.ILlmConfig | null> {
+    const value = await this.forage.getItem<config.ILlmConfig>("llmConfig")
+    if (!value) {
+      return null
+    }
+    return value
+  }
+
+  async setLlmConfig(config: config.ILlmConfig) {
+    await this.forage.setItem("llmConfig", config)
+  }
 }

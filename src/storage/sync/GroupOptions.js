@@ -95,6 +95,30 @@ export const GroupOptions = {
     await SyncOptionsStorage.set({ groups: newGroups })
   },
 
+  /**
+   * 一键清空所有普通分组（固定分组和隐藏分组是系统组，保留）。
+   * 返回删除的分组数量。
+   * 一次写回而不是循环 deleteGroup：chrome.storage.sync 有每分钟写次数限制，
+   * 几十个组逐个删既慢又容易触发限流
+   */
+  async clearAll() {
+    const all = await SyncOptionsStorage.getAll()
+    if (!all.groups) {
+      return 0
+    }
+    const kept = all.groups.filter((g) => isSpecialGroup(g))
+    await SyncOptionsStorage.set({ groups: kept })
+    return all.groups.length - kept.length
+  },
+
+  /**
+   * 用快照内容整体替换当前分组配置（含固定/隐藏组），供快照恢复使用。
+   * 入参应为 getGroups() 返回的完整分组数组
+   */
+  async replaceAll(groups) {
+    await SyncOptionsStorage.set({ groups: groups ?? [] })
+  },
+
   async orderGroups(items) {
     const all = await SyncOptionsStorage.getAll()
     if (!all.groups) {

@@ -886,5 +886,293 @@
   },
   "end": {
     "message": "end"
+  },
+  "ai_setting_title": {
+    "message": "AI 功能設定（LLM）"
+  },
+  "ai_setting_privacy_note": {
+    "message": "設定一個 OpenAI 相容的 LLM 服務（DeepSeek、智譜 GLM、Kimi、OpenAI 等）。API Key 僅儲存在本地瀏覽器中，不會同步，也不會上傳到本擴充功能作者的伺服器；AI 分析時，擴充功能的名稱、描述或使用統計會傳送到你填寫的服務位址。"
+  },
+  "ai_setting_base_url": {
+    "message": "API 位址 (baseURL)"
+  },
+  "ai_setting_base_url_extra": {
+    "message": "OpenAI 相容介面位址，例如 https://api.deepseek.com"
+  },
+  "ai_setting_api_key": {
+    "message": "API Key"
+  },
+  "ai_setting_model": {
+    "message": "模型名稱"
+  },
+  "ai_setting_save": {
+    "message": "儲存"
+  },
+  "ai_setting_saved": {
+    "message": "已儲存"
+  },
+  "ai_setting_test": {
+    "message": "測試連線"
+  },
+  "ai_setting_test_ok": {
+    "message": "連線成功"
+  },
+  "ai_setting_test_fail": {
+    "message": "連線失敗"
+  },
+  "ai_data_notice": {
+    "message": "擴充功能名稱、描述或使用統計將傳送到你設定的 LLM 服務進行分析。"
+  },
+  "ai_cancel": {
+    "message": "關閉"
+  },
+  "ai_regenerate": {
+    "message": "重新分析"
+  },
+  "ai_copy": {
+    "message": "複製結果"
+  },
+  "ai_copied": {
+    "message": "已複製"
+  },
+  "ai_error_no_config": {
+    "message": "尚未設定 LLM 服務，請先到設定頁完成設定"
+  },
+  "ai_error_timeout": {
+    "message": "請求逾時：模型回應過慢。深度思考類模型（如 deepseek-reasoner）生成較慢，可在設定頁換成標準對話模型後重試"
+  },
+  "ai_error_network": {
+    "message": "網路錯誤，請檢查 API 位址和網路"
+  },
+  "ai_error_bad_json": {
+    "message": "AI 傳回的資料格式異常，請重試"
+  },
+  "ai_error_http": {
+    "message": "服務傳回錯誤"
+  },
+  "ai_error_unknown": {
+    "message": "發生未知錯誤"
+  },
+  "ai_error_url_invalid": {
+    "message": "API 位址無效：需要以 http:// 或 https:// 開頭，例如 https://api.deepseek.com"
+  },
+  "ai_group_button": {
+    "message": "AI 分組建議"
+  },
+  "ai_group_title": {
+    "message": "AI 分組建議"
+  },
+  "ai_group_scope_label": {
+    "message": "分析範圍"
+  },
+  "ai_group_scope_ungrouped": {
+    "message": "僅未分組的擴充功能"
+  },
+  "ai_group_scope_all": {
+    "message": "全部擴充功能"
+  },
+  "ai_group_run": {
+    "message": "產生建議"
+  },
+  "ai_group_apply": {
+    "message": "套用選取"
+  },
+  "ai_group_applied": {
+    "message": "分組已建立"
+  },
+  "ai_group_applied_partial": {
+    "message": "部分分組建立失敗"
+  },
+  "ai_group_empty": {
+    "message": "沒有產生可用的分組建議"
+  },
+  "ai_group_no_ext": {
+    "message": "當前範圍內沒有可分析的擴充功能，可切換到「全部擴充功能」後再試"
+  },
+  "ai_group_hint": {
+    "message": "點擊「產生建議」開始，AI 會根據擴充功能的用途給出分組方案"
+  },
+  "ai_permission_denied": {
+    "message": "未授予網路權限，跨域請求會被瀏覽器攔截。請到設定頁重新儲存，並在瀏覽器彈窗中點擊允許"
+  },
+  "ai_usage_button": {
+    "message": "AI 精簡分析"
+  },
+  "ai_usage_title": {
+    "message": "AI 精簡分析"
+  },
+  "ai_usage_run": {
+    "message": "開始分析"
+  },
+  "ai_usage_summary_title": {
+    "message": "整體情況"
+  },
+  "ai_usage_empty": {
+    "message": "沒有產生可用的建議"
+  },
+  "ai_usage_hint": {
+    "message": "點擊「開始分析」開始，AI 會根據歷史記錄和目前狀態給出精簡建議"
+  },
+  "ai_usage_done": {
+    "message": "已處理"
+  },
+  "ai_usage_type_disable": {
+    "message": "建議停用"
+  },
+  "ai_usage_type_uninstall": {
+    "message": "建議解除安裝"
+  },
+  "ai_usage_type_review": {
+    "message": "待確認"
+  },
+  "ai_usage_disable_confirm": {
+    "message": "確認停用選取的擴充功能？可以隨時重新啟用。"
+  },
+  "ai_usage_uninstall_confirm": {
+    "message": "確認解除安裝？Chrome 會再彈出確認框。"
+  },
+  "ai_usage_disabled_ok": {
+    "message": "已停用"
+  },
+  "ai_setting_fetch_models": {
+    "message": "取得模型清單"
+  },
+  "ai_setting_models_ok": {
+    "message": "已取得可用模型"
+  },
+  "ai_setting_models_empty": {
+    "message": "服務未傳回任何模型"
+  },
+  "ai_running_tip": {
+    "message": "AI 正在分析，複雜請求可能需要 1-2 分鐘，請稍候"
+  },
+  "ai_elapsed_time": {
+    "message": "已用時 $1 秒"
+  },
+  "ai_group_merge_title": {
+    "message": "併入現有分組"
+  },
+  "group_stat_total": {
+    "message": "共 $1 個擴充功能"
+  },
+  "group_stat_grouped": {
+    "message": "已分類 $1 個"
+  },
+  "group_stat_ungrouped": {
+    "message": "未分類 $1 個"
+  },
+  "ai_group_batch_progress": {
+    "message": "正在分析第 $1 / $2 批"
+  },
+  "ai_group_include_permissions": {
+    "message": "附加權限資訊（幫助識別無描述的擴充功能）"
+  },
+  "ai_group_cleanup_title": {
+    "message": "冗餘分組合併建議"
+  },
+  "ai_group_cleanup_item": {
+    "message": "「$1」併入「$2」（成員遷移後刪除原組）"
+  },
+  "ai_group_cleanup_running": {
+    "message": "正在檢查分組冗餘…"
+  },
+  "ai_group_stop": {
+    "message": "停止分析"
+  },
+  "ai_group_stopped": {
+    "message": "已停止：以下為已完成批次的結果"
+  },
+  "group_clear_all": {
+    "message": "清空分組"
+  },
+  "group_clear_all_confirm_title": {
+    "message": "清空所有分組？"
+  },
+  "group_clear_all_confirm_content": {
+    "message": "將刪除全部普通分組（固定分組、隱藏分組保留）。擴充功能本身不會被解除安裝，此操作不可復原"
+  },
+  "group_clear_all_done": {
+    "message": "已刪除 $1 個分組"
+  },
+  "group_snapshot_button": {
+    "message": "快照"
+  },
+  "group_snapshot_title": {
+    "message": "分組快照"
+  },
+  "group_snapshot_name_placeholder": {
+    "message": "快照名稱（留空自動用時間）"
+  },
+  "group_snapshot_save": {
+    "message": "儲存目前為快照"
+  },
+  "group_snapshot_empty": {
+    "message": "還沒有快照"
+  },
+  "group_snapshot_restore": {
+    "message": "恢復"
+  },
+  "group_snapshot_restore_confirm": {
+    "message": "將用快照內容覆蓋目前全部分組，未儲存的調整會遺失，確定恢復？"
+  },
+  "group_snapshot_restored": {
+    "message": "快照已恢復"
+  },
+  "group_snapshot_saved": {
+    "message": "快照已儲存"
+  },
+  "group_snapshot_deleted": {
+    "message": "快照已刪除"
+  },
+  "group_snapshot_delete": {
+    "message": "刪除"
+  },
+  "group_snapshot_meta": {
+    "message": "$1 個分組 / $2 個擴充功能"
+  },
+  "ai_group_preset_label": {
+    "message": "預設分組（AI 只把擴充功能分配到這些組）"
+  },
+  "ai_group_preset_edit": {
+    "message": "編輯"
+  },
+  "ai_group_preset_done": {
+    "message": "完成"
+  },
+  "ai_group_preset_add_placeholder": {
+    "message": "新增分組名（2-8 字）"
+  },
+  "ai_group_preset_add": {
+    "message": "新增"
+  },
+  "ai_group_preset_reset": {
+    "message": "恢復預設"
+  },
+  "ai_group_preset_saved": {
+    "message": "預設分組已儲存"
+  },
+  "ai_group_preset_duplicate": {
+    "message": "該分組名已存在"
+  },
+  "ai_group_preset_invalid": {
+    "message": "分組名需為 2-8 個字，且至少保留一個分組"
+  },
+  "ai_group_preset_rename": {
+    "message": "重新命名"
+  },
+  "group_snapshot_export": {
+    "message": "匯出"
+  },
+  "group_snapshot_import": {
+    "message": "匯入快照"
+  },
+  "group_snapshot_import_invalid": {
+    "message": "檔案格式不正確：需要是分組快照匯出的 JSON 檔案"
+  },
+  "group_snapshot_imported": {
+    "message": "快照已匯入"
+  },
+  "setting_export_ai_tip": {
+    "message": "匯出內容包含 AI 設定（含 API Key 明文）、預設分組和分組快照，請妥善保管匯出檔案"
   }
 }

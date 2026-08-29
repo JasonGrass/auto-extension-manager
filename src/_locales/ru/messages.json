@@ -886,5 +886,293 @@
   },
   "end": {
     "message": "Окончено"
+  },
+  "ai_setting_title": {
+    "message": "Настройки ИИ (LLM)"
+  },
+  "ai_setting_privacy_note": {
+    "message": "Настройте совместимый с OpenAI LLM-сервис (DeepSeek, Zhipu GLM, Kimi, OpenAI и др.). API-ключ хранится только локально в браузере, не синхронизируется и не отправляется на серверы автора расширения. При анализе названия, описания и статистика использования расширений отправляются на указанный вами адрес сервиса."
+  },
+  "ai_setting_base_url": {
+    "message": "Адрес API (baseURL)"
+  },
+  "ai_setting_base_url_extra": {
+    "message": "Адрес OpenAI-совместимого API, например https://api.deepseek.com"
+  },
+  "ai_setting_api_key": {
+    "message": "API-ключ"
+  },
+  "ai_setting_model": {
+    "message": "Название модели"
+  },
+  "ai_setting_save": {
+    "message": "Сохранить"
+  },
+  "ai_setting_saved": {
+    "message": "Сохранено"
+  },
+  "ai_setting_test": {
+    "message": "Проверить соединение"
+  },
+  "ai_setting_test_ok": {
+    "message": "Соединение установлено"
+  },
+  "ai_setting_test_fail": {
+    "message": "Ошибка соединения"
+  },
+  "ai_data_notice": {
+    "message": "Названия, описания и статистика использования расширений будут отправлены на настроенный вами LLM-сервис для анализа."
+  },
+  "ai_cancel": {
+    "message": "Закрыть"
+  },
+  "ai_regenerate": {
+    "message": "Повторить анализ"
+  },
+  "ai_copy": {
+    "message": "Копировать результат"
+  },
+  "ai_copied": {
+    "message": "Скопировано"
+  },
+  "ai_error_no_config": {
+    "message": "LLM-сервис не настроен. Сначала настройте его на странице настроек"
+  },
+  "ai_error_timeout": {
+    "message": "Таймаут: модель отвечает слишком медленно. Reasoning-модели (например deepseek-reasoner) работают медленно — смените модель на стандартную в настройках и повторите"
+  },
+  "ai_error_network": {
+    "message": "Ошибка сети. Проверьте адрес API и подключение"
+  },
+  "ai_error_bad_json": {
+    "message": "Некорректный формат данных от ИИ. Повторите попытку"
+  },
+  "ai_error_http": {
+    "message": "Сервис вернул ошибку"
+  },
+  "ai_error_unknown": {
+    "message": "Произошла неизвестная ошибка"
+  },
+  "ai_error_url_invalid": {
+    "message": "Недействительный адрес API: должен начинаться с http:// или https://, например https://api.deepseek.com"
+  },
+  "ai_group_button": {
+    "message": "ИИ-предложения групп"
+  },
+  "ai_group_title": {
+    "message": "ИИ-предложения групп"
+  },
+  "ai_group_scope_label": {
+    "message": "Область анализа"
+  },
+  "ai_group_scope_ungrouped": {
+    "message": "Только расширения без групп"
+  },
+  "ai_group_scope_all": {
+    "message": "Все расширения"
+  },
+  "ai_group_run": {
+    "message": "Создать предложения"
+  },
+  "ai_group_apply": {
+    "message": "Применить выбранные"
+  },
+  "ai_group_applied": {
+    "message": "Группы созданы"
+  },
+  "ai_group_applied_partial": {
+    "message": "Некоторые группы не созданы"
+  },
+  "ai_group_empty": {
+    "message": "Нет подходящих предложений групп"
+  },
+  "ai_group_no_ext": {
+    "message": "В текущем диапазоне нет расширений для анализа. Переключитесь на «Все расширения» и повторите"
+  },
+  "ai_group_hint": {
+    "message": "Нажмите «Создать предложения» — ИИ предложит группы по назначению расширений"
+  },
+  "ai_permission_denied": {
+    "message": "Сетевое разрешение не выдано, кросс-доменные запросы блокируются браузером. Пересохраните настройки и нажмите «Разрешить» в диалоге браузера"
+  },
+  "ai_usage_button": {
+    "message": "ИИ-анализ нагрузки"
+  },
+  "ai_usage_title": {
+    "message": "ИИ-анализ нагрузки"
+  },
+  "ai_usage_run": {
+    "message": "Начать анализ"
+  },
+  "ai_usage_summary_title": {
+    "message": "Общая картина"
+  },
+  "ai_usage_empty": {
+    "message": "Нет подходящих предложений"
+  },
+  "ai_usage_hint": {
+    "message": "Нажмите «Начать анализ» — ИИ проанализирует историю и предложит, что отключить или удалить"
+  },
+  "ai_usage_done": {
+    "message": "Обработано"
+  },
+  "ai_usage_type_disable": {
+    "message": "Предлагает отключить"
+  },
+  "ai_usage_type_uninstall": {
+    "message": "Предлагает удалить"
+  },
+  "ai_usage_type_review": {
+    "message": "На проверку"
+  },
+  "ai_usage_disable_confirm": {
+    "message": "Отключить выбранные расширения? Их можно снова включить в любой момент."
+  },
+  "ai_usage_uninstall_confirm": {
+    "message": "Удалить? Chrome покажет окно подтверждения."
+  },
+  "ai_usage_disabled_ok": {
+    "message": "Отключено"
+  },
+  "ai_setting_fetch_models": {
+    "message": "Получить список моделей"
+  },
+  "ai_setting_models_ok": {
+    "message": "Получен список доступных моделей"
+  },
+  "ai_setting_models_empty": {
+    "message": "Сервис не вернул моделей"
+  },
+  "ai_running_tip": {
+    "message": "ИИ анализирует данные. Сложные запросы могут занимать 1–2 минуты, подождите"
+  },
+  "ai_elapsed_time": {
+    "message": "Прошло: $1 с"
+  },
+  "ai_group_merge_title": {
+    "message": "Объединить с существующими группами"
+  },
+  "group_stat_total": {
+    "message": "Всего расширений: $1"
+  },
+  "group_stat_grouped": {
+    "message": "Классифицировано: $1"
+  },
+  "group_stat_ungrouped": {
+    "message": "Без группы: $1"
+  },
+  "ai_group_batch_progress": {
+    "message": "Анализ партии $1 / $2"
+  },
+  "ai_group_include_permissions": {
+    "message": "Добавить сведения о разрешениях (помогает распознать расширения без описания)"
+  },
+  "ai_group_cleanup_title": {
+    "message": "Предложения по объединению групп"
+  },
+  "ai_group_cleanup_item": {
+    "message": "«$1» объединить с «$2» (участники переносятся, исходная группа удаляется)"
+  },
+  "ai_group_cleanup_running": {
+    "message": "Проверка дублирования групп…"
+  },
+  "ai_group_stop": {
+    "message": "Остановить анализ"
+  },
+  "ai_group_stopped": {
+    "message": "Остановлено: показаны результаты завершённых партий"
+  },
+  "group_clear_all": {
+    "message": "Очистить группы"
+  },
+  "group_clear_all_confirm_title": {
+    "message": "Удалить все группы?"
+  },
+  "group_clear_all_confirm_content": {
+    "message": "Будут удалены все обычные группы (фиксированная и скрытая сохранятся). Сами расширения не удаляются. Действие необратимо"
+  },
+  "group_clear_all_done": {
+    "message": "Удалено групп: $1"
+  },
+  "group_snapshot_button": {
+    "message": "Снимки"
+  },
+  "group_snapshot_title": {
+    "message": "Снимки групп"
+  },
+  "group_snapshot_name_placeholder": {
+    "message": "Название снимка (пусто — использовать время)"
+  },
+  "group_snapshot_save": {
+    "message": "Сохранить текущее"
+  },
+  "group_snapshot_empty": {
+    "message": "Снимков пока нет"
+  },
+  "group_snapshot_restore": {
+    "message": "Восстановить"
+  },
+  "group_snapshot_restore_confirm": {
+    "message": "Текущие группы будут заменены содержимым снимка. Несохранённые изменения будут потеряны. Восстановить?"
+  },
+  "group_snapshot_restored": {
+    "message": "Снимок восстановлен"
+  },
+  "group_snapshot_saved": {
+    "message": "Снимок сохранён"
+  },
+  "group_snapshot_deleted": {
+    "message": "Снимок удалён"
+  },
+  "group_snapshot_delete": {
+    "message": "Удалить"
+  },
+  "group_snapshot_meta": {
+    "message": "Групп: $1 / Расширений: $2"
+  },
+  "ai_group_preset_label": {
+    "message": "Предустановленные группы (ИИ распределяет только по ним)"
+  },
+  "ai_group_preset_edit": {
+    "message": "Изменить"
+  },
+  "ai_group_preset_done": {
+    "message": "Готово"
+  },
+  "ai_group_preset_add_placeholder": {
+    "message": "Название группы (2–8 символов)"
+  },
+  "ai_group_preset_add": {
+    "message": "Добавить"
+  },
+  "ai_group_preset_reset": {
+    "message": "Сбросить к стандартным"
+  },
+  "ai_group_preset_saved": {
+    "message": "Предустановленные группы сохранены"
+  },
+  "ai_group_preset_duplicate": {
+    "message": "Такое название группы уже существует"
+  },
+  "ai_group_preset_invalid": {
+    "message": "Название должно быть 2–8 символов, нужна хотя бы одна группа"
+  },
+  "ai_group_preset_rename": {
+    "message": "Переименовать"
+  },
+  "group_snapshot_export": {
+    "message": "Экспорт"
+  },
+  "group_snapshot_import": {
+    "message": "Импорт снимка"
+  },
+  "group_snapshot_import_invalid": {
+    "message": "Неверный формат файла: нужен JSON-файл, экспортированный из снимков групп"
+  },
+  "group_snapshot_imported": {
+    "message": "Снимок импортирован"
+  },
+  "setting_export_ai_tip": {
+    "message": "Экспорт содержит настройки ИИ (API-ключ открытым текстом), предустановленные группы и снимки групп. Храните файл в безопасности"
   }
 }
