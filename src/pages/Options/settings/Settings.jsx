@@ -12,6 +12,7 @@ import { SettingStyle } from "./SettingStyle.js"
 import ContentViewSetting from "./components/ContentViewSetting.jsx"
 import FunctionSetting from "./components/FunctionSetting.jsx"
 import GroupAndSortSetting from "./components/GroupAndSortSetting.jsx"
+import LlmSettings from "./LlmSettings.jsx"
 import SearchSetting from "./components/SearchSetting.jsx"
 import ViewOtherSetting from "./components/ViewOtherSetting.jsx"
 
@@ -116,9 +117,18 @@ function Settings() {
         <FunctionSetting setting={setting} onSettingChange={onSettingChange}></FunctionSetting>
       </div>
 
+      {/* AI 功能设置（LLM 服务配置） */}
+      <h2 className="setting-sub-title">{getLang("ai_setting_title")}</h2>
+
+      <div className="container">
+        <LlmSettings></LlmSettings>
+      </div>
+
       <div className="import-export-container">
+        <Tooltip placement="top" title={getLang("setting_export_ai_tip")}>
+          <Button onClick={onExportConfig}>{getLang("setting_export_config")}</Button>
+        </Tooltip>
         <Button onClick={onImportConfig}>{getLang("setting_import_config")}</Button>
-        <Button onClick={onExportConfig}>{getLang("setting_export_config")}</Button>
         <Tooltip placement="top" title={getLang("setting_restore_default_tip")}>
           <Button onClick={onRestoreDefault}>{getLang("setting_restore_default")}</Button>
         </Tooltip>

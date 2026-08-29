@@ -35,4 +35,14 @@ declare namespace config {
     remark: string
     update_time: number
   }
+
+  /**
+   * LLM 服务配置（OpenAI 兼容接口）
+   * apiKey 属于敏感信息，只存本地 IndexedDB，绝不写入 chrome.storage.sync
+   */
+  export interface ILlmConfig {
+    baseURL: string
+    apiKey: string
+    model: string
+  }
 }

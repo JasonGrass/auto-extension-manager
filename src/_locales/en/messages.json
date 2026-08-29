@@ -886,5 +886,293 @@
   },
   "end": {
     "message": "end"
+  },
+  "ai_setting_title": {
+    "message": "AI Settings (LLM)"
+  },
+  "ai_setting_privacy_note": {
+    "message": "Configure an OpenAI-compatible LLM service (DeepSeek, Zhipu GLM, Kimi, OpenAI, etc.). The API key is stored locally in your browser only — never synced, never sent to the extension author. During AI analysis, extension names, descriptions, or usage statistics are sent to the service address you configured."
+  },
+  "ai_setting_base_url": {
+    "message": "API Address (baseURL)"
+  },
+  "ai_setting_base_url_extra": {
+    "message": "OpenAI-compatible API address, e.g. https://api.deepseek.com"
+  },
+  "ai_setting_api_key": {
+    "message": "API Key"
+  },
+  "ai_setting_model": {
+    "message": "Model Name"
+  },
+  "ai_setting_save": {
+    "message": "Save"
+  },
+  "ai_setting_saved": {
+    "message": "Saved"
+  },
+  "ai_setting_test": {
+    "message": "Test Connection"
+  },
+  "ai_setting_test_ok": {
+    "message": "Connection successful"
+  },
+  "ai_setting_test_fail": {
+    "message": "Connection failed"
+  },
+  "ai_data_notice": {
+    "message": "Extension names, descriptions, or usage statistics will be sent to your configured LLM service for analysis."
+  },
+  "ai_cancel": {
+    "message": "Close"
+  },
+  "ai_regenerate": {
+    "message": "Re-analyze"
+  },
+  "ai_copy": {
+    "message": "Copy Result"
+  },
+  "ai_copied": {
+    "message": "Copied"
+  },
+  "ai_error_no_config": {
+    "message": "LLM service is not configured. Please set it up on the settings page first"
+  },
+  "ai_error_timeout": {
+    "message": "Request timed out: the model responded too slowly. Reasoning models (e.g. deepseek-reasoner) are slow — switch to a standard chat model in the settings and retry"
+  },
+  "ai_error_network": {
+    "message": "Network error. Check the API address and your connection"
+  },
+  "ai_error_bad_json": {
+    "message": "Malformed data returned by the AI. Please retry"
+  },
+  "ai_error_http": {
+    "message": "The service returned an error"
+  },
+  "ai_error_unknown": {
+    "message": "An unknown error occurred"
+  },
+  "ai_error_url_invalid": {
+    "message": "Invalid API address: must start with http:// or https://, e.g. https://api.deepseek.com"
+  },
+  "ai_group_button": {
+    "message": "AI Group Suggestions"
+  },
+  "ai_group_title": {
+    "message": "AI Group Suggestions"
+  },
+  "ai_group_scope_label": {
+    "message": "Scope"
+  },
+  "ai_group_scope_ungrouped": {
+    "message": "Only ungrouped extensions"
+  },
+  "ai_group_scope_all": {
+    "message": "All extensions"
+  },
+  "ai_group_run": {
+    "message": "Generate Suggestions"
+  },
+  "ai_group_apply": {
+    "message": "Apply Selected"
+  },
+  "ai_group_applied": {
+    "message": "Groups created"
+  },
+  "ai_group_applied_partial": {
+    "message": "Some groups failed to create"
+  },
+  "ai_group_empty": {
+    "message": "No usable group suggestions"
+  },
+  "ai_group_no_ext": {
+    "message": "No extensions to analyze in the current scope. Switch to 'All extensions' and retry"
+  },
+  "ai_group_hint": {
+    "message": "Click 'Generate Suggestions' — AI will propose groups based on what each extension does"
+  },
+  "ai_permission_denied": {
+    "message": "Network permission not granted, cross-origin requests will be blocked by the browser. Re-save on the settings page and click Allow in the browser prompt"
+  },
+  "ai_usage_button": {
+    "message": "AI Declutter Analysis"
+  },
+  "ai_usage_title": {
+    "message": "AI Declutter Analysis"
+  },
+  "ai_usage_run": {
+    "message": "Start Analysis"
+  },
+  "ai_usage_summary_title": {
+    "message": "Overview"
+  },
+  "ai_usage_empty": {
+    "message": "No usable suggestions"
+  },
+  "ai_usage_hint": {
+    "message": "Click 'Start Analysis' — AI will review history and current state to suggest what to disable or remove"
+  },
+  "ai_usage_done": {
+    "message": "Done"
+  },
+  "ai_usage_type_disable": {
+    "message": "Suggest disable"
+  },
+  "ai_usage_type_uninstall": {
+    "message": "Suggest uninstall"
+  },
+  "ai_usage_type_review": {
+    "message": "Review"
+  },
+  "ai_usage_disable_confirm": {
+    "message": "Disable the selected extensions? You can re-enable them anytime."
+  },
+  "ai_usage_uninstall_confirm": {
+    "message": "Uninstall? Chrome will show a confirmation dialog."
+  },
+  "ai_usage_disabled_ok": {
+    "message": "Disabled"
+  },
+  "ai_setting_fetch_models": {
+    "message": "Fetch Models"
+  },
+  "ai_setting_models_ok": {
+    "message": "Fetched available models"
+  },
+  "ai_setting_models_empty": {
+    "message": "The service returned no models"
+  },
+  "ai_running_tip": {
+    "message": "The AI is analyzing. Complex requests may take 1-2 minutes, please wait"
+  },
+  "ai_elapsed_time": {
+    "message": "Elapsed: $1s"
+  },
+  "ai_group_merge_title": {
+    "message": "Merge into existing groups"
+  },
+  "group_stat_total": {
+    "message": "$1 extensions in total"
+  },
+  "group_stat_grouped": {
+    "message": "$1 grouped"
+  },
+  "group_stat_ungrouped": {
+    "message": "$1 ungrouped"
+  },
+  "ai_group_batch_progress": {
+    "message": "Analyzing batch $1 / $2"
+  },
+  "ai_group_include_permissions": {
+    "message": "Include permission info (helps identify extensions without descriptions)"
+  },
+  "ai_group_cleanup_title": {
+    "message": "Redundant group merge suggestions"
+  },
+  "ai_group_cleanup_item": {
+    "message": "Merge \"$1\" into \"$2\" (members move, then the source group is deleted)"
+  },
+  "ai_group_cleanup_running": {
+    "message": "Checking for redundant groups…"
+  },
+  "ai_group_stop": {
+    "message": "Stop"
+  },
+  "ai_group_stopped": {
+    "message": "Stopped: showing results from completed batches"
+  },
+  "group_clear_all": {
+    "message": "Clear Groups"
+  },
+  "group_clear_all_confirm_title": {
+    "message": "Clear all groups?"
+  },
+  "group_clear_all_confirm_content": {
+    "message": "All normal groups will be deleted (Fixed and Hidden groups are kept). Extensions themselves are not uninstalled. This cannot be undone"
+  },
+  "group_clear_all_done": {
+    "message": "Deleted $1 groups"
+  },
+  "group_snapshot_button": {
+    "message": "Snapshots"
+  },
+  "group_snapshot_title": {
+    "message": "Group Snapshots"
+  },
+  "group_snapshot_name_placeholder": {
+    "message": "Snapshot name (leave empty for timestamp)"
+  },
+  "group_snapshot_save": {
+    "message": "Save current as snapshot"
+  },
+  "group_snapshot_empty": {
+    "message": "No snapshots yet"
+  },
+  "group_snapshot_restore": {
+    "message": "Restore"
+  },
+  "group_snapshot_restore_confirm": {
+    "message": "Current groups will be overwritten by the snapshot. Unsaved changes will be lost. Restore?"
+  },
+  "group_snapshot_restored": {
+    "message": "Snapshot restored"
+  },
+  "group_snapshot_saved": {
+    "message": "Snapshot saved"
+  },
+  "group_snapshot_deleted": {
+    "message": "Snapshot deleted"
+  },
+  "group_snapshot_delete": {
+    "message": "Delete"
+  },
+  "group_snapshot_meta": {
+    "message": "$1 groups / $2 extensions"
+  },
+  "ai_group_preset_label": {
+    "message": "Preset groups (the AI only assigns extensions to these)"
+  },
+  "ai_group_preset_edit": {
+    "message": "Edit"
+  },
+  "ai_group_preset_done": {
+    "message": "Done"
+  },
+  "ai_group_preset_add_placeholder": {
+    "message": "New group name (2-8 chars)"
+  },
+  "ai_group_preset_add": {
+    "message": "Add"
+  },
+  "ai_group_preset_reset": {
+    "message": "Reset to defaults"
+  },
+  "ai_group_preset_saved": {
+    "message": "Preset groups saved"
+  },
+  "ai_group_preset_duplicate": {
+    "message": "This group name already exists"
+  },
+  "ai_group_preset_invalid": {
+    "message": "Name must be 2-8 characters, and keep at least one group"
+  },
+  "ai_group_preset_rename": {
+    "message": "Rename"
+  },
+  "group_snapshot_export": {
+    "message": "Export"
+  },
+  "group_snapshot_import": {
+    "message": "Import Snapshot"
+  },
+  "group_snapshot_import_invalid": {
+    "message": "Invalid file format: expected a group snapshot JSON file"
+  },
+  "group_snapshot_imported": {
+    "message": "Snapshot imported"
+  },
+  "setting_export_ai_tip": {
+    "message": "Export includes AI settings (API key in plain text), preset groups and group snapshots. Keep the file safe"
   }
 }

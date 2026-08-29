@@ -21,6 +21,7 @@ import { getLang } from ".../utils/utils"
 import { resolveExtensionIcon } from "../../../utils/extensionHelper"
 import { EXTENSION_ICON_CACHE_VERSION } from "../../../utils/extensionIconPolicy"
 import isMatch from "../../../utils/searchHelper"
+import AiUsageModal from "./AiUsageModal"
 import { ExtensionRepo } from "../../Background/extension/ExtensionRepo"
 import { HistoryRepo } from "../../Background/history/HistoryRepo"
 import ExtensionExpandedDetails from "../components/ExtensionExpandedDetails"
@@ -48,6 +49,9 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
 
   // 隐藏的扩展
   const [hiddenExtIds, setHiddenExtIds] = useState(hiddenExtensionIds)
+
+  // AI 减负分析弹窗
+  const [aiUsageOpen, setAiUsageOpen] = useState(false)
 
   useEffect(() => {
     setHiddenExtIds(hiddenExtensionIds)
@@ -277,6 +281,12 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
             records={records}
             hiddenExtensionIds={hiddenExtIds}
             recover={recover}></HiddenRecordView>
+          {/* AI 减负分析 */}
+          <Button
+            className="setting-operation-item"
+            onClick={() => setAiUsageOpen(true)}>
+            {getLang("ai_usage_button")}
+          </Button>
           {/* 清空记录 */}
           <Popconfirm
             title="Clear History Data"
@@ -288,6 +298,8 @@ const ExtensionHistory = memo(({ records, hiddenExtensionIds, loading }) => {
           </Popconfirm>
         </div>
       </div>
+
+      <AiUsageModal open={aiUsageOpen} onClose={() => setAiUsageOpen(false)} />
 
       <Table
         rowKey="id"
