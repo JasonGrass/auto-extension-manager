@@ -1,4 +1,13 @@
 {
+  "edit": {
+    "message": "Edit"
+  },
+  "scene_name_cannot_empty": {
+    "message": "Profile name cannot be empty"
+  },
+  "scene_delete_confirm": {
+    "message": "Delete profile \"$1\"?"
+  },
   "ext_name": {
     "message": "Extension Manager"
   },
@@ -553,6 +562,21 @@
   },
   "setting_import_fail": {
     "message": "Import Fail"
+  },
+  "setting_appearance": {
+    "message": "Appearance"
+  },
+  "setting_behavior": {
+    "message": "Behavior"
+  },
+  "setting_data_management": {
+    "message": "Data management"
+  },
+  "setting_list_options": {
+    "message": "List view"
+  },
+  "setting_grid_options": {
+    "message": "Grid view"
   },
   "setting_popup_ui_setting": {
     "message": "Popup Display Preferences"

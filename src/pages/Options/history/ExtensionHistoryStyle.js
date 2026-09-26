@@ -3,34 +3,42 @@ import { styled } from "styled-components"
 const Style = styled.div`
   .history-manage-tools {
     display: flex;
+    flex-wrap: wrap;
+    gap: 12px 16px;
     align-items: baseline;
     justify-content: space-between;
 
-    margin-bottom: 10px;
+    margin-bottom: 16px;
   }
 
   .history-manage-tools-left {
     display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    min-width: 0;
     align-items: baseline;
 
     .search {
       width: 300px;
-      margin-right: 10px;
+      max-width: 100%;
     }
   }
 
   .history-manage-tools-right {
-    margin: 0 20px 0 0;
+    margin-left: auto;
 
     display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .setting-operation-item {
-    margin: 0 0 0 10px;
+    margin: 0;
   }
 
   .ant-table-wrapper {
-    margin-right: 5px;
+    width: 100%;
+    min-width: 0;
   }
 
   .column-index {
@@ -71,7 +79,7 @@ const Style = styled.div`
     }
 
     :hover {
-      color: ${(props) => props.theme.primary_hover};
+      color: ${(props) => props.theme.nav_link_hover};
     }
   }
 

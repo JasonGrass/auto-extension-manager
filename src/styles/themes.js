@@ -1,38 +1,37 @@
 const sharedTheme = {
-  primary: "#4f6bed",
-  primary_hover: "#3f5bd9",
-  primary_active: "#3349b8",
-  success: "#22a06b",
-  warning: "#d97706",
-  danger: "#dc4c64",
+  primary: "#4668d8",
+  primary_hover: "#3d5dc4",
+  primary_active: "#3451af",
+  success: "#168258",
+  warning: "#9a5a00",
+  danger: "#bb3450",
   on_accent: "#fff"
 }
 
 export const lightTheme = {
   ...sharedTheme,
   isDark: false,
-  bg: "#ffffff",
+  bg: "#f5f7fb",
   surface: "#ffffff",
   surface_elevated: "#ffffff",
   fg: "#202938",
   fg2: "#2b3545",
   fg3: "#465368",
-  fg4: "#59677d",
-  fg5: "#6d7a8f",
-  fg6: "#8792a5",
-  border: "#e9edf3",
-  border2: "#dfe4ec",
-  border3: "#cfd6e1",
-  nav_hover_bg: "#eef2ff",
-  nav_link: "#4057c7",
-  nav_link_hover: "#3047b5",
-  primary_soft: "#eef2ff",
-  primary_soft_strong: "#dfe6ff",
+  fg4: "#667085",
+  fg5: "#667085",
+  fg6: "#667085",
+  border: "#e2e7f0",
+  border2: "#e2e7f0",
+  border3: "#cbd3e1",
+  nav_hover_bg: "#f0f3fa",
+  nav_link: "#3658be",
+  nav_link_hover: "#29499f",
+  nav_link_active: "#243e86",
+  primary_soft: "#edf2ff",
+  primary_soft_strong: "#e4ecff",
   success_soft: "#e9f7f0",
   warning_soft: "#fff5e5",
   danger_soft: "#ffedf1",
-  setting_gradient: "linear-gradient(135deg, #f8faff 0%, #eef2ff 100%)",
-  setting_border_bottom: "#dfe5f0",
   scene_edit_bg: "#ffffff",
   scene_edit_shadow: "rgba(35, 48, 75, 0.14)",
   scene_new_hover_bg: "#f1f4fa",
@@ -40,26 +39,25 @@ export const lightTheme = {
   group_other_color: "#59677d",
   sortable_item_bg: "#ffffff",
   sortable_item_color: "#2b3545",
-  sortable_shadow:
-    "0 0 0 calc(1px / var(--scale-x, 1)) rgba(50, 65, 90, 0.08), 0 4px calc(12px / var(--scale-x, 1)) rgba(35, 48, 75, 0.1)",
-  card_shadow: "0 3px 12px rgba(35, 48, 75, 0.1)",
-  drag_handle_hover_bg: "rgba(79, 107, 237, 0.09)",
-  drag_handle_fill: "#8792a5",
-  input_border: "#d5dbe5",
+  sortable_shadow: "0 0 0 calc(1px / var(--scale-x, 1)) #e2e7f0",
+  card_shadow: "0 6px 20px rgba(35, 48, 75, 0.12)",
+  drag_handle_hover_bg: "#edf2ff",
+  drag_handle_fill: "#667085",
+  input_border: "#8591a6",
   enable_text: "#2b3545",
-  disable_text: "#98a2b3",
+  disable_text: "#667085",
   btn_bg: "#f1f4f8",
   btn_hover_bg: "#e5eaf1",
-  header_shadow: "0 1px 0 #e5e9f0, 0 4px 14px rgba(35, 48, 75, 0.07)",
-  focus_ring: "rgba(79, 107, 237, 0.2)",
+  header_shadow: "0 1px 0 #e2e7f0",
+  focus_ring: "rgba(70, 104, 216, 0.2)",
   scrollbar_thumb: "#c4ccd8",
   scrollbar_track: "#edf0f5",
   disabled_bg: "#f3f5f8",
-  pin_dot: "#22a06b",
+  pin_dot: "#168258",
   pin_ring: "#ffffff",
-  operation_bg: "#4057c7",
-  operation_title_bg: "#354bb5",
-  operation_shadow: "rgba(48, 71, 181, 0.28)",
+  operation_bg: "#ffffff",
+  operation_title_bg: "#f5f7fb",
+  operation_shadow: "rgba(35, 48, 75, 0.14)",
   tooltip_bg: "rgba(24, 31, 43, 0.94)",
   modal_overlay: "rgba(30, 42, 62, 0.38)"
 }
@@ -67,61 +65,56 @@ export const lightTheme = {
 export const darkTheme = {
   ...sharedTheme,
   isDark: true,
-  primary: "#7c96ff",
-  primary_hover: "#93a9ff",
-  primary_active: "#647fe8",
   success: "#45c98d",
   warning: "#f0ad4e",
   danger: "#ff7088",
-  bg: "#11151d",
-  surface: "#171c26",
-  surface_elevated: "#1e2531",
-  fg: "#edf1f7",
+  bg: "#141922",
+  surface: "#1c2330",
+  surface_elevated: "#252e3d",
+  fg: "#e7ecf4",
   fg2: "#dce3ed",
   fg3: "#c3ccd9",
-  fg4: "#aeb9c8",
-  fg5: "#98a5b7",
-  fg6: "#7f8b9d",
-  border: "#222a36",
-  border2: "#2a3442",
-  border3: "#384455",
-  nav_hover_bg: "#20283a",
-  nav_link: "#9aafff",
-  nav_link_hover: "#becaff",
-  primary_soft: "#202942",
-  primary_soft_strong: "#29365c",
+  fg4: "#a7b0c0",
+  fg5: "#a7b0c0",
+  fg6: "#a7b0c0",
+  border: "#323e50",
+  border2: "#323e50",
+  border3: "#455369",
+  nav_hover_bg: "#252e3d",
+  nav_link: "#93b4ff",
+  nav_link_hover: "#b6ccff",
+  nav_link_active: "#d0ddff",
+  primary_soft: "#253552",
+  primary_soft_strong: "#2c4061",
   success_soft: "#17352b",
   warning_soft: "#392b19",
   danger_soft: "#3b2029",
-  setting_gradient: "linear-gradient(135deg, #1b2230 0%, #202942 100%)",
-  setting_border_bottom: "#303a4a",
-  scene_edit_bg: "#202733",
-  scene_edit_shadow: "rgba(0, 0, 0, 0.36)",
-  scene_new_hover_bg: "#202733",
+  scene_edit_bg: "#252e3d",
+  scene_edit_shadow: "rgba(0, 0, 0, 0.2)",
+  scene_new_hover_bg: "#252e3d",
   group_other_bg: "#252e3c",
   group_other_color: "#b6c0cf",
-  sortable_item_bg: "#1b212c",
+  sortable_item_bg: "#1c2330",
   sortable_item_color: "#dce3ed",
-  sortable_shadow:
-    "0 0 0 calc(1px / var(--scale-x, 1)) rgba(148, 163, 184, 0.12), 0 5px calc(16px / var(--scale-x, 1)) rgba(0, 0, 0, 0.3)",
-  card_shadow: "0 4px 16px rgba(0, 0, 0, 0.28)",
-  drag_handle_hover_bg: "rgba(124, 150, 255, 0.13)",
-  drag_handle_fill: "#7f8b9d",
-  input_border: "#354154",
+  sortable_shadow: "0 0 0 calc(1px / var(--scale-x, 1)) #323e50",
+  card_shadow: "0 6px 20px rgba(0, 0, 0, 0.2)",
+  drag_handle_hover_bg: "#253552",
+  drag_handle_fill: "#a7b0c0",
+  input_border: "#65758e",
   enable_text: "#e3e8ef",
-  disable_text: "#707d90",
-  btn_bg: "#222a36",
-  btn_hover_bg: "#2d3746",
-  header_shadow: "0 1px 0 #252e3b, 0 5px 16px rgba(0, 0, 0, 0.3)",
-  focus_ring: "rgba(124, 150, 255, 0.25)",
+  disable_text: "#a7b0c0",
+  btn_bg: "#252e3d",
+  btn_hover_bg: "#323e50",
+  header_shadow: "0 1px 0 #323e50",
+  focus_ring: "rgba(147, 180, 255, 0.25)",
   scrollbar_thumb: "#465267",
   scrollbar_track: "#1a202b",
-  disabled_bg: "#171c25",
+  disabled_bg: "#1c2330",
   pin_dot: "#45c98d",
-  pin_ring: "#171c26",
-  operation_bg: "#2a3659",
-  operation_title_bg: "#354674",
-  operation_shadow: "rgba(0, 0, 0, 0.4)",
+  pin_ring: "#1c2330",
+  operation_bg: "#252e3d",
+  operation_title_bg: "#1c2330",
+  operation_shadow: "rgba(0, 0, 0, 0.2)",
   tooltip_bg: "rgba(8, 11, 16, 0.96)",
   modal_overlay: "rgba(4, 7, 12, 0.68)"
 }
@@ -129,21 +122,82 @@ export const darkTheme = {
 export function getAntThemeTokens(currentTheme) {
   return {
     colorPrimary: currentTheme.primary,
+    colorPrimaryHover: currentTheme.primary_hover,
+    colorPrimaryActive: currentTheme.primary_active,
+    colorPrimaryText: currentTheme.nav_link,
+    colorPrimaryTextHover: currentTheme.nav_link_hover,
+    colorPrimaryTextActive: currentTheme.nav_link_active,
+    colorPrimaryBg: currentTheme.primary_soft,
+    colorPrimaryBgHover: currentTheme.primary_soft_strong,
+    colorPrimaryBorder: currentTheme.nav_link,
+    colorPrimaryBorderHover: currentTheme.nav_link_hover,
+    colorLink: currentTheme.nav_link,
+    colorLinkHover: currentTheme.nav_link_hover,
+    colorLinkActive: currentTheme.nav_link_active,
     colorInfo: currentTheme.primary,
     colorSuccess: currentTheme.success,
     colorWarning: currentTheme.warning,
     colorError: currentTheme.danger,
     colorBgBase: currentTheme.bg,
+    colorBgLayout: currentTheme.bg,
     colorBgContainer: currentTheme.surface,
     colorBgElevated: currentTheme.surface_elevated,
     colorText: currentTheme.fg,
     colorTextSecondary: currentTheme.fg4,
-    colorBorder: currentTheme.border3,
+    colorTextTertiary: currentTheme.fg5,
+    colorTextLightSolid: currentTheme.on_accent,
+    colorBorder: currentTheme.input_border,
     colorBorderSecondary: currentTheme.border2,
+    controlItemBgActive: currentTheme.primary_soft,
+    controlItemBgActiveHover: currentTheme.primary_soft_strong,
+    controlItemBgHover: currentTheme.nav_hover_bg,
     borderRadius: 6,
     borderRadiusLG: 8,
     controlOutline: currentTheme.focus_ring,
     boxShadowSecondary: currentTheme.card_shadow
+  }
+}
+
+export function getAntThemeComponents(currentTheme) {
+  // Ant's outlined buttons and selected menu text otherwise reuse the filled
+  // button palette, which is too dark for text on dark surfaces.
+  const textAccent = {
+    colorPrimary: currentTheme.nav_link,
+    colorPrimaryHover: currentTheme.nav_link_hover,
+    colorPrimaryActive: currentTheme.nav_link_active
+  }
+  return {
+    Button: {
+      defaultHoverColor: currentTheme.nav_link_hover,
+      defaultHoverBorderColor: currentTheme.nav_link,
+      defaultActiveColor: currentTheme.nav_link_active,
+      defaultActiveBorderColor: currentTheme.nav_link_active,
+      defaultShadow: "none",
+      primaryShadow: "none"
+    },
+    Pagination: {
+      ...textAccent,
+      itemActiveColor: currentTheme.nav_link,
+      itemActiveColorHover: currentTheme.nav_link_hover,
+      itemActiveBg: currentTheme.primary_soft
+    },
+    Dropdown: textAccent,
+    Table: textAccent,
+    Steps: {
+      ...textAccent,
+      colorTextLightSolid: currentTheme.isDark ? currentTheme.bg : currentTheme.on_accent
+    },
+    Segmented: {
+      itemSelectedBg: currentTheme.primary_soft,
+      itemSelectedColor: currentTheme.nav_link
+    },
+    Slider: {
+      handleActiveColor: currentTheme.nav_link_hover
+    },
+    Switch: {
+      colorTextQuaternary: currentTheme.input_border,
+      colorTextTertiary: currentTheme.fg4
+    }
   }
 }
 
@@ -159,7 +213,7 @@ export function applyThemeToDocument(currentTheme, isDarkMode) {
   root.style.setProperty("--app-fg-muted", currentTheme.fg5)
   root.style.setProperty("--app-border", currentTheme.border)
   root.style.setProperty("--app-border-strong", currentTheme.border3)
-  root.style.setProperty("--app-primary", currentTheme.primary)
+  root.style.setProperty("--app-primary", currentTheme.nav_link)
   root.style.setProperty("--app-primary-soft", currentTheme.primary_soft)
   root.style.setProperty("--app-disabled-bg", currentTheme.disabled_bg)
   root.style.setProperty("--app-pin-dot", currentTheme.pin_dot)
@@ -169,4 +223,57 @@ export function applyThemeToDocument(currentTheme, isDarkMode) {
   root.style.setProperty("--sortable-shadow", currentTheme.sortable_shadow)
   root.style.setProperty("--drag-handle-hover-bg", currentTheme.drag_handle_hover_bg)
   root.style.setProperty("--drag-handle-fill", currentTheme.drag_handle_fill)
+}
+
+// Keep asynchronous storage reads from replacing a newer preference or updating
+// a page that has unmounted. Storage uses LargeSync's chunked setting keys.
+export function observeThemePreference({ readMode, mediaQuery, storageChanges, onChange }) {
+  let mode
+  let revision = 0
+  let disposed = false
+
+  const publish = (value) => {
+    mode = value === "light" || value === "dark" ? value : "system"
+    onChange({ mode, isDarkMode: mode === "dark" || (mode === "system" && mediaQuery.matches) })
+  }
+
+  const refresh = async () => {
+    const request = ++revision
+    try {
+      const value = await readMode()
+      if (!disposed && request === revision) publish(value)
+    } catch (error) {
+      console.error("Unable to read theme preference", error)
+      if (!disposed && request === revision && mode === undefined) publish("system")
+    }
+  }
+
+  const onSystemChange = () => {
+    if (mode === "system") publish(mode)
+  }
+  const onStorageChange = (changes, area) => {
+    if (
+      area === "sync" &&
+      Object.keys(changes).some((key) => key.startsWith("LS__setting.") || key === "options")
+    ) {
+      void refresh()
+    }
+  }
+
+  mediaQuery.addEventListener("change", onSystemChange)
+  storageChanges.addListener(onStorageChange)
+  void refresh()
+
+  return {
+    setMode(value) {
+      if (disposed) return
+      revision++
+      publish(value)
+    },
+    dispose() {
+      disposed = true
+      mediaQuery.removeEventListener("change", onSystemChange)
+      storageChanges.removeListener(onStorageChange)
+    }
+  }
 }

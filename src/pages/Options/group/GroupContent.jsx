@@ -1,7 +1,9 @@
 import React, { memo, useEffect, useState } from "react"
 
-import { Input, Segmented, notification } from "antd"
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons"
+import { Button, Input, Segmented, notification } from "antd"
 
+import storage from ".../storage/sync"
 import { isExtensionMatch } from ".../utils/searchHelper"
 import { getLang } from ".../utils/utils"
 import GroupContentSpace from "./GroupContentSpace"
@@ -21,7 +23,9 @@ const GroupContent = memo((props) => {
     containExts,
     noneGroupExts,
     sortType,
-    onSortTypeChange
+    onSortTypeChange,
+    onEdit,
+    onDelete
   } = props
 
   const [notificationApi, notificationContextHolder] = notification.useNotification()
@@ -55,6 +59,19 @@ const GroupContent = memo((props) => {
   return (
     <GroupContentStyle>
       {notificationContextHolder}
+      <div className="group-detail-header">
+        <h2 className="group-detail-title">{group.name}</h2>
+        {!storage.helper.isSpecialGroup(group) && (
+          <div className="group-detail-actions">
+            <Button icon={<EditOutlined />} onClick={() => onEdit(group)}>
+              {getLang("edit")}
+            </Button>
+            <Button danger icon={<DeleteOutlined />} onClick={() => onDelete(group)}>
+              {getLang("delete")}
+            </Button>
+          </div>
+        )}
+      </div>
       <div className="search-sort-bar">
         <Search
           className="search"
@@ -94,8 +111,7 @@ const GroupContent = memo((props) => {
         options={options}
         notificationApi={notificationApi}
         onItemClick={onItemClick}></GroupContentSpace>
-
-      <p className="desc">{group.desc}</p>
+      {group.desc && <p className="desc">{group.desc}</p>}
     </GroupContentStyle>
   )
 })

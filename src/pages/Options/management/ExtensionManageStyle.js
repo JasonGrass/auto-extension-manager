@@ -10,7 +10,7 @@ export const ExtensionManageStyle = styled.div`
     justify-content: space-between;
     align-items: center;
     gap: 10px 16px;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
   }
 
   .extension-manage-tools-left {
@@ -46,7 +46,6 @@ export const ExtensionManageStyle = styled.div`
     align-items: center;
     gap: 12px;
     margin-left: auto;
-    margin-right: 5px;
 
     & > a {
       min-width: 0;

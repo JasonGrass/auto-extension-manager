@@ -1,7 +1,7 @@
 import { styled } from "styled-components"
 
 const Style = styled.div`
-  margin-right: 20px;
+  min-width: 0;
 
   .ant-table-cell {
     font-size: 14px;
@@ -35,21 +35,21 @@ const Style = styled.div`
         width: 8px;
         height: 8px;
         box-sizing: border-box;
-        border: 1px solid #bfbfbf;
+        border: 1px solid ${(props) => props.theme.input_border};
         border-radius: 50%;
       }
 
       &:hover::before {
-        border-color: #1677ff;
+        border-color: ${(props) => props.theme.nav_link};
       }
 
       &[aria-current="page"]::before {
-        border-color: #1677ff;
-        background: #1677ff;
+        border-color: ${(props) => props.theme.nav_link};
+        background: ${(props) => props.theme.nav_link};
       }
 
       &:focus-visible {
-        outline: 2px solid #1677ff;
+        outline: 2px solid ${(props) => props.theme.nav_link};
         outline-offset: 1px;
       }
     }
@@ -77,15 +77,14 @@ const Style = styled.div`
   }
 
   .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
     margin-top: 10px;
     margin-bottom: 20px;
 
-    & > * {
-      margin-right: 10px;
-    }
-
     button {
-      width: 100px;
+      min-width: 100px;
     }
   }
 `

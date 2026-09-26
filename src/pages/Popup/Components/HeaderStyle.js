@@ -6,7 +6,7 @@ const Style = styled.div`
 
   height: 42px;
   padding: 0px 5px;
-  margin-bottom: 2px;
+  margin-bottom: 0;
 
   box-shadow: ${(props) => props.theme.header_shadow};
 
@@ -32,7 +32,7 @@ const Style = styled.div`
 
   .right .ant-space {
     &:hover {
-      color: ${(props) => props.theme.primary};
+      color: ${(props) => props.theme.nav_link};
     }
   }
 
@@ -59,7 +59,7 @@ const Style = styled.div`
   .setting-icon {
     font-size: 20px;
     &:hover {
-      color: ${(props) => props.theme.primary};
+      color: ${(props) => props.theme.nav_link};
     }
   }
 
@@ -74,19 +74,29 @@ const Style = styled.div`
 
 const SearchStyle = styled.div`
   position: relative;
+  padding: 0 8px;
+  height: 30px;
+  background-color: ${(props) => props.theme.surface};
 
   input {
+    box-sizing: border-box;
     width: 100%;
     height: 30px;
 
-    margin: -1px -1px 0px 0px;
+    margin: 0;
+    padding: 4px 36px 4px 10px;
 
     outline-style: none;
     border: 1px solid ${(props) => props.theme.input_border};
-    border-radius: 0;
+    border-radius: 6px;
+
+    &::placeholder {
+      color: ${(props) => props.theme.fg4};
+      opacity: 1;
+    }
 
     &:focus {
-      border-color: ${(props) => props.theme.primary};
+      border-color: ${(props) => props.theme.nav_link};
       outline: 0;
       box-shadow: 0 0 0 2px ${(props) => props.theme.focus_ring};
     }
@@ -103,14 +113,14 @@ const SearchStyle = styled.div`
   }
 
   .chrome-store-icon {
-    top: 4px;
-    right: 10px;
+    top: 3px;
+    right: 14px;
     width: 24px;
   }
 
   .edge-store-icon {
     top: 1px;
-    right: 10px;
+    right: 14px;
     width: 24px;
   }
 `

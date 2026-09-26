@@ -6,13 +6,14 @@ const TitleStyle = styled.div`
   color: ${(props) => props.theme.fg2};
 
   h1 {
-    font-size: 30px;
-    line-height: 60px;
+    margin: 0;
+    font-size: 24px;
+    line-height: 36px;
+    font-weight: 600;
   }
 
   .box {
-    border-bottom: 1px solid ${(props) => props.theme.border};
-    margin-bottom: 10px;
+    margin-bottom: 24px;
   }
 `
 

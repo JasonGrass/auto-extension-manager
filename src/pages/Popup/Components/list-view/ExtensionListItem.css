@@ -74,6 +74,7 @@
 }
 
 .list-item-container.is-enable {
+  background-color: var(--app-surface);
   border-bottom: 1px solid var(--app-border);
 }
 

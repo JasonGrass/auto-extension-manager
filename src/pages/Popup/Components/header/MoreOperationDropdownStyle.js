@@ -22,7 +22,7 @@ export const MoreOperationDropdownSnapshotStyle = styled.div`
 
   .snapshot-rename-btn {
     &:hover {
-      color: ${(props) => props.theme.primary};
+      color: ${(props) => props.theme.nav_link};
     }
   }
 

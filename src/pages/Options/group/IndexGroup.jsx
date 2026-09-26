@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
-import { Checkbox } from "antd"
-import { message } from "antd"
-import classNames from "classnames"
+import { Checkbox, Modal, message } from "antd"
 import chromeP from "webext-polyfill-kinda"
 
 import { attachCachedExtensionIcons } from ".../pages/Background/extension/ExtensionRepo"
 import storage from ".../storage/sync"
 import { filterExtensions, isExtExtension } from ".../utils/extensionHelper"
 import analytics from ".../utils/googleAnalyze.js"
-import { getLang, isStringEmpty } from ".../utils/utils.js"
+import { getLang } from ".../utils/utils.js"
 import Title from "../Title.jsx"
 import GroupContent from "./GroupContent.jsx"
 import GroupEditor from "./GroupEditor.jsx"
@@ -36,6 +34,7 @@ function GroupManagement() {
   const [groupListInfo, setGroupListInfo] = useState([])
 
   const [messageApi, contextHolder] = message.useMessage()
+  const [modal, modalContextHolder] = Modal.useModal()
 
   // 未分组扩展中，不显示固定分组的扩展
   const [hiddenFixedGroupInNoneGroup, setHiddenFixedGroupInNoneGroup] = useState(false)
@@ -62,6 +61,7 @@ function GroupManagement() {
   async function updateByGroupConfigs() {
     const groupList = await storage.group.getGroups()
     setGroupListInfo(groupList)
+    return groupList
   }
 
   // 初始化
@@ -123,15 +123,34 @@ function GroupManagement() {
   }, [selectedGroup, groupListInfo, paramGroupId])
 
   const onSelectedChanged = (item) => {
-    setSelectedGroup(item)
     if (item && item.id === AddNewNavItem.id) {
-      setItemEditInfo(AddNewNavItem)
+      setItemEditInfo(null)
       setItemEditType("new")
+    } else {
+      setSelectedGroup(item)
     }
   }
 
-  const onGroupDeleted = async (item) => {
-    await updateByGroupConfigs()
+  const onGroupDelete = (group) => {
+    if (storage.helper.isSpecialGroup(group)) return
+    modal.confirm({
+      title: getLang("group_delete_title"),
+      content: getLang("group_delete_confirm", group.name),
+      centered: true,
+      okText: getLang("delete"),
+      cancelText: getLang("cancel"),
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        try {
+          await storage.group.deleteGroup(group.id)
+          const groups = await updateByGroupConfigs()
+          setSelectedGroup(groups[0])
+        } catch (error) {
+          messageApi.error(error.message)
+          throw error
+        }
+      }
+    })
   }
 
   const onGroupOrdered = async (items) => {
@@ -140,38 +159,18 @@ function GroupManagement() {
   }
 
   const onGroupItemEdit = async (item) => {
+    if (storage.helper.isSpecialGroup(item)) return
     setItemEditInfo(item)
     setItemEditType("edit")
   }
 
   const editCallback = async (editType, info) => {
-    if (editType === "cancel") {
-      setItemEditInfo(null)
-      setItemEditType("")
-      if (info.id === AddNewNavItem.id) {
-        setSelectedGroup(null)
-      }
-      return
+    if (editType !== "cancel") {
+      const groups = await updateByGroupConfigs()
+      setSelectedGroup(groups.find((group) => group.id === info.id))
     }
-
-    try {
-      if (editType === "new") {
-        await updateByGroupConfigs()
-        setSelectedGroup(info)
-      } else if (editType === "edit") {
-        await updateByGroupConfigs()
-        if (selectedGroup?.id === info.id) {
-          setSelectedGroup(info)
-        }
-      }
-      setItemEditInfo(null)
-      setItemEditType("")
-    } catch (error) {
-      messageApi.open({
-        type: "error",
-        content: error.message
-      })
-    }
+    setItemEditInfo(null)
+    setItemEditType("")
   }
 
   if (!options) {
@@ -182,65 +181,53 @@ function GroupManagement() {
     <GroupStyle>
       <Title title={getLang("group_title")}></Title>
       {contextHolder}
+      {modalContextHolder}
       <div className="group-edit-box">
         <div className="left-box">
           <GroupNav
             groupInfo={groupListInfo}
             current={selectedGroup}
             onSelectedChanged={onSelectedChanged}
-            onGroupItemDeleted={onGroupDeleted}
-            onGroupItemEdit={onGroupItemEdit}
             onGroupOrdered={onGroupOrdered}></GroupNav>
         </div>
 
         <div className="right-box">
-          <div
-            className={classNames({
-              "view-hidden":
-                isStringEmpty(selectedGroup?.id) || selectedGroup.id === AddNewNavItem.id
-            })}>
-            {selectedGroup && (
-              <GroupContent
-                containExts={containExts}
-                noneGroupExts={noneGroupExts}
-                group={selectedGroup}
-                groupList={groupListInfo}
-                options={options}
-                onItemClick={onItemClick}
-                sortType={sortType}
-                onSortTypeChange={setSortType}>
-                <div className="group-not-include-filter">
-                  <Checkbox
-                    checked={hiddenFixedGroupInNoneGroup}
-                    onChange={(e) => setHiddenFixedGroupInNoneGroup(e.target.checked)}>
-                    {getLang("group_not_include_hidden_fixed")}
-                  </Checkbox>
-                  <Checkbox
-                    checked={hiddenHiddenGroupInNoneGroup}
-                    onChange={(e) => setHiddenHiddenGroupInNoneGroup(e.target.checked)}>
-                    {getLang("group_not_include_hidden_hidden")}
-                  </Checkbox>
-                  <Checkbox
-                    checked={hiddenOtherGroupInNoneGroup}
-                    onChange={(e) => setHiddenOtherGroupInNoneGroup(e.target.checked)}>
-                    {getLang("group_not_include_hidden_other")}
-                  </Checkbox>
-                </div>
-              </GroupContent>
-            )}
-          </div>
-
-          <div
-            className="scene-edit-panel"
-            style={{ display: itemEditType !== "" ? "block" : "none" }}>
-            <GroupEditor
-              editType={itemEditType}
-              groupInfo={itemEditInfo}
-              editCallback={editCallback}
-            />
-          </div>
+          {selectedGroup && (
+            <GroupContent
+              containExts={containExts}
+              noneGroupExts={noneGroupExts}
+              group={selectedGroup}
+              groupList={groupListInfo}
+              options={options}
+              onEdit={onGroupItemEdit}
+              onDelete={onGroupDelete}
+              onItemClick={onItemClick}
+              sortType={sortType}
+              onSortTypeChange={setSortType}>
+              <div className="group-not-include-filter">
+                <Checkbox
+                  checked={hiddenFixedGroupInNoneGroup}
+                  onChange={(e) => setHiddenFixedGroupInNoneGroup(e.target.checked)}>
+                  {getLang("group_not_include_hidden_fixed")}
+                </Checkbox>
+                <Checkbox
+                  checked={hiddenHiddenGroupInNoneGroup}
+                  onChange={(e) => setHiddenHiddenGroupInNoneGroup(e.target.checked)}>
+                  {getLang("group_not_include_hidden_hidden")}
+                </Checkbox>
+                <Checkbox
+                  checked={hiddenOtherGroupInNoneGroup}
+                  onChange={(e) => setHiddenOtherGroupInNoneGroup(e.target.checked)}>
+                  {getLang("group_not_include_hidden_other")}
+                </Checkbox>
+              </div>
+            </GroupContent>
+          )}
         </div>
       </div>
+      {itemEditType && (
+        <GroupEditor editType={itemEditType} groupInfo={itemEditInfo} editCallback={editCallback} />
+      )}
     </GroupStyle>
   )
 }

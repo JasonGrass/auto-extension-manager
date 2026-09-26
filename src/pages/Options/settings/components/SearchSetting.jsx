@@ -6,8 +6,7 @@ import {
   QuestionCircleOutlined,
   WindowsOutlined
 } from "@ant-design/icons"
-import { Button, Dropdown, Popconfirm, Radio, Slider, Switch, Tooltip, message } from "antd"
-import styled from "styled-components"
+import { Dropdown, Switch, Tooltip } from "antd"
 
 import { isEdgePackage } from ".../utils/channelHelper"
 import { getLang } from ".../utils/utils"
@@ -74,7 +73,7 @@ const SearchSetting = memo(({ setting, onSettingChange }) => {
   }
 
   return (
-    <Style>
+    <div>
       {/* 搜索框：默认显示（未开启时点击 🔍 显示） */}
       <div className="setting-item">
         <span>
@@ -84,7 +83,7 @@ const SearchSetting = memo(({ setting, onSettingChange }) => {
           </Tooltip>{" "}
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_search_display")}
           checked={isShowSearchBar}
           onChange={(value) =>
             onSettingChange(value, setIsShowSearchBar, "isShowSearchBarDefault")
@@ -100,7 +99,7 @@ const SearchSetting = memo(({ setting, onSettingChange }) => {
           </Tooltip>{" "}
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_search_jump")}
           checked={isSupportSearchAppStore}
           onChange={(value) =>
             onSettingChange(value, setIsSupportSearchAppStore, "isSupportSearchAppStore")
@@ -109,30 +108,27 @@ const SearchSetting = memo(({ setting, onSettingChange }) => {
 
       {/* 搜索源 */}
       {isSupportSearchAppStore && (
-        <div className="setting-item setting-item-search-source">
-          <span>{getLang("setting_ui_search_source")}</span>
+        <div className="setting-dependent">
+          <div className="setting-item">
+            <span>{getLang("setting_ui_search_source")}</span>
 
-          <Dropdown.Button
-            className="search-source-dropdown"
-            menu={searchSourceMenuProps}
-            onClick={handleSourceClick}>
-            {extensionSearchSource.label}
-          </Dropdown.Button>
+            <Dropdown.Button
+              className="search-source-dropdown"
+              menu={searchSourceMenuProps}
+              buttonsRender={([sourceButton, menuButton]) => [
+                sourceButton,
+                React.cloneElement(menuButton, {
+                  "aria-label": getLang("setting_ui_search_source")
+                })
+              ]}
+              onClick={handleSourceClick}>
+              {extensionSearchSource.label}
+            </Dropdown.Button>
+          </div>
         </div>
       )}
-    </Style>
+    </div>
   )
 })
 
 export default SearchSetting
-
-const Style = styled.div`
-  .setting-item-search-source {
-    padding: 0px;
-  }
-
-  .search-source-dropdown {
-    width: auto;
-    padding: 0px;
-  }
-`

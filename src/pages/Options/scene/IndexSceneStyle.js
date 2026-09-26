@@ -1,184 +1,133 @@
 import styled from "styled-components"
 
 export const SceneStyle = styled.div`
-  position: relative;
-  height: 100%;
+  padding-bottom: 24px;
+
+  .scene-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 540px;
+    margin-bottom: 20px;
+  }
 
   .current-active-scene-title {
-    font-size: 16px;
+    flex: 1 1 240px;
+    margin: 0;
+    font-size: 14px;
     color: ${(props) => props.theme.fg3};
+    overflow-wrap: anywhere;
   }
 
   .scene-item-container {
-    max-width: 800px;
-
-    margin: 24px 0;
-
-    user-select: none;
+    max-width: 540px;
   }
 
-  @media screen and (max-width: 1400px) {
-    .scene-item-container {
-      max-width: 800px;
+  .SortableList {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 12px;
+    margin: 0;
+  }
+
+  .SortableItem {
+    width: 100%;
+    gap: 8px;
+    padding: 16px 16px 16px 8px;
+    border: 1px solid ${(props) => props.theme.border};
+    border-radius: 8px;
+    background: ${(props) => props.theme.surface};
+    box-shadow: none;
+
+    &:hover,
+    &:focus-within {
+      border-color: ${(props) => props.theme.input_border};
+    }
+
+    &:hover .scene-item-actions,
+    &:focus-within .scene-item-actions {
+      opacity: 1;
+      pointer-events: auto;
     }
   }
 
-  @media screen and (max-width: 1000000px) {
-    .scene-item-container {
-      max-width: 60vw;
+  .DragHandle {
+    align-self: flex-start;
+    box-sizing: border-box;
+    width: 28px;
+    height: 28px;
+    padding: 8px;
+
+    svg {
+      height: 12px;
     }
   }
 
   .scene-item {
-    position: relative;
+    flex: 1;
+    min-width: 0;
+    align-self: stretch;
+  }
+
+  .scene-item-heading {
     display: flex;
     align-items: center;
+    gap: 12px;
+    height: 28px;
 
-    padding: 4px 8px;
-    margin: 4px 4px 4px 0px;
-
-    /* border: 1px solid #ccca;
-    border-radius: 4px; */
-    /* box-shadow: 1px 1px 4px 0px #337ab788; */
-
-    /* &:hover {
-      background-color: #337ab7cc;
-    } */
-
-    h3 {
-      flex: 1 1 auto;
-
-      margin-right: 24px;
-
-      font-size: 14px;
-      font-weight: 700;
-
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
+    .ant-switch {
+      flex-shrink: 0;
     }
-  }
-
-  @keyframes menu-edit-in {
-    0% {
-      opacity: 0;
-      transform: translateY(10%);
-    }
-
-    100% {
-      opacity: 1;
-      transform: translateY(0%);
-    }
-  }
-
-  .scene-item-edit-container {
-    display: none;
-    justify-content: left;
-
-    opacity: 0;
-
-    width: 100%;
-    position: absolute;
-    top: -32px;
-    left: 6px;
-    padding-bottom: 16px;
-
-    animation: menu-edit-in 0.3s ease-out 0.2s forwards;
-
-    .scene-item-edit-icon {
-      display: flex;
-      justify-content: center;
-
-      padding: 4px 8px;
-
-      background-color: ${(props) => props.theme.scene_edit_bg};
-      border-radius: 4px;
-
-      box-shadow: 1px 1px 2px 0px ${(props) => props.theme.scene_edit_shadow};
-
-      font-size: 20px;
-      color: ${(props) => props.theme.primary};
-
-      & > span:hover {
-        cursor: pointer;
-        color: ${(props) => props.theme.primary_hover};
-      }
-    }
-  }
-
-  .scene-item-selected {
-    /* background-color: #337ab788; */
-    color: ${(props) => props.theme.primary};
-    font-weight: 900;
-  }
-
-  .scene-item-selected:hover .scene-item-edit-container {
-    display: flex;
-  }
-
-  .scene-item-handler-container {
-    display: flex;
   }
 
   .scene-item-name {
-    &:hover {
-      color: ${(props) => props.theme.primary_hover};
-    }
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 15px;
+    font-weight: 600;
   }
 
-  .scene-item-new {
-    width: 180px;
-    padding: 14px 16px;
-
-    border-radius: calc(4px / var(--scale-x, 1));
-    box-shadow: ${(props) => props.theme.sortable_shadow};
-
-    &:hover {
-      background-color: ${(props) => props.theme.scene_new_hover_bg};
-    }
-
-    .scene-item-add-icon {
-      font-size: 16px;
-      margin-right: 6px;
-      color: ${(props) => props.theme.primary};
-    }
+  .scene-item-active .scene-item-name {
+    color: ${(props) => props.theme.nav_link};
   }
 
-  .scene-selected-detail {
+  .scene-item-actions {
     display: flex;
-    flex-direction: column;
-    align-content: center;
-    justify-content: center;
+    flex-shrink: 0;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+  }
 
-    max-width: 800px;
+  .scene-item-desc {
+    margin: 10px 0 0;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    color: ${(props) => props.theme.fg3};
+    font-size: 13px;
+    line-height: 22px;
+  }
 
-    margin: 20px 10px 0px 0px;
-    padding: 8px;
-
-    border: 1px solid ${(props) => props.theme.border3};
-    border-radius: 4px;
-
-    h3 {
-      display: inline-block;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    p {
-      padding: 0;
-      margin: 4px 0 0 0;
-
-      font-size: 12px;
-      line-height: 18px;
+  @media (hover: none) {
+    .scene-item-actions {
+      opacity: 1;
+      pointer-events: auto;
     }
   }
 
-  .scene-edit-panel {
-    position: absolute;
-    margin-top: 60px;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    height: calc(100% - 60px);
+  @media (max-width: 600px) {
+    .scene-item-heading {
+      gap: 8px;
+    }
+    .action-label {
+      display: none;
+    }
   }
 `
