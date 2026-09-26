@@ -15,7 +15,7 @@ function RuleSetting() {
   const [extensions, setExtensions] = useState([])
 
   // 所有的规则配置项，列表
-  const [ruleConfigs, setRuleConfigs] = useState([])
+  const [ruleConfigs, setRuleConfigs] = useState(null)
 
   // 用户配置
   const [options, setOptions] = useState({})

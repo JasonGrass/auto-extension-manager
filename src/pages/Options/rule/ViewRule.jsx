@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { Button, Table, message } from "antd"
@@ -7,12 +7,16 @@ import { getLang } from ".../utils/utils"
 import { sendMessage } from "../../../utils/messageHelper"
 import EditRule from "./EditRule"
 import Style from "./ViewRuleStyle"
+import {
+  RULE_PAGE_SIZE,
+  RULE_SCROLL_HEIGHT,
+  getRuleBottomPadding,
+  getRulePage
+} from "./ruleTableScroll.mjs"
 import ActionView from "./view/ActionView"
 import MatchView from "./view/MatchView"
 import OperationView from "./view/OperationView"
 import TargetView from "./view/TargetView"
-
-const { Map } = require("immutable")
 
 const { Column } = Table
 
@@ -23,45 +27,93 @@ const ViewRule = memo((props) => {
 
   const location = useLocation()
   const navigate = useNavigate()
-  const searchParams = new URLSearchParams(location.search)
-  const paramRuleId = searchParams.get("id")
+  const paramRuleId = new URLSearchParams(location.search).get("id")
 
   // 正在编辑的规则
   const [editingConfig, setEditingConfig] = useState(null)
-  const [selectedRuleId, setSelectedRuleId] = useState(null)
+  const [highlight, setHighlight] = useState(null)
+  const selectedRuleId = highlight?.id
 
-  // 规则列表
-  const [records, setRecords] = useState()
-  useEffect(() => {
-    if (configs) {
-      setRecords(configs.map((c, index) => Map(c).set("index", index).toJS()))
-    }
-  }, [configs])
+  const records = useMemo(
+    () => (configs ?? []).map((config, index) => ({ ...config, index })),
+    [configs]
+  )
+  const [currentPage, setCurrentPage] = useState(1)
+  const tableContainerRef = useRef(null)
+  const spacerRef = useRef(null)
+  const scrollToRowRef = useRef(null)
+  const handledLocationRef = useRef(null)
 
-  // 处理 URL 从的参数 id，如果存在，则高亮显示这条规则
-  useEffect(() => {
-    if (!paramRuleId) {
-      return
+  useLayoutEffect(() => {
+    // antd 5.5 has no public Table scrollTo API; keep DOM access scoped to this table.
+    const body = tableContainerRef.current.querySelector(".ant-table-body")
+    const rows = Array.from(body.querySelectorAll(".ant-table-tbody > tr[data-row-key]"))
+    let rowTops = []
+    let resizeFrame
+    const syncPage = () => setCurrentPage(getRulePage(rowTops, body.scrollTop))
+    const measure = () => {
+      const origin = body.getBoundingClientRect().top + body.clientTop - body.scrollTop
+      rowTops = rows.map((row) => row.getBoundingClientRect().top - origin)
+      const contentBottom = rows.length
+        ? rows[rows.length - 1].getBoundingClientRect().bottom - origin
+        : 0
+      spacerRef.current.style.height = `${getRuleBottomPadding(
+        rowTops,
+        contentBottom,
+        body.clientHeight
+      )}px`
+      syncPage()
     }
-    setSelectedRuleId(paramRuleId)
+    measure()
+    scrollToRowRef.current = (index) => {
+      measure()
+      if (rows[index]) {
+        body.scrollTo({ top: rowTops[index], behavior: "instant" })
+        syncPage()
+      }
+    }
+    body.addEventListener("scroll", syncPage, { passive: true })
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(resizeFrame)
+      resizeFrame = requestAnimationFrame(measure)
+    })
+    observer.observe(body)
+    rows.forEach((row) => observer.observe(row))
+    return () => {
+      observer.disconnect()
+      cancelAnimationFrame(resizeFrame)
+      body.removeEventListener("scroll", syncPage)
+      scrollToRowRef.current = null
+    }
+  }, [records])
+
+  // Wait for storage and the DOM before consuming the link or starting the highlight timer.
+  useEffect(() => {
+    if (!paramRuleId || configs === null) return
+    const requestKey = `${location.key}:${paramRuleId}`
+    if (handledLocationRef.current === requestKey) return
+    handledLocationRef.current = requestKey
+    const index = records.findIndex((record) => record.id === paramRuleId)
+    if (index === -1) {
+      setHighlight(null)
+      messageApi.warning(`Rule ${paramRuleId} not found`)
+    } else {
+      scrollToRowRef.current(index)
+      setHighlight({ id: paramRuleId })
+    }
+    const searchParams = new URLSearchParams(location.search)
     searchParams.delete("id")
-    navigate(`?${searchParams.toString()}`, { replace: true })
-    setTimeout(() => {
-      // 一段时间之后，高亮显示消失
-      setSelectedRuleId("")
-    }, 3000)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramRuleId])
+    navigate(
+      { search: searchParams.toString(), hash: location.hash },
+      { replace: true, state: location.state }
+    )
+  }, [paramRuleId, configs, records, location, navigate, messageApi])
 
-  // 如果有 selectedRuleId 但没有找到，则给出提示
   useEffect(() => {
-    if (!selectedRuleId || records === undefined || records.length === 0) {
-      return
-    }
-    if (!records.find((c) => c.id === selectedRuleId)) {
-      messageApi.warning(`Rule ${selectedRuleId} not found`)
-    }
-  }, [records, selectedRuleId, messageApi])
+    if (!highlight) return
+    const timer = setTimeout(() => setHighlight(null), 3000)
+    return () => clearTimeout(timer)
+  }, [highlight])
 
   const onAdd = () => {
     setEditingConfig({})
@@ -131,71 +183,100 @@ const ViewRule = memo((props) => {
   return (
     <Style>
       {contextHolder}
-      <Table
-        dataSource={records}
-        rowKey="id"
-        size="small"
-        pagination={{ position: ["bottomCenter"], hideOnSinglePage: true }}
-        rowClassName={(record, index) => {
-          if (record.id === selectedRuleId) {
-            return "rule-row-selected"
-          } else {
-            return ""
-          }
-        }}>
-        <Column
-          title={getLang("column_index")}
-          dataIndex="index"
-          width={60}
-          align="center"
-          render={(index, record) => {
+      <div ref={tableContainerRef}>
+        <Table
+          dataSource={records}
+          rowKey="id"
+          size="small"
+          loading={configs === null}
+          pagination={false}
+          scroll={{ y: RULE_SCROLL_HEIGHT }}
+          summary={() => (
+            <Table.Summary>
+              <Table.Summary.Row className="rule-scroll-spacer" aria-hidden="true">
+                <Table.Summary.Cell index={0} colSpan={5}>
+                  <div ref={spacerRef} />
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </Table.Summary>
+          )}
+          rowClassName={(record, index) => {
             if (record.id === selectedRuleId) {
-              return <span>✔</span>
+              return "rule-row-selected"
+            } else {
+              return ""
             }
-            return <span>{index + 1}</span>
-          }}
-        />
-        <Column
-          title={getLang("rule_column_match")}
-          dataIndex="match"
-          render={(match, record) => {
-            return <MatchView config={match} options={options}></MatchView>
-          }}
-        />
-        <Column
-          title={getLang("rule_column_extensions")}
-          dataIndex="target"
-          render={(target, record) => {
-            return <TargetView config={target} options={options} extensions={extensions} />
-          }}
-        />
+          }}>
+          <Column
+            title={getLang("column_index")}
+            dataIndex="index"
+            width={60}
+            align="center"
+            render={(index, record) => {
+              if (record.id === selectedRuleId) {
+                return <span>✔</span>
+              }
+              return <span>{index + 1}</span>
+            }}
+          />
+          <Column
+            title={getLang("rule_column_match")}
+            dataIndex="match"
+            render={(match, record) => {
+              return <MatchView config={match} options={options}></MatchView>
+            }}
+          />
+          <Column
+            title={getLang("rule_column_extensions")}
+            dataIndex="target"
+            render={(target, record) => {
+              return <TargetView config={target} options={options} extensions={extensions} />
+            }}
+          />
 
-        <Column
-          title={getLang("rule_column_action")}
-          dataIndex="action"
-          width={200}
-          render={(action, record) => {
-            return <ActionView config={action} />
-          }}
-        />
+          <Column
+            title={getLang("rule_column_action")}
+            dataIndex="action"
+            width={200}
+            render={(action, record) => {
+              return <ActionView config={action} />
+            }}
+          />
 
-        <Column
-          title={getLang("rule_column_operation")}
-          dataIndex="id"
-          width={400}
-          render={(id, record) => {
-            return (
-              <OperationView
-                record={record}
-                onEdit={onEdit}
-                onDuplicate={onDuplicate}
-                onDelete={onDelete}
-                onEnabled={onEnabled}
-              />
-            )
-          }}
-        />
-      </Table>
+          <Column
+            title={getLang("rule_column_operation")}
+            dataIndex="id"
+            width={400}
+            render={(id, record) => {
+              return (
+                <OperationView
+                  record={record}
+                  onEdit={onEdit}
+                  onDuplicate={onDuplicate}
+                  onDelete={onDelete}
+                  onEnabled={onEnabled}
+                />
+              )
+            }}
+          />
+        </Table>
+      </div>
+      {records.length > RULE_PAGE_SIZE && (
+        <nav className="rule-pagination" aria-label={getLang("rule_title")}>
+          {Array.from({ length: Math.ceil(records.length / RULE_PAGE_SIZE) }, (_, index) => (
+            <button
+              key={index}
+              type="button"
+              aria-label={`${getLang("column_index")} ${index * RULE_PAGE_SIZE + 1}–${Math.min(
+                (index + 1) * RULE_PAGE_SIZE,
+                records.length
+              )}`}
+              aria-current={currentPage === index + 1 ? "page" : undefined}
+              onClick={() => scrollToRowRef.current(index * RULE_PAGE_SIZE)}
+            />
+          ))}
+        </nav>
+      )}
 
       <div className="button-group">
         {!editingConfig && (

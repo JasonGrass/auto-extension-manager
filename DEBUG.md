@@ -8,7 +8,7 @@
 
 然后在浏览器中，打开如下的 URL (id 换成实际的扩展 id)，通过 F12 进行调试
 
-`chrome-extension://idididididididididid/popup.html`
-`chrome-extension://idididididididididid/options.html`
+`chrome-extension://opcmoomidakficjacpfidefgmbdljmac/popup.html`
+`chrome-extension://opcmoomidakficjacpfidefgmbdljmac/options.html`
 
 [![debug](https://s21.ax1x.com/2025/04/12/pERyRHA.png)](https://imgse.com/i/pERyRHA)
