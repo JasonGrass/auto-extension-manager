@@ -1,65 +1,79 @@
-import React from "react"
+import React, { useEffect, useRef, useState } from "react"
 
-import styled from "styled-components"
+import { Alert, Form, Input, Modal } from "antd"
 
-/**
- * 模态编辑高阶组件
- */
-function ModalEditorWrapper(props) {
+import { getLang } from ".../utils/utils"
+
+function ModalEditorWrapper({
+  title,
+  initialValues,
+  nameLabel,
+  descLabel,
+  nameRequiredMessage,
+  submitText,
+  onSubmit,
+  onCancel
+}) {
+  const [form] = Form.useForm()
+  const [trigger] = useState(() => document.activeElement)
+  const nameInput = useRef(null)
+  const submitting = useRef(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState("")
+
+  useEffect(() => () => trigger?.focus(), [trigger])
+
+  const onFinish = async (values) => {
+    if (submitting.current) return
+    submitting.current = true
+    setSaving(true)
+    setError("")
+    try {
+      await onSubmit(values)
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      submitting.current = false
+      setSaving(false)
+    }
+  }
+
   return (
-    <Style>
-      <div className="modal-editor-wrapper-container">
-        <h3>{props.title}</h3>
-        <hr />
-        {props.children}
-      </div>
-    </Style>
+    <Modal
+      open
+      centered
+      width={520}
+      title={title}
+      mask={{ closable: false }}
+      keyboard={!saving}
+      closable={!saving}
+      confirmLoading={saving}
+      cancelButtonProps={{ disabled: saving }}
+      okText={submitText}
+      cancelText={getLang("cancel")}
+      onOk={() => form.submit()}
+      onCancel={onCancel}
+      afterOpenChange={(open) => open && nameInput.current?.focus()}
+      styles={{ body: { paddingTop: 16 }, footer: { marginTop: 24 } }}>
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={initialValues}
+        disabled={saving}
+        onFinish={onFinish}>
+        <Form.Item
+          name="name"
+          label={nameLabel}
+          rules={[{ required: true, whitespace: true, message: nameRequiredMessage }]}>
+          <Input ref={nameInput} maxLength={50} />
+        </Form.Item>
+        <Form.Item name="desc" label={descLabel} style={{ marginBottom: 0 }}>
+          <Input.TextArea rows={4} showCount maxLength={200} style={{ resize: "vertical" }} />
+        </Form.Item>
+      </Form>
+      {error && <Alert type="error" showIcon title={error} style={{ marginTop: 24 }} />}
+    </Modal>
   )
 }
 
 export default ModalEditorWrapper
-
-const Style = styled.div`
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: ${(props) => props.theme.modal_overlay};
-  }
-
-  .modal-editor-wrapper-container {
-    width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    position: relative;
-    z-index: 1;
-
-    & > h3 {
-      font-weight: 700;
-      font-size: 15px;
-      color: ${(props) => props.theme.fg2};
-    }
-
-    & > hr {
-      border: 1px solid ${(props) => props.theme.border3};
-      margin: 10px -5px;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: ${(props) => props.theme.surface_elevated};
-      border: 1px solid ${(props) => props.theme.border2};
-      border-radius: 8px;
-      box-shadow: ${(props) => props.theme.card_shadow};
-      z-index: -1;
-    }
-  }
-`

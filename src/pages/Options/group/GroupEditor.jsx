@@ -1,109 +1,33 @@
-import React, { useEffect, useState } from "react"
-
-import { Button, Form, Input, message } from "antd"
+import React from "react"
 
 import { storage } from ".../storage/sync"
-import { getLang, isStringEmpty } from ".../utils/utils"
+import { getLang } from ".../utils/utils"
 import ModalEditorWrapper from "../utils/ModalEditorWrapper"
-import { AddNewNavItem } from "./helpers"
-
-const { TextArea } = Input
 
 function GroupEditor({ editType, groupInfo, editCallback }) {
-  const [messageApi, contextHolder] = message.useMessage()
-
-  const [name, setGroupName] = useState("")
-  const [desc, setGroupDesc] = useState("")
-
-  let title = ""
-  if (editType === "new") {
-    title = getLang("group_new")
-  } else if (editType === "edit") {
-    title = getLang("group_edit")
-  }
-
-  useEffect(() => {
-    if (editType === "edit") {
-      setGroupName(groupInfo.name)
-      setGroupDesc(groupInfo.desc)
-    } else {
-      setGroupName("")
-      setGroupDesc("")
-    }
-  }, [editType, groupInfo])
-
-  const onNameChanged = (e) => {
-    console.log(e)
-    setGroupName(e.target.value)
-  }
-  const onDescChanged = (e) => {
-    setGroupDesc(e.target.value)
-  }
-
-  const onSummitClick = async (e) => {
-    if (isStringEmpty(name)) {
-      messageApi.warning(getLang("group_name_cannot_empty"))
-      return
-    }
-
-    try {
-      if (editType === "new") {
-        const group = {
-          name,
-          desc
-        }
-        await storage.group.addGroup(group)
-        setGroupName("")
-        setGroupDesc("")
-        editCallback?.(editType, group)
-      } else if (editType === "edit") {
-        let info = groupInfo ?? {}
-        info = { ...info }
-        Object.assign(info, { name, desc })
-        await storage.group.update(info)
-        editCallback?.(editType, info)
-      }
-    } catch (error) {
-      messageApi.error(error.message)
-    }
-  }
-
-  const onCancelClick = (e) => {
+  const onSubmit = async (values) => {
+    const info = { ...values }
     if (editType === "new") {
-      editCallback?.("cancel", AddNewNavItem)
+      await storage.group.addGroup(info)
     } else {
-      editCallback?.("cancel", groupInfo)
+      // Only update form fields; group membership may have changed since selection.
+      info.id = groupInfo.id
+      await storage.group.update(info)
     }
+    await editCallback(editType, info)
   }
 
   return (
-    <ModalEditorWrapper title={title}>
-      {contextHolder}
-      <Form labelCol={{ span: 4 }}>
-        <Form.Item label={getLang("group_name")}>
-          <Input maxLength={50} value={name} onChange={(e) => onNameChanged(e)} />
-        </Form.Item>
-        <Form.Item label={getLang("group_desc")}>
-          <TextArea
-            rows={3}
-            showCount
-            maxLength={200}
-            value={desc}
-            onChange={(e) => onDescChanged(e)}
-          />
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 4, span: 4 }}>
-          <div style={{ display: "flex" }}>
-            <Button type="primary" onClick={(e) => onSummitClick(e)}>
-              {editType === "new" ? getLang("add") : getLang("update")}
-            </Button>
-            <Button style={{ marginLeft: 10 }} onClick={(e) => onCancelClick(e)}>
-              {getLang("cancel")}
-            </Button>
-          </div>
-        </Form.Item>
-      </Form>
-    </ModalEditorWrapper>
+    <ModalEditorWrapper
+      title={getLang(editType === "new" ? "group_new" : "group_edit")}
+      initialValues={{ name: groupInfo?.name ?? "", desc: groupInfo?.desc ?? "" }}
+      nameLabel={getLang("group_name")}
+      descLabel={getLang("group_desc")}
+      nameRequiredMessage={getLang("group_name_cannot_empty")}
+      submitText={getLang(editType === "new" ? "add" : "save")}
+      onSubmit={onSubmit}
+      onCancel={() => editCallback("cancel")}
+    />
   )
 }
 

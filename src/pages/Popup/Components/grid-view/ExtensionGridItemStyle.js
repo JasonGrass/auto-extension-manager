@@ -108,19 +108,15 @@ export const ExtensionGridItemStyle = styled.div`
     z-index: 1000;
 
     border-radius: 7px;
+    border: 1px solid ${(props) => props.theme.border};
     background-color: ${(props) => props.theme.operation_bg};
 
     box-shadow: 0 6px 18px ${(props) => props.theme.operation_shadow};
   }
 
-  /* 扩展禁用时，hover 菜单的样式 */
-  .operation-menu-disable {
-    filter: grayscale(70%);
-  }
-
   .operation-menu-title {
     padding: 8px 12px;
-    color: ${(props) => props.theme.on_accent};
+    color: ${(props) => props.theme.fg};
     text-align: center;
 
     overflow: hidden;
@@ -140,7 +136,7 @@ export const ExtensionGridItemStyle = styled.div`
     padding: 2px 6px;
 
     font-size: 22px;
-    color: ${(props) => props.theme.on_accent};
+    color: ${(props) => props.theme.fg3};
   }
 
   .menu-on {
@@ -193,16 +189,17 @@ export const ExtensionGridItemStyle = styled.div`
 
   .operation-menu-item {
     font-size: 20px;
+    border-radius: 4px;
 
     &:hover {
       transform: scale(1.2);
-      color: ${(props) =>
-        props.theme.isDark ? props.theme.primary_hover : props.theme.on_accent};
+      color: ${(props) => props.theme.nav_link};
       text-shadow: none;
     }
   }
 
-  .grid-item-disable {
-    filter: grayscale(100%) opacity(50%);
+  .grid-item-disable img {
+    filter: grayscale(100%);
+    opacity: 0.65;
   }
 `

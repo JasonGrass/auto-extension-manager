@@ -38,10 +38,13 @@ const FunctionSetting = memo(({ setting, onSettingChange }) => {
           {getLang("setting_func_enable_group_exclusively")}
           <Tooltip placement="top" title={getLang("setting_func_enable_group_exclusively_tip")}>
             <QuestionCircleOutlined />
-          </Tooltip>{" "}
+          </Tooltip>
+          <span className="setting-description">
+            {getLang("setting_func_enable_group_exclusively_tip")}
+          </span>
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_func_enable_group_exclusively")}
           checked={isEnableCurrentGroupAndDisableOthers}
           onChange={(value) =>
             onSettingChange(
@@ -57,10 +60,13 @@ const FunctionSetting = memo(({ setting, onSettingChange }) => {
           {getLang("setting_func_activate_scene_exclusively")}
           <Tooltip placement="top" title={getLang("setting_func_activate_scene_exclusively_tip")}>
             <QuestionCircleOutlined />
-          </Tooltip>{" "}
+          </Tooltip>
+          <span className="setting-description">
+            {getLang("setting_func_activate_scene_exclusively_tip")}
+          </span>
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_func_activate_scene_exclusively")}
           checked={isActivateCurrentSceneAndDisableOthers}
           onChange={(value) =>
             onSettingChange(
@@ -77,7 +83,7 @@ const FunctionSetting = memo(({ setting, onSettingChange }) => {
           <InfoCircleOutlined onClick={onHomeLinkHelpClick} className="help-info-icon" />
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_func_home_link_store")}
           checked={isHomeLinkToStore}
           onChange={(value) =>
             onSettingChange(value, setIsHomeLinkToStore, "isHomeLinkToStore")

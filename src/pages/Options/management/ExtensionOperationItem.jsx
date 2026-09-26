@@ -120,7 +120,7 @@ const Style = styled.span`
 
     &:hover {
       transform: scale(1.6);
-      color: ${(props) => props.theme.primary};
+      color: ${(props) => props.theme.nav_link};
       text-shadow: none;
     }
   }

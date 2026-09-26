@@ -1,4 +1,13 @@
 {
+  "edit": {
+    "message": "Изменить"
+  },
+  "scene_name_cannot_empty": {
+    "message": "Название сценария не может быть пустым"
+  },
+  "scene_delete_confirm": {
+    "message": "Удалить сценарий «$1»?"
+  },
   "ext_name": {
     "message": "Менеджер расширений"
   },
@@ -553,6 +562,21 @@
   },
   "setting_import_fail": {
     "message": "Импорт не удался"
+  },
+  "setting_appearance": {
+    "message": "Внешний вид"
+  },
+  "setting_behavior": {
+    "message": "Поведение"
+  },
+  "setting_data_management": {
+    "message": "Управление данными"
+  },
+  "setting_list_options": {
+    "message": "Список"
+  },
+  "setting_grid_options": {
+    "message": "Сетка"
   },
   "setting_popup_ui_setting": {
     "message": "Параметры отображения всплывающих окон"

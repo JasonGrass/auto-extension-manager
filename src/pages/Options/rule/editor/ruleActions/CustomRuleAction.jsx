@@ -221,7 +221,7 @@ const Style = styled.div`
   .steps-container {
     padding: 5px 20px 5px 5px;
 
-    background: ${(props) => props.theme.setting_gradient};
+    background: ${(props) => props.theme.surface};
     border-radius: 5px 5px 0 0;
   }
 

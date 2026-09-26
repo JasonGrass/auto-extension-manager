@@ -1,50 +1,35 @@
 import styled from "styled-components"
 
 export const GroupStyle = styled.div`
-  position: relative;
-  height: 100%;
+  padding-bottom: 24px;
 
   .group-edit-box {
     display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
   }
 
   .left-box {
     width: 200px;
     flex-shrink: 0;
-
-    /* background: linear-gradient(to right, #fff, #337ab788); */
   }
 
   .right-box {
-    flex-grow: 1;
-    margin-left: 10px;
-  }
-
-  .view-hidden {
-    display: none;
-  }
-
-  .scene-edit-panel {
-    position: absolute;
-    margin-top: 60px;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    height: calc(100% - 60px);
+    flex: 1 1 320px;
+    min-width: 0;
   }
 
   .group-not-include-filter {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    gap: 12px;
 
-    margin: 0 20px 0 0;
-    padding: 5px 0 5px 5px;
+    margin: 0;
+    padding: 12px;
 
-    border-radius: 4px;
+    border-radius: 8px;
     border: 1px solid ${(props) => props.theme.border};
-
-    & > * {
-      margin-right: 16px;
-    }
+    background: ${(props) => props.theme.surface};
   }
 `

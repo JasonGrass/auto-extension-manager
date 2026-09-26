@@ -1,4 +1,13 @@
 {
+  "edit": {
+    "message": "編集"
+  },
+  "scene_name_cannot_empty": {
+    "message": "シーン名を入力してください"
+  },
+  "scene_delete_confirm": {
+    "message": "シーン「$1」を削除しますか？"
+  },
   "ext_name": {
     "message": "拡張機能マネージャー"
   },
@@ -553,6 +562,21 @@
   },
   "setting_import_fail": {
     "message": "インポート失敗"
+  },
+  "setting_appearance": {
+    "message": "外観"
+  },
+  "setting_behavior": {
+    "message": "操作の動作"
+  },
+  "setting_data_management": {
+    "message": "データ管理"
+  },
+  "setting_list_options": {
+    "message": "リスト表示"
+  },
+  "setting_grid_options": {
+    "message": "グリッド表示"
   },
   "setting_popup_ui_setting": {
     "message": "ポップアップ表示設定"

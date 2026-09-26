@@ -44,16 +44,20 @@ export const AboutStyle = styled.div`
 
     .version-update {
       width: 500px;
+      max-width: 100%;
       margin-bottom: 12px;
     }
 
-    .ant-tag-has-color {
-      padding: 0px 5px 1px 5px;
-    }
-
     .badges-tag {
+      color: ${(props) => props.theme.nav_link};
+      background: ${(props) => props.theme.primary_soft};
+      border-color: ${(props) => props.theme.input_border};
+      cursor: pointer;
+
       &:hover {
-        cursor: pointer;
+        color: ${(props) => props.theme.nav_link_hover};
+        background: ${(props) => props.theme.primary_soft_strong};
+        border-color: ${(props) => props.theme.nav_link};
       }
     }
   }

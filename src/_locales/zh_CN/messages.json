@@ -1,4 +1,13 @@
 {
+  "edit": {
+    "message": "编辑"
+  },
+  "scene_name_cannot_empty": {
+    "message": "情景模式名称不能为空"
+  },
+  "scene_delete_confirm": {
+    "message": "确认删除情景模式「$1」？"
+  },
   "ext_name": {
     "message": "扩展管理器（Extension Manager）"
   },
@@ -553,6 +562,21 @@
   },
   "setting_import_fail": {
     "message": "导入失败"
+  },
+  "setting_appearance": {
+    "message": "外观"
+  },
+  "setting_behavior": {
+    "message": "操作行为"
+  },
+  "setting_data_management": {
+    "message": "数据管理"
+  },
+  "setting_list_options": {
+    "message": "列表视图"
+  },
+  "setting_grid_options": {
+    "message": "网格视图"
   },
   "setting_popup_ui_setting": {
     "message": "Popup 显示偏好设置"

@@ -46,7 +46,7 @@ const Style = styled.span`
   }
 
   .column-name-channel-Edge {
-    color: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.nav_link};
     background-color: ${(props) => props.theme.primary_soft};
   }
 

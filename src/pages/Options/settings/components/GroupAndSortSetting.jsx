@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { QuestionCircleOutlined } from "@ant-design/icons"
-import { Button, Popconfirm, Radio, Segmented, Slider, Switch, Tooltip, message } from "antd"
+import { Radio, Switch, Tooltip } from "antd"
 
 import { getLang } from ".../utils/utils"
 
@@ -51,7 +51,7 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
       <div className="setting-item">
         <span>{getLang("setting_ui_show_by_group")}</span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_show_by_group")}
           checked={isDisplayByGroup}
           onChange={(value) =>
             onSettingChange(value, setIsDisplayByGroup, "isDisplayByGroup")
@@ -62,7 +62,7 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
       <div className="setting-item">
         <span>{getLang("setting_ui_top_recently_enabled")}</span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_top_recently_enabled")}
           checked={isTopRecentlyEnabled}
           onChange={(value) =>
             onSettingChange(value, setIsTopRecentlyEnabled, "isTopRecentlyEnabled")
@@ -73,7 +73,7 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
       <div className="setting-item">
         <span>{getLang("setting_ui_top_recently_update")}</span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_top_recently_update")}
           checked={isTopRecentlyUpdate}
           onChange={(value) =>
             onSettingChange(value, setIsTopRecentlyUpdate, "isTopRecentlyUpdate")
@@ -82,43 +82,42 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
 
       {/* 最近更新或者最近安装 */}
       {isTopRecentlyUpdate && (
-        <div className="setting-item">
-          <span>
-            ↑ {getLang("setting_ui_top_recently_install_or_update")}
-            <Tooltip
-              placement="top"
-              title={getLang("setting_ui_top_recently_install_or_update_tip")}>
-              <QuestionCircleOutlined />
-            </Tooltip>
-          </span>
+        <div className="setting-dependent">
+          <div className="setting-item">
+            <span>
+              {getLang("setting_ui_top_recently_install_or_update")}
+              <Tooltip
+                placement="top"
+                title={getLang("setting_ui_top_recently_install_or_update_tip")}>
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </span>
 
-          <Radio.Group
-            size="small"
-            value={topRecentlyMode}
-            onChange={(e) =>
-              onSettingChange(e.target.value, setTopRecentlyMode, "topRecentlyMode")
-            }>
-            <Radio value="install">{getLang("setting_ui_top_recently_install_select")}</Radio>
-            <Radio value="update">{getLang("setting_ui_top_recently_update_select")}</Radio>
-          </Radio.Group>
-        </div>
-      )}
-
-      {/* 最近更新的计算天数 */}
-      {isTopRecentlyUpdate && (
-        <div className="setting-item">
-          <span>↑ {getLang("setting_ui_top_recently_days")}</span>
-          <Radio.Group
-            size="small"
-            value={topRecentlyDays}
-            onChange={(e) =>
-              onSettingChange(e.target.value, setTopRecentlyDays, "topRecentlyDays")
-            }>
-            <Radio value={1}>1 Day</Radio>
-            <Radio value={7}>7 Days</Radio>
-            <Radio value={15}>15 Days</Radio>
-            <Radio value={30}>30 Days</Radio>
-          </Radio.Group>
+            <Radio.Group
+              aria-label={getLang("setting_ui_top_recently_install_or_update")}
+              value={topRecentlyMode}
+              onChange={(e) =>
+                onSettingChange(e.target.value, setTopRecentlyMode, "topRecentlyMode")
+              }>
+              <Radio value="install">{getLang("setting_ui_top_recently_install_select")}</Radio>
+              <Radio value="update">{getLang("setting_ui_top_recently_update_select")}</Radio>
+            </Radio.Group>
+          </div>
+          {/* 最近更新的计算天数 */}
+          <div className="setting-item">
+            <span>{getLang("setting_ui_top_recently_days")}</span>
+            <Radio.Group
+              aria-label={getLang("setting_ui_top_recently_days")}
+              value={topRecentlyDays}
+              onChange={(e) =>
+                onSettingChange(e.target.value, setTopRecentlyDays, "topRecentlyDays")
+              }>
+              <Radio value={1}>1 Day</Radio>
+              <Radio value={7}>7 Days</Radio>
+              <Radio value={15}>15 Days</Radio>
+              <Radio value={30}>30 Days</Radio>
+            </Radio.Group>
+          </div>
         </div>
       )}
 
@@ -131,7 +130,7 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
           </Tooltip>{" "}
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_list_sort_type")}
           checked={isSortByFrequency}
           onChange={(value) =>
             onSettingChange(value, setIsSortByFrequency, "isSortByFrequency")
@@ -143,7 +142,7 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
         <div className="setting-item">
           <span>{getLang("setting_list_default_sort_field")}</span>
           <Radio.Group
-            size="small"
+            aria-label={getLang("setting_list_default_sort_field")}
             value={defaultSortField}
             onChange={(e) =>
               onSettingChange(e.target.value, setDefaultSortField, "defaultSortField")
@@ -158,7 +157,7 @@ const GroupAndSortSetting = memo(({ setting, onSettingChange }) => {
       <div className="setting-item">
         <span>{getLang("setting_ui_refresh_after_enable_disable")}</span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_refresh_after_enable_disable")}
           checked={isRefreshAfterEnableDisable ?? true}
           onChange={(value) =>
             onSettingChange(value, setIsRefreshAfterEnableDisable, "isRefreshAfterEnableDisable")

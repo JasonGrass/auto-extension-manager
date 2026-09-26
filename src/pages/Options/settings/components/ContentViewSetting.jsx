@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 
 import { QuestionCircleOutlined } from "@ant-design/icons"
-import { Button, Popconfirm, Radio, Segmented, Slider, Switch, Tooltip, message } from "antd"
+import { Slider, Switch, Tooltip } from "antd"
 
 import { getLang } from ".../utils/utils"
 import { MAX_COLUMN_COUNT, MIN_COLUMN_COUNT } from "../SettingConst.js"
@@ -85,7 +85,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
           </Tooltip>{" "}
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_show_app")}
           checked={isShowApp}
           onChange={(value) => onSettingChange(value, setIsShowApp, "isShowApp")}></Switch>
       </div>
@@ -99,7 +99,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
           </Tooltip>{" "}
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_show_fixed_extension")}
           checked={isShowFixedExtension}
           onChange={(value) =>
             onSettingChange(value, setIsShowFixedExtension, "isShowFixedExtension")
@@ -115,7 +115,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
           </Tooltip>{" "}
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_show_hidden_extension")}
           checked={isShowHiddenExtension}
           onChange={(value) =>
             onSettingChange(value, setIsShowHiddenExtension, "isShowHiddenExtension")
@@ -126,7 +126,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
       <div className="setting-item">
         <span>{getLang("setting_ui_show_fixed_dot")}</span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_show_fixed_dot")}
           checked={isShowDotOfFixedExtension}
           onChange={(value) =>
             onSettingChange(value, setIsShowDotOfFixedExtension, "isShowDotOfFixedExtension")
@@ -142,7 +142,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
           </Tooltip>{" "}
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_ui_show_lock_button")}
           checked={isShowLockButtonInOperationMenu}
           onChange={(value) =>
             onSettingChange(
@@ -154,10 +154,11 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
       </div>
 
       {/* 列表视图下，始终显示快捷操作按钮（默认 hover 显示） */}
+      <h3 className="setting-subgroup-title">{getLang("setting_list_options")}</h3>
       <div className="setting-item">
         <span>{getLang("setting_list_view_show_button")}</span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_list_view_show_button")}
           checked={isShowItemOperationAlways}
           onChange={(value) =>
             onSettingChange(value, setIsShowItemOperationAlways, "isShowItemOperationAlways")
@@ -165,6 +166,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
       </div>
 
       {/* 网格视图下，显示扩展名称 */}
+      <h3 className="setting-subgroup-title">{getLang("setting_grid_options")}</h3>
       <div className="setting-item">
         <span>
           {getLang("setting_list_gird_show_name")}
@@ -173,7 +175,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
           </Tooltip>{" "}
         </span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_list_gird_show_name")}
           checked={isShowAppNameInGirdView}
           onChange={(value) =>
             onSettingChange(value, setIsShowAppNameInGirdView, "isShowAppNameInGirdView")
@@ -182,27 +184,27 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
 
       {/* 网格视图下，扩展显示的列数 */}
       <div className="setting-item">
-        <span>
-          {getLang("setting_list_gird_show_column_number")} ({columnCountInGirdView})
-        </span>
-        <Slider
-          style={{ width: 100, margin: "0 10px 0 0" }}
-          defaultValue={30}
-          value={columnCountInGirdView}
-          onChange={(value) =>
-            onSettingChange(value, setColumnCountInGirdView, "columnCountInGirdView")
-          }
-          min={MIN_COLUMN_COUNT}
-          max={MAX_COLUMN_COUNT}
-          step={1}
-        />
+        <span>{getLang("setting_list_gird_show_column_number")}</span>
+        <div className="setting-slider">
+          <Slider
+            ariaLabelForHandle={getLang("setting_list_gird_show_column_number")}
+            value={columnCountInGirdView}
+            onChange={(value) =>
+              onSettingChange(value, setColumnCountInGirdView, "columnCountInGirdView")
+            }
+            min={MIN_COLUMN_COUNT}
+            max={MAX_COLUMN_COUNT}
+            step={1}
+          />
+          <output>{columnCountInGirdView}</output>
+        </div>
       </div>
 
       {/* 网格视图下，使用灰色样式显示被禁用的扩展 */}
       <div className="setting-item">
         <span>{getLang("setting_list_gird_show_disable_gray")}</span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_list_gird_show_disable_gray")}
           checked={isGaryStyleOfDisableInGridView}
           onChange={(value) =>
             onSettingChange(
@@ -217,7 +219,7 @@ const ContentViewSetting = memo(({ setting, onSettingChange }) => {
       <div className="setting-item">
         <span>{getLang("setting_list_gird_show_menu_right_click")}</span>
         <Switch
-          size="small"
+          aria-label={getLang("setting_list_gird_show_menu_right_click")}
           checked={isMenuDisplayByRightClick}
           onChange={(value) =>
             onSettingChange(value, setIsMenuDisplayByRightClick, "isMenuDisplayByRightClick")

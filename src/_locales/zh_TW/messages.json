@@ -1,4 +1,13 @@
 {
+  "edit": {
+    "message": "編輯"
+  },
+  "scene_name_cannot_empty": {
+    "message": "情境模式名稱不能為空"
+  },
+  "scene_delete_confirm": {
+    "message": "確認刪除情境模式「$1」？"
+  },
   "ext_name": {
     "message": "擴展管理器（Extension Manager）"
   },
@@ -553,6 +562,21 @@
   },
   "setting_import_fail": {
     "message": "導入失敗"
+  },
+  "setting_appearance": {
+    "message": "外觀"
+  },
+  "setting_behavior": {
+    "message": "操作行為"
+  },
+  "setting_data_management": {
+    "message": "資料管理"
+  },
+  "setting_list_options": {
+    "message": "清單檢視"
+  },
+  "setting_grid_options": {
+    "message": "網格檢視"
   },
   "setting_popup_ui_setting": {
     "message": "Popup 顯示偏好設置"

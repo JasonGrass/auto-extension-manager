@@ -12,7 +12,8 @@ import { ThemeProvider } from "styled-components"
 import "./index.css"
 
 import storage from ".../storage/sync"
-import { applyThemeToDocument, darkTheme, getAntThemeTokens, lightTheme } from ".../styles/themes"
+import { getAntThemeComponents, getAntThemeTokens } from ".../styles/themes"
+import useAppTheme from ".../styles/useAppTheme"
 import { isEdgePackage, isEdgeRuntime } from ".../utils/channelHelper"
 import analytics from ".../utils/googleAnalyze"
 import { getLang } from ".../utils/googleAnalyzeHelper"
@@ -26,34 +27,30 @@ const root = createRoot(container)
 const storageViewApi = storage.helper.view.getApi()
 storageViewApi.message = message
 
-prepare().then((props) => {
-  const settingMode = props.options.setting.darkMode ?? "system" // 默认跟随系统
-  let isDarkMode = settingMode === "dark"
-  if (settingMode === "system") {
-    isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-  }
-
-  props.params.isDarkMode = isDarkMode
-  const currentTheme = isDarkMode ? darkTheme : lightTheme
-  applyThemeToDocument(currentTheme, isDarkMode)
-
-  root.render(
+function PopupApp({ prepared }) {
+  const { currentTheme, isDarkMode, themeReady } = useAppTheme()
+  if (!themeReady) return null
+  return (
     <ConfigProvider
       theme={{
         algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
-        token: getAntThemeTokens(currentTheme)
+        token: getAntThemeTokens(currentTheme),
+        components: getAntThemeComponents(currentTheme)
       }}>
       <ThemeProvider theme={currentTheme}>
         <Popup
           style={{ height: "100%" }}
-          originExtensions={props.extensions}
-          options={props.options}
-          params={props.params}
+          originExtensions={prepared.extensions}
+          options={prepared.options}
+          params={{ ...prepared.params, isDarkMode }}
         />
       </ThemeProvider>
     </ConfigProvider>
   )
+}
 
+prepare().then((props) => {
+  root.render(<PopupApp prepared={props} />)
   fireEvent(props)
 })
 
