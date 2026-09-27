@@ -29,4 +29,4 @@ Extension Manager，一個用於管理瀏覽器擴充功能的擴充功能
 支援清單或網格檢視、淺色或深色主題，以及顯示與操作選項的調整。
 
 原始碼與問題回報：https://github.com/JasonGrass/auto-extension-manager
-使用文件（簡體中文）：https://ext.jgrass.cc/
+使用文件：https://ext.jgrass.cc/

@@ -29,4 +29,4 @@ Extension Manager — ブラウザの拡張機能を管理するための拡張�
 リスト表示とグリッド表示、ライトテーマとダークテーマを選択でき、表示や操作のオプションも調整できます。
 
 ソースコード・フィードバック：https://github.com/JasonGrass/auto-extension-manager
-ドキュメント（中国語）：https://ext.jgrass.cc/
+ドキュメント：https://ext.jgrass.cc/

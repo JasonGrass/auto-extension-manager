@@ -29,4 +29,4 @@ List import helps you find and install extensions. You still confirm each instal
 Choose a list or grid view, switch between light and dark themes, and adjust display and interaction options.
 
 Source code and feedback: https://github.com/JasonGrass/auto-extension-manager
-Documentation (in Chinese): https://ext.jgrass.cc/
+Documentation: https://ext.jgrass.cc/
