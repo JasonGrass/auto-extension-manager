@@ -73,7 +73,7 @@ function GroupNav({ groupInfo, current, onSelectedChanged, onGroupOrdered }) {
       </DragDropContext>
       <Button
         block
-        type="dashed"
+        className="group-add-button"
         icon={<PlusOutlined />}
         onClick={() => onSelectedChanged?.(AddNewNavItem)}>
         {getLang("group_new")}

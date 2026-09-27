@@ -1,6 +1,11 @@
 import styled from "styled-components"
 
 export const GroupNavStyle = styled.div`
+  .group-add-button {
+    border: 1px solid ${(props) => props.theme.border};
+    border-radius: 8px;
+  }
+
   .tab-container {
     display: flex;
     align-items: center;
