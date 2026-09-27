@@ -23,6 +23,13 @@ Add `scale=2` to any URL to zoom the whole document to 200% for a larger
 browser screenshot. For options, use a 2560 × 1200 viewport to retain the
 same effective layout as 1280 × 600. The default scale is 1.
 
+Before saving each screenshot, return the page to the top (Ctrl+Home), then
+inspect the actual captured image. Route changes can preserve the previous
+scroll position; finding text in the accessibility tree alone does not prove
+that it is inside the screenshot. The scene image must include the page title,
+Add Profile button and all three complete Work/Study/Leisure cards. Check the
+composited upload PNG too before refreshing the preview and upload ZIP.
+
 This bundle compiles the unmodified current React entrypoints, with the real
 storage facades. It installs an isolated synthetic `chrome` API before dynamic
 imports, seeds eight fictional extensions, three named groups and scenes, five rules and

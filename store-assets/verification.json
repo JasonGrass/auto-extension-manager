@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-27T06:25:24.898Z",
+  "checkedAt": "2026-09-27T09:21:11.806Z",
   "passed": true,
   "count": 16,
   "results": [
@@ -25,7 +25,7 @@
       "height": 800,
       "color": "24-bit RGB PNG",
       "alpha": false,
-      "bytes": 98610
+      "bytes": 141777
     },
     {
       "file": "screenshots/zh-CN/04-share.png",
