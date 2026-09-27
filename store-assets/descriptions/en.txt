@@ -1,0 +1,32 @@
+Extension Manager, an extension for managing browser extensions
+
+Enable or disable extensions with a click, group them by purpose, or automatically change their state using custom rules.
+
+🧩 Extension management
+• Enable or disable individual extensions, or manage a whole group at once.
+• Search by name, description, alias, or note.
+• Add custom aliases and notes to extensions.
+• Open an extension’s settings or homepage, or uninstall extensions you no longer need.
+
+⚙️ Automatic rules
+• Set conditions based on website URLs, profiles, operating systems, or time periods.
+• Enable or disable extensions when conditions match, keep them enabled or disabled only while conditions match, or customize what happens in each case.
+• Apply rules to selected extensions or groups, with optional page refresh after enabling or disabling them.
+
+🎯 Profiles
+Create profiles for work, study, or downtime, then connect them to rules. Switching profiles adjusts extension states according to those rules. Keep multiple profiles active together, or choose to activate just one at a time.
+
+📋 List import, export, and sharing
+• Export extension information as shareable text, JSON, or custom Markdown to keep a record of your tools or share them with others.
+• Import a list from shared text or JSON, see which extensions are already installed, and open store pages for the ones you want to add.
+List import helps you find and install extensions. You still confirm each installation in the store; it does not transfer other extensions’ internal settings or data.
+
+🗂️ History and configuration backup
+• See a history of extension installations, updates, removals, and enable/disable actions.
+• Export and reimport your Extension Manager settings, groups, profiles, rules, aliases, and notes to back up and restore your management setup.
+
+🎨 Interface and settings
+Choose a list or grid view, switch between light and dark themes, and adjust display and interaction options.
+
+Source code and feedback: https://github.com/JasonGrass/auto-extension-manager
+Documentation (in Chinese): https://ext.jgrass.cc/

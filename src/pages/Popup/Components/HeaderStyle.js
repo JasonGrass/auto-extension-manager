@@ -74,7 +74,7 @@ const Style = styled.div`
 
 const SearchStyle = styled.div`
   position: relative;
-  padding: 0 8px;
+  padding: 0;
   height: 30px;
   background-color: ${(props) => props.theme.surface};
 
@@ -88,7 +88,7 @@ const SearchStyle = styled.div`
 
     outline-style: none;
     border: 1px solid ${(props) => props.theme.input_border};
-    border-radius: 6px;
+    border-radius: 0;
 
     &::placeholder {
       color: ${(props) => props.theme.fg4};
@@ -114,13 +114,13 @@ const SearchStyle = styled.div`
 
   .chrome-store-icon {
     top: 3px;
-    right: 14px;
+    right: 6px;
     width: 24px;
   }
 
   .edge-store-icon {
     top: 1px;
-    right: 14px;
+    right: 6px;
     width: 24px;
   }
 `

@@ -1,0 +1,135 @@
+{
+  "checkedAt": "2026-09-27T06:25:24.898Z",
+  "passed": true,
+  "count": 16,
+  "results": [
+    {
+      "file": "screenshots/zh-CN/01-organize.png",
+      "width": 1280,
+      "height": 800,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 192722
+    },
+    {
+      "file": "screenshots/zh-CN/02-rule.png",
+      "width": 1280,
+      "height": 800,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 236334
+    },
+    {
+      "file": "screenshots/zh-CN/03-scene.png",
+      "width": 1280,
+      "height": 800,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 98610
+    },
+    {
+      "file": "screenshots/zh-CN/04-share.png",
+      "width": 1280,
+      "height": 800,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 218394
+    },
+    {
+      "file": "screenshots/zh-CN/05-history.png",
+      "width": 1280,
+      "height": 800,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 177734
+    },
+    {
+      "file": "screenshots/en/01-organize.png",
+      "width": 1280,
+      "height": 800,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 194007
+    },
+    {
+      "file": "screenshots/en/02-rule.png",
+      "width": 1280,
+      "height": 800,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 257330
+    },
+    {
+      "file": "screenshots/en/03-scene.png",
+      "width": 1280,
+      "height": 800,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 148623
+    },
+    {
+      "file": "screenshots/en/04-share.png",
+      "width": 1280,
+      "height": 800,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 225586
+    },
+    {
+      "file": "screenshots/en/05-history.png",
+      "width": 1280,
+      "height": 800,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 180150
+    },
+    {
+      "file": "promos/global/small-440x280.png",
+      "width": 440,
+      "height": 280,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 113953
+    },
+    {
+      "file": "promos/global/marquee-1400x560.png",
+      "width": 1400,
+      "height": 560,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 964825
+    },
+    {
+      "file": "promos/zh-CN/small-440x280.png",
+      "width": 440,
+      "height": 280,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 119925
+    },
+    {
+      "file": "promos/zh-CN/marquee-1400x560.png",
+      "width": 1400,
+      "height": 560,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 877428
+    },
+    {
+      "file": "promos/en/small-440x280.png",
+      "width": 440,
+      "height": 280,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 120135
+    },
+    {
+      "file": "promos/en/marquee-1400x560.png",
+      "width": 1400,
+      "height": 560,
+      "color": "24-bit RGB PNG",
+      "alpha": false,
+      "bytes": 879902
+    }
+  ]
+}
