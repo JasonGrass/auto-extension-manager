@@ -1,0 +1,134 @@
+{
+  "uiSource": "Local repository UI (unreleased)",
+  "demoData": true,
+  "assets": [
+    {
+      "file": "screenshots/zh-CN/01-organize.png",
+      "category": "screenshot",
+      "locale": "zh-CN",
+      "width": 1280,
+      "height": 800,
+      "channels": 3
+    },
+    {
+      "file": "screenshots/zh-CN/02-rule.png",
+      "category": "screenshot",
+      "locale": "zh-CN",
+      "width": 1280,
+      "height": 800,
+      "channels": 3
+    },
+    {
+      "file": "screenshots/zh-CN/03-scene.png",
+      "category": "screenshot",
+      "locale": "zh-CN",
+      "width": 1280,
+      "height": 800,
+      "channels": 3
+    },
+    {
+      "file": "screenshots/zh-CN/04-share.png",
+      "category": "screenshot",
+      "locale": "zh-CN",
+      "width": 1280,
+      "height": 800,
+      "channels": 3
+    },
+    {
+      "file": "screenshots/zh-CN/05-history.png",
+      "category": "screenshot",
+      "locale": "zh-CN",
+      "width": 1280,
+      "height": 800,
+      "channels": 3
+    },
+    {
+      "file": "screenshots/en/01-organize.png",
+      "category": "screenshot",
+      "locale": "en",
+      "width": 1280,
+      "height": 800,
+      "channels": 3
+    },
+    {
+      "file": "screenshots/en/02-rule.png",
+      "category": "screenshot",
+      "locale": "en",
+      "width": 1280,
+      "height": 800,
+      "channels": 3
+    },
+    {
+      "file": "screenshots/en/03-scene.png",
+      "category": "screenshot",
+      "locale": "en",
+      "width": 1280,
+      "height": 800,
+      "channels": 3
+    },
+    {
+      "file": "screenshots/en/04-share.png",
+      "category": "screenshot",
+      "locale": "en",
+      "width": 1280,
+      "height": 800,
+      "channels": 3
+    },
+    {
+      "file": "screenshots/en/05-history.png",
+      "category": "screenshot",
+      "locale": "en",
+      "width": 1280,
+      "height": 800,
+      "channels": 3
+    },
+    {
+      "file": "promos/global/small-440x280.png",
+      "category": "small-promo",
+      "locale": "global",
+      "width": 440,
+      "height": 280,
+      "channels": 3
+    },
+    {
+      "file": "promos/global/marquee-1400x560.png",
+      "category": "marquee-promo",
+      "locale": "global",
+      "width": 1400,
+      "height": 560,
+      "channels": 3
+    },
+    {
+      "file": "promos/zh-CN/small-440x280.png",
+      "category": "small-promo",
+      "locale": "zh-CN",
+      "width": 440,
+      "height": 280,
+      "channels": 3
+    },
+    {
+      "file": "promos/zh-CN/marquee-1400x560.png",
+      "category": "marquee-promo",
+      "locale": "zh-CN",
+      "width": 1400,
+      "height": 560,
+      "channels": 3
+    },
+    {
+      "file": "promos/en/small-440x280.png",
+      "category": "small-promo",
+      "locale": "en",
+      "width": 440,
+      "height": 280,
+      "channels": 3
+    },
+    {
+      "file": "promos/en/marquee-1400x560.png",
+      "category": "marquee-promo",
+      "locale": "en",
+      "width": 1400,
+      "height": 560,
+      "channels": 3
+    }
+  ]
+}

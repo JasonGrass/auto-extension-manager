@@ -1,0 +1,10 @@
+Tool: built-in image_gen.imagegen
+Use case: ads-marketing.
+Create a premium minimal abstract brand backdrop for a browser extension management productivity tool.
+Landscape 5:2 composition, requested 2800x1120.
+Saturated cobalt blue #4668d8 and richer ultramarine with softly lit pale blue and white accents.
+The left 50 percent must be calm blue negative space for separately typeset brand name and slogan.
+On the far right, a restrained sculptural arrangement of three softly rounded rectangular blue and pale blue tiles with small circular nodes and subtle connecting arcs, suggesting neatly organized modules and switching.
+Clean professional software product advertising, editorial restraint, subtle depth, soft ambient light, crisp large geometry, no busy texture, no glitter, no sci-fi. Fill the full rectangle.
+NO text, NO letters, NO logo, NO watermark, NO recognizable third-party icons, NO screenshots or invented UI.
+Keep all important decorative elements inside right-side safe margins.
