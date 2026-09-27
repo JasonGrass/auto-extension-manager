@@ -34,20 +34,32 @@ class DelayCloser {
   }
 
   // 延迟关闭扩展
-  public close(info: chrome.management.ExtensionInfo, after: () => void) {
+  public close(
+    info: chrome.management.ExtensionInfo,
+    after: () => void,
+    isCurrent: () => boolean = () => true
+  ) {
     const token = new DelayCloseToken(info.id)
     this._waiting.push(token)
 
     setTimeout(
       async (t: DelayCloseToken) => {
-        this.removeIneffective()
-        if (!t.Available) {
+        if (!t.Available || !isCurrent()) {
           // 此关闭动作无效，则不再执行
+          this._waiting = this._waiting.filter((item) => item !== t)
           return
         }
-        console.log(`[Extension Manager] disable extension [${info.name}]`)
-        await chrome.management.setEnabled(info.id, false)
-        after?.()
+        try {
+          console.log(`[Extension Manager] disable extension [${info.name}]`)
+          await chrome.management.setEnabled(info.id, false)
+          after?.()
+        } catch (error) {
+          t.cancel()
+          console.warn("Disable extension failed", info.id, error)
+        } finally {
+          // Keep successful tokens cancellable until any associated reload has run.
+          this.removeIneffective()
+        }
       },
       DELAY_TIME,
       token // 触发关闭动作时的 token，此 token 用于记录这个关闭动作是否还有效
@@ -63,6 +75,11 @@ class DelayCloser {
       item.cancel()
     }
     this.removeIneffective()
+  }
+
+  public cancelAll() {
+    for (const token of this._waiting) token.cancel()
+    this._waiting = []
   }
 
   // 从缓存中移除掉所有已经失效的 token，避免内存浪费

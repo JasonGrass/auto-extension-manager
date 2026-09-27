@@ -908,6 +908,15 @@
   "management_reload": {
     "message": "更新して再試行"
   },
+  "config_refresh_failed": {
+    "message": "設定は保存されましたが、自動ルールを更新できませんでした。Extension Manager を再読み込みして再試行してください。"
+  },
+  "config_clear_failed": {
+    "message": "設定を消去できませんでした。もう一度お試しください。"
+  },
+  "config_cache_failed": {
+    "message": "設定は保存されましたが、表示キャッシュを更新できませんでした。Extension Manager を閉じて再度開いてください。"
+  },
   "end": {
     "message": "終了"
   }

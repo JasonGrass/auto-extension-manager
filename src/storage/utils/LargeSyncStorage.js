@@ -133,8 +133,15 @@ function largeSync() {
       reqKeys = getRequestKeys(objKeys)
     }
     chromeSync.get(reqKeys, function (items) {
-      var x = reconstruct(items)
-      callback(x)
+      if (chrome.runtime.lastError) {
+        callback(undefined, new Error(chrome.runtime.lastError.message))
+        return
+      }
+      try {
+        callback(reconstruct(items))
+      } catch (error) {
+        callback(undefined, error)
+      }
     })
   }
   function set(items, callback) {
@@ -150,9 +157,8 @@ function largeSync() {
         return splitKeys.indexOf(x) < 0
       })
 
-      //remove keys that are no longer in use
+      // Queue cleanup before the write; later writers may need these chunk keys.
       chromeSync.remove(removeKeys)
-
       chromeSync.set(splitItems, callback)
     }
   }

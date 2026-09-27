@@ -32,6 +32,12 @@ export async function importConfig(): Promise<boolean> {
     return false
   } catch (error) {
     console.error(error)
+    if (
+      ["CONFIG_REFRESH_FAILED", "CONFIG_CACHE_FAILED"].includes(
+        (error as { code?: string }).code ?? ""
+      )
+    )
+      throw error
     return false
   }
 }

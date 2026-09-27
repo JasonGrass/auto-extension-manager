@@ -908,6 +908,15 @@
   "management_reload": {
     "message": "刷新并重试"
   },
+  "config_refresh_failed": {
+    "message": "配置已儲存，但自動規則未能重新整理。請重新載入擴充功能管理器後再試。"
+  },
+  "config_clear_failed": {
+    "message": "無法清空設定，請再試一次。"
+  },
+  "config_cache_failed": {
+    "message": "設定已儲存，但無法更新本機顯示快取。請關閉並重新開啟擴充功能管理器後再試。"
+  },
   "end": {
     "message": "end"
   }

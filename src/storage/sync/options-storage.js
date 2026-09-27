@@ -1,6 +1,7 @@
 import localforage from "localforage"
 import OptionsSync from "webext-options-sync"
 
+import { notifyRuleConfigChanged } from ".../utils/messageHelper"
 import strCompress from "../utils/ConfigCompress"
 import largeSync from "../utils/LargeSyncStorage"
 
@@ -35,8 +36,9 @@ class ChromeSyncStorage {
     }
 
     return new Promise((resolve, reject) => {
-      largeSync.get(["setting", "groups", "scenes", "ruleConfig", "management"], (items) => {
-        resolve(items)
+      largeSync.get(["setting", "groups", "scenes", "ruleConfig", "management"], (items, error) => {
+        if (error) reject(error)
+        else resolve(items)
       })
     })
   }
@@ -47,7 +49,8 @@ class ChromeSyncStorage {
   async set(options) {
     return new Promise((resolve, reject) => {
       largeSync.set(options, () => {
-        resolve()
+        if (chrome.runtime.lastError) reject(new Error(chrome.runtime.lastError.message))
+        else resolve()
       })
     })
   }
@@ -141,6 +144,9 @@ export const SyncOptionsStorage = {
    * 更新配置中的某一项，e.g. set({setting: settingObj})
    */
   async set(option) {
+    const refreshRules = ["ruleConfig", "groups", "scenes"].some((key) =>
+      Object.prototype.hasOwnProperty.call(option, key)
+    )
     if (option.groups) {
       option.groups = strCompress.compress(option.groups)
     }
@@ -153,14 +159,22 @@ export const SyncOptionsStorage = {
 
     try {
       await LargeSyncStorage.set(option)
-      await updateCache()
+      await finishWrite(refreshRules)
     } catch (error) {
       console.error("保存配置失败", error)
-      if (error.message.includes("QUOTA_BYTES_PER_ITEM") || error.message.includes("QUOTA_BYTES")) {
+      if (error.code === "CONFIG_REFRESH_FAILED") {
+        tryShowErrorMessage(chrome.i18n.getMessage("config_refresh_failed"))
+      } else if (error.code === "CONFIG_CACHE_FAILED") {
+        tryShowErrorMessage(chrome.i18n.getMessage("config_cache_failed"))
+      } else if (
+        error.message.includes("QUOTA_BYTES_PER_ITEM") ||
+        error.message.includes("QUOTA_BYTES")
+      ) {
         tryShowErrorMessage("保存配置失败，超过浏览器存储限制")
       } else {
         tryShowErrorMessage(`保存配置失败，${error.message}`)
       }
+      throw error
     }
   },
 
@@ -173,7 +187,30 @@ export const SyncOptionsStorage = {
     options.management = strCompress.compress(options.management)
     options.ruleConfig = strCompress.compress(options.ruleConfig)
     await LargeSyncStorage.set(options)
+    await finishWrite(true)
+  },
+
+  async clearAll() {
+    await chrome.storage.sync.clear()
+    await finishWrite(true)
+  }
+}
+
+async function finishWrite(refreshRules) {
+  let cacheFailure
+  try {
     await updateCache()
+  } catch (error) {
+    cacheFailure = error
+  }
+  // A failed optional cache must not leave the worker running deleted rules.
+  if (refreshRules) await notifyRuleConfigChanged()
+  if (cacheFailure) {
+    const error = new Error("Configuration saved, but local cache update failed", {
+      cause: cacheFailure
+    })
+    error.code = "CONFIG_CACHE_FAILED"
+    throw error
   }
 }
 

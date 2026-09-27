@@ -4,14 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { Button, Table, message } from "antd"
 
 import { getLang } from ".../utils/utils"
-import { sendMessage } from "../../../utils/messageHelper"
 import EditRule from "./EditRule"
 import Style from "./ViewRuleStyle"
-import {
-  RULE_PAGE_SIZE,
-  RULE_SCROLL_HEIGHT,
-  getRulePage
-} from "./ruleTableScroll.mjs"
+import { RULE_PAGE_SIZE, RULE_SCROLL_HEIGHT, getRulePage } from "./ruleTableScroll.mjs"
 import ActionView from "./view/ActionView"
 import MatchView from "./view/MatchView"
 import OperationView from "./view/OperationView"
@@ -144,8 +139,6 @@ const ViewRule = memo((props) => {
       await operation.update(record)
       setEditingConfig(null)
     }
-
-    sendMessage("rule-config-changed")
   }
 
   const onEnabled = async (record, enable) => {
@@ -154,12 +147,10 @@ const ViewRule = memo((props) => {
     }
     record.enable = enable
     await operation.update(record)
-    sendMessage("rule-config-changed")
   }
 
   const onDelete = async (record) => {
     await operation.delete(record.id)
-    sendMessage("rule-config-changed")
 
     // 如果删除的正是当前正在编辑的，则取消编辑
     if (editingConfig?.id === record.id) {

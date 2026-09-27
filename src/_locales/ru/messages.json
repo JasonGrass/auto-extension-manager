@@ -908,6 +908,15 @@
   "management_reload": {
     "message": "Обновить и повторить"
   },
+  "config_refresh_failed": {
+    "message": "Настройки сохранены, но автоматические правила не обновлены. Перезагрузите Extension Manager и повторите попытку."
+  },
+  "config_clear_failed": {
+    "message": "Не удалось очистить настройки. Повторите попытку."
+  },
+  "config_cache_failed": {
+    "message": "Настройки сохранены, но локальный кэш отображения не обновлён. Закройте и снова откройте Extension Manager."
+  },
   "end": {
     "message": "Окончено"
   }

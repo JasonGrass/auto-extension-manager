@@ -1,8 +1,11 @@
 import chromeP from "webext-polyfill-kinda"
 
+import storage from ".../storage/sync"
+import { resolveActiveSceneIds } from ".../storage/sync/SceneOptions"
 import type { IExtensionManager } from ".../types/global"
 import logger from ".../utils/logger"
 import ConvertRuleToV2 from "./RuleConverter"
+import { getDelayCloser } from "./delayCloser"
 import { createLatestTaskRunner } from "./latestTaskRunner"
 import processRule from "./processor"
 
@@ -45,6 +48,10 @@ export class RuleHandler {
    */
   private EM?: IExtensionManager
 
+  private configRevision = 0
+  private configReady = true
+  private refreshing: Promise<void> = Promise.resolve()
+
   onCurrentScenesChanged(activeSceneIds: string[]) {
     // Copy message data so later mutations in a sender cannot affect cached rule state.
     this.#activeSceneIds = [...activeSceneIds]
@@ -67,11 +74,44 @@ export class RuleHandler {
   }
 
   setRules(rules: unknown[]) {
-    if (!rules || rules.length === 0) {
-      return
-    }
+    this.invalidateConfig()
     this._rules = this.convertRule(rules)
+    this.configReady = true
     this.invokeDo()
+  }
+
+  private invalidateConfig() {
+    this.configRevision++
+    this.configReady = false
+    getDelayCloser().cancelAll()
+    return this.configRevision
+  }
+
+  refreshConfig(): Promise<void> {
+    const revision = this.invalidateConfig()
+    const refresh = async () => {
+      const options = await storage.options.getAll()
+      if (revision !== this.configRevision) return
+
+      const activeSceneIds = await resolveActiveSceneIds(
+        this.#activeSceneIds,
+        options.scenes,
+        this.EM!.LocalOptions
+      )
+      if (revision !== this.configRevision) return
+
+      this._rules = this.convertRule(options.ruleConfig)
+      this.#groups = options.groups
+      this.#activeSceneIds = activeSceneIds
+      this.configReady = true
+      this.invokeDo()
+    }
+    this.refreshing = refresh()
+    const current = this.refreshing
+    return current.then(async () => {
+      // A superseded request acknowledges only after the newest snapshot is applied.
+      if (revision !== this.configRevision) await this.refreshing
+    })
   }
 
   init(
@@ -112,15 +152,20 @@ export class RuleHandler {
   private runLatest: () => void
 
   private async do() {
+    const revision = this.configRevision
+    const isCurrent = () => this.configReady && revision === this.configRevision
+    if (!isCurrent()) return
     logger().debug("[Extension Manager] 执行规则")
 
     const tabs = await chromeP.tabs.query({})
+    if (!isCurrent()) return
 
     const ctx = {
       selfId: chrome.runtime.id,
       tabs,
       tab: this.#currentTabInfo ?? null,
-      EM: this.EM
+      EM: this.EM,
+      isCurrent
     }
 
     logger().debug(`[Rule] ctx`, ctx)

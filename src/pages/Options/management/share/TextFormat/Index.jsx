@@ -1,10 +1,10 @@
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from "react"
 
 import { Input } from "antd"
-import LZString from "lz-string"
 import styled from "styled-components"
 
 import { getLang } from ".../utils/utils"
+import { buildShareText } from "./buildShareText"
 
 const { TextArea } = Input
 
@@ -42,7 +42,7 @@ const Style = styled.div`
 `
 
 function buildShareContent(extensions, exportRange, targetExtensionIds) {
-  const [content, length] = build(extensions, exportRange, targetExtensionIds)
+  const [content, length] = buildShareText(extensions, exportRange, targetExtensionIds)
 
   const title = getLang("management_export_share_text_title", length)
 
@@ -55,38 +55,4 @@ ${content}
 
 Power by https://github.com/JasonGrass/auto-extension-manager
 `
-}
-
-function build(extensions, exportRange, targetExtensionIds) {
-  const target = extensions
-    .filter((ext) => targetExtensionIds.includes(ext.id))
-    .map((ext) => {
-      const r = {
-        id: ext.id,
-        name: ext.name,
-        channel: ext.channel
-      }
-
-      if (exportRange.includes("alias") && ext.alias) {
-        r.alias = ext.alias
-      }
-
-      if (exportRange.includes("remark") && ext.alias) {
-        r.remark = ext.remark
-      }
-      return r
-    })
-
-  const content = target.map((ext) => {
-    let str = `##<#${ext.id}#><#${ext.name}#><#${ext.channel}#>`
-    if (ext.alias) {
-      str = `${str}<#${ext.alias}#>`
-    }
-    if (ext.remark) {
-      str = `${str}<#${ext.remark}#>`
-    }
-    return str
-  })
-
-  return [LZString.compressToBase64(content.join("")), target.length]
 }

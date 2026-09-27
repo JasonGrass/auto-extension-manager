@@ -908,6 +908,15 @@
   "management_reload": {
     "message": "刷新并重试"
   },
+  "config_refresh_failed": {
+    "message": "配置已保存，但自动规则未能刷新。请重新加载扩展管理器后重试。"
+  },
+  "config_clear_failed": {
+    "message": "清空配置失败，请重试。"
+  },
+  "config_cache_failed": {
+    "message": "配置已保存，但本地显示缓存未能更新。请关闭并重新打开扩展管理器后重试。"
+  },
   "end": {
     "message": "end"
   }

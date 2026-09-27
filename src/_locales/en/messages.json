@@ -908,6 +908,15 @@
   "management_reload": {
     "message": "Refresh and retry"
   },
+  "config_refresh_failed": {
+    "message": "Configuration saved, but automatic rules could not be refreshed. Reload Extension Manager and try again."
+  },
+  "config_clear_failed": {
+    "message": "Could not clear the configuration. Please try again."
+  },
+  "config_cache_failed": {
+    "message": "Configuration saved, but the local display cache could not be updated. Close and reopen Extension Manager to retry."
+  },
   "end": {
     "message": "end"
   }

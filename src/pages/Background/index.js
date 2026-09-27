@@ -22,8 +22,8 @@ chrome.runtime.onInstalled.addListener((info) => {
   EM.EventCache.add("onInstalled", info)
 })
 
-// initial running
-;(async () => {
+// A microtask starts initialization after the message listener is registered.
+const ready = Promise.resolve().then(async () => {
   const local = new LocalOptions()
   await local.migrate()
   EM.LocalOptions = local
@@ -33,6 +33,6 @@ chrome.runtime.onInstalled.addListener((info) => {
   EM.Extension = await createExtension(EM)
 
   EM.History = await createHistory(EM)
-
-  createMessageHandler(EM)
-})()
+})
+createMessageHandler(EM, ready)
+ready.catch((error) => console.error("Background initialization failed", error))

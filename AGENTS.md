@@ -166,8 +166,11 @@ disabling an extension and allows a later enable operation to cancel that disabl
 
 Page messages use the JSON-string envelope `{ id, params }` through `src/utils/messageHelper.js`.
 Existing IDs include `current-scenes-changed`, `rule-config-changed` and `manual-change-group`.
-Scene/rule UI changes persist data and then send messages to refresh worker state; a storage write
-alone does not refresh cached rules. UI operations also call management APIs directly.
+Active-scene UI changes persist data and send a message. The sync storage facade centrally notifies
+the worker after rule/group/scene writes, full imports and clears; callers must await it and must
+not send duplicate rule-refresh messages. Raw Chrome storage writes bypass this notification.
+Messages are registered before asynchronous initialization and acknowledge refresh only after the
+worker applies the configuration. UI operations also call management APIs directly.
 
 Synced settings, groups, scenes, rules and management annotations go through `src/storage/sync/`.
 `ConfigCompress.js` compresses groups, management data and rules; `LargeSyncStorage.js` also compresses
@@ -180,6 +183,8 @@ Active scene IDs are local state, while scene definitions are synced configurati
 Tests use `node:test` and `node:assert/strict`. Add `<module>.test.mjs` directly under `test/`
 so the npm glob includes it. Tests import source helpers directly; some mock Chrome events and
 other browser APIs. Node's TypeScript support strips types but does not perform type checking.
+Tests of the background source graph use `test/helpers/loadSource.mjs` to compile modules in memory
+with the installed TypeScript compiler, replacing browser and persistence boundaries with fakes.
 
 ```sh
 npm test
@@ -248,9 +253,9 @@ npm audit
   safeguard against disabling an extension whose page is open. Keep regression tests for changes.
 - Keep early event registration and initialization ordering intact; avoid adding polling loops or
   parallel rule executions that bypass the existing event handling and task runner.
-- Check cached rule state when editing rules or group targets: `setRules` currently skips empty
-  arrays, and group changes have no dedicated refresh message. Test removing the last rule and
-  changing group membership instead of assuming a storage write updates the running worker.
+- Rule configuration refresh replaces rules and groups together, accepts empty arrays, cancels
+  queued disables and invalidates older evaluations. Preserve this behavior and the single-response
+  message contract; test deleting the last rule, changing group membership and refreshing mid-action.
 - Respect storage quotas through the existing storage layer and preserve the release check's
   24-hour cache. Avoid repeated external requests during development or tests.
 - Call out permission, analytics, schema/migration and packaging changes for review, with their

@@ -102,6 +102,7 @@ export class ExecuteTaskHandler {
   async execute() {
     for (const task of this._tasks) {
       const { executeType, targetExtensions, reload, tabInfo, ctx } = task
+      if (ctx.isCurrent?.() === false) return
       if (executeType === "enable") {
         await openExtensions(targetExtensions, reload, tabInfo, ctx)
       } else {
@@ -121,8 +122,10 @@ async function closeExtensions(
 
   let delayToken: DelayCloseToken | undefined
   for (const extId of targetExtensions) {
+    if (ctx.isCurrent?.() === false) return
     try {
       const info = await chromeP.management.get(extId)
+      if (ctx.isCurrent?.() === false) return
       if (!info || !info.enabled) {
         continue
       }
@@ -136,10 +139,13 @@ async function closeExtensions(
       }
 
       const delayCloser = getDelayCloser()
-      delayToken = delayCloser.close(info, () => {
-        // 历史记录
-        ctx.EM?.History.EventHandler.onAutoDisabled(info, ctx.rule!, ctx.matchResult!)
-      })
+      delayToken = delayCloser.close(
+        info,
+        () => {
+          ctx.EM?.History.EventHandler.onAutoDisabled(info, ctx.rule!, ctx.matchResult!)
+        },
+        ctx.isCurrent
+      )
 
       worked = true
     } catch (err) {
@@ -151,7 +157,7 @@ async function closeExtensions(
     const token = delayToken
     const closureTabInfo = tabInfo
     setTimeout(async () => {
-      if (token?.Available) {
+      if (token?.Available && ctx.isCurrent?.() !== false) {
         try {
           await chrome.tabs.reload(closureTabInfo.id!)
           console.log(
@@ -174,11 +180,13 @@ async function openExtensions(
   let worked = false
 
   for (const extId of targetExtensions) {
+    if (ctx.isCurrent?.() === false) return
     try {
       const delayCloser = getDelayCloser()
       delayCloser.cancel(extId)
 
       const info = await chromeP.management.get(extId)
+      if (ctx.isCurrent?.() === false) return
       if (!info || info.enabled) {
         continue
       }
@@ -192,7 +200,7 @@ async function openExtensions(
     }
   }
 
-  if (worked && reload && tabInfo && tabInfo.id) {
+  if (worked && reload && tabInfo && tabInfo.id && ctx.isCurrent?.() !== false) {
     chrome.tabs.reload(tabInfo.id)
     console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
   }

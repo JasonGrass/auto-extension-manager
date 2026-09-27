@@ -61,7 +61,7 @@ export default async function isMatch(
     matchTab = ctx.tab
   }
   let isAnyUrlMatch = isCurrentUrlMatch
-  if (!isAnyUrlMatch) {
+  if (isCurrentUrlMatch === false) {
     // 如果当前标签不匹配，则检查是否有其它标签页匹配
     matchTab = await checkAnyUrlMatch(ctx.tabs, rule)
     isAnyUrlMatch = Boolean(matchTab)

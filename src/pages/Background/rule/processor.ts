@@ -31,6 +31,9 @@ export type ProcessContext = {
    * 全局对象
    */
   EM?: IExtensionManager
+
+  /** Whether this evaluation still belongs to the current configuration. */
+  isCurrent?: () => boolean
 }
 
 type ProcessItem = {
@@ -73,6 +76,7 @@ async function processRule({ activeSceneIds, rules, groups, ctx }: ProcessItem) 
   const executeTaskHandler = new ExecuteTaskHandler()
 
   for (const rule of rules) {
+    if (ctx.isCurrent?.() === false) return
     try {
       // 每条规则处理的 rule 数据是不用的，这里需要对 ctx 拷贝一个副本，每个实例都是不同的 rule 数据
       const copyCtx = { ...ctx, rule, executeTaskHandler, matchResult: null }
@@ -101,6 +105,7 @@ async function process(
   }
 
   ctx.matchResult = await isMatch(activeSceneIds, rule, ctx)
+  if (ctx.isCurrent?.() === false) return
 
   const targetIdArray = getTarget(groups, rule)
   if (!targetIdArray || targetIdArray.length === 0) {
@@ -218,7 +223,7 @@ function handleSimpleMode(
 /**
  * 高级模式下的动作执行
  */
-async function handleAdvanceMode(
+function handleAdvanceMode(
   matchResult: IMatchResult,
   targetExtensions: string[],
   action: ruleV2.IAction,
@@ -255,6 +260,26 @@ async function handleAdvanceMode(
       reload: reload,
       priority: priority
     })
+  }
+
+  const hasUrlTrigger = ctx.rule?.match?.triggers?.some((t) => t.trigger === "urlTrigger")
+  if (!hasUrlTrigger) {
+    const apply = (
+      timing: ruleV2.TimeWhenEnable | ruleV2.TimeWhenDisable,
+      execute: typeof open,
+      reload: boolean | undefined
+    ) => {
+      if (timing === "match" && matchResult.isCurrentMatch) {
+        execute(reload)
+      } else if (timing === "notMatch" && !matchResult.isCurrentMatch) {
+        const priority = new ExecuteTaskPriority()
+        priority.setNotMatch()
+        execute(reload, priority)
+      }
+    }
+    apply(customRule.timeWhenEnable, open, action.reloadAfterEnable)
+    apply(customRule.timeWhenDisable, close, action.reloadAfterDisable)
+    return
   }
 
   // 开启插件的判断

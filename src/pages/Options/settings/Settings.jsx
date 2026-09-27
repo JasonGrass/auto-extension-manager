@@ -14,6 +14,12 @@ import GroupAndSortSetting from "./components/GroupAndSortSetting.jsx"
 import SearchSetting from "./components/SearchSetting.jsx"
 import ViewOtherSetting from "./components/ViewOtherSetting.jsx"
 
+function configErrorKey(error, fallback) {
+  if (error.code === "CONFIG_REFRESH_FAILED") return "config_refresh_failed"
+  if (error.code === "CONFIG_CACHE_FAILED") return "config_cache_failed"
+  return fallback
+}
+
 function Settings({ themeMode, onThemeChange }) {
   const [setting, setSetting] = useState({})
 
@@ -42,7 +48,8 @@ function Settings({ themeMode, onThemeChange }) {
   )
 
   const onImportConfig = async () => {
-    if (await importConfig()) {
+    try {
+      if (!(await importConfig())) throw new Error("Import failed")
       messageApi.open({
         type: "success",
         content: getLang("setting_import_finish")
@@ -51,10 +58,10 @@ function Settings({ themeMode, onThemeChange }) {
         setSetting(options.setting)
         onThemeChange(options.setting.darkMode ?? "system")
       })
-    } else {
+    } catch (error) {
       messageApi.open({
         type: "error",
-        content: getLang("setting_import_fail")
+        content: getLang(configErrorKey(error, "setting_import_fail"))
       })
     }
   }
@@ -76,8 +83,12 @@ function Settings({ themeMode, onThemeChange }) {
    * 清空所有配置
    */
   const onClearAllOptions = async () => {
-    await chrome.storage.sync.clear()
-    chrome.tabs.reload()
+    try {
+      await storage.options.clearAll()
+      chrome.tabs.reload()
+    } catch (error) {
+      messageApi.error(getLang(configErrorKey(error, "config_clear_failed")))
+    }
   }
 
   return (
