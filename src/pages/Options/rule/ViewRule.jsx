@@ -10,7 +10,6 @@ import Style from "./ViewRuleStyle"
 import {
   RULE_PAGE_SIZE,
   RULE_SCROLL_HEIGHT,
-  getRuleBottomPadding,
   getRulePage
 } from "./ruleTableScroll.mjs"
 import ActionView from "./view/ActionView"
@@ -40,7 +39,6 @@ const ViewRule = memo((props) => {
   )
   const [currentPage, setCurrentPage] = useState(1)
   const tableContainerRef = useRef(null)
-  const spacerRef = useRef(null)
   const scrollToRowRef = useRef(null)
   const handledLocationRef = useRef(null)
 
@@ -50,18 +48,11 @@ const ViewRule = memo((props) => {
     const rows = Array.from(body.querySelectorAll(".ant-table-tbody > tr[data-row-key]"))
     let rowTops = []
     let resizeFrame
-    const syncPage = () => setCurrentPage(getRulePage(rowTops, body.scrollTop))
+    const syncPage = () =>
+      setCurrentPage(getRulePage(rowTops, body.scrollTop, body.scrollHeight - body.clientHeight))
     const measure = () => {
       const origin = body.getBoundingClientRect().top + body.clientTop - body.scrollTop
       rowTops = rows.map((row) => row.getBoundingClientRect().top - origin)
-      const contentBottom = rows.length
-        ? rows[rows.length - 1].getBoundingClientRect().bottom - origin
-        : 0
-      spacerRef.current.style.height = `${getRuleBottomPadding(
-        rowTops,
-        contentBottom,
-        body.clientHeight
-      )}px`
       syncPage()
     }
     measure()
@@ -191,15 +182,6 @@ const ViewRule = memo((props) => {
           loading={configs === null}
           pagination={false}
           scroll={{ y: RULE_SCROLL_HEIGHT }}
-          summary={() => (
-            <Table.Summary>
-              <Table.Summary.Row className="rule-scroll-spacer" aria-hidden="true">
-                <Table.Summary.Cell index={0} colSpan={5}>
-                  <div ref={spacerRef} />
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-            </Table.Summary>
-          )}
           rowClassName={(record, index) => {
             if (record.id === selectedRuleId) {
               return "rule-row-selected"

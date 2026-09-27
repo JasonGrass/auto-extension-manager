@@ -7,11 +7,6 @@ const Style = styled.div`
     font-size: 14px;
   }
 
-  .rule-scroll-spacer > .ant-table-cell {
-    padding: 0 !important;
-    border: 0;
-  }
-
   .rule-pagination {
     display: flex;
     flex-wrap: wrap;
