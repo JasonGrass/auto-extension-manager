@@ -1,5 +1,12 @@
 # Extension Manager 商店素材
 
+## 产品详情文案
+
+[descriptions/README.md](descriptions/README.md) 提供简体中文、繁体中文、英文、日文和俄文的
+完整产品详情说明。各语言 `.txt` 文件可直接复制到 Chrome / Edge 商店的对应语言说明栏。
+
+## 图片素材
+
 本套素材基于本地仓库中的**最新、尚未发布的 UI**，配合虚构演示数据制作。
 正式商店旧截图仅用于了解更新前的展示方式。
 本地 `chrome-extension://` 地址受到浏览器工具访问策略限制，因此从仓库真实组件
