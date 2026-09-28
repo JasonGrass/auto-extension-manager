@@ -82,5 +82,10 @@
     "webpack-cli": "^7.2.1",
     "webpack-dev-server": "^5.2.6",
     "zip-webpack-plugin": "^4.0.3"
+  },
+  "overrides": {
+    "react-router-dom": {
+      "react-router": "8.3.0"
+    }
   }
 }
