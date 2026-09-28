@@ -1,6 +1,10 @@
 import { styled } from "styled-components"
 
 const Style = styled.div`
+  .rule-name-input {
+    max-width: 600px;
+  }
+
   .operation-box {
     display: inline-block;
     margin-top: 10px;

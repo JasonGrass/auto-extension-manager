@@ -452,6 +452,15 @@
   "rule_edit_save_error_limit": {
     "message": "保存に失敗しました。ブラウザのストレージ制限を超えました。"
   },
+  "rule_name": {
+    "message": "ルール名"
+  },
+  "rule_name_placeholder": {
+    "message": "空欄の場合は一致条件を表示します"
+  },
+  "rule_column_name": {
+    "message": "名前"
+  },
   "rule_column_match": {
     "message": "一致"
   },

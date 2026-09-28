@@ -452,6 +452,15 @@
   "rule_edit_save_error_limit": {
     "message": "保存失败，超过浏览器存储限制"
   },
+  "rule_name": {
+    "message": "规则名称"
+  },
+  "rule_name_placeholder": {
+    "message": "留空时显示匹配条件"
+  },
+  "rule_column_name": {
+    "message": "名称"
+  },
   "rule_column_match": {
     "message": "匹配"
   },

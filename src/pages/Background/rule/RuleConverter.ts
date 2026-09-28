@@ -5,12 +5,13 @@ export default function ConvertRuleToV2(rule1: rule.IRuleConfig): ruleV2.IRuleCo
 
   const tmpRule = rule1 as any
   if (tmpRule.version === 2) {
-    return tmpRule
+    return { ...tmpRule, name: typeof tmpRule.name === "string" ? tmpRule.name : "" }
   }
 
   const rule2: ruleV2.IRuleConfig = {
     id: rule1.id,
     version: 2,
+    name: "",
     enable: rule1.enable
   }
 

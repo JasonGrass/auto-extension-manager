@@ -172,6 +172,7 @@ const ViewRule = memo((props) => {
           size="small"
           loading={configs === null}
           pagination={false}
+          tableLayout="fixed"
           scroll={{ y: RULE_SCROLL_HEIGHT }}
           rowClassName={(record, index) => {
             if (record.id === selectedRuleId) {
@@ -193,8 +194,21 @@ const ViewRule = memo((props) => {
             }}
           />
           <Column
+            title={getLang("rule_column_name")}
+            dataIndex="name"
+            width="40%"
+            render={(name, record) =>
+              typeof name === "string" && name.trim() ? (
+                <span className="rule-name-text">{name}</span>
+              ) : (
+                <MatchView config={record.match} options={options} />
+              )
+            }
+          />
+          <Column
             title={getLang("rule_column_match")}
             dataIndex="match"
+            width="20%"
             render={(match, record) => {
               return <MatchView config={match} options={options}></MatchView>
             }}
@@ -202,6 +216,7 @@ const ViewRule = memo((props) => {
           <Column
             title={getLang("rule_column_extensions")}
             dataIndex="target"
+            width="20%"
             render={(target, record) => {
               return <TargetView config={target} options={options} extensions={extensions} />
             }}
@@ -210,7 +225,7 @@ const ViewRule = memo((props) => {
           <Column
             title={getLang("rule_column_action")}
             dataIndex="action"
-            width={200}
+            width="20%"
             render={(action, record) => {
               return <ActionView config={action} />
             }}
@@ -219,7 +234,7 @@ const ViewRule = memo((props) => {
           <Column
             title={getLang("rule_column_operation")}
             dataIndex="id"
-            width={400}
+            width={200}
             render={(id, record) => {
               return (
                 <OperationView
@@ -270,6 +285,7 @@ const ViewRule = memo((props) => {
 
       {editingConfig && (
         <EditRule
+          key={editingConfig.id ?? "new"}
           options={options}
           config={editingConfig}
           extensions={extensions}

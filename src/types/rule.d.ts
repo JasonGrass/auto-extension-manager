@@ -28,10 +28,7 @@ declare namespace rule {
   }
 
   export type ActionType =
-    | "openWhenMatched"
-    | "closeWhenMatched"
-    | "openOnlyWhenMatched"
-    | "closeOnlyWhenMatched"
+    "openWhenMatched" | "closeWhenMatched" | "openOnlyWhenMatched" | "closeOnlyWhenMatched"
 
   export type ActionTime = "none" | "current" | "notCurrent" | "any" | "noAny"
 
@@ -125,6 +122,7 @@ declare namespace ruleV2 {
   export interface IRuleConfig {
     id?: string
     version: number
+    name?: string
     enable: boolean
     match?: IMatch
     target?: ITarget

@@ -452,6 +452,15 @@
   "rule_edit_save_error_limit": {
     "message": "Сохранение не удалось, превышен лимит памяти браузера."
   },
+  "rule_name": {
+    "message": "Название правила"
+  },
+  "rule_name_placeholder": {
+    "message": "Оставьте пустым, чтобы показать условия совпадения"
+  },
+  "rule_column_name": {
+    "message": "Название"
+  },
   "rule_column_match": {
     "message": "Совпадение"
   },

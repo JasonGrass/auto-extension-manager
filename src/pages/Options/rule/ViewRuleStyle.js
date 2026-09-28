@@ -7,6 +7,10 @@ const Style = styled.div`
     font-size: 14px;
   }
 
+  .rule-name-text {
+    overflow-wrap: anywhere;
+  }
+
   .rule-pagination {
     display: flex;
     flex-wrap: wrap;

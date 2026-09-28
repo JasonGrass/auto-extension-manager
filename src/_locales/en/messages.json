@@ -452,6 +452,15 @@
   "rule_edit_save_error_limit": {
     "message": "Save failed, Exceeded the browser storage limit."
   },
+  "rule_name": {
+    "message": "Rule name"
+  },
+  "rule_name_placeholder": {
+    "message": "Leave blank to show matching conditions"
+  },
+  "rule_column_name": {
+    "message": "Name"
+  },
   "rule_column_match": {
     "message": "Match"
   },

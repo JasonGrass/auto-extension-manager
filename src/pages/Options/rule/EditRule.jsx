@@ -1,9 +1,10 @@
-import React, { memo, useRef } from "react"
+import React, { memo, useRef, useState } from "react"
 
-import { Button, message } from "antd"
+import { Button, Input, message } from "antd"
 
 import { getLang } from ".../utils/utils"
 import Style from "./EditRuleStyle"
+import EditorCommonStyle from "./editor/CommonStyle"
 import ExtensionSelector from "./editor/ExtensionSelector"
 import MatchRule from "./editor/MatchRule"
 import RuleAction from "./editor/RuleAction"
@@ -15,6 +16,7 @@ const EditRule = memo((props) => {
   const matchRuleRef = useRef(null)
   const selectorRef = useRef(null)
   const actionRef = useRef(null)
+  const [name, setName] = useState(config.name ?? "")
 
   const onSaveClick = async (e) => {
     try {
@@ -23,6 +25,7 @@ const EditRule = memo((props) => {
       const actionConfig = actionRef.current.getActionConfig()
 
       const newConfig = {
+        name: name.trim(),
         match: matchRuleConfig,
         target: selectConfig,
         action: actionConfig,
@@ -60,6 +63,21 @@ const EditRule = memo((props) => {
   return (
     <Style>
       {contextHolder}
+      <EditorCommonStyle>
+        <div className="editor-step-header">
+          <label className="title" htmlFor="rule-name">
+            {getLang("rule_name")}
+          </label>
+        </div>
+        <Input
+          className="rule-name-input"
+          id="rule-name"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          placeholder={getLang("rule_name_placeholder")}
+          allowClear
+        />
+      </EditorCommonStyle>
       {/* 1 匹配条件 */}
       <MatchRule options={options} config={config} ref={matchRuleRef} />
 
