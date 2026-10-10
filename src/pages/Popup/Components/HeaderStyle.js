@@ -58,8 +58,28 @@ const Style = styled.div`
 
   .setting-icon {
     font-size: 20px;
+    margin: 0 4px;
     &:hover {
       color: ${(props) => props.theme.nav_link};
+    }
+  }
+
+  .quick-rule-icon {
+    margin: 0 4px;
+    color: ${(props) => props.theme.fg3 ?? "#999"};
+    transition: color 0.2s;
+  }
+
+  .quick-rule-active {
+    color: ${(props) => props.theme.primary_color ?? "#1677ff"} !important;
+  }
+
+  .toggle-all-icon {
+    margin: 0 4px;
+    color: ${(props) => props.theme.fg3 ?? "#999"};
+    transition: color 0.2s;
+    &:hover {
+      color: ${(props) => props.theme.danger ?? "#ff4d4f"};
     }
   }
 

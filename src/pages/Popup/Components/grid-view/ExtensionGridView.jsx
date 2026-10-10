@@ -5,7 +5,7 @@ import { styled } from "styled-components"
 import { usePopupExtensions } from "../../utils/usePopupExtensions"
 import ExtensionGridItem from "./ExtensionGridItem"
 
-const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
+const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider, quickRuleMode, quickRuleState, onQuickRuleToggle }) => {
   const [moved, setMoved] = useState("") // 没有业务意义，就是一个依赖值，值发生变化，则重新执行 usePopupExtensions
 
   const [items] = usePopupExtensions(extensions, options, moved)
@@ -35,7 +35,10 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
               <ExtensionGridItem
                 item={item}
                 options={options}
-                onItemMove={onItemMove}></ExtensionGridItem>
+                onItemMove={onItemMove}
+                quickRuleMode={quickRuleMode}
+                quickRuleState={quickRuleState}
+                onQuickRuleToggle={onQuickRuleToggle}></ExtensionGridItem>
             </li>
           )
         })}
@@ -51,7 +54,10 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
               <ExtensionGridItem
                 item={item}
                 options={options}
-                onItemMove={onItemMove}></ExtensionGridItem>
+                onItemMove={onItemMove}
+                quickRuleMode={quickRuleMode}
+                quickRuleState={quickRuleState}
+                onQuickRuleToggle={onQuickRuleToggle}></ExtensionGridItem>
             </li>
           )
         })}
@@ -67,7 +73,10 @@ const ExtensionGrid = memo(({ extensions, options, isShowBottomDivider }) => {
               <ExtensionGridItem
                 item={item}
                 options={options}
-                onItemMove={onItemMove}></ExtensionGridItem>
+                onItemMove={onItemMove}
+                quickRuleMode={quickRuleMode}
+                quickRuleState={quickRuleState}
+                onQuickRuleToggle={onQuickRuleToggle}></ExtensionGridItem>
             </li>
           )
         })}

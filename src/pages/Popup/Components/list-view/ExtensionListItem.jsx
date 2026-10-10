@@ -24,7 +24,7 @@ const manualEnableCounter = new ManualEnableCounter()
 /**
  * 扩展列表项
  */
-const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged }) => {
+const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged, quickRuleMode, quickRuleState, onQuickRuleToggle }) => {
   const [messageApi, contextHolder] = message.useMessage()
 
   const [isHover, setIsHover] = useState(false)
@@ -54,6 +54,12 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
   }, [options])
 
   const onSwitchChange = async (checked, item) => {
+    if (quickRuleMode) {
+      // 快速建规则模式：不直接启停扩展，只记录临时状态
+      setItemEnable(checked)
+      onQuickRuleToggle?.(item.id, checked)
+      return
+    }
     await chrome.management.setEnabled(item.id, checked)
     setItemEnable(checked)
     item.enabled = checked
@@ -121,13 +127,17 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
   // 如果存在别名，则显示别名
   const showName = item.__attach__?.alias ? item.__attach__?.alias : item.name
 
+  // 快速建规则模式下，被修改过的条目标记
+  const isQuickRuleModified = quickRuleMode && quickRuleState?.hasOwnProperty(item.id)
+
   return (
     <div
       onMouseEnter={(e) => onItemMouseOver(e)}
       onMouseLeave={(e) => onItemMouseOver(e)}
       className={classNames([
         "list-item-container",
-        { "is-enable": itemEnable, "not-enable": !itemEnable, "item-is-top": item.__top__ }
+        { "is-enable": itemEnable, "not-enable": !itemEnable, "item-is-top": item.__top__ },
+        { "quick-rule-modified": isQuickRuleModified }
       ])}>
       {contextHolder}
 

@@ -21,7 +21,7 @@ import { ExtensionGridItemStyle } from "./ExtensionGridItemStyle"
 
 const manualEnableCounter = new ManualEnableCounter()
 
-const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
+const ExtensionGridItem = memo(({ item, options, enabled, onItemMove, quickRuleMode, quickRuleState, onQuickRuleToggle }) => {
   const [messageApi, contextHolder] = message.useMessage()
 
   // 扩展存在设置页面
@@ -213,6 +213,13 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
   }
 
   const onItemClick = () => {
+    if (quickRuleMode) {
+      // 快速建规则模式：不直接启停扩展
+      const newState = !itemEnable
+      setItemEnable(newState)
+      onQuickRuleToggle?.(item.id, newState)
+      return
+    }
     if (itemEnable) {
       chrome.management.setEnabled(item.id, false)
       setItemEnable(false)

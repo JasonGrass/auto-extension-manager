@@ -1,8 +1,9 @@
 import React, { memo, useEffect, useRef, useState } from "react"
 
-import { SearchOutlined, SettingOutlined } from "@ant-design/icons"
+import { PoweroffOutlined, SearchOutlined, SettingOutlined, ThunderboltOutlined } from "@ant-design/icons"
 import Icon from "@ant-design/icons/lib/components/Icon"
 import { Space, message } from "antd"
+import classNames from "classnames"
 import _ from "lodash"
 
 import EdgeIcon from ".../assets/img/Microsoft_Store.svg"
@@ -11,6 +12,7 @@ import DarkIcon from ".../assets/img/design-devin/Dark.svg"
 import LightIcon from ".../assets/img/design-devin/Light.svg"
 import storage from ".../storage/sync"
 import { isEdgePackage } from ".../utils/channelHelper"
+import { getLang } from ".../utils/utils"
 import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
 import MoreOperationDropdown from "./header/MoreOperationDropdown"
@@ -27,7 +29,12 @@ const Header = memo((props) => {
     onGroupEnableChanged,
     onLayoutChanged,
     onSearch,
-    isDarkMode
+    isDarkMode,
+    quickRuleMode,
+    onToggleQuickRuleMode,
+    currentTabUrl,
+    activeExtensionCount,
+    onToggleAll
   } = props
 
   const [messageApi, contextHolder] = message.useMessage()
@@ -202,6 +209,30 @@ const Header = memo((props) => {
             enabledById={enabledById}
             onGroupChanged={onGroupChanged}
             onGroupEnableChanged={onGroupEnableChanged}></GroupDropdown>
+
+          <Space
+            className={classNames(["setting-icon", "quick-rule-icon", { "quick-rule-active": quickRuleMode }])}
+            onClick={() => {
+              if (!currentTabUrl) {
+                messageApi.warning(getLang("quick_rule_no_tab_url"))
+                return
+              }
+              onToggleQuickRuleMode?.()
+            }}
+          >
+            <ThunderboltOutlined />
+          </Space>
+
+          <Space
+            className={classNames(["setting-icon", "toggle-all-icon"])}
+            onClick={() => {
+              const anyEnabled = activeExtensionCount > 0
+              messageApi.info(anyEnabled ? getLang("toggle_all_off") : getLang("toggle_all_on"))
+              onToggleAll?.()
+            }}
+          >
+            <PoweroffOutlined />
+          </Space>
 
           <Space className="search setting-icon" onClick={onSearchClick}>
             <SearchOutlined />

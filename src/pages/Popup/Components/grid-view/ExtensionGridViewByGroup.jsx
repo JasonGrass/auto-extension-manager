@@ -8,8 +8,8 @@ import FoldGroupName from "../common/FoldGroupName"
 import ExtensionGridItem from "./ExtensionGridItem"
 import { GridViewSpaceStyle } from "./ExtensionGridView"
 
-const ExtensionGridViewByGroup = memo(({ extensions, options, isShowBottomDivider }) => {
-  const [moved, setMoved] = useState("") // 没有业务意义，就是一个依赖值，值发生变化，则重新执行 usePopupExtensions
+const ExtensionGridViewByGroup = memo(({ extensions, options, isShowBottomDivider, quickRuleMode, quickRuleState, onQuickRuleToggle }) => {
+  const [moved, setMoved] = useState("")
 
   const [groups] = usePopupExtensionsByGroup(extensions, options, moved)
 
@@ -33,6 +33,9 @@ const ExtensionGridViewByGroup = memo(({ extensions, options, isShowBottomDivide
               options={options}
               key={group.id}
               onItemMove={onItemMove}
+              quickRuleMode={quickRuleMode}
+              quickRuleState={quickRuleState}
+              onQuickRuleToggle={onQuickRuleToggle}
               groupIndex={index}></ExtensionGridSpace>
           )
         })}
@@ -43,7 +46,7 @@ const ExtensionGridViewByGroup = memo(({ extensions, options, isShowBottomDivide
 
 export default ExtensionGridViewByGroup
 
-const ExtensionGridSpace = memo(({ group, options, onItemMove, groupIndex }) => {
+const ExtensionGridSpace = memo(({ group, options, onItemMove, quickRuleMode, quickRuleState, onQuickRuleToggle, groupIndex }) => {
   // 是否折叠分组显示
   const [fold, setFold] = useState(false)
 
@@ -67,6 +70,9 @@ const ExtensionGridSpace = memo(({ group, options, onItemMove, groupIndex }) => 
               enabled={item.enabled}
               options={options}
               onItemMove={onItemMove}
+              quickRuleMode={quickRuleMode}
+              quickRuleState={quickRuleState}
+              onQuickRuleToggle={onQuickRuleToggle}
             />
           </li>
         ))}

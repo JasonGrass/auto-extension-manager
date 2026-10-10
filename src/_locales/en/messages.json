@@ -926,6 +926,45 @@
   "config_cache_failed": {
     "message": "Configuration saved, but the local display cache could not be updated. Close and reopen Extension Manager to retry."
   },
+  "quick_rule_title": {
+    "message": "Quick Rule"
+  },
+  "quick_rule_mode_title": {
+    "message": "Quick Rule Mode"
+  },
+  "quick_rule_mode_hint": {
+    "message": "Toggle extensions below, then save to apply rules to this site"
+  },
+  "quick_rule_modified_count": {
+    "message": "$1 modified"
+  },
+  "quick_rule_no_tab_url": {
+    "message": "No valid website detected on current tab"
+  },
+  "quick_rule_cancel": {
+    "message": "Cancel"
+  },
+  "quick_rule_save_and_reload": {
+    "message": "Save & Reload"
+  },
+  "quick_rule_saving": {
+    "message": "Saving..."
+  },
+  "quick_rule_action_disable_while": {
+    "message": "Disable on this site"
+  },
+  "quick_rule_action_enable_while": {
+    "message": "Enable on this site"
+  },
+  "quick_rule_default_name": {
+    "message": "$1 - $2"
+  },
+  "toggle_all_on": {
+    "message": "Enable all extensions"
+  },
+  "toggle_all_off": {
+    "message": "Disable all extensions"
+  },
   "end": {
     "message": "end"
   }
