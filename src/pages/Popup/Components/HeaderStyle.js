@@ -74,15 +74,6 @@ const Style = styled.div`
     color: ${(props) => props.theme.primary_color ?? "#1677ff"} !important;
   }
 
-  .toggle-all-icon {
-    margin: 0 4px;
-    color: ${(props) => props.theme.fg3 ?? "#999"};
-    transition: color 0.2s;
-    &:hover {
-      color: ${(props) => props.theme.danger ?? "#ff4d4f"};
-    }
-  }
-
   .menu-item-text {
     display: inline-block;
     max-width: 80px;

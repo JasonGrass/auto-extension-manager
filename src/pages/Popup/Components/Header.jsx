@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useRef, useState } from "react"
 
-import { PoweroffOutlined, SearchOutlined, SettingOutlined, ThunderboltOutlined } from "@ant-design/icons"
+import { SearchOutlined, SettingOutlined, ThunderboltOutlined } from "@ant-design/icons"
 import Icon from "@ant-design/icons/lib/components/Icon"
-import { Space, message } from "antd"
+import { Space, Tooltip, message } from "antd"
 import classNames from "classnames"
 import _ from "lodash"
 
@@ -17,6 +17,7 @@ import Style, { SearchStyle } from "./HeaderStyle"
 import GroupDropdown from "./header/GroupDropdown"
 import MoreOperationDropdown from "./header/MoreOperationDropdown"
 import SceneDropdown from "./header/SceneDropdown"
+import { StateToggleButton, StateToggleTarget } from "./header/StateToggleStyle"
 
 const Header = memo((props) => {
   const {
@@ -34,7 +35,10 @@ const Header = memo((props) => {
     onToggleQuickRuleMode,
     currentTabUrl,
     activeExtensionCount,
-    onToggleAll
+    allExtensionCount,
+    onCloseAll,
+    onRestoreSnapshot,
+    onEnableAll
   } = props
 
   const [messageApi, contextHolder] = message.useMessage()
@@ -188,6 +192,9 @@ const Header = memo((props) => {
     )
   }
 
+  // 计算全部开关的三态
+  const allToggleState = activeExtensionCount === 0 ? "off" : allExtensionCount > 0 && activeExtensionCount === allExtensionCount ? "on" : "mixed"
+
   return (
     <>
       {contextHolder}
@@ -223,16 +230,42 @@ const Header = memo((props) => {
             <ThunderboltOutlined />
           </Space>
 
-          <Space
-            className={classNames(["setting-icon", "toggle-all-icon"])}
-            onClick={() => {
-              const anyEnabled = activeExtensionCount > 0
-              messageApi.info(anyEnabled ? getLang("toggle_all_off") : getLang("toggle_all_on"))
-              onToggleAll?.()
+          <Tooltip
+            title={() => {
+              if (allToggleState === "off") return getLang("toggle_all_restore")
+              if (allToggleState === "on") return getLang("toggle_all_off")
+              return getLang("toggle_all_mixed_tip")
             }}
+            mouseEnterDelay={0.5}
           >
-            <PoweroffOutlined />
-          </Space>
+            <StateToggleTarget>
+              <StateToggleButton
+                type="button"
+                className={classNames(`state-${allToggleState}`)}
+                onClick={(e) => {
+                  if (allToggleState === "off") {
+                    messageApi.info(getLang("toggle_all_restoring"))
+                    onRestoreSnapshot?.()
+                  } else if (allToggleState === "on") {
+                    messageApi.info(getLang("toggle_all_off"))
+                    onCloseAll?.()
+                  } else {
+                    // mixed: 左半=关闭, 右半=全部打开
+                    const rect = e.currentTarget.getBoundingClientRect()
+                    if (e.clientX >= rect.left + rect.width / 2) {
+                      messageApi.info(getLang("toggle_all_on"))
+                      onEnableAll?.()
+                    } else {
+                      messageApi.info(getLang("toggle_all_off"))
+                      onCloseAll?.()
+                    }
+                  }
+                }}
+              >
+                <span className="thumb" />
+              </StateToggleButton>
+            </StateToggleTarget>
+          </Tooltip>
 
           <Space className="search setting-icon" onClick={onSearchClick}>
             <SearchOutlined />

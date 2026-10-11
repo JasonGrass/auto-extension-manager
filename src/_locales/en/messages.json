@@ -965,6 +965,15 @@
   "toggle_all_off": {
     "message": "Disable all extensions"
   },
+  "toggle_all_restore": {
+    "message": "Restore to previous state"
+  },
+  "toggle_all_restoring": {
+    "message": "Restoring extensions..."
+  },
+  "toggle_all_mixed_tip": {
+    "message": "Left: disable all / Right: enable all"
+  },
   "end": {
     "message": "end"
   }

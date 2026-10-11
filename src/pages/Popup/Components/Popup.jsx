@@ -167,17 +167,68 @@ function IndexPopup({ originExtensions, options, params }) {
     setLayout(layout)
   }
 
-  // 全部打开/关闭：切换所有扩展的 enabled 状态
-  // 如果有任何一个扩展是启用的 → 全部禁用；如果全部禁用 → 全部启用
-  const onToggleAll = useCallback(async () => {
-    const extList = extensions.filter((ext) => isExtExtension(ext))
-    const anyEnabled = extList.some((ext) => ext.enabled)
-    const targetEnabled = !anyEnabled
+  // 一键关闭：保存快照 + 禁用所有扩展
+  const onCloseAll = useCallback(async () => {
+    const { saveAutoSnapshot } = await import("../utils/autoSnapshot")
+    await saveAutoSnapshot()
 
+    const extList = extensions.filter((ext) => isExtExtension(ext))
     for (const ext of extList) {
-      if (ext.enabled !== targetEnabled) {
-        await chrome.management.setEnabled(ext.id, targetEnabled)
-        ext.enabled = targetEnabled
+      if (ext.enabled) {
+        await chrome.management.setEnabled(ext.id, false)
+        ext.enabled = false
+      }
+    }
+
+    const newEnabledById = {}
+    for (const ext of extensions) {
+      newEnabledById[ext.id] = ext.enabled
+    }
+    setEnabledById(newEnabledById)
+    setExtensions([...extensions])
+  }, [extensions])
+
+  // 一键打开（恢复快照）：从快照恢复到关闭前的状态
+  const onRestoreSnapshot = useCallback(async () => {
+    const { loadAutoSnapshot, clearAutoSnapshot } = await import("../utils/autoSnapshot")
+    const snapshot = await loadAutoSnapshot()
+
+    if (!snapshot) {
+      // 无快照，退化为全部打开
+      const extList = extensions.filter((ext) => isExtExtension(ext))
+      for (const ext of extList) {
+        if (!ext.enabled) {
+          await chrome.management.setEnabled(ext.id, true)
+          ext.enabled = true
+        }
+      }
+    } else {
+      // 恢复快照中的状态
+      for (const entry of snapshot.states) {
+        const ext = extensions.find((e) => e.id === entry.id)
+        if (ext && ext.enabled !== entry.enabled) {
+          await chrome.management.setEnabled(entry.id, entry.enabled)
+          ext.enabled = entry.enabled
+        }
+      }
+      await clearAutoSnapshot()
+    }
+
+    const newEnabledById = {}
+    for (const ext of extensions) {
+      newEnabledById[ext.id] = ext.enabled
+    }
+    setEnabledById(newEnabledById)
+    setExtensions([...extensions])
+  }, [extensions])
+
+  // 全部打开：强制启用所有扩展（不恢复快照）
+  const onEnableAll = useCallback(async () => {
+    const extList = extensions.filter((ext) => isExtExtension(ext))
+    for (const ext of extList) {
+      if (!ext.enabled) {
+        await chrome.management.setEnabled(ext.id, true)
+        ext.enabled = true
       }
     }
 
@@ -387,7 +438,10 @@ function IndexPopup({ originExtensions, options, params }) {
           onToggleQuickRuleMode={onToggleQuickRuleMode}
           currentTabUrl={currentTabUrl}
           activeExtensionCount={activeExtensionCount}
-          onToggleAll={onToggleAll}></Header>
+          allExtensionCount={allExtensionCount}
+          onCloseAll={onCloseAll}
+          onRestoreSnapshot={onRestoreSnapshot}
+          onEnableAll={onEnableAll}></Header>
       </div>
 
       {quickRuleMode && (

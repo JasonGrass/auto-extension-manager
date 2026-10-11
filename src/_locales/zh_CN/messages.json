@@ -965,6 +965,15 @@
   "toggle_all_off": {
     "message": "全部禁用扩展"
   },
+  "toggle_all_restore": {
+    "message": "恢复到关闭前的状态"
+  },
+  "toggle_all_restoring": {
+    "message": "正在恢复扩展..."
+  },
+  "toggle_all_mixed_tip": {
+    "message": "左：全部禁用 / 右：全部启用"
+  },
   "end": {
     "message": "end"
   }
