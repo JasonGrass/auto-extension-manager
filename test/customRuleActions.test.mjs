@@ -1,5 +1,6 @@
 import assert from "node:assert/strict"
 import { test } from "node:test"
+import { flush } from "./helpers/loadSource.mjs"
 import { rule, ruleHarness } from "./helpers/ruleHarness.mjs"
 
 const custom = (enable, disable, enableMode = "", disableMode = "") => ({
@@ -111,6 +112,32 @@ test("URL modes retain current/any matching and conditional reload behavior", as
     await process({ activeSceneIds: [], rules: [config], groups: [], ctx: { ...ctx, tabs } })
     assert.deepEqual(h.calls, expected, mode)
   }
+})
+
+test("opening an extension page cancels its pending disable and reload", async () => {
+  const h = ruleHarness()
+  h.enabled.set("A", true)
+  await h.init(rule({ actionType: "closeWhenMatched", reloadAfterDisable: true }))
+  assert.equal(h.timers.length, 2, "disable and reload are pending before opening the page")
+
+  const optionsTab = { id: 2, url: "chrome-extension://A/options.html", active: true }
+  h.chrome.tabs.query = async () => [h.tab, optionsTab]
+  h.handler.onCurrentUrlChanged(optionsTab)
+  await flush()
+  await h.runTimers()
+  assert.deepEqual(h.calls, [])
+  assert.deepEqual(h.records, [])
+
+  h.chrome.tabs.query = async () => [h.tab]
+  h.handler.onCurrentUrlChanged(h.tab)
+  await flush()
+  await h.runTimers()
+  assert.deepEqual(h.calls, [
+    ["A", false],
+    ["reload", h.tab.id]
+  ])
+  assert.deepEqual(h.records, [["disable", "A"]])
+  assert.deepEqual(h.errors, [])
 })
 
 test("automatic actions retain priority, self exclusion, page protection and disable cancellation", async () => {

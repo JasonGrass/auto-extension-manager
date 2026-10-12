@@ -134,6 +134,8 @@ async function closeExtensions(
         return tab.url?.includes(`/${extId}/`)
       })
       if (settingTab) {
+        // 设置页可能在延迟禁用期间打开，需取消之前排队的禁用及其关联刷新，仅跳过本轮不够。
+        getDelayCloser().cancel(extId)
         console.info(`[Rule] exist page about ${extId}, cancel disable`)
         continue
       }
