@@ -9,6 +9,7 @@ const { TextArea } = Input
 
 const ImportTarget = ({ config }, ref) => {
   const [value, setValue] = useState("")
+  const fileInputRef = useRef(null)
 
   useImperativeHandle(ref, () => ({
     getValue: () => {
@@ -30,6 +31,11 @@ const ImportTarget = ({ config }, ref) => {
   }
 
   const onReadFromFile = async () => {
+    if (typeof window.showOpenFilePicker !== "function") {
+      fileInputRef.current.click()
+      return
+    }
+
     try {
       const files = await window.showOpenFilePicker({
         types: [
@@ -51,12 +57,30 @@ const ImportTarget = ({ config }, ref) => {
       const fileContent = await file.text()
       setValue(fileContent)
     } catch (error) {
+      if (error.name !== "AbortError") {
+        console.warn(error)
+      }
+    }
+  }
+
+  const onFileChange = async (event) => {
+    const input = event.target
+    const file = input.files?.[0]
+    if (!file) {
+      return
+    }
+    try {
+      setValue(await file.text())
+    } catch (error) {
       console.warn(error)
+    } finally {
+      input.value = ""
     }
   }
 
   return (
     <Style>
+      <input ref={fileInputRef} type="file" accept=".json,.txt" hidden onChange={onFileChange} />
       <div className="import-text-tools">
         <Button onClick={onPasteFromClipboard}>
           {getLang("management_import_from_clipboard")}
