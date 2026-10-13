@@ -130,8 +130,54 @@ async function readJsonFile(file: Blob) {
   return await waiter
 }
 
+// Only normalize the backup: other arrays retain their UI order or rule precedence.
+function sortExportValue(value: unknown, path = ""): unknown {
+  if (Array.isArray(value)) {
+    const items = value.map((item) => sortExportValue(item, `${path}[]`))
+    if (
+      [
+        "groups[].extensions",
+        "ruleConfig[].target.extensions",
+        "ruleConfig[].target.targetExtensions"
+      ].includes(path)
+    ) {
+      return items.sort()
+    }
+    if (path === "management.extensions") {
+      return items.sort((a, b) => {
+        const left = (a as config.IExtensionAttachInfo).extId
+        const right = (b as config.IExtensionAttachInfo).extId
+        return left < right ? -1 : left > right ? 1 : 0
+      })
+    }
+    return items
+  }
+  if (value !== null && typeof value === "object") {
+    const record = value as Record<string, unknown>
+    const keys = Object.keys(record)
+    // Keep the established top-level section order.
+    if (path) keys.sort()
+    return Object.fromEntries(
+      keys.map((key) => [key, sortExportValue(record[key], path ? `${path}.${key}` : key)])
+    )
+  }
+  return value
+}
+
 function exportToJsonFile(data: any, filename: string) {
-  const jsonStr = JSON.stringify(data, null, 2)
+  let jsonStr: string
+  try {
+    jsonStr = JSON.stringify(data, null, 2)
+  } catch (error) {
+    console.error("[ConfigFileBackup] Failed to serialize configuration for export", error)
+    throw error
+  }
+  try {
+    // Sort a JSON snapshot; retain the original text if any normalization step fails.
+    jsonStr = JSON.stringify(sortExportValue(JSON.parse(jsonStr)), null, 2)
+  } catch (error) {
+    console.error("[ConfigFileBackup] Failed to sort configuration; exporting original JSON", error)
+  }
   const blob = new Blob([jsonStr], { type: "application/json" })
 
   downloadFile(blob, filename)
