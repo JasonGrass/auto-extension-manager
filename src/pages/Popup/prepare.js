@@ -46,13 +46,38 @@ export const prepare = async function () {
 
   document.body.style.zoom = zoom
 
+  // 获取当前标签页 URL，用于快速创建规则
+  const currentTabUrl = await getCurrentTabUrl()
+
   return {
     // 插件信息
     extensions: extensions,
     // 用户配置信息
     options: allOptions,
     // 运行时临时参数
-    params: {}
+    params: {
+      currentTabUrl: currentTabUrl
+    }
+  }
+}
+
+/**
+ * 获取当前活跃标签页的 URL
+ */
+async function getCurrentTabUrl() {
+  try {
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
+    const url = tabs[0]?.url
+    if (!url) {
+      return null
+    }
+    // 排除浏览器内部页面
+    if (url.startsWith("chrome://") || url.startsWith("edge://") || url.startsWith("about:")) {
+      return null
+    }
+    return url
+  } catch {
+    return null
   }
 }
 

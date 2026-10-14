@@ -10,8 +10,8 @@ import ExtensionListItem from "./ExtensionListItem"
 /**
  * 普通扩展的列表展示
  */
-const ExtensionListViewByGroup = memo(({ extensions, options }) => {
-  const [moved, setMoved] = useState("") // 没有业务意义，就是一个依赖值，值发生变化，则重新执行 usePopupExtensions
+const ExtensionListViewByGroup = memo(({ extensions, options, quickRuleMode, quickRuleState, onQuickRuleToggle }) => {
+  const [moved, setMoved] = useState("")
 
   const [groups] = usePopupExtensionsByGroup(extensions, options, moved)
 
@@ -34,7 +34,10 @@ const ExtensionListViewByGroup = memo(({ extensions, options }) => {
               group={group}
               options={options}
               key={group.id}
-              onItemEnableChanged={onItemEnableChanged}></ExtensionListSpace>
+              onItemEnableChanged={onItemEnableChanged}
+              quickRuleMode={quickRuleMode}
+              quickRuleState={quickRuleState}
+              onQuickRuleToggle={onQuickRuleToggle}></ExtensionListSpace>
           )
         })}
     </Style>
@@ -43,7 +46,7 @@ const ExtensionListViewByGroup = memo(({ extensions, options }) => {
 
 export default ExtensionListViewByGroup
 
-const ExtensionListSpace = memo(({ group, options, onItemEnableChanged }) => {
+const ExtensionListSpace = memo(({ group, options, onItemEnableChanged, quickRuleMode, quickRuleState, onQuickRuleToggle }) => {
   // 是否折叠分组显示
   const [fold, setFold] = useState(false)
 
@@ -71,6 +74,9 @@ const ExtensionListSpace = memo(({ group, options, onItemEnableChanged }) => {
               enabled={item.enabled}
               options={options}
               onItemEnableChanged={onItemEnableChanged}
+              quickRuleMode={quickRuleMode}
+              quickRuleState={quickRuleState}
+              onQuickRuleToggle={onQuickRuleToggle}
             />
           </li>
         ))}

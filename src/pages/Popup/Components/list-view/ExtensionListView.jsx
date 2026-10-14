@@ -8,9 +8,9 @@ import ExtensionListItem from "./ExtensionListItem"
 /**
  * 普通扩展的列表展示
  */
-const ExtensionList = memo(({ extensions, options }) => {
+const ExtensionList = memo(({ extensions, options, quickRuleMode, quickRuleState, onQuickRuleToggle }) => {
   const [showItems, setItems] = useState([])
-  const [moved, setMoved] = useState("") // Trigger usePopupExtensions to rebuild after enable state changes.
+  const [moved, setMoved] = useState("")
 
   const [items] = usePopupExtensions(extensions, options, moved)
 
@@ -42,7 +42,10 @@ const ExtensionList = memo(({ extensions, options }) => {
             <ExtensionListItem
               item={item}
               options={options}
-              onItemEnableChanged={onItemEnableChanged}></ExtensionListItem>
+              onItemEnableChanged={onItemEnableChanged}
+              quickRuleMode={quickRuleMode}
+              quickRuleState={quickRuleState}
+              onQuickRuleToggle={onQuickRuleToggle}></ExtensionListItem>
           </li>
         )
       })}

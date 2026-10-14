@@ -926,6 +926,54 @@
   "config_cache_failed": {
     "message": "配置已保存，但本地显示缓存未能更新。请关闭并重新打开扩展管理器后重试。"
   },
+  "quick_rule_title": {
+    "message": "快速规则"
+  },
+  "quick_rule_mode_title": {
+    "message": "快速建规则"
+  },
+  "quick_rule_mode_hint": {
+    "message": "在下方开关扩展，完成后点保存即可为此网站创建规则"
+  },
+  "quick_rule_modified_count": {
+    "message": "已修改 $1 个"
+  },
+  "quick_rule_no_tab_url": {
+    "message": "当前标签页没有有效的网站地址"
+  },
+  "quick_rule_cancel": {
+    "message": "取消"
+  },
+  "quick_rule_save_and_reload": {
+    "message": "保存并刷新"
+  },
+  "quick_rule_saving": {
+    "message": "保存中..."
+  },
+  "quick_rule_action_disable_while": {
+    "message": "在此网站禁用"
+  },
+  "quick_rule_action_enable_while": {
+    "message": "在此网站启用"
+  },
+  "quick_rule_default_name": {
+    "message": "$1 - $2"
+  },
+  "toggle_all_on": {
+    "message": "全部启用扩展"
+  },
+  "toggle_all_off": {
+    "message": "全部禁用扩展"
+  },
+  "toggle_all_restore": {
+    "message": "恢复到关闭前的状态"
+  },
+  "toggle_all_restoring": {
+    "message": "正在恢复扩展..."
+  },
+  "toggle_all_mixed_tip": {
+    "message": "左：全部禁用 / 右：全部启用"
+  },
   "end": {
     "message": "end"
   }
