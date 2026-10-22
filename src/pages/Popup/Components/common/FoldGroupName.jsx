@@ -2,28 +2,16 @@ import React, { memo, useEffect, useState } from "react"
 
 import { CaretDownOutlined, CaretRightOutlined } from "@ant-design/icons"
 import { Space } from "antd"
-import localforage from "localforage"
 import styled from "styled-components"
 
-const groupExpandForage = localforage.createInstance({
-  driver: localforage.LOCALSTORAGE,
-  name: "LocalOptions",
-  version: 1.0,
-  storeName: "popupGroupExpand"
-})
+import { savePopupGroupFold } from "../../utils/popupGroupFolds"
 
 /**
  * Popup 中，按分组显示时，可触发折叠功能的分组名称显示
  */
-const FoldGroupName = memo(({ group, onFoldChanged }) => {
+const FoldGroupName = memo(({ group, initialFolded = false, onFoldChanged }) => {
   // 是否折叠分组显示
-  const [fold, setFold] = useState(false)
-
-  useEffect(() => {
-    groupExpandForage.getItem(group.id).then((value) => {
-      setFold(value ? true : false)
-    })
-  }, [group])
+  const [fold, setFold] = useState(initialFolded)
 
   useEffect(() => {
     onFoldChanged?.(fold)
@@ -32,11 +20,7 @@ const FoldGroupName = memo(({ group, onFoldChanged }) => {
   const onFoldClick = () => {
     const newValue = !fold
     setFold(newValue)
-    if (newValue) {
-      groupExpandForage.setItem(group.id, newValue)
-    } else {
-      groupExpandForage.removeItem(group.id)
-    }
+    savePopupGroupFold(group.id, newValue)
   }
 
   return (

@@ -13,10 +13,11 @@ import classNames from "classnames"
 
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
 import { isDevRuntime } from ".../utils/channelHelper"
-import { getHomepageUrl, getIcon, getOriginSettingUrl } from ".../utils/extensionHelper.js"
+import { getHomepageUrl, getOriginSettingUrl } from ".../utils/extensionHelper.js"
 import { getLang } from ".../utils/utils"
 import { isStringEmpty } from ".../utils/utils.js"
 import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
+import ExtensionIcon from "../common/ExtensionIcon"
 import { ExtensionGridItemStyle } from "./ExtensionGridItemStyle"
 
 const manualEnableCounter = new ManualEnableCounter()
@@ -67,7 +68,14 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
 
   const checkMenuPosition = () => {
     const containerRect = containerRef.current.getBoundingClientRect()
-    const menuRect = menuRef.current.getBoundingClientRect()
+    const menuEl = menuRef.current
+    // Measure the hidden menu before revealing it, including on the first right click.
+    const { visibility, display } = menuEl.style
+    menuEl.style.visibility = "hidden"
+    menuEl.style.display = "block"
+    const menuRect = menuEl.getBoundingClientRect()
+    menuEl.style.visibility = visibility
+    menuEl.style.display = display
     const rightSpace = window.innerWidth - containerRect.right
 
     if (rightSpace < menuRect.width) {
@@ -118,12 +126,9 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
     setTooltipStyle(style)
   }
 
-  useEffect(() => {
-    checkMenuPosition()
-    checkTooltipPosition()
-  }, [isMouseEnter, isMouseRightClick])
-
   const handleItemMouseEnter = () => {
+    if (!menuDisplayByRightClick) checkMenuPosition()
+    checkTooltipPosition()
     setIsMouseEnter(true)
   }
 
@@ -145,6 +150,10 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
 
   const handleItemMouseClick = (e) => {
     if (e.button === 2) {
+      if (menuDisplayByRightClick) {
+        checkMenuPosition()
+        checkTooltipPosition()
+      }
       setIsMouseRightClick(true)
     }
   }
@@ -249,7 +258,7 @@ const ExtensionGridItem = memo(({ item, options, enabled, onItemMove }) => {
             "grid-display-item-box",
             { "grid-item-disable": !itemEnable && grayStyleOfDisable }
           ])}>
-          <img src={getIcon(item, 128)} alt="icon" />
+          <ExtensionIcon item={item} alt="icon" />
           {isShowAppNameInGirdView && (
             <span
               className={classNames([

@@ -10,7 +10,7 @@ import * as themes from "../src/styles/themes.js"
 
 const flush = () => new Promise((resolve) => setImmediate(resolve))
 
-function harness(readMode = async () => undefined) {
+function harness(readMode = async () => undefined, initialPreference) {
   const mediaQuery = new EventTarget()
   mediaQuery.matches = false
   const listeners = new Set()
@@ -23,6 +23,7 @@ function harness(readMode = async () => undefined) {
     readMode,
     mediaQuery,
     storageChanges,
+    initialPreference,
     onChange: (state) => states.push(state)
   })
   return {
@@ -37,6 +38,42 @@ function harness(readMode = async () => undefined) {
     }
   }
 }
+
+test("an authoritative startup theme is ready without another initial configuration read", async () => {
+  let reads = 0
+  const view = harness(
+    async () => {
+      reads++
+      return "light"
+    },
+    { mode: "dark" }
+  )
+  assert.deepEqual(view.states, [{ mode: "dark", isDarkMode: true }])
+  await flush()
+  assert.equal(reads, 0)
+  view.storage({ "LS__setting.0": {} })
+  await flush()
+  assert.equal(reads, 1)
+  assert.deepEqual(view.states.at(-1), { mode: "light", isDarkMode: false })
+  view.dispose()
+})
+
+test("a stale startup theme releases its listener and ignores refresh results after disposal", async () => {
+  let releaseCount = 0
+  let resolveRead
+  const view = harness(() => new Promise((resolve) => (resolveRead = resolve)), {
+    mode: "dark",
+    stale: true,
+    dispose: () => releaseCount++
+  })
+  assert.equal(releaseCount, 1)
+  assert.deepEqual(view.states, [{ mode: "dark", isDarkMode: true }])
+  assert.equal(typeof resolveRead, "function")
+  view.dispose()
+  resolveRead("light")
+  await flush()
+  assert.deepEqual(view.states, [{ mode: "dark", isDarkMode: true }])
+})
 
 // Missing listeners, treating an explicit mode as system, or a stale async read
 // overwriting a user's choice must change the theme observed by these consumers.

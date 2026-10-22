@@ -10,13 +10,25 @@ import { getLang } from ".../utils/utils"
 import { MenuStyle } from "./MenuStyle"
 import SceneStateToggle from "./SceneStateToggle"
 
-const SceneDropdown = memo(({ options, className }) => {
-  const [activeSceneIds, setActiveSceneIds] = useState([])
+const SceneDropdown = memo(({ options, initialActiveSceneIds, className }) => {
+  const [activeSceneIds, setActiveSceneIds] = useState(initialActiveSceneIds ?? [])
   const [isUpdating, setIsUpdating] = useState(false)
   const pendingRef = useRef(false)
+  const hasSelectedScenesRef = useRef(initialActiveSceneIds !== undefined)
 
   useEffect(() => {
-    storage.scene.getActiveIds().then(setActiveSceneIds)
+    if (hasSelectedScenesRef.current) return
+
+    let cancelled = false
+    storage.scene.getActiveIds().then((ids) => {
+      if (cancelled || hasSelectedScenesRef.current) return
+
+      hasSelectedScenesRef.current = true
+      setActiveSceneIds(ids)
+    })
+    return () => {
+      cancelled = true
+    }
   }, [options])
 
   const fixMenu = [
@@ -36,6 +48,7 @@ const SceneDropdown = memo(({ options, className }) => {
       return
     }
 
+    hasSelectedScenesRef.current = true
     pendingRef.current = true
     setIsUpdating(true)
     try {
@@ -79,6 +92,7 @@ const SceneDropdown = memo(({ options, className }) => {
     }
 
     if (e.key === "cancel") {
+      hasSelectedScenesRef.current = true
       const nextIds = await storage.scene.setActiveIds([])
       setActiveSceneIds(nextIds)
       await notifyRules(nextIds)

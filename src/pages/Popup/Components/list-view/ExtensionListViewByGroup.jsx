@@ -10,7 +10,7 @@ import ExtensionListItem from "./ExtensionListItem"
 /**
  * 普通扩展的列表展示
  */
-const ExtensionListViewByGroup = memo(({ extensions, options }) => {
+const ExtensionListViewByGroup = memo(({ extensions, options, initialFoldedGroups = {} }) => {
   const [moved, setMoved] = useState("") // 没有业务意义，就是一个依赖值，值发生变化，则重新执行 usePopupExtensions
 
   const [groups] = usePopupExtensionsByGroup(extensions, options, moved)
@@ -32,6 +32,7 @@ const ExtensionListViewByGroup = memo(({ extensions, options }) => {
           return (
             <ExtensionListSpace
               group={group}
+              initialFolded={Boolean(group.name && initialFoldedGroups[group.id])}
               options={options}
               key={group.id}
               onItemEnableChanged={onItemEnableChanged}></ExtensionListSpace>
@@ -43,19 +44,25 @@ const ExtensionListViewByGroup = memo(({ extensions, options }) => {
 
 export default ExtensionListViewByGroup
 
-const ExtensionListSpace = memo(({ group, options, onItemEnableChanged }) => {
+const ExtensionListSpace = memo(({ group, initialFolded, options, onItemEnableChanged }) => {
   // 是否折叠分组显示
-  const [fold, setFold] = useState(false)
+  const [fold, setFold] = useState(initialFolded)
+  // ponytail: retain expanded rows for collapse animation; unmount only if memory warrants it.
+  const [hasExpanded, setHasExpanded] = useState(!initialFolded)
 
   const onFoldChanged = useCallback((fold) => {
     setFold(fold)
+    if (!fold) setHasExpanded(true)
   }, [])
 
   return (
     <div>
       {group.name && (
         <span className="group-name">
-          <FoldGroupName group={group} onFoldChanged={onFoldChanged}></FoldGroupName>
+          <FoldGroupName
+            group={group}
+            initialFolded={initialFolded}
+            onFoldChanged={onFoldChanged}></FoldGroupName>
         </span>
       )}
 
@@ -64,16 +71,17 @@ const ExtensionListSpace = memo(({ group, options, onItemEnableChanged }) => {
           "show-list": !fold,
           "hide-list": fold
         })}>
-        {group.extensions.map((item) => (
-          <li key={item.id}>
-            <ExtensionListItem
-              item={item}
-              enabled={item.enabled}
-              options={options}
-              onItemEnableChanged={onItemEnableChanged}
-            />
-          </li>
-        ))}
+        {hasExpanded &&
+          group.extensions.map((item) => (
+            <li key={item.id}>
+              <ExtensionListItem
+                item={item}
+                enabled={item.enabled}
+                options={options}
+                onItemEnableChanged={onItemEnableChanged}
+              />
+            </li>
+          ))}
       </ul>
     </div>
   )

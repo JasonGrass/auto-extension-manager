@@ -86,9 +86,10 @@ const MoreOperationDropdown = memo(({ options, className, messageApi }) => {
 
   const readSnapshot = async () => {
     const allSnapshotKeys = await forage.keys()
+    const allSnapshots = await Promise.all(allSnapshotKeys.map((key) => forage.getItem(key)))
     const snapshots = [...initSnapshotMenu]
-    for (const key of allSnapshotKeys) {
-      const snapshot = await forage.getItem(key)
+    for (const [index, key] of allSnapshotKeys.entries()) {
+      const snapshot = allSnapshots[index]
       const resumeOne = () => {
         resumeSnapshot(snapshot)
       }

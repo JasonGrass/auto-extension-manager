@@ -15,10 +15,19 @@ import { MenuStyle } from "./MenuStyle"
 const localOptions = new LocalOptions()
 
 const SingleGroupDropdown = memo((props) => {
-  const { options, extensions, enabledById, groups, onGroupChanged, onGroupEnableChanged } = props
-  const [selectedGroup, setSelectGroup] = useState(null)
+  const {
+    options,
+    extensions,
+    enabledById,
+    groups,
+    initialGroup,
+    onGroupChanged,
+    onGroupEnableChanged
+  } = props
+  const [selectedGroup, setSelectGroup] = useState(initialGroup ?? null)
   const [groupStateSnapshot, setGroupStateSnapshot] = useState(null)
   const batchPendingRef = useRef(false)
+  const hasSelectedGroupRef = useRef(initialGroup !== undefined)
 
   const menuTitleAll = getLang("group_select_all")
   const noGroup = useMemo(
@@ -108,7 +117,13 @@ const SingleGroupDropdown = memo((props) => {
 
   // 初始化
   useEffect(() => {
+    if (hasSelectedGroupRef.current) return
+
+    let cancelled = false
     localOptions.getActiveGroupId().then((groupId) => {
+      if (cancelled || hasSelectedGroupRef.current) return
+
+      hasSelectedGroupRef.current = true
       const group = visibleGroups.find((g) => g.id === groupId) ?? null
       setSelectGroup(group)
       onGroupChanged(group)
@@ -118,10 +133,14 @@ const SingleGroupDropdown = memo((props) => {
         localOptions.setActiveGroupId(null)
       }
     })
+    return () => {
+      cancelled = true
+    }
   }, [visibleGroups, onGroupChanged])
 
   // 手动切换分组
   const handleGroupMenuClick = (e) => {
+    hasSelectedGroupRef.current = true
     const group = visibleGroups.find((g) => g.id === e.key) ?? null
     setSelectGroup(group)
     localOptions.setActiveGroupId(group?.id)

@@ -53,3 +53,26 @@ html {
   height: auto;
   min-height: 300px;
 }
+
+.popup-load-error {
+  min-height: 300px;
+  box-sizing: border-box;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  background: var(--app-bg, Canvas);
+  color: var(--app-fg, CanvasText);
+}
+
+.popup-load-error button {
+  padding: 8px 16px;
+  border: 1px solid var(--app-border-strong, ButtonBorder);
+  border-radius: 6px;
+  background: var(--app-surface, ButtonFace);
+  color: inherit;
+  cursor: pointer;
+}

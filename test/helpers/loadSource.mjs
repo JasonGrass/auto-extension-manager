@@ -16,7 +16,7 @@ export function createSourceLoader(stubs = {}, globals = {}) {
       ? path.join(root, "src", request.slice(4))
       : path.resolve(parent, request)
     if (!fs.existsSync(filename) || fs.statSync(filename).isDirectory()) {
-      filename = [".ts", ".js", ".mjs", "/index.js"]
+      filename = [".ts", ".js", ".jsx", ".tsx", ".mjs", "/index.js"]
         .map((ext) => filename + ext)
         .find(fs.existsSync)
     }
@@ -28,6 +28,7 @@ export function createSourceLoader(stubs = {}, globals = {}) {
       compilerOptions: {
         target: ts.ScriptTarget.ES2022,
         module: ts.ModuleKind.CommonJS,
+        jsx: ts.JsxEmit.React,
         esModuleInterop: true
       }
     }).outputText

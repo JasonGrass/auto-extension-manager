@@ -1,10 +1,24 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 
 import storage from ".../storage/sync"
-import { applyThemeToDocument, darkTheme, lightTheme, observeThemePreference } from "./themes"
+import {
+  applyThemeToDocument,
+  darkTheme,
+  getThemePreference,
+  lightTheme,
+  observeThemePreference
+} from "./themes"
 
-export default function useAppTheme() {
-  const [preference, setPreference] = useState(null)
+export default function useAppTheme(initialPreference) {
+  const initial = useRef(initialPreference)
+  const [preference, setPreference] = useState(() =>
+    initialPreference
+      ? getThemePreference(
+          initialPreference.mode,
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        )
+      : null
+  )
   const observer = useRef(null)
 
   useEffect(() => {
@@ -12,7 +26,11 @@ export default function useAppTheme() {
       readMode: async () => (await storage.options.getAll()).setting?.darkMode,
       mediaQuery: window.matchMedia("(prefers-color-scheme: dark)"),
       storageChanges: chrome.storage.onChanged,
-      onChange: setPreference
+      initialPreference: initial.current,
+      onChange: (next) =>
+        setPreference((current) =>
+          current?.mode === next.mode && current?.isDarkMode === next.isDarkMode ? current : next
+        )
     })
     observer.current = subscription
     return () => {

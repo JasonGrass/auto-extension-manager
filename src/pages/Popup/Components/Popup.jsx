@@ -3,13 +3,14 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } fro
 import classNames from "classnames"
 import { styled } from "styled-components"
 
+import { mergeCachedExtensionIcons } from ".../pages/Background/extension/ExtensionRepo"
 import { applyPopupWidth } from ".../pages/Popup/utils/popupLayoutHelper"
 import { isExtExtension } from "../../../utils/extensionHelper.js"
 import { handleGroupExtensionOnOff } from "../ExtensionOnOffHandler.js"
 import { useSearchController } from "../hooks/useSearchController"
-import { useShowAppController } from "../hooks/useShowAppController"
 import AppList from "./AppList"
 import Header from "./Header"
+import { PopupIconContext } from "./common/ExtensionIcon"
 import ExtensionGrid from "./grid-view/ExtensionGridView.jsx"
 import ExtensionGridViewByGroup from "./grid-view/ExtensionGridViewByGroup.jsx"
 import ExtensionList from "./list-view/ExtensionListView"
@@ -17,16 +18,21 @@ import ExtensionListViewByGroup from "./list-view/ExtensionListViewByGroup.jsx"
 
 function IndexPopup({ originExtensions, options, params }) {
   const [extensions, setExtensions] = useState(originExtensions)
+  const [iconExtensions, setIconExtensions] = useState(originExtensions)
+  const iconsById = useMemo(
+    () =>
+      new Map(
+        iconExtensions
+          .filter((extension) => extension.icon)
+          .map((extension) => [extension.id, extension])
+      ),
+    [iconExtensions]
+  )
   // 分组开关必须始终反映真实状态，不能受“启停后刷新列表”设置影响。
   const [enabledById, setEnabledById] = useState(() => buildEnabledById(originExtensions))
 
-  // 启用的扩展数量（不包括 APP 类型）
-  const [activeExtensionCount, setActiveExtensionCount] = useState(0)
-  // 总扩展数量，不包括 APP 类型
-  const [allExtensionCount, setAllExtensionCount] = useState(0)
-
   // 是否显示 APP 类型扩展
-  const [isShowAppExtension, setIsShowAppExtension] = useShowAppController(options)
+  const isShowAppExtension = options.setting.isShowApp ?? false
 
   // 搜索控制
   const [
@@ -35,7 +41,7 @@ function IndexPopup({ originExtensions, options, params }) {
     onSearchByTextChange,
     onSearchByGroupChange,
     currentGroup
-  ] = useSearchController(extensions, options)
+  ] = useSearchController(extensions, options, params.initialGroup)
 
   // 直接查看固定分组时临时覆盖综合视图的隐藏偏好。
   const displayOptions = useMemo(() => {
@@ -71,16 +77,28 @@ function IndexPopup({ originExtensions, options, params }) {
   ])
 
   // 数量显示
-  useEffect(() => {
+  const [activeExtensionCount, allExtensionCount] = useMemo(() => {
     let list = extensions.filter((ext) => isExtExtension(ext))
     if (!(options.setting.isShowFixedExtension ?? true)) {
-      const fixedExtensionIds =
+      const fixedExtensionIds = new Set(
         options.groups.find((group) => group.id === "fixed")?.extensions ?? []
-      list = list.filter((ext) => !fixedExtensionIds.includes(ext.id))
+      )
+      list = list.filter((ext) => !fixedExtensionIds.has(ext.id))
     }
-    setActiveExtensionCount(list.filter((ext) => enabledById[ext.id] ?? ext.enabled).length)
-    setAllExtensionCount(list.length)
+    return [list.filter((ext) => enabledById[ext.id] ?? ext.enabled).length, list.length]
   }, [enabledById, extensions, options.groups, options.setting.isShowFixedExtension])
+
+  useEffect(() => {
+    let disposed = false
+    void params.iconEnhancement?.then((updates) => {
+      if (!disposed) {
+        setIconExtensions((current) => mergeCachedExtensionIcons(current, updates))
+      }
+    })
+    return () => {
+      disposed = true
+    }
+  }, [params.iconEnhancement])
 
   // 扩展启用与禁用之后，更新显示
   useEffect(() => {
@@ -131,13 +149,7 @@ function IndexPopup({ originExtensions, options, params }) {
   }, [])
 
   // 切换分组只负责切换显示，不再触发任何扩展启停操作。
-  const onGroupChanged = useCallback(
-    (group) => {
-      setIsShowAppExtension(!group)
-      onSearchByGroupChange(group)
-    },
-    [onSearchByGroupChange, setIsShowAppExtension]
-  )
+  const onGroupChanged = onSearchByGroupChange
 
   const onGroupEnableChanged = useCallback(
     async (group, enabled) => {
@@ -150,9 +162,9 @@ function IndexPopup({ originExtensions, options, params }) {
   )
 
   // 布局切换
-  const onLayoutChanged = (layout) => {
+  const onLayoutChanged = useCallback((layout) => {
     setLayout(layout)
-  }
+  }, [])
 
   const getExtensionDisplay = () => {
     if (!layout || layout === "list") {
@@ -160,7 +172,8 @@ function IndexPopup({ originExtensions, options, params }) {
         return (
           <ExtensionListViewByGroup
             extensions={pluginExtensions}
-            options={displayOptions}></ExtensionListViewByGroup>
+            options={displayOptions}
+            initialFoldedGroups={params.initialFoldedGroups}></ExtensionListViewByGroup>
         )
       } else {
         return (
@@ -174,46 +187,45 @@ function IndexPopup({ originExtensions, options, params }) {
           <ExtensionGridViewByGroup
             extensions={pluginExtensions}
             options={displayOptions}
-            isShowBottomDivider={
-              isShowAppExtension && appExtensions.length > 0
-            }></ExtensionGridViewByGroup>
+            initialFoldedGroups={params.initialFoldedGroups}></ExtensionGridViewByGroup>
         )
       } else {
         return (
-          <ExtensionGrid
-            extensions={pluginExtensions}
-            options={displayOptions}
-            isShowBottomDivider={isShowAppExtension && appExtensions.length > 0}></ExtensionGrid>
+          <ExtensionGrid extensions={pluginExtensions} options={displayOptions}></ExtensionGrid>
         )
       }
     }
   }
 
   return (
-    <Style>
-      <div className="header-container">
-        <Header
-          activeCount={activeExtensionCount}
-          totalCount={allExtensionCount}
-          options={options}
-          extensions={extensions}
-          enabledById={enabledById}
-          onGroupChanged={onGroupChanged}
-          onGroupEnableChanged={onGroupEnableChanged}
-          onLayoutChanged={onLayoutChanged}
-          onSearch={onSearchByTextChange}
-          isDarkMode={params.isDarkMode}></Header>
-      </div>
+    <PopupIconContext.Provider value={iconsById}>
+      <Style>
+        <div className="header-container">
+          <Header
+            activeCount={activeExtensionCount}
+            totalCount={allExtensionCount}
+            options={options}
+            extensions={extensions}
+            enabledById={enabledById}
+            initialGroup={params.initialGroup}
+            initialActiveSceneIds={params.activeSceneIds}
+            onGroupChanged={onGroupChanged}
+            onGroupEnableChanged={onGroupEnableChanged}
+            onLayoutChanged={onLayoutChanged}
+            onSearch={onSearchByTextChange}
+            isDarkMode={params.isDarkMode}></Header>
+        </div>
 
-      <div
-        className={classNames([
-          "extension-container",
-          { "extension-container-grid": layout === "grid" }
-        ])}>
-        {getExtensionDisplay()}
-        {isShowAppExtension && <AppList items={appExtensions}></AppList>}
-      </div>
-    </Style>
+        <div
+          className={classNames([
+            "extension-container",
+            { "extension-container-grid": layout === "grid" }
+          ])}>
+          {getExtensionDisplay()}
+          {isShowAppExtension && <AppList items={appExtensions} layout={layout}></AppList>}
+        </div>
+      </Style>
+    </PopupIconContext.Provider>
   )
 }
 

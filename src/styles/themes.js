@@ -227,14 +227,49 @@ export function applyThemeToDocument(currentTheme, isDarkMode) {
 
 // Keep asynchronous storage reads from replacing a newer preference or updating
 // a page that has unmounted. Storage uses LargeSync's chunked setting keys.
-export function observeThemePreference({ readMode, mediaQuery, storageChanges, onChange }) {
+export function getThemePreference(value, systemDark) {
+  const mode = value === "light" || value === "dark" ? value : "system"
+  return { mode, isDarkMode: mode === "dark" || (mode === "system" && systemDark) }
+}
+
+function isThemeSettingChange(changes, area) {
+  return (
+    area === "sync" &&
+    Object.keys(changes).some((key) => key.startsWith("LS__setting.") || key === "options")
+  )
+}
+
+// Cover changes while popup startup is still loading, before the theme hook subscribes.
+export function captureThemePreference(storageChanges) {
+  const snapshot = {
+    mode: undefined,
+    stale: false,
+    dispose() {
+      storageChanges.removeListener(onStorageChange)
+    }
+  }
+  const onStorageChange = (changes, area) => {
+    if (isThemeSettingChange(changes, area)) snapshot.stale = true
+  }
+  storageChanges.addListener(onStorageChange)
+  return snapshot
+}
+
+export function observeThemePreference({
+  readMode,
+  mediaQuery,
+  storageChanges,
+  onChange,
+  initialPreference
+}) {
   let mode
   let revision = 0
   let disposed = false
 
   const publish = (value) => {
-    mode = value === "light" || value === "dark" ? value : "system"
-    onChange({ mode, isDarkMode: mode === "dark" || (mode === "system" && mediaQuery.matches) })
+    const preference = getThemePreference(value, mediaQuery.matches)
+    mode = preference.mode
+    onChange(preference)
   }
 
   const refresh = async () => {
@@ -252,17 +287,15 @@ export function observeThemePreference({ readMode, mediaQuery, storageChanges, o
     if (mode === "system") publish(mode)
   }
   const onStorageChange = (changes, area) => {
-    if (
-      area === "sync" &&
-      Object.keys(changes).some((key) => key.startsWith("LS__setting.") || key === "options")
-    ) {
-      void refresh()
-    }
+    if (isThemeSettingChange(changes, area)) void refresh()
   }
 
   mediaQuery.addEventListener("change", onSystemChange)
   storageChanges.addListener(onStorageChange)
-  void refresh()
+  // Subscribe first so releasing the startup listener cannot leave a gap.
+  initialPreference?.dispose?.()
+  if (initialPreference) publish(initialPreference.mode)
+  if (!initialPreference || initialPreference.stale) void refresh()
 
   return {
     setMode(value) {

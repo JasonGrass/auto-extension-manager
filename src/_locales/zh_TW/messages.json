@@ -902,6 +902,12 @@
   "group_sort_by_install_time": {
     "message": "按安裝時間排序"
   },
+  "popup_app_group_name": {
+    "message": "App"
+  },
+  "popup_load_failed": {
+    "message": "無法載入擴充功能或設定，請重試。"
+  },
   "management_load_error_title": {
     "message": "擴充功能管理載入失敗"
   },

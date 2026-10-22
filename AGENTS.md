@@ -177,6 +177,9 @@ Synced settings, groups, scenes, rules and management annotations go through `sr
 and chunks values for `chrome.storage.sync`. Local options and extension metadata use localforage
 with IndexedDB; history uses Dexie. Popup startup also uses a localStorage-backed options cache.
 Active scene IDs are local state, while scene definitions are synced configuration.
+Popup startup reads authoritative configuration and installed extensions concurrently; its options
+cache only prepares the initial window appearance. Initial theme, group, scene and fold snapshots
+are shared with the UI, while optional cached icons merge later without replacing enable state.
 
 ## Testing Strategy
 

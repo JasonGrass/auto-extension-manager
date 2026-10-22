@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from "react"
+import React, { memo, useCallback, useMemo, useState } from "react"
 
 import { styled } from "styled-components"
 
@@ -9,7 +9,6 @@ import ExtensionListItem from "./ExtensionListItem"
  * 普通扩展的列表展示
  */
 const ExtensionList = memo(({ extensions, options }) => {
-  const [showItems, setItems] = useState([])
   const [moved, setMoved] = useState("") // Trigger usePopupExtensions to rebuild after enable state changes.
 
   const [items] = usePopupExtensions(extensions, options, moved)
@@ -23,24 +22,16 @@ const ExtensionList = memo(({ extensions, options }) => {
     [options]
   )
 
-  useEffect(() => {
-    const items0 = items.top
-    const items1 = items.enabled
-    const items2 = items.disabled
-
-    items0.forEach((i) => (i.__top__ = true))
-    const result = items0.concat(items1, items2)
-
-    setItems(result)
-  }, [items])
+  const showItems = useMemo(() => items.top.concat(items.enabled, items.disabled), [items])
 
   return (
     <Style>
-      {showItems.map((item) => {
+      {showItems.map((item, index) => {
         return (
           <li key={item.id}>
             <ExtensionListItem
               item={item}
+              isTop={index < items.top.length}
               options={options}
               onItemEnableChanged={onItemEnableChanged}></ExtensionListItem>
           </li>

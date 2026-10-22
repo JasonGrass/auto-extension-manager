@@ -58,7 +58,13 @@ export const attachCachedExtensionIcons = async <T extends chrome.management.Ext
   const repo = new ExtensionRepo()
   return await Promise.all(
     extensions.map(async (extension) => {
-      const cached = await repo.get(extension.id)
+      let cached
+      try {
+        cached = await repo.get(extension.id)
+      } catch {
+        // A broken optional cache record must not hide otherwise usable extensions.
+        return extension
+      }
       if (
         !cached?.icon ||
         cached.state === "uninstall" ||
@@ -76,4 +82,32 @@ export const attachCachedExtensionIcons = async <T extends chrome.management.Ext
       }
     })
   )
+}
+
+/** Merge only icons: an older cache read must not undo a user's enable/disable action. */
+export function mergeCachedExtensionIcons<T extends chrome.management.ExtensionInfo>(
+  current: T[],
+  updates: Array<T & Partial<Pick<ExtensionRecord, "icon" | "iconSource" | "iconCacheVersion">>>
+): T[] {
+  const byId = new Map(updates.map((extension) => [extension.id, extension]))
+  let changed = false
+  const result = current.map((extension) => {
+    const update = byId.get(extension.id)
+    if (!update?.icon || update.version !== extension.version) return extension
+    const iconFields = {
+      icon: update.icon,
+      iconSource: update.iconSource,
+      iconCacheVersion: update.iconCacheVersion
+    }
+    const existing = extension as T & Partial<ExtensionRecord>
+    if (
+      existing.icon === iconFields.icon &&
+      existing.iconSource === iconFields.iconSource &&
+      existing.iconCacheVersion === iconFields.iconCacheVersion
+    )
+      return extension
+    changed = true
+    return { ...extension, ...iconFields }
+  })
+  return changed ? result : current
 }

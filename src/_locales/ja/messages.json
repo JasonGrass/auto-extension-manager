@@ -902,6 +902,12 @@
   "group_sort_by_install_time": {
     "message": "インストール時間順で並べ替え"
   },
+  "popup_app_group_name": {
+    "message": "App"
+  },
+  "popup_load_failed": {
+    "message": "拡張機能または設定を読み込めませんでした。もう一度お試しください。"
+  },
   "management_load_error_title": {
     "message": "拡張機能の管理を読み込めませんでした"
   },

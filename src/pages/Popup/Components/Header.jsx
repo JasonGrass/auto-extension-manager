@@ -1,9 +1,9 @@
-import React, { memo, useEffect, useRef, useState } from "react"
+import React, { memo, useEffect, useLayoutEffect, useRef, useState } from "react"
 
 import { SearchOutlined, SettingOutlined } from "@ant-design/icons"
 import Icon from "@ant-design/icons/lib/components/Icon"
 import { Space, message } from "antd"
-import _ from "lodash"
+import throttle from "lodash/throttle"
 
 import EdgeIcon from ".../assets/img/Microsoft_Store.svg"
 import ChromeWebStoreIcon from ".../assets/img/chrome-web-store-icon.svg"
@@ -23,6 +23,8 @@ const Header = memo((props) => {
     options,
     extensions,
     enabledById,
+    initialGroup,
+    initialActiveSceneIds,
     onGroupChanged,
     onGroupEnableChanged,
     onLayoutChanged,
@@ -44,7 +46,9 @@ const Header = memo((props) => {
     if (isShowSearch) {
       searchInputRef.current.focus()
     }
+  }, [isShowSearch])
 
+  useLayoutEffect(() => {
     if (isShowSearch) {
       document.documentElement.style.setProperty("--header-height", `72px`)
     } else {
@@ -92,7 +96,7 @@ const Header = memo((props) => {
     throttleSearch(text)
   }
 
-  const throttleSearch = _.throttle((text) => {
+  const throttleSearch = throttle((text) => {
     onSearch?.(text)
   }, 500)
 
@@ -193,13 +197,17 @@ const Header = memo((props) => {
         </div>
 
         <div className="right">
-          <SceneDropdown className="dropdown" options={options}></SceneDropdown>
+          <SceneDropdown
+            className="dropdown"
+            options={options}
+            initialActiveSceneIds={initialActiveSceneIds}></SceneDropdown>
 
           <GroupDropdown
             className="dropdown"
             options={options}
             extensions={extensions}
             enabledById={enabledById}
+            initialGroup={initialGroup}
             onGroupChanged={onGroupChanged}
             onGroupEnableChanged={onGroupEnableChanged}></GroupDropdown>
 

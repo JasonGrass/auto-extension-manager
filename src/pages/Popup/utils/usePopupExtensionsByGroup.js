@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
 import { appendAdditionInfo, sortExtension } from ".../utils/extensionHelper"
@@ -18,22 +18,23 @@ export const usePopupExtensionsByGroup = (extensions, options, moved) => {
 
   const [items, setItems] = useState([])
 
-  const build = async (extensions, options) => {
-    if (!extensions || extensions.length === 0) {
-      setItems([])
-      return
-    }
-
-    const groups = await buildShowItems(extensions, options)
-    if (groups.length === 0) {
-      return
-    }
-
-    setItems(groups)
-  }
-
   useEffect(() => {
-    build(extensions, options)
+    let active = true
+    const build = async () => {
+      if (!extensions || extensions.length === 0) {
+        setItems([])
+        return
+      }
+
+      const groups = await buildShowItems(extensions, options)
+      if (active) {
+        setItems(groups)
+      }
+    }
+    build()
+    return () => {
+      active = false
+    }
   }, [extensions, options, moved])
 
   return [items]
@@ -43,9 +44,15 @@ async function buildShowItems(extensions, options) {
   const list = appendAdditionInfo(extensions, options)
 
   // 筛选置顶的扩展
-  const topExtensions = await findTopExtensions(extensions, options)
+  const frequencyOrder = options.setting.isSortByFrequency
+    ? manualEnableCounter.getOrder()
+    : Promise.resolve([])
+  const [topExtensions, refList] = await Promise.all([
+    findTopExtensions(extensions, options, frequencyOrder),
+    frequencyOrder
+  ])
 
-  let listTop = list.filter((i) => topExtensions.includes(i.id))
+  const listTop = list.filter((i) => topExtensions.includes(i.id))
 
   // 不显示那些在隐藏分组中的扩展
   const hiddenExtensions = options.groups?.find((g) => g.id === "hidden")?.extensions || []
@@ -60,51 +67,50 @@ async function buildShowItems(extensions, options) {
   }
 
   const groupArray = options.groups ?? []
-  const asyncGroups = groupArray.map(async (g) => {
-    // 不显示 hidden 分组
-    if (g.id === "hidden" && !(options.setting.isShowHiddenExtension ?? false)) {
-      return null
-    }
-    // 不显示 fixed 分组
-    if (g.id === "fixed" && !options.setting.isShowFixedExtension) {
-      return null
-    }
-    // 不显示空分组
-    if (!g.extensions || g.extensions.length === 0) {
-      return null
-    }
+  const groups = groupArray
+    .map((g) => {
+      // 不显示 hidden 分组
+      if (g.id === "hidden" && !(options.setting.isShowHiddenExtension ?? false)) {
+        return null
+      }
+      // 不显示 fixed 分组
+      if (g.id === "fixed" && !options.setting.isShowFixedExtension) {
+        return null
+      }
+      // 不显示空分组
+      if (!g.extensions || g.extensions.length === 0) {
+        return null
+      }
 
-    // 筛选出当前分组的扩展
-    let extArray = list.filter((i) => g.extensions.includes(i.id))
+      // 筛选出当前分组的扩展
+      let extArray = list.filter((i) => g.extensions.includes(i.id))
 
-    // 不显示被隐藏的扩展
-    if (!options.setting.isShowHiddenExtension) {
-      extArray = extArray.filter((i) => !hiddenExtensions.includes(i.id))
-    }
+      // 不显示被隐藏的扩展
+      if (!options.setting.isShowHiddenExtension) {
+        extArray = extArray.filter((i) => !hiddenExtensions.includes(i.id))
+      }
 
-    if (extArray.length === 0) {
-      return null
-    }
+      if (extArray.length === 0) {
+        return null
+      }
 
-    let groupName = g.name
-    if (g.id === "fixed") {
-      groupName = getLang("group_fixed_name")
-    }
-    if (g.id === "hidden") {
-      groupName = getLang("group_hidden_name")
-    }
+      let groupName = g.name
+      if (g.id === "fixed") {
+        groupName = getLang("group_fixed_name")
+      }
+      if (g.id === "hidden") {
+        groupName = getLang("group_hidden_name")
+      }
 
-    appendGroupInfo(extArray, g)
+      appendGroupInfo(extArray, g)
 
-    return {
-      id: g.id,
-      name: groupName,
-      extensions: await sortShowItems(options, extArray)
-    }
-  })
-
-  let groups = await Promise.all(asyncGroups)
-  groups = groups.filter(Boolean)
+      return {
+        id: g.id,
+        name: groupName,
+        extensions: sortShowItems(options, extArray, refList)
+      }
+    })
+    .filter(Boolean)
 
   // 没有任何分组的扩展
   const groupedExtensionIds = Array.from(new Set(groupArray.map((g) => g.extensions).flat()))
@@ -114,7 +120,7 @@ async function buildShowItems(extensions, options) {
     noneGroupExtensions = noneGroupExtensions.filter((i) => !hiddenExtensions.includes(i.id))
   }
 
-  const sortedNoneGroupExtensions = await sortShowItems(options, noneGroupExtensions)
+  const sortedNoneGroupExtensions = sortShowItems(options, noneGroupExtensions, refList)
   const noneGroupExtensionsGroup = {
     id: "__no_group__",
     name: getLang("group_no_group_name"),
@@ -124,7 +130,7 @@ async function buildShowItems(extensions, options) {
   return [...shownGroups, ...groups, noneGroupExtensionsGroup]
 }
 
-async function sortShowItems(options, list) {
+function sortShowItems(options, list, refList) {
   // 先按照名称排序执行一次
 
   const list_pre = sortExtension(list, {
@@ -136,7 +142,6 @@ async function sortShowItems(options, list) {
   }
 
   // 如果有需要，再按照频率排序
-  const refList = await manualEnableCounter.getOrder()
   return sortByReferenceList(refList, list_pre)
 }
 

@@ -10,16 +10,14 @@ import storage from ".../storage/sync"
  */
 export function useExtensionItemPin(item, options) {
   // 扩展是否在固定分组中
-  const [itemPined, setItemPined] = useState(false)
+  const [itemPined, setItemPined] = useState(
+    () => options.groups.find((g) => g.id === "fixed")?.extensions?.includes(item.id) ?? false
+  )
 
   // 初始化
   useEffect(() => {
     const fixExts = options.groups.find((g) => g.id === "fixed")?.extensions
-    if (!fixExts) {
-      return
-    }
-
-    setItemPined(fixExts.includes(item.id))
+    setItemPined(fixExts?.includes(item.id) ?? false)
   }, [item, options])
 
   // 更新 pin 状态，并保存到配置中

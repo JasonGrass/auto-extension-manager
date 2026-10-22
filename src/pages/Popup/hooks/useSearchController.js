@@ -1,35 +1,32 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 
 import { filterExtensions, isAppExtension, isExtExtension } from ".../utils/extensionHelper"
 import isMatch from ".../utils/searchHelper"
+import { buildNoGroup, NO_GROUP_ID } from "../utils/popupGroupHelper"
 
 /**
  * 根据搜索词和当前选择的分组变化，执行搜索
  */
-export const useSearchController = (extensions, options) => {
-  // 普通扩展
-  const [pluginExtensions, setPluginExtensions] = useState([])
-  // APP 类型的扩展
-  const [appExtensions, setAppExtensions] = useState([])
-
+export const useSearchController = (extensions, options, initialGroup = null) => {
   // 当前分组（空表示显示全部）
-  const [currentGroup, setCurrentGroup] = useState(null)
+  const [currentGroup, setCurrentGroup] = useState(initialGroup)
   // 当前的搜索词
   const [currentSearchText, setSearchText] = useState("")
 
   // 执行普通扩展的搜索
   const searchPlugin = useCallback(
     (group, search) => {
-      let groupExtensions = []
+      let groupExtensions = filterExtensions(extensions, isExtExtension)
+      if (group?.id === NO_GROUP_ID) {
+        group = buildNoGroup(groupExtensions, options.groups, group.name)
+      }
       if (group) {
         if (!group.extensions || group.extensions.length === 0) {
-          return groupExtensions
+          return []
         }
 
-        groupExtensions = extensions.filter((ext) => group.extensions.includes(ext.id))
+        groupExtensions = groupExtensions.filter((ext) => group.extensions.includes(ext.id))
       } else {
-        groupExtensions = filterExtensions(extensions, isExtExtension)
-
         // “显示固定分组扩展”只影响全部等综合视图；直接选择固定分组时仍显示组内内容。
         if (!(options.setting.isShowFixedExtension ?? true)) {
           const fixedExtensionIds =
@@ -76,11 +73,11 @@ export const useSearchController = (extensions, options) => {
     [extensions]
   )
 
-  // 初始化扩展列表
-  useEffect(() => {
-    setPluginExtensions(searchPlugin(currentGroup, currentSearchText))
-    setAppExtensions(searchApp(currentSearchText))
-  }, [currentGroup, currentSearchText, searchPlugin, searchApp])
+  const pluginExtensions = useMemo(
+    () => searchPlugin(currentGroup, currentSearchText),
+    [currentGroup, currentSearchText, searchPlugin]
+  )
+  const appExtensions = useMemo(() => searchApp(currentSearchText), [currentSearchText, searchApp])
 
   // 执行搜索，搜索词变更时调用
   const onSearchByTextChange = useCallback((text) => {

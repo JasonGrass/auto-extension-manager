@@ -5,16 +5,17 @@ import classNames from "classnames"
 import chromeP from "webext-polyfill-kinda"
 
 import { getLang } from ".../utils/utils"
-import { getIcon } from "../../../utils/extensionHelper"
 import { AppListStyle } from "./AppListStyle.js"
+import ExtensionIcon from "./common/ExtensionIcon"
 
 /**
  * APP 应用类型的扩展
  */
-const AppList = memo(({ items }) => {
+const AppList = memo(({ items, layout = "list" }) => {
   const [messageApi, contextHolder] = message.useMessage()
 
   if (!items || items.length === 0) return null
+  const groupName = getLang("popup_app_group_name")
 
   const onIconClick = async (e, item) => {
     if (item.enabled) {
@@ -33,8 +34,9 @@ const AppList = memo(({ items }) => {
   }
 
   return (
-    <AppListStyle>
+    <AppListStyle as="section" className={`app-${layout}`} aria-label={groupName}>
       {contextHolder}
+      <h2 className="app-group-name">{groupName}</h2>
       <ul>
         {items.map((item) => {
           return (
@@ -44,15 +46,13 @@ const AppList = memo(({ items }) => {
                 "ext-item": true,
                 "not-enable": !item.enabled
               })}>
-              <img src={getIcon(item, 48)} alt="" onClick={(e) => onIconClick(e, item)} />
-              <span>{item.shortName}</span>
+              <ExtensionIcon item={item} size={48} alt="" onClick={(e) => onIconClick(e, item)} />
+              <span>{item.shortName || item.name}</span>
             </li>
           )
         })}
 
-        {new Array(10).fill("").map((_, index) => (
-          <i key={index}></i>
-        ))}
+        {layout === "grid" && new Array(10).fill("").map((_, index) => <i key={index}></i>)}
       </ul>
     </AppListStyle>
   )

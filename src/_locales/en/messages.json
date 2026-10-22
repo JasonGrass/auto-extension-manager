@@ -902,6 +902,12 @@
   "group_sort_by_install_time": {
     "message": "Sort by Install Time"
   },
+  "popup_app_group_name": {
+    "message": "App"
+  },
+  "popup_load_failed": {
+    "message": "Could not load extensions or settings. Please try again."
+  },
   "management_load_error_title": {
     "message": "Extension management could not be loaded"
   },

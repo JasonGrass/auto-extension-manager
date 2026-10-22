@@ -14,22 +14,23 @@ import classNames from "classnames"
 import "./ExtensionListItem.css"
 
 import { ManualEnableCounter } from ".../storage/local/ManualEnableCounter"
-import { getHomepageUrl, getIcon, getOriginSettingUrl } from ".../utils/extensionHelper.js"
+import { getHomepageUrl, getOriginSettingUrl } from ".../utils/extensionHelper.js"
 import { getLang } from ".../utils/utils"
 import { isStringEmpty } from ".../utils/utils.js"
 import { useExtensionItemPin } from "../../hooks/useExtensionItemPin"
+import ExtensionIcon from "../common/ExtensionIcon"
 
 const manualEnableCounter = new ManualEnableCounter()
 
 /**
  * 扩展列表项
  */
-const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged }) => {
+const ExtensionListItem = memo(({ item, enabled, isTop, options, onItemEnableChanged }) => {
   const [messageApi, contextHolder] = message.useMessage()
 
   const [isHover, setIsHover] = useState(false)
   const [isInteractive, setIsInteractive] = useState(false)
-  const [isShowOperationButton, setIsShowOperationButton] = useState(false)
+  const isShowOperationButton = options.setting?.isShowItemOperationAlways ?? false
 
   const [itemEnable, setItemEnable] = useState(enabled ?? item.enabled)
   const existOptionPage = !isStringEmpty(item.optionsUrl)
@@ -47,11 +48,6 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
   useEffect(() => {
     setItemEnable(item.enabled)
   }, [item, enabled])
-
-  useEffect(() => {
-    const showButtonAlways = options.setting?.isShowItemOperationAlways ?? false
-    setIsShowOperationButton(showButtonAlways)
-  }, [options])
 
   const onSwitchChange = async (checked, item) => {
     await chrome.management.setEnabled(item.id, checked)
@@ -127,12 +123,12 @@ const ExtensionListItem = memo(({ item, enabled, options, onItemEnableChanged })
       onMouseLeave={(e) => onItemMouseOver(e)}
       className={classNames([
         "list-item-container",
-        { "is-enable": itemEnable, "not-enable": !itemEnable, "item-is-top": item.__top__ }
+        { "is-enable": itemEnable, "not-enable": !itemEnable, "item-is-top": isTop ?? item.__top__ }
       ])}>
       {contextHolder}
 
       <div className="list-item-img-box">
-        <img src={getIcon(item, 128)} alt="" />
+        <ExtensionIcon item={item} alt="" />
         {itemPined && isShowDotOfFixedExtension && <i className="list-item-fix-dot"></i>}
       </div>
 

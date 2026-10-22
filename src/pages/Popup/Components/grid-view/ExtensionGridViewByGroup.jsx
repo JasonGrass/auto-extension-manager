@@ -8,68 +8,78 @@ import FoldGroupName from "../common/FoldGroupName"
 import ExtensionGridItem from "./ExtensionGridItem"
 import { GridViewSpaceStyle } from "./ExtensionGridView"
 
-const ExtensionGridViewByGroup = memo(({ extensions, options, isShowBottomDivider }) => {
-  const [moved, setMoved] = useState("") // 没有业务意义，就是一个依赖值，值发生变化，则重新执行 usePopupExtensions
+const ExtensionGridViewByGroup = memo(
+  ({ extensions, options, initialFoldedGroups = {}, isShowBottomDivider }) => {
+    const [moved, setMoved] = useState("") // 没有业务意义，就是一个依赖值，值发生变化，则重新执行 usePopupExtensions
 
-  const [groups] = usePopupExtensionsByGroup(extensions, options, moved)
+    const [groups] = usePopupExtensionsByGroup(extensions, options, moved)
 
-  const onItemMove = useCallback(
-    (item) => {
-      if (options.setting.isRefreshAfterEnableDisable ?? true) {
-        setMoved(Date.now().toString())
-      }
-    },
-    [options]
-  )
+    const onItemMove = useCallback(
+      (item) => {
+        if (options.setting.isRefreshAfterEnableDisable ?? true) {
+          setMoved(Date.now().toString())
+        }
+      },
+      [options]
+    )
 
-  return (
-    <GridViewSpaceStyle>
-      {groups
-        .filter((g) => g.extensions.length > 0)
-        .map((group, index) => {
-          return (
-            <ExtensionGridSpace
-              group={group}
-              options={options}
-              key={group.id}
-              onItemMove={onItemMove}
-              groupIndex={index}></ExtensionGridSpace>
-          )
-        })}
-      {isShowBottomDivider && <div className="divider"></div>}
-    </GridViewSpaceStyle>
-  )
-})
+    return (
+      <GridViewSpaceStyle>
+        {groups
+          .filter((g) => g.extensions.length > 0)
+          .map((group, index) => {
+            return (
+              <ExtensionGridSpace
+                group={group}
+                initialFolded={Boolean(group.name && initialFoldedGroups[group.id])}
+                options={options}
+                key={group.id}
+                onItemMove={onItemMove}
+                groupIndex={index}></ExtensionGridSpace>
+            )
+          })}
+        {isShowBottomDivider && <div className="divider"></div>}
+      </GridViewSpaceStyle>
+    )
+  }
+)
 
 export default ExtensionGridViewByGroup
 
-const ExtensionGridSpace = memo(({ group, options, onItemMove, groupIndex }) => {
+const ExtensionGridSpace = memo(({ group, initialFolded, options, onItemMove, groupIndex }) => {
   // 是否折叠分组显示
-  const [fold, setFold] = useState(false)
+  const [fold, setFold] = useState(initialFolded)
+  // ponytail: retain expanded rows for collapse animation; unmount only if memory warrants it.
+  const [hasExpanded, setHasExpanded] = useState(!initialFolded)
 
   const onFoldChanged = useCallback((fold) => {
     setFold(fold)
+    if (!fold) setHasExpanded(true)
   }, [])
 
   return (
     <GridSpaceByGroupStyle>
       {group.name && (
         <span className={classNames(["group-name", { "group-name-top": groupIndex === 0 }])}>
-          <FoldGroupName group={group} onFoldChanged={onFoldChanged}></FoldGroupName>
+          <FoldGroupName
+            group={group}
+            initialFolded={initialFolded}
+            onFoldChanged={onFoldChanged}></FoldGroupName>
         </span>
       )}
 
       <ul className={classNames({ "show-list": !fold, "hide-list": fold })}>
-        {group.extensions.map((item) => (
-          <li key={item.id}>
-            <ExtensionGridItem
-              item={item}
-              enabled={item.enabled}
-              options={options}
-              onItemMove={onItemMove}
-            />
-          </li>
-        ))}
+        {hasExpanded &&
+          group.extensions.map((item) => (
+            <li key={item.id}>
+              <ExtensionGridItem
+                item={item}
+                enabled={item.enabled}
+                options={options}
+                onItemMove={onItemMove}
+              />
+            </li>
+          ))}
         {new Array(10).fill("").map((_, index) => (
           <i key={index}></i>
         ))}

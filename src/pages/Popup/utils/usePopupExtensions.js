@@ -26,30 +26,37 @@ export const usePopupExtensions = (extensions, options, moved) => {
 
   const [items, setItems] = useState(EMPTY_ITEMS)
 
-  const build = async (extensions, options) => {
-    if (!extensions || extensions.length === 0) {
-      setItems(EMPTY_ITEMS)
-      return
-    }
-
-    const [list0, list1, list2] = await buildShowItems(extensions, options)
-    if (list0.length === 0 && list1.length === 0 && list2.length === 0) {
-      return
-    }
-
-    const [enableExtensions, disableExtensions] = await sortShowItems(options, list1, list2)
-
-    setItems({ top: list0, enabled: enableExtensions, disabled: disableExtensions })
-  }
-
   useEffect(() => {
-    build(extensions, options)
+    let active = true
+    const build = async () => {
+      if (!extensions || extensions.length === 0) {
+        setItems(EMPTY_ITEMS)
+        return
+      }
+
+      const frequencyOrder = options.setting.isSortByFrequency
+        ? manualEnableCounter.getOrder()
+        : Promise.resolve([])
+      const [[list0, list1, list2], refList] = await Promise.all([
+        buildShowItems(extensions, options, frequencyOrder),
+        frequencyOrder
+      ])
+      const [enableExtensions, disableExtensions] = sortShowItems(options, list1, list2, refList)
+
+      if (active) {
+        setItems({ top: list0, enabled: enableExtensions, disabled: disableExtensions })
+      }
+    }
+    build()
+    return () => {
+      active = false
+    }
   }, [extensions, options, moved])
 
   return [items]
 }
 
-async function sortShowItems(options, list1, list2) {
+function sortShowItems(options, list1, list2, refList) {
   // 先按照名称排序执行一次
   const list1_pre = sortExtension(list1)
   const list2_pre = sortExtension(list2)
@@ -59,17 +66,16 @@ async function sortShowItems(options, list1, list2) {
   }
 
   // 如果有需要，再按照频率排序
-  const refList = await manualEnableCounter.getOrder()
   return [sortByReferenceList(refList, list1_pre), sortByReferenceList(refList, list2_pre)]
 }
 
-async function buildShowItems(extensions, options) {
+async function buildShowItems(extensions, options, frequencyOrder) {
   const list = appendAdditionInfo(extensions, options)
   let list1 = list.filter((i) => i.enabled)
   let list2 = list.filter((i) => !i.enabled)
 
   // 筛选置顶的扩展, 返回的是已经排序的扩展 id 列表
-  const topExtensionsIds = await findTopExtensions(extensions, options)
+  const topExtensionsIds = await findTopExtensions(extensions, options, frequencyOrder)
 
   const list0 = list.filter((i) => topExtensionsIds.includes(i.id))
   list1 = list1.filter((i) => !topExtensionsIds.includes(i.id))
@@ -93,13 +99,18 @@ async function buildShowItems(extensions, options) {
  * 3 最近手动启用的，按照操作的时间排序
  * 4 最近更新的，按更新时间倒序
  */
-export async function findTopExtensions(extensions, options) {
-  // 规则设置的置顶
-  const byRuleIds = await findTopExtensionsByRuleThenOrder(extensions, options)
-  // 手动启用带来的置顶
-  const byRecentlyManualEnableIds = await findTopExtensionsByRecentlyManualEnable(options)
-  // 最近安装或者更新带来的置顶
-  const byRecentlyUpdateIds = await findTopExtensionsByRecentlyUpdate(options)
+export async function findTopExtensions(
+  extensions,
+  options,
+  frequencyOrder = options.setting.isSortByFrequency
+    ? manualEnableCounter.getOrder()
+    : Promise.resolve([])
+) {
+  const [byRuleIds, byRecentlyManualEnableIds, byRecentlyUpdateIds] = await Promise.all([
+    findTopExtensionsByRuleThenOrder(extensions, options, frequencyOrder),
+    findTopExtensionsByRecentlyManualEnable(options),
+    findTopExtensionsByRecentlyUpdate(options)
+  ])
 
   return Array.from(new Set([...byRuleIds, ...byRecentlyManualEnableIds, ...byRecentlyUpdateIds]))
 }
@@ -116,13 +127,7 @@ async function findTopExtensionsByRecentlyUpdate(options) {
   const days = options.setting.topRecentlyDays ?? 7
 
   const ids = await extensionRecordRepo.getKeys()
-  const records = []
-  for (const id of ids) {
-    const record = await extensionRecordRepo.get(id)
-    if (record) {
-      records.push(record)
-    }
-  }
+  const records = (await Promise.all(ids.map((id) => extensionRecordRepo.get(id)))).filter(Boolean)
 
   const normalizeTime = (t) => {
     if (!t) {
@@ -158,7 +163,7 @@ async function findTopExtensionsByRecentlyUpdate(options) {
 /**
  * 由规则配置的，置顶的扩展（返回的是 ID 列表）（已经排序）
  */
-async function findTopExtensionsByRuleThenOrder(extensions, options) {
+async function findTopExtensionsByRuleThenOrder(extensions, options, frequencyOrder) {
   // 规则设置的置顶
   const byRuleIds = await findTopExtensionsByRule(options)
 
@@ -171,7 +176,7 @@ async function findTopExtensionsByRuleThenOrder(extensions, options) {
 
   // 再按照频率排序（仅对于规则带来的置顶）
   if (options.setting.isSortByFrequency) {
-    const refList = await manualEnableCounter.getOrder()
+    const refList = await frequencyOrder
     byRuleOrderedId = sortByReferenceList(refList, byRuleOrderedId)
   }
 
@@ -182,12 +187,6 @@ async function findTopExtensionsByRuleThenOrder(extensions, options) {
  * 由规则配置的，置顶的扩展（返回的是 ID 列表）（未排序）
  */
 async function findTopExtensionsByRule(options) {
-  const tabs = await chromeP.tabs.query({
-    active: true,
-    lastFocusedWindow: true
-  })
-  const currentTab = tabs ? tabs[0] : undefined
-
   if (!options.ruleConfig) {
     return []
   }
@@ -203,7 +202,11 @@ async function findTopExtensionsByRule(options) {
     return []
   }
 
-  const activeSceneIds = await localOptions.getActiveSceneIds()
+  const [tabs, activeSceneIds] = await Promise.all([
+    chromeP.tabs.query({ active: true, lastFocusedWindow: true }),
+    localOptions.getActiveSceneIds()
+  ])
+  const currentTab = tabs ? tabs[0] : undefined
 
   // 找到所有匹配当前标签页的规则
   const matchRules = []
@@ -221,7 +224,7 @@ async function findTopExtensionsByRule(options) {
         return null
       }
 
-      const extensionIds = rule.target.extensions ?? []
+      const extensionIds = [...(rule.target.extensions ?? [])]
       const groupIds = rule.target.groups ?? []
 
       groupIds.forEach((groupId) => {

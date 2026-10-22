@@ -28,7 +28,7 @@ const storageViewApi = storage.helper.view.getApi()
 storageViewApi.message = message
 
 function PopupApp({ prepared }) {
-  const { currentTheme, isDarkMode, themeReady } = useAppTheme()
+  const { currentTheme, isDarkMode, themeReady } = useAppTheme(prepared.params.themePreference)
   if (!themeReady) return null
   return (
     <ConfigProvider
@@ -49,12 +49,23 @@ function PopupApp({ prepared }) {
   )
 }
 
-prepare().then((props) => {
-  root.render(<PopupApp prepared={props} />)
-  fireEvent(props)
-})
-
-ExtensionIconBuilder.build()
+prepare()
+  .then((props) => {
+    root.render(<PopupApp prepared={props} />)
+    fireEvent(props)
+    ExtensionIconBuilder.build()
+  })
+  .catch((error) => {
+    console.error("Unable to load popup", error)
+    root.render(
+      <div className="popup-load-error" role="alert">
+        <p>{chrome.i18n.getMessage("popup_load_failed")}</p>
+        <button onClick={() => window.location.reload()}>
+          {chrome.i18n.getMessage("management_reload")}
+        </button>
+      </div>
+    )
+  })
 
 function fireEvent(props) {
   const firePopupOpen = async () => {

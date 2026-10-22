@@ -4,6 +4,31 @@ const imgSize = "46px"
 const imgMargin = "16px"
 
 export const AppListStyle = styled.div`
+  .app-group-name {
+    display: flex;
+    align-items: center;
+    margin: 12px 8px;
+    font-size: inherit;
+    font-weight: normal;
+    color: ${(props) => props.theme.fg};
+
+    &::before,
+    &::after {
+      content: "";
+      border-bottom: 1px solid ${(props) => props.theme.input_border};
+    }
+
+    &::before {
+      width: 20px;
+      margin-right: 8px;
+    }
+
+    &::after {
+      flex: 1;
+      margin-left: 8px;
+    }
+  }
+
   ul {
     display: flex;
     flex-wrap: wrap;
@@ -23,6 +48,7 @@ export const AppListStyle = styled.div`
 
   .ext-item {
     text-align: center;
+    color: ${(props) => props.theme.enable_text};
   }
 
   li img {
@@ -30,6 +56,7 @@ export const AppListStyle = styled.div`
     width: ${imgSize};
     height: ${imgSize};
     margin: 0 auto;
+    cursor: pointer;
   }
 
   li span {
@@ -42,5 +69,34 @@ export const AppListStyle = styled.div`
 
   .not-enable {
     color: ${(props) => props.theme.disable_text};
+  }
+
+  &.app-list {
+    ul {
+      display: block;
+      margin: 0;
+    }
+
+    .ext-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: auto;
+      margin: 0 8px 1px;
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    li img {
+      width: 32px;
+      height: 32px;
+      margin: 0;
+    }
+
+    li span {
+      flex: 1;
+      min-width: 0;
+      margin: 0;
+    }
   }
 `
