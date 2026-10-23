@@ -4,7 +4,7 @@ import logger from ".../utils/logger"
  * 当前时间是否匹配规则
  @returns true:匹配； false:不匹配； undefined:没有 时间区间 匹配规则
  */
-export default async function checkCurrentTimeMatch(rule: ruleV2.IRuleConfig) {
+export default function checkCurrentTimeMatch(rule: ruleV2.IRuleConfig) {
   const trigger = rule.match?.triggers?.find((t) => t.trigger === "periodTrigger")
 
   if (!trigger) {

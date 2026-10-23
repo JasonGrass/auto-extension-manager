@@ -4,10 +4,10 @@ import logger from ".../utils/logger"
  * 判断当前 URL 是否匹配
  * @returns true:匹配； false:不匹配； undefined:没有 URL 匹配规则
  */
-export default async function checkCurrentUrlMatch(
+export default function checkCurrentUrlMatch(
   tabInfo: chrome.tabs.Tab | null,
   rule: ruleV2.IRuleConfig
-): Promise<boolean | undefined> {
+): boolean | undefined {
   const trigger = rule.match?.triggers?.find((t) => t.trigger === "urlTrigger")
 
   if (!trigger) {
@@ -34,10 +34,10 @@ export default async function checkCurrentUrlMatch(
 /**
  * 所有 tab 中，只要有一个匹配，就会返回匹配的 tab，否则返回 null
  */
-export async function checkAnyUrlMatch(
+export function checkAnyUrlMatch(
   tabs: chrome.tabs.Tab[] | undefined,
   rule: ruleV2.IRuleConfig
-): Promise<chrome.tabs.Tab | null> {
+): chrome.tabs.Tab | null {
   const trigger = rule.match?.triggers?.find((t) => t.trigger === "urlTrigger")
 
   if (!trigger) {
@@ -49,7 +49,7 @@ export async function checkAnyUrlMatch(
   }
 
   for (const tab of tabs) {
-    const matchOne = await checkCurrentUrlMatch(tab, rule)
+    const matchOne = checkCurrentUrlMatch(tab, rule)
     if (matchOne) {
       return tab
     }

@@ -22,7 +22,10 @@ export class HistoryEventHandler {
     "disabled"
   )
 
-  constructor(private EM: IExtensionManager, private service: HistoryService) {}
+  constructor(
+    private EM: IExtensionManager,
+    private service: HistoryService
+  ) {}
 
   public async onSelfInstalled(info: chrome.runtime.InstalledDetails) {
     if (info.reason === "install") {
@@ -70,7 +73,7 @@ export class HistoryEventHandler {
     rule: ruleV2.IRuleConfig,
     matchResult: IMatchResult
   ) {
-    this._enabledEventFilter.onAutoRuleEvent(info, rule, matchResult)
+    return this._enabledEventFilter.onAutoRuleEvent(info, rule, matchResult)
   }
 
   /*
@@ -81,7 +84,7 @@ export class HistoryEventHandler {
     rule: ruleV2.IRuleConfig,
     matchResult: IMatchResult
   ) {
-    this._disabledEventFilter.onAutoRuleEvent(info, rule, matchResult)
+    return this._disabledEventFilter.onAutoRuleEvent(info, rule, matchResult)
   }
 
   /**
@@ -103,7 +106,10 @@ export class HistoryEventHandler {
  * 历史记录关心的事件，这里是去重过滤之后的事件
  */
 export class HistoryEventRaiser {
-  constructor(private EM: IExtensionManager, private service: HistoryService) {}
+  constructor(
+    private EM: IExtensionManager,
+    private service: HistoryService
+  ) {}
 
   public async onInstalled(info: chrome.management.ExtensionInfo) {
     const old = await this.EM.Extension.service.getExtension(info.id)
@@ -209,7 +215,7 @@ export class HistoryEventRaiser {
     matchResult: IMatchResult
   ) {
     // console.log("onAutoEnabled", info, rule)
-    this.service.add(HistoryRecord.buildWithRule(info, "enabled", rule, matchResult))
+    return this.service.add(HistoryRecord.buildWithRule(info, "enabled", rule, matchResult))
   }
 
   /*
@@ -221,7 +227,7 @@ export class HistoryEventRaiser {
     matchResult: IMatchResult
   ) {
     // console.log("onAutoDisabled", info, rule)
-    this.service.add(HistoryRecord.buildWithRule(info, "disabled", rule, matchResult))
+    return this.service.add(HistoryRecord.buildWithRule(info, "disabled", rule, matchResult))
   }
 
   /**
@@ -251,7 +257,10 @@ export class HistoryEventRaiser {
  * 重复事件过滤，对于扩展本身的造成的扩展禁用与启用，优先使用扩展管理器本身的事件，过滤掉浏览器的默认事件
  */
 class ReduplicativeEventFilter {
-  constructor(private output: HistoryEventRaiser, private eventType: "enabled" | "disabled") {}
+  constructor(
+    private output: HistoryEventRaiser,
+    private eventType: "enabled" | "disabled"
+  ) {}
 
   private _threshold: number = 500
 
@@ -285,9 +294,9 @@ class ReduplicativeEventFilter {
     this._autoEventRecord.set(info.id, Date.now())
 
     if (this.eventType === "enabled") {
-      this.output.onAutoEnabled(info, rule, matchResult)
+      return this.output.onAutoEnabled(info, rule, matchResult)
     } else {
-      this.output.onAutoDisabled(info, rule, matchResult)
+      return this.output.onAutoDisabled(info, rule, matchResult)
     }
   }
 

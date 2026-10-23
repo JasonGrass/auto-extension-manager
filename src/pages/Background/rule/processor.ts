@@ -1,8 +1,9 @@
 import type { IExtensionManager } from ".../types/global"
-import logger from ".../utils/logger"
 import { ExecuteTaskHandler, ExecuteTaskPriority } from "./ExecuteTaskHandler"
 import isMatch, { IMatchResult } from "./handlers/matchHandler"
 import getTarget from "./handlers/targetHandler"
+import type { ReloadCoordinator } from "./ReloadCoordinator"
+import { describeRuleTab, traceRule, type RuleTrace } from "./ruleTrace"
 
 /**
  * 根据当前激活的情景模式集合、标签页信息和规则信息，处理扩展的打开或关闭
@@ -13,6 +14,7 @@ export type ProcessContext = {
    * 自身扩展的 ID
    */
   selfId: string
+  trace?: RuleTrace
   /**
    * 当前激活的 tab
    */
@@ -20,7 +22,14 @@ export type ProcessContext = {
   /**
    * 当前浏览器打开的全部 tab
    */
-  tabs: chrome.tabs.Tab[]
+  tabs?: chrome.tabs.Tab[]
+  getTabs?: () => Promise<chrome.tabs.Tab[]>
+  phase?: "pending" | "committed"
+  navigationId?: string
+  configKey?: string
+  reloads?: ReloadCoordinator
+  requestEvaluation?: () => void
+  apiCounts?: { managementGet: number; managementSetEnabled: number }
 
   /**
    * 当前正在执行的规则
@@ -68,7 +77,9 @@ export type RunningProcessContext = ProcessContext & {
 }
 
 async function processRule({ activeSceneIds, rules, groups, ctx }: ProcessItem) {
+  const started = performance.now()
   if (!rules) {
+    traceRule(ctx, "evaluation.skipped", { reason: "rules-not-ready" })
     return
   }
 
@@ -76,18 +87,26 @@ async function processRule({ activeSceneIds, rules, groups, ctx }: ProcessItem) 
   const executeTaskHandler = new ExecuteTaskHandler()
 
   for (const rule of rules) {
-    if (ctx.isCurrent?.() === false) return
+    if (ctx.isCurrent?.() === false) {
+      traceRule(ctx, "evaluation.stale", { at: "before-rule-match" })
+      return
+    }
     try {
       // 每条规则处理的 rule 数据是不用的，这里需要对 ctx 拷贝一个副本，每个实例都是不同的 rule 数据
       const copyCtx = { ...ctx, rule, executeTaskHandler, matchResult: null }
       await process(rule, activeSceneIds, groups, copyCtx)
     } catch (error) {
+      traceRule(ctx, "rule.match.failed", { ruleId: rule.id, error: String(error) })
       console.error("[规则预执行失败]", rules, error)
     }
   }
 
   try {
-    await executeTaskHandler.execute()
+    traceRule(ctx, "matching.completed", {
+      ms: performance.now() - started,
+      rules: rules.length
+    })
+    await executeTaskHandler.execute(ctx)
   } catch (error) {
     console.error("[规则执行失败]", rules, error)
   }
@@ -99,20 +118,41 @@ async function process(
   groups: config.IGroup[] | undefined,
   ctx: RunningProcessContext
 ) {
-  // 规则没有生效
-  if (!rule.enable) {
+  if (!rule.enable || !rule.action || rule.action.actionType === "none") {
+    traceRule(ctx, "rule.skipped", { reason: !rule.enable ? "disabled" : "no-action" })
     return
   }
 
-  ctx.matchResult = await isMatch(activeSceneIds, rule, ctx)
-  if (ctx.isCurrent?.() === false) return
-
   const targetIdArray = getTarget(groups, rule)
   if (!targetIdArray || targetIdArray.length === 0) {
+    traceRule(ctx, "rule.skipped", { reason: "no-targets" })
     return
   }
   // 执行目标中，过滤掉自己
   const targetExtensionIds = targetIdArray.filter((id) => id !== ctx.selfId)
+  if (!targetExtensionIds.length) {
+    traceRule(ctx, "rule.skipped", { reason: "self-only" })
+    return
+  }
+
+  traceRule(ctx, "rule.match.started", {
+    targetExtensionIds,
+    actionType: rule.action.actionType,
+    triggers: rule.match?.triggers?.map((trigger) => ({
+      trigger: trigger.trigger,
+      config: { ...trigger.config }
+    }))
+  })
+  ctx.matchResult = await isMatch(activeSceneIds, rule, ctx)
+  traceRule(ctx, "rule.match.completed", {
+    isCurrentMatch: ctx.matchResult.isCurrentMatch,
+    isAnyMatch: ctx.matchResult.isAnyMatch,
+    isCurrentUrlMatch: ctx.matchResult.isCurrentUrlMatch,
+    isAnyUrlMatch: ctx.matchResult.isAnyUrlMatch,
+    matchedTab: describeRuleTab(ctx, ctx.matchResult.matchTab),
+    stale: ctx.isCurrent?.() === false
+  })
+  if (ctx.isCurrent?.() === false) return
 
   handle(targetExtensionIds, rule, ctx)
 }
@@ -135,12 +175,11 @@ function handle(
     return
   }
 
-  logger().debug(
-    `[Rule] handle start. match, target, config`,
-    matchResult,
-    targetExtensions,
-    config
-  )
+  traceRule(ctx, "rule.action.resolving", {
+    targetExtensionIds: [...targetExtensions],
+    actionType: action.actionType,
+    custom: action.custom ? { ...action.custom } : undefined
+  })
 
   if (action.actionType === "custom") {
     handleAdvanceMode(matchResult, targetExtensions, action, ctx)

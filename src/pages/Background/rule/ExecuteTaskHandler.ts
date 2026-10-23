@@ -1,209 +1,237 @@
 import chromeP from "webext-polyfill-kinda"
-
 import { DelayCloseToken, getDelayCloser } from "./delayCloser"
-import { IMatchResult } from "./handlers/matchHandler"
-import type { ProcessContext, RunningProcessContext } from "./processor"
+import { ReloadCoordinator, type ReloadDecision } from "./ReloadCoordinator"
+import type { RunningProcessContext } from "./processor"
+import { traceRule } from "./ruleTrace"
 
-/**
- * 启用或禁用扩展的任务描述
- */
 export type ExecuteTask = {
-  /**
-   * 执行类型，启用扩展还是禁用扩展
-   */
   executeType?: "enable" | "disable"
-
-  /**
-   * 执行目标，扩展的 ID
-   */
   targetExtensions: string[]
-
-  /**
-   * 执行之后是否重新加载当前页面
-   */
   reload: boolean | undefined
-
-  /**
-   * 当前打开的 tab 信息
-   */
   tabInfo: chrome.tabs.Tab | null
-
-  /**
-   * 规则执行上下文的其他信息
-   */
   ctx: RunningProcessContext
-
-  /**
-   * 执行优先级
-   */
   priority: ExecuteTaskPriority
 }
-
-/**
- * 在本轮执行中，规则执行任务的优先级
- */
 export class ExecuteTaskPriority {
   private _priority = 0
-
   get priority() {
     return this._priority
   }
-
-  // 不匹配的执行，优先级降低 100
   setNotMatch() {
     this._priority -= 100
   }
 }
 
-export class ExecuteTaskHandler {
-  private _taskMap: Map<string, ExecuteTask> = new Map()
-  private _tasks: ExecuteTask[] = []
+function decision(task: ExecuteTask, extensionId: string): ReloadDecision {
+  return {
+    extensionId,
+    enabled: task.executeType === "enable",
+    ruleId: task.ctx.rule?.id ?? "",
+    reload: Boolean(task.reload)
+  }
+}
+function record(task: ExecuteTask, info: chrome.management.ExtensionInfo) {
+  traceRule(task.ctx, "history.started", { extensionId: info.id, action: task.executeType })
+  void Promise.resolve()
+    .then(() => {
+      const handler = task.ctx.EM?.History.EventHandler
+      return task.executeType === "enable"
+        ? handler?.onAutoEnabled(info, task.ctx.rule!, task.ctx.matchResult!)
+        : handler?.onAutoDisabled(info, task.ctx.rule!, task.ctx.matchResult!)
+    })
+    .then(() =>
+      traceRule(task.ctx, "history.completed", { extensionId: info.id, action: task.executeType })
+    )
+    .catch((error) => {
+      traceRule(task.ctx, "history.failed", { extensionId: info.id, error: String(error) })
+      console.warn("Automatic rule history failed", error)
+    })
+}
 
-  /**
-   * 添加扩展关闭任务
-   */
+let fallbackReloads: ReloadCoordinator | undefined
+export class ExecuteTaskHandler {
+  private tasks: ExecuteTask[] = []
+  private taskMap = new Map<string, ExecuteTask>()
   close(task: ExecuteTask) {
     task.executeType = "disable"
     this.addTask(task)
   }
-
-  /**
-   * 添加扩展开启任务
-   */
   open(task: ExecuteTask) {
     task.executeType = "enable"
     this.addTask(task)
   }
-
   private addTask(task: ExecuteTask) {
-    for (const extId of task.targetExtensions) {
-      if (!this._taskMap.has(extId)) {
-        this._taskMap.set(extId, task)
-        continue
-      }
-
-      const oldTask = this._taskMap.get(extId)!
-      if (oldTask.priority.priority < task.priority.priority) {
-        oldTask.targetExtensions = oldTask.targetExtensions.filter((i) => i !== extId)
-        this._taskMap.set(extId, task)
-        console.log("移除冲突的规则处理", "extensionId", extId, "ruleId", oldTask.ctx.rule?.id)
-      } else {
-        task.targetExtensions = task.targetExtensions.filter((i) => i !== extId)
-        console.log("移除冲突的规则处理", "extensionId", extId, "ruleId", task.ctx.rule?.id)
-      }
-    }
-
-    this._tasks.push(task)
-  }
-
-  /**
-   * 统一执行全部的规则
-   */
-  async execute() {
-    for (const task of this._tasks) {
-      const { executeType, targetExtensions, reload, tabInfo, ctx } = task
-      if (ctx.isCurrent?.() === false) return
-      if (executeType === "enable") {
-        await openExtensions(targetExtensions, reload, tabInfo, ctx)
-      } else {
-        await closeExtensions(targetExtensions, reload, tabInfo, ctx)
-      }
-    }
-  }
-}
-
-async function closeExtensions(
-  targetExtensions: string[],
-  reload: boolean | undefined,
-  tabInfo: chrome.tabs.Tab | null,
-  ctx: RunningProcessContext
-) {
-  let worked = false
-
-  let delayToken: DelayCloseToken | undefined
-  for (const extId of targetExtensions) {
-    if (ctx.isCurrent?.() === false) return
-    try {
-      const info = await chromeP.management.get(extId)
-      if (ctx.isCurrent?.() === false) return
-      if (!info || !info.enabled) {
-        continue
-      }
-      // 检查在所有打开的页面中，是否有目标扩展的设置页面，如果存在，则暂时不关闭扩展
-      const settingTab = ctx.tabs?.find((tab) => {
-        return tab.url?.includes(`/${extId}/`)
+    for (const id of task.targetExtensions) {
+      const previous = this.taskMap.get(id)
+      traceRule(task.ctx, "task.resolved", {
+        extensionId: id,
+        action: task.executeType,
+        priority: task.priority.priority,
+        previousRuleId: previous?.ctx.rule?.id,
+        previousPriority: previous?.priority.priority,
+        winnerRuleId:
+          !previous || previous.priority.priority < task.priority.priority
+            ? task.ctx.rule?.id
+            : previous.ctx.rule?.id,
+        reload: Boolean(task.reload)
       })
-      if (settingTab) {
-        // 设置页可能在延迟禁用期间打开，需取消之前排队的禁用及其关联刷新，仅跳过本轮不够。
-        getDelayCloser().cancel(extId)
-        console.info(`[Rule] exist page about ${extId}, cancel disable`)
-        continue
-      }
-
-      const delayCloser = getDelayCloser()
-      delayToken = delayCloser.close(
-        info,
-        () => {
-          ctx.EM?.History.EventHandler.onAutoDisabled(info, ctx.rule!, ctx.matchResult!)
-        },
-        ctx.isCurrent
-      )
-
-      worked = true
-    } catch (err) {
-      console.warn(`Disable Extension fail (${extId}).`, err)
+      if (!previous) this.taskMap.set(id, task)
+      else if (previous.priority.priority < task.priority.priority) {
+        previous.targetExtensions = previous.targetExtensions.filter((extId) => extId !== id)
+        this.taskMap.set(id, task)
+      } else task.targetExtensions = task.targetExtensions.filter((extId) => extId !== id)
     }
+    this.tasks.push(task)
   }
 
-  if (worked && reload && tabInfo && tabInfo.id) {
-    const token = delayToken
-    const closureTabInfo = tabInfo
-    setTimeout(async () => {
-      if (token?.Available && ctx.isCurrent?.() !== false) {
+  async execute(context?: RunningProcessContext | import("./processor").ProcessContext) {
+    const ctx = context ?? this.tasks[0]?.ctx
+    if (!ctx) return
+    traceRule(ctx, "execution.started", {
+      decisions: [...this.taskMap].map(([id, task]) => decision(task, id))
+    })
+    const reloads = ctx.reloads ?? (fallbackReloads ??= new ReloadCoordinator())
+    await reloads.begin(
+      ctx,
+      [...this.taskMap].map(([id, task]) => decision(task, id))
+    )
+    const completions: Promise<void>[] = []
+    const isPending = () => ctx.phase === "pending"
+    const tokens: import("./delayCloser").DelayCloseToken[] = []
+    for (const task of this.tasks) {
+      if (ctx.isCurrent?.() === false) {
+        traceRule(ctx, "execution.stale", { at: "before-task" })
+        break
+      }
+      if (isPending() && task.executeType === "disable") {
+        traceRule(task.ctx, "operation.skipped", {
+          action: "disable",
+          reason: "pending-enable-only",
+          extensionIds: [...task.targetExtensions]
+        })
+        continue
+      }
+      for (const id of task.targetExtensions) {
+        if (ctx.isCurrent?.() === false) break
+        const next = decision(task, id)
+        let prepared: Awaited<ReturnType<ReloadCoordinator["prepare"]>>
         try {
-          await chrome.tabs.reload(closureTabInfo.id!)
-          console.log(
-            `[Extension Manager] reload tab [${closureTabInfo.title}](${closureTabInfo.url})`
-          )
-        } catch (err) {
-          console.warn(`closeExtensions reload tab fail.`, tabInfo, err)
+          const closer = getDelayCloser()
+          if (next.enabled) closer.cancel(id)
+          traceRule(task.ctx, "extension.state.started", {
+            extensionId: id,
+            expectedEnabled: next.enabled
+          })
+          if (ctx.apiCounts) ctx.apiCounts.managementGet++
+          const info = await chromeP.management.get(id)
+          traceRule(task.ctx, "extension.state.completed", {
+            extensionId: id,
+            enabled: info?.enabled,
+            stale: ctx.isCurrent?.() === false
+          })
+          if (ctx.isCurrent?.() === false) break
+          if (!info) continue
+          if (info.enabled === next.enabled) {
+            traceRule(task.ctx, "operation.skipped", {
+              extensionId: id,
+              reason: "already-in-desired-state",
+              expectedEnabled: next.enabled
+            })
+            await reloads.confirmExisting(ctx, next)
+            continue
+          }
+          if (next.enabled) {
+            prepared = await reloads.prepare(ctx, next)
+            if (ctx.isCurrent?.() === false) {
+              await reloads.complete(prepared, false)
+              break
+            }
+            const started = performance.now()
+            traceRule(task.ctx, "operation.enable.started", { extensionId: id })
+            if (ctx.apiCounts) ctx.apiCounts.managementSetEnabled++
+            await chromeP.management.setEnabled(id, true)
+            record(task, info)
+            await reloads.complete(prepared, true)
+            traceRule(task.ctx, "operation.enable.completed", {
+              extensionId: id,
+              stale: ctx.isCurrent?.() === false,
+              ms: performance.now() - started
+            })
+          } else {
+            const tabs = await (ctx.getTabs?.() ?? Promise.resolve(ctx.tabs ?? []))
+            if (ctx.isCurrent?.() === false) break
+            if (isPending()) {
+              traceRule(task.ctx, "operation.skipped", {
+                extensionId: id,
+                action: "disable",
+                reason: "pending-discovered-by-query"
+              })
+              continue
+            }
+            if (tabs.some((tab) => tab.url?.includes(`/${id}/`))) {
+              closer.cancel(id)
+              traceRule(task.ctx, "operation.skipped", {
+                extensionId: id,
+                action: "disable",
+                reason: "extension-page-open"
+              })
+              continue
+            }
+            const token = closer.close(
+              info,
+              () => {
+                record(task, info)
+                if (ctx.isCurrent?.() === false) ctx.requestEvaluation?.()
+              },
+              ctx.isCurrent,
+              async () => {
+                prepared = await reloads.prepare(ctx, next)
+              },
+              task.ctx
+            )
+            traceRule(task.ctx, "operation.disable.queued", {
+              extensionId: id,
+              delayMs: DelayCloseToken.DelayTime
+            })
+            tokens.push(token)
+            completions.push(
+              token.done.then(async (result) => {
+                traceRule(task.ctx, "operation.disable.completed", {
+                  extensionId: id,
+                  result,
+                  available: token.Available,
+                  stale: ctx.isCurrent?.() === false
+                })
+                if (result !== "cancelled" && ctx.apiCounts) ctx.apiCounts.managementSetEnabled++
+                await reloads.complete(prepared, result === "disabled" && token.Available)
+              })
+            )
+          }
+        } catch (error) {
+          traceRule(task.ctx, "operation.failed", {
+            extensionId: id,
+            action: task.executeType,
+            error: String(error)
+          })
+          await reloads.complete(prepared, false)
+          console.warn("Rule extension operation failed", id, error)
         }
       }
-    }, DelayCloseToken.DelayTime + 50)
-  }
-}
-
-async function openExtensions(
-  targetExtensions: string[],
-  reload: boolean | undefined,
-  tabInfo: chrome.tabs.Tab | null,
-  ctx: RunningProcessContext
-) {
-  let worked = false
-
-  for (const extId of targetExtensions) {
-    if (ctx.isCurrent?.() === false) return
-    try {
-      const delayCloser = getDelayCloser()
-      delayCloser.cancel(extId)
-
-      const info = await chromeP.management.get(extId)
-      if (ctx.isCurrent?.() === false) return
-      if (!info || info.enabled) {
-        continue
-      }
-
-      console.log(`[Extension Manager] enable extension [${info.name}]`)
-      await chromeP.management.setEnabled(extId, true)
-      ctx.EM?.History.EventHandler.onAutoEnabled(info, ctx.rule!, ctx.matchResult!)
-      worked = true
-    } catch (err) {
-      console.warn(`Enable Extension fail (${extId}).`, err)
     }
-  }
-
-  if (worked && reload && tabInfo && tabInfo.id && ctx.isCurrent?.() !== false) {
-    chrome.tabs.reload(tabInfo.id)
-    console.log(`[Extension Manager] reload tab [${tabInfo.title}](${tabInfo.url})`)
+    const finish = async () => {
+      if (completions.length)
+        traceRule(ctx, "execution.waiting-delayed", { operationCount: completions.length })
+      await Promise.all(completions)
+      await reloads.flush(ctx)
+      for (const token of tokens) getDelayCloser().release(token)
+      traceRule(ctx, "execution.completed", {
+        stale: ctx.isCurrent?.() === false,
+        ...ctx.apiCounts
+      })
+    }
+    // Waiting for delayed disables here would block the latest-task runner for a second.
+    if (completions.length)
+      void finish().catch((error) => console.warn("Rule reload batch failed", error))
+    else await finish()
   }
 }

@@ -2,7 +2,7 @@ import { LocalOptions } from ".../storage/local"
 import logger from ".../utils/logger"
 import { EventCache } from "./event/EventCache"
 import createExtension from "./extension"
-import createHistory from "./history"
+import createHistory, { startHistoryEvents } from "./history"
 import createMessageHandler from "./message/messageIndex.js"
 import createRule from "./rule"
 
@@ -27,12 +27,13 @@ const ready = Promise.resolve().then(async () => {
   const local = new LocalOptions()
   await local.migrate()
   EM.LocalOptions = local
+  EM.History = createHistory(EM)
 
   EM.Rule = await createRule(EM)
 
   EM.Extension = await createExtension(EM)
 
-  EM.History = await createHistory(EM)
+  startHistoryEvents(EM)
 })
 createMessageHandler(EM, ready)
 ready.catch((error) => console.error("Background initialization failed", error))

@@ -246,3 +246,188 @@ test("latest task runner coalesces calls and never overlaps executions", async (
   assert.equal(callCount, 2)
   assert.equal(maxActiveCount, 1)
 })
+
+test("pendingUrl from a loading snapshot is delivered once and confirmation retains navigation identity", async () => {
+  const mock = createChromeMock()
+  const events = await loadTabChangeEvent()
+  const calls = []
+  const tab = { id: 1, windowId: 1, active: true, url: "https://old.example/" }
+  events.onTabUrlChange((current, change) => calls.push({ current, change }), tab)
+  const loading = { ...tab, pendingUrl: "https://gemini.google.com/", status: "loading" }
+  mock.events.updated.fire(1, { status: "loading" }, loading)
+  mock.events.updated.fire(1, { title: "Loading" }, loading)
+  assert.equal(calls.length, 1)
+  assert.equal(calls[0].change.phase, "pending")
+  assert.equal(calls[0].current.pendingUrl, loading.pendingUrl)
+  mock.events.updated.fire(
+    1,
+    { url: loading.pendingUrl },
+    { ...tab, url: loading.pendingUrl, status: "loading" }
+  )
+  assert.equal(calls.length, 2)
+  assert.equal(calls[1].change.phase, "committed")
+  assert.equal(calls[0].change.navigationId, calls[1].change.navigationId)
+})
+
+test("background pending snapshots never replace the focused tab and cancellation is reported", async () => {
+  const mock = createChromeMock()
+  const events = await loadTabChangeEvent()
+  const calls = []
+  const current = { id: 1, windowId: 1, url: "https://current.example/" }
+  events.onTabUrlChange((tab, change) => calls.push({ tab, change }), current)
+  const background = {
+    id: 2,
+    windowId: 1,
+    active: false,
+    url: "about:blank",
+    pendingUrl: "https://gemini.google.com/",
+    status: "loading"
+  }
+  mock.events.updated.fire(2, { status: "loading" }, background)
+  assert.equal(calls.length, 1)
+  assert.equal(calls[0].tab, undefined)
+  assert.equal(calls[0].change.tab.id, 2)
+  mock.events.updated.fire(
+    2,
+    { status: "complete" },
+    { ...background, pendingUrl: undefined, status: "complete" }
+  )
+  assert.equal(calls[1].change.cancelled, true)
+})
+
+test("pendingUrl disappearing after the URL was committed is not a cancellation", async () => {
+  const mock = createChromeMock()
+  const events = await loadTabChangeEvent()
+  const calls = []
+  const original = { id: 1, windowId: 1, active: true, url: "https://old.example/" }
+  events.onTabUrlChange((_current, change) => calls.push(change), original)
+  const pending = { ...original, pendingUrl: "https://gemini.google.com/", status: "loading" }
+  mock.events.updated.fire(1, { status: "loading" }, pending)
+  mock.events.updated.fire(1, { url: pending.pendingUrl }, { ...pending, url: pending.pendingUrl })
+  mock.events.updated.fire(
+    1,
+    { status: "complete" },
+    { ...pending, url: pending.pendingUrl, pendingUrl: undefined, status: "complete" }
+  )
+  assert.equal(calls.at(-1).cancelled, false)
+  assert.equal(calls[0].navigationId, calls.at(-1).navigationId)
+})
+
+test("a late focus query cannot overwrite a newer navigation snapshot", async () => {
+  const mock = createChromeMock()
+  const events = await loadTabChangeEvent()
+  const calls = []
+  const original = { id: 1, windowId: 1, active: true, url: "https://old.example/" }
+  events.onTabUrlChange((tab) => calls.push(tab), original)
+  const responses = []
+  chrome.tabs.query = (_query, callback) => {
+    responses.push(callback)
+  }
+  mock.events.activated.fire({ tabId: 1, windowId: 1 })
+  const pending = { ...original, pendingUrl: "https://gemini.google.com/", status: "loading" }
+  mock.events.updated.fire(1, { status: "loading" }, pending)
+  responses[1]([pending])
+  responses[0]([original])
+  assert.equal(events.onTabUrlChange(() => {}).pendingUrl, pending.pendingUrl)
+})
+
+test("out-of-order focus queries preserve background navigation event order", async () => {
+  const mock = createChromeMock()
+  const events = await loadTabChangeEvent()
+  const calls = []
+  const current = { id: 1, windowId: 1, active: true, url: "https://current.example/" }
+  events.onTabUrlChange((tab, change) => calls.push({ tab, change }), current)
+  const responses = []
+  chrome.tabs.query = (_query, callback) => responses.push(callback)
+  const background = {
+    id: 2,
+    windowId: 2,
+    active: true,
+    url: "about:blank",
+    pendingUrl: "https://background.example/",
+    status: "loading"
+  }
+  mock.events.updated.fire(2, { status: "loading" }, background)
+  mock.events.updated.fire(
+    2,
+    { url: background.pendingUrl },
+    { ...background, url: background.pendingUrl, pendingUrl: undefined, status: "complete" }
+  )
+  responses[1]([current])
+  responses[0]([current])
+
+  assert.deepEqual(
+    calls.map(({ tab, change }) => [tab?.id, change.tab.id, change.phase]),
+    [
+      [undefined, 2, "pending"],
+      [undefined, 2, "committed"]
+    ]
+  )
+  assert.equal(calls[0].change.navigationId, calls[1].change.navigationId)
+  assert.equal(events.onTabUrlChange(() => {}).id, 1)
+})
+
+test("a late focus query cannot replay navigation after the changed tab closes", async () => {
+  const mock = createChromeMock()
+  const events = await loadTabChangeEvent()
+  const calls = []
+  const current = { id: 1, windowId: 1, active: true, url: "https://current.example/" }
+  events.onTabUrlChange((tab, change) => calls.push({ tab, change }), current)
+  let respond
+  chrome.tabs.query = (_query, callback) => {
+    respond = callback
+  }
+  mock.events.updated.fire(
+    2,
+    { status: "loading" },
+    {
+      id: 2,
+      windowId: 2,
+      active: true,
+      url: "about:blank",
+      pendingUrl: "https://background.example/",
+      status: "loading"
+    }
+  )
+  mock.events.removed.fire(2, { windowId: 2 })
+  calls.length = 0
+  respond([current])
+
+  assert.deepEqual(calls, [])
+  assert.equal(events.getTabNavigation(2), undefined)
+})
+
+test("losing window focus discards an earlier focus query", async () => {
+  const mock = createChromeMock()
+  const events = await loadTabChangeEvent()
+  const calls = []
+  const original = { id: 1, windowId: 1, active: true, url: "https://old.example/" }
+  events.onTabUrlChange((tab) => calls.push(tab), original)
+  let respond
+  chrome.tabs.query = (_query, callback) => {
+    respond = callback
+  }
+  mock.events.activated.fire({ tabId: 1, windowId: 1 })
+  mock.events.windowFocused.fire(-1)
+  respond([{ ...original, id: 2 }])
+  assert.deepEqual(calls, [])
+})
+
+test("navigation in an unfocused browser cannot resume its current-tab snapshot", async () => {
+  const mock = createChromeMock()
+  const events = await loadTabChangeEvent()
+  const tab = { id: 1, windowId: 1, active: true, url: "https://old.example/" }
+  events.onTabUrlChange(() => {}, tab)
+  mock.events.windowFocused.fire(-1)
+  mock.events.activated.fire({ tabId: 1, windowId: 1 })
+  mock.events.updated.fire(
+    1,
+    { url: "https://new.example/" },
+    { ...tab, url: "https://new.example/" }
+  )
+  assert.equal(mock.queryCount, 0)
+  assert.equal(
+    events.onTabUrlChange(() => {}, tab),
+    undefined
+  )
+})

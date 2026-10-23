@@ -1,4 +1,5 @@
 import type { ProcessContext } from "../processor"
+import { traceRule } from "../ruleTrace"
 import checkCurrentOsMatch from "./match/osMatchHandler"
 import checkCurrentTimeMatch from "./match/periodMatchHandler"
 import checkCurrentSceneMatch from "./match/sceneMatchHandler"
@@ -56,20 +57,30 @@ export default async function isMatch(
 
   let matchTab: chrome.tabs.Tab | null = null
 
-  const isCurrentUrlMatch = await checkCurrentUrlMatch(ctx.tab, rule)
+  const isCurrentUrlMatch = checkCurrentUrlMatch(ctx.tab, rule)
   if (isCurrentUrlMatch) {
     matchTab = ctx.tab
   }
   let isAnyUrlMatch = isCurrentUrlMatch
   if (isCurrentUrlMatch === false) {
     // 如果当前标签不匹配，则检查是否有其它标签页匹配
-    matchTab = await checkAnyUrlMatch(ctx.tabs, rule)
+    const tabs = await (ctx.getTabs?.() ?? Promise.resolve(ctx.tabs ?? []))
+    matchTab = checkAnyUrlMatch(tabs, rule)
     isAnyUrlMatch = Boolean(matchTab)
   }
 
-  const isCurrentSceneMatch = await checkCurrentSceneMatch(activeSceneIds, rule)
+  const isCurrentSceneMatch = checkCurrentSceneMatch(activeSceneIds, rule)
   const isCurrentOsMatch = await checkCurrentOsMatch(rule)
-  const isCurrentTimeMatch = await checkCurrentTimeMatch(rule)
+  const isCurrentTimeMatch = checkCurrentTimeMatch(rule)
+
+  traceRule(ctx, "rule.conditions", {
+    relationship: rule.match.relationship,
+    currentUrl: isCurrentUrlMatch,
+    anyUrl: isAnyUrlMatch,
+    scene: isCurrentSceneMatch,
+    os: isCurrentOsMatch,
+    period: isCurrentTimeMatch
+  })
 
   const list = [
     isCurrentUrlMatch,
@@ -134,10 +145,10 @@ export async function isMatchByCurrent(
     return false
   }
 
-  const isCurrentUrlMatch = await checkCurrentUrlMatch(tabInfo, rule)
-  const isCurrentSceneMatch = await checkCurrentSceneMatch(activeSceneIds, rule)
+  const isCurrentUrlMatch = checkCurrentUrlMatch(tabInfo, rule)
+  const isCurrentSceneMatch = checkCurrentSceneMatch(activeSceneIds, rule)
   const isCurrentOsMatch = await checkCurrentOsMatch(rule)
-  const isCurrentTimeMatch = await checkCurrentTimeMatch(rule)
+  const isCurrentTimeMatch = checkCurrentTimeMatch(rule)
 
   const currentCheckList = [
     isCurrentUrlMatch,

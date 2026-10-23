@@ -1,101 +1,89 @@
 const DELAY_TIME = 1000
+type DisableResult = "disabled" | "cancelled" | "failed"
 
 export class DelayCloseToken {
-  public static DelayTime: number = DELAY_TIME
-
-  /**
-   * 待关闭扩展的 ID
-   */
-  public Id: string
-
-  /**
-   * 延迟关闭是否还有效，如果无效，则不再执行关闭操作，通常是因为扩展有重新被启用了
-   */
-  public Available: boolean
-
-  public constructor(id: string) {
-    this.Id = id
-    this.Available = true
+  public static DelayTime = DELAY_TIME
+  public Available = true
+  public started = false
+  private resolve!: (result: DisableResult) => void
+  public readonly done = new Promise<DisableResult>((resolve) => {
+    this.resolve = resolve
+  })
+  constructor(public Id: string) {}
+  public finish(result: DisableResult) {
+    this.resolve(result)
   }
-
   public cancel() {
     this.Available = false
+    if (!this.started) this.finish("cancelled")
   }
 }
 
-/**
- * 延迟关闭扩展
- */
 class DelayCloser {
-  private _waiting: DelayCloseToken[]
-
-  public constructor() {
-    this._waiting = []
-  }
-
-  // 延迟关闭扩展
+  private waiting = new Set<DelayCloseToken>()
   public close(
     info: chrome.management.ExtensionInfo,
     after: () => void,
-    isCurrent: () => boolean = () => true
+    isCurrent: () => boolean = () => true,
+    before: () => Promise<void> = async () => {},
+    ctx?: ProcessContext
   ) {
     const token = new DelayCloseToken(info.id)
-    this._waiting.push(token)
-
-    setTimeout(
-      async (t: DelayCloseToken) => {
-        if (!t.Available || !isCurrent()) {
-          // 此关闭动作无效，则不再执行
-          this._waiting = this._waiting.filter((item) => item !== t)
+    this.waiting.add(token)
+    setTimeout(async () => {
+      if (!token.Available || !isCurrent()) {
+        traceRule(ctx, "operation.disable.cancelled", {
+          extensionId: info.id,
+          reason: !token.Available ? "token-cancelled" : "stale-before-delay"
+        })
+        token.cancel()
+        this.waiting.delete(token)
+        return
+      }
+      token.started = true
+      try {
+        await before()
+        if (!token.Available || !isCurrent()) {
+          traceRule(ctx, "operation.disable.cancelled", {
+            extensionId: info.id,
+            reason: !token.Available ? "token-cancelled" : "stale-before-api"
+          })
+          token.finish("cancelled")
           return
         }
+        traceRule(ctx, "operation.disable.started", { extensionId: info.id })
+        await chrome.management.setEnabled(info.id, false)
+        token.finish("disabled")
         try {
-          console.log(`[Extension Manager] disable extension [${info.name}]`)
-          await chrome.management.setEnabled(info.id, false)
-          after?.()
+          after()
         } catch (error) {
-          t.cancel()
-          console.warn("Disable extension failed", info.id, error)
-        } finally {
-          // Keep successful tokens cancellable until any associated reload has run.
-          this.removeIneffective()
+          console.warn("Disable history failed", error)
         }
-      },
-      DELAY_TIME,
-      token // 触发关闭动作时的 token，此 token 用于记录这个关闭动作是否还有效
-    )
-
+      } catch (error) {
+        token.finish("failed")
+        token.Available = false
+        console.warn("Disable extension failed", info.id, error)
+      }
+    }, DELAY_TIME)
     return token
   }
-
-  // 取消指定扩展的禁用动作
+  public release(token: DelayCloseToken) {
+    this.waiting.delete(token)
+  }
   public cancel(extId: string) {
-    const list = this._waiting
-    for (const item of list.filter((i) => i.Id === extId)) {
-      item.cancel()
+    for (const token of this.waiting) {
+      if (token.Id === extId) {
+        token.cancel()
+        this.waiting.delete(token)
+      }
     }
-    this.removeIneffective()
   }
-
   public cancelAll() {
-    for (const token of this._waiting) token.cancel()
-    this._waiting = []
-  }
-
-  // 从缓存中移除掉所有已经失效的 token，避免内存浪费
-  private removeIneffective() {
-    this._waiting = this._waiting.filter((i) => i.Available)
+    for (const token of this.waiting) token.cancel()
+    this.waiting.clear()
   }
 }
-
-function buildDelayCloserGetter() {
-  let closer: DelayCloser | undefined = undefined
-  return () => {
-    if (closer === undefined) {
-      closer = new DelayCloser()
-    }
-    return closer
-  }
-}
-
-export const getDelayCloser = buildDelayCloserGetter()
+let closer: DelayCloser | undefined
+export const getDelayCloser = () => (closer ??= new DelayCloser())
+import type { ProcessContext } from "./processor"
+import { traceRule } from "./ruleTrace"

@@ -163,6 +163,29 @@ evaluate URL, scene, OS and period conditions; target handlers resolve groups an
 `ExecuteTaskHandler` resolves conflicts, operates extensions and records automatic actions.
 `latestTaskRunner.ts` coalesces requests without overlapping evaluations; `delayCloser.ts` delays
 disabling an extension and allows a later enable operation to cancel that disable.
+Navigation events retain committed and pending URLs separately. Available `pendingUrl` snapshots
+trigger conflict resolution followed by enable-only execution; committed navigation performs the
+full action set. Background tabs do not replace the focused tab. Local navigation identities and
+state/configuration revisions invalidate stale evaluations. Focus changes invalidate immediately;
+evaluation resumes only after an authoritative current-tab snapshot arrives. Full-tab queries are lazy and shared
+per evaluation; current-page enable-only matches avoid them. URL, scene and period matching is
+synchronous, while platform information is shared per worker.
+
+History objects are constructed before rules start; extension-dependent history listeners and
+installation-event replay start after the extension service is ready. `ReloadCoordinator.ts`
+merges per-evaluation refreshes and waits for actual disable completion without blocking the rule
+runner. It verifies the original active tab and navigation before refreshing. Optional refresh
+intentions use only `chrome.storage.session["rulePendingReloads.v1"]`, with prepared, applied and
+dispatched states. Recovery revalidates configuration, rule winners and extension state; dispatched
+refreshes are never retried. These session records are excluded from configuration backup/sync
+and disappear on browser restart or extension reload/update. Cross-API dispatch is not atomic:
+interruption after marking dispatch can skip a refresh. Pending URLs are opportunistic and do not
+guarantee that another extension injects before page initialization.
+Rule-chain console diagnostics use `console.log` by default with the `[Rule trace]` prefix,
+independent of the logger level and DevTools Verbose filtering.
+Evaluation IDs correlate matching, extension operations, history and reloads; URL snapshots distinguish
+`urlSource`, `committedUrl`, `pendingUrl` and the actual `matchUrl`, including background-tab matches.
+See DEBUG.md for the worker console and event names; these logs add no telemetry events.
 
 Page messages use the JSON-string envelope `{ id, params }` through `src/utils/messageHelper.js`.
 Existing IDs include `current-scenes-changed`, `rule-config-changed` and `manual-change-group`.
@@ -193,6 +216,7 @@ with the installed TypeScript compiler, replacing browser and persistence bounda
 npm test
 node --no-warnings --test test/ruleTableScroll.test.mjs
 node --no-warnings --test test/ruleEventTiming.test.mjs
+node --no-warnings --test test/ruleReloadReliability.test.mjs test/rulePendingNavigation.test.mjs test/ruleExecutionPath.test.mjs test/ruleStartup.test.mjs
 ```
 
 Current coverage includes active-scene compatibility, scene matching, navigation timing and task

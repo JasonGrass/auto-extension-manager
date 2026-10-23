@@ -118,7 +118,7 @@ test("opening an extension page cancels its pending disable and reload", async (
   const h = ruleHarness()
   h.enabled.set("A", true)
   await h.init(rule({ actionType: "closeWhenMatched", reloadAfterDisable: true }))
-  assert.equal(h.timers.length, 2, "disable and reload are pending before opening the page")
+  assert.equal(h.timers.length, 1, "only the disable timer is needed; reload follows its outcome")
 
   const optionsTab = { id: 2, url: "chrome-extension://A/options.html", active: true }
   h.chrome.tabs.query = async () => [h.tab, optionsTab]
